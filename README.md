@@ -7,7 +7,7 @@ Iniciamos este trabajo para probar nuestras habilidades
 
 * **Joel Atamari** - *Initial work* - [JoelBersek](https://github.com/joelBerseker)
 * **Jhon Mamani** - *lead designer* - [Leowin](https://github.com/leowi)
-* **Alexander Cayro** - *Group leader* - [Sergio](https://github.com/reyalexander)
+* **Alexander Cayro** - *Group leader* - [Alexander Rey](https://github.com/reyalexander)
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
