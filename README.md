@@ -10,4 +10,4 @@ Iniciamos este trabajo para probar nuestras habilidades
 * **Alexander Cayro** - *Group leader* - [Alexander Rey](https://github.com/reyalexander)
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details
