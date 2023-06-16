@@ -1,5 +1,6 @@
 <script>
 import AddProduct from "../components/AddProduct.vue";
+import axios from "axios";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default defineComponent({
@@ -20,9 +21,11 @@ export default defineComponent({
   methods: {
     async getTasks() {
       this.loading = true;
-      this.tasks = [];
-      
-      console.log("Hola "+url);
+      axios.get(url+`posts/`+1)
+      .then(res => {
+        const persons = res.data;
+        console.log(persons);
+      })
     },
   },
 });
