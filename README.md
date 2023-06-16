@@ -6,7 +6,7 @@ Iniciamos este trabajo para probar nuestras habilidades
 ## Authors
 
 * **Joel Atamari** - *Initial work* - [JoelBersek](https://github.com/joelBerseker)
-* **Jhon Mamani** - *lead designer* - [Leowin](https://github.com/leowi)
+* **Jhon Mamani** - *Lead designer* - [Leowin](https://github.com/leowi)
 * **Alexander Cayro** - *Group leader* - [Alexander Rey](https://github.com/reyalexander)
 ## License
 
