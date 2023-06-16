@@ -9,3 +9,6 @@ const app = createApp(App)
 app.use(router)
 
 app.mount('#app')
+
+import "bootstrap/dist/css/bootstrap.min.css"
+import "bootstrap"
