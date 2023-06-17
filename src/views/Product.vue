@@ -21,11 +21,14 @@ export default defineComponent({
   methods: {
     async getTasks() {
       this.loading = true;
-      axios.get(url+`posts/`+1)
-      .then(res => {
-        const persons = res.data;
-        console.log(persons);
+      var path = url+`products/`;
+      console.log(path);
+      axios.get(path)
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
       })
+      
     },
   },
 });

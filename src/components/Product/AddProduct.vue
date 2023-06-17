@@ -45,6 +45,14 @@
             v-model="product.code"
             required
           /><br /><br />
+          <label for="nivel_minimo">Precio de Compra:</label>
+          <input
+            type="number"
+            id="costo"
+            name="costo"
+            v-model="product.cost"
+            required
+          /><br /><br />
 
           <label for="precio">Precio de Venta:</label>
           <input
@@ -65,23 +73,7 @@
             required
           /><br /><br />
 
-          <label for="nivel_minimo">Nivel Mínimo:</label>
-          <input
-            type="number"
-            id="nivel_minimo"
-            name="nivel_minimo"
-            v-model="product.min"
-            required
-          /><br /><br />
-
-          <label for="nivel_maximo">Nivel Máximo:</label>
-          <input
-            type="number"
-            id="nivel_maximo"
-            v-model="product.max"
-            name="nivel_maximo"
-            required
-          /><br /><br />
+          
         </div>
         <div class="modal-footer">
           <button
@@ -113,21 +105,21 @@ export default defineComponent({
         code: "",
         price: 0,
         count: 0,
-        min: 0,
-        max: 0,
+        cost: 0,
       },
     };
   },
-  created() {
+  /**created() {
     this.getTasks();
-  },
+  },*/
   methods: {
     async getTasks() {
-      this.loading = true;
+      /*this.loading = true;
       axios.get(url + `posts/` + 1).then((res) => {
         const persons = res.data;
         console.log(persons);
-      });
+      });*/
+
     },
     ProductAdd(event){
         alert(`Hello ${this.product}!`);
@@ -140,8 +132,7 @@ export default defineComponent({
         this.product.code = "";
         this.product.price = 0;
         this.product.count = 0;
-        this.product.min = 0;
-        this.product.max = 0;
+        this.product.cost = 0;
     }
   },
 });

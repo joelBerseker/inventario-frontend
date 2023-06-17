@@ -7,13 +7,7 @@ import router from './router'
 
 
 import axios from 'axios';
-//var token = store.state.token;
-var token = "xd"
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-} else {
-  axios.defaults.headers.common['Authorization'] = null;
-}
+
 
 
 const app = createApp(App)
