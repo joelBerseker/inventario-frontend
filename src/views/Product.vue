@@ -1,5 +1,5 @@
 <script>
-import AddProduct from "../components/AddProduct.vue";
+import AddProduct from "../components/Product/AddProduct.vue";
 import axios from "axios";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
