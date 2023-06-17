@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <h4>Menu Principal</h4>
+    <h4>Inicio</h4>
     <div class="row">
     <div class="col-sm-6">
         <div class="card">

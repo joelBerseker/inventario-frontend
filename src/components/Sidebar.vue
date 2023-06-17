@@ -1,23 +1,34 @@
 <template>
-    <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-        <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-            <span class="fs-5 d-none d-sm-inline">Sistema de inventarios UWU</span>
-        </a>
-        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-            <li>
-                <RouterLink to="/">Inicio</RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/product">Productos</RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/supplier">Proveedores</RouterLink>
-            </li>
-            <li>
-                <RouterLink to="/customer">Clientes</RouterLink>
-            </li>
+    <div class="d-flex flex-column align-items-center min-vh-100">
+        <div class="mt-5 mb-4 px-3 main-text">Sistema de Inventarios</div>
 
-        </ul>
-
+        <RouterLink to="/" class="w-100 item-menu">
+            <div class="py-2 px-3">Inicio</div>
+        </RouterLink>
+        <RouterLink to="/product" class="w-100 item-menu">
+            <div class="py-2 px-3">Productos</div>
+        </RouterLink>
+        <RouterLink to="/supplier" class="w-100 item-menu">
+            <div class="py-2 px-3">Clientes</div>
+        </RouterLink>
+        <RouterLink to="/customer" class="w-100 item-menu">
+            <div class="py-2 px-3">Proveedores</div>
+        </RouterLink>
+        
     </div>
 </template>
+<style scoped>
+.item-menu{
+    text-decoration-line: none;
+    color: var(--my-1th-color);
+}
+.main-text{
+    color: var(--my-1th-color);
+}
+.item-menu:hover{
+    background-color: var(--my-3th-color);
+}
+.router-link-exact-active{
+    background-color: var(--my-3th-color);
+}
+</style>
