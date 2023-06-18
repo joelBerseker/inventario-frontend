@@ -22,7 +22,7 @@ export default defineComponent({
     methods: {
         async getTasks() {
             this.loading = true;
-            var path = url + `products/`;
+            var path = url + `products/products/`;
             console.log(path);
             axios.get(path)
                 .then(function (response) {
