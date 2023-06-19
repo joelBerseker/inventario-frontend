@@ -1,5 +1,5 @@
 <script>
-import AddCustomer from "../components/AddCustomer.vue";
+import AddCustomer from "./DetailCustomer.vue";
 
 import TableLite from "vue3-table-lite";
 import axios from "axios";

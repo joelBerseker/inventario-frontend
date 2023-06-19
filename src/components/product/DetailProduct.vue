@@ -1,9 +1,6 @@
 <template>
-    <MyModal ref="myModal" :id="'productDetailModal'">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{ this.title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+    <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
+       
         <div class="modal-body">
             <label for="nombre">Nombre:</label>
             <input type="text" id="nombre" name="nombre" v-model="product.name" required /><br /><br />
@@ -55,7 +52,7 @@
 <script>
 import axios from "axios";
 import { defineComponent } from "vue";
-import MyModal from '@/components/MyModal.vue'
+import MyModal from '@/components/my_components/MyModal.vue'
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 import { Modal } from "bootstrap";

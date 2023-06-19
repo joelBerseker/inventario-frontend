@@ -2,20 +2,23 @@
     <div class="modal fade" :id="id">
         <div class="modal-dialog ">
             <div class="modal-content">
+                <div class="modal-header">
+                    <p class="title-text">{{ this.title }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <slot></slot>
             </div>
         </div>
     </div>
 </template>
-<style >
-</style>
+<style ></style>
 <script>
 import { Modal } from "bootstrap";
 import { defineComponent } from "vue";
 export default defineComponent({
     name: 'MyModal',
     props: [
-        "id"
+        "id", "title"
     ],
     methods: {
         closeModal() {

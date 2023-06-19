@@ -1,7 +1,7 @@
 <script>
-import AddProduct from "../components/Product/AddProduct.vue";
-import ConfirmDialogue from '@/components/ConfirmDialogue.vue'
-import MyToast from '@/components/MyToast.vue'
+import DetailProduct from "./DetailProduct.vue";
+import ConfirmDialogue from '@/components/my_components/ConfirmDialogue.vue'
+import MyToast from '@/components/my_components/MyToast.vue'
 import axios from "axios";
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -14,7 +14,7 @@ export default defineComponent({
         };
     },
     components: {
-        AddProduct,
+        DetailProduct,
         ConfirmDialogue,
         MyToast,
     },
@@ -62,7 +62,7 @@ export default defineComponent({
 </script>
 <template>
     <MyToast ref="toast"></MyToast>
-    <AddProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" />
+    <DetailProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" />
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
 
     <div class="bg-secondary py-3 px-3 color-1">

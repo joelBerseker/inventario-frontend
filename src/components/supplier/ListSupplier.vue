@@ -1,5 +1,5 @@
 <script setup>
-import AddCustomer from '../components/AddCustomer.vue'
+import AddCustomer from '../customer/DetailCustomer.vue'
 </script>
 <template>
     <!-- Modal -->
