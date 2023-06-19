@@ -1,13 +1,13 @@
 <script setup>
 import AddCustomer from '../customer/DetailCustomer.vue'
+import MainContent from '@/components/my_components/MainContent.vue'
 </script>
 <template>
     <!-- Modal -->
-    <AddCustomer/>
-    <div>
-        <h1>Clientes</h1>
-
-        <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar</button>
+    <AddCustomer />
+    <MainContent :title="'Clientes'" :icon="'bi bi-people'">
+        <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal"
+            data-bs-target="#exampleModal">Agregar</button>
         <table class="table">
             <thead class="table-dark">
                 <tr>
@@ -18,7 +18,7 @@ import AddCustomer from '../customer/DetailCustomer.vue'
                     <th>Telefono</th>
                     <th>Correo Electronico</th>
                     <th>Ultimo ingresado</th>
-                    <th>Acciones</th> 
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +64,7 @@ import AddCustomer from '../customer/DetailCustomer.vue'
                 </tr>
             </tbody>
         </table>
-    </div>
+    </MainContent>
 </template>
 
 <style></style>

@@ -1,4 +1,5 @@
 <script>
+import MainContent from '@/components/my_components/MainContent.vue'
 import DetailProduct from "./DetailProduct.vue";
 import ConfirmDialogue from '@/components/my_components/ConfirmDialogue.vue'
 import MyToast from '@/components/my_components/MyToast.vue'
@@ -17,6 +18,7 @@ export default defineComponent({
         DetailProduct,
         ConfirmDialogue,
         MyToast,
+        MainContent
     },
     created() {
         this.getTasks();
@@ -64,12 +66,7 @@ export default defineComponent({
     <MyToast ref="toast"></MyToast>
     <DetailProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" />
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
-
-    <div class="bg-secondary py-3 px-3 color-1">
-        <p class="title-text"><i class="bi bi-box-seam"></i> Productos</p>
-    </div>
-
-    <div class="p-3">
+    <MainContent :title="'Productos'" :icon="'bi bi-box-seam'">
         <button v-on:click="addMode" type="button" class="btn btn-dark btn-sm mb-3">
             <i class="bi bi-plus-circle"></i> Agregar
         </button>
@@ -131,7 +128,7 @@ export default defineComponent({
                 </tr>
             </tbody>
         </table>
-    </div>
+    </MainContent>
 </template>
 <script></script>
 

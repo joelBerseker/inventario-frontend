@@ -55,7 +55,6 @@ import { defineComponent } from "vue";
 import MyModal from '@/components/my_components/MyModal.vue'
 const url = import.meta.env.VITE_APP_RUTA_API;
 
-import { Modal } from "bootstrap";
 export default defineComponent({
     props: [
         "item_selected", "deleteItem", "showToast"
