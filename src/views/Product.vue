@@ -1,5 +1,7 @@
 <script>
 import AddProduct from "../components/Product/AddProduct.vue";
+import ConfirmDialogue from '@/components/ConfirmDialogue.vue'
+import MyToast from '@/components/MyToast.vue'
 import axios from "axios";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -7,7 +9,6 @@ export default defineComponent({
     name: "Product",
     data() {
         return {
-            mode: 1,
             loading: false,
             newTask: "",
             tasks: [],
@@ -15,6 +16,8 @@ export default defineComponent({
     },
     components: {
         AddProduct,
+        ConfirmDialogue,
+        MyToast,
     },
     created() {
         this.getTasks();
@@ -29,27 +32,47 @@ export default defineComponent({
                     // handle success
                     console.log(response.data);
                 })
-
         },
-        edit(){
-            this.mode=2;
-            console.log(this.mode)
+        addMode() {
+            this.$refs.modal.changeMode(1);
+            this.$refs.modal.openModal();
+        },
+        viewMode() {
+            this.$refs.modal.changeMode(2);
+            this.$refs.modal.openModal();
+        },
+        showToast(opts = {}) {
+            this.$refs.toast.show(opts);
+        },
+        async deleteItem() {
+            this.$refs.confirmDialogue.show({
+                title: 'Eliminar Producto',
+                message: '¿Estas seguro que quieres eliminar el producto?',
+                okButton: 'Eliminar',
+            }).then((result) => {
+                if (result) {
+                    this.showToast({
+                        title: 'Eliminar Producto',
+                        message: 'Se realizo la acción con exito'
+                    });
+                }
+            })
         }
     },
 });
 </script>
 <template>
-    <!-- Modal 
-        Mode 1: Create
-        Mode 2: View
-        Mode 3: Edit
-    -->
-    <AddProduct :mode=mode />
-    <div>
-        <h1>Productos</h1>
+    <MyToast ref="toast"></MyToast>
+    <AddProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" />
+    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
 
-        <button v-on:click="edit" type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Agregar
+    <div class="bg-secondary py-3 px-3 color-1">
+        <p class="title-text"><i class="bi bi-box-seam"></i> Productos</p>
+    </div>
+
+    <div class="p-3">
+        <button v-on:click="addMode" type="button" class="btn btn-dark btn-sm mb-3">
+            <i class="bi bi-plus-circle"></i> Agregar
         </button>
         <table class="table">
             <thead class="table-dark">
@@ -67,28 +90,45 @@ export default defineComponent({
                     <td>Prod1</td>
                     <td>1</td>
                     <td>10-09-05</td>
-                    <td><button>ADD</button><button>EDITAR</button></td>
+                    <td>
+                        <button v-on:click="viewMode()" type="button" class="btn btn-dark btn-sm button-space">
+                            <i class="bi bi-journal"></i> Ver</button>
+                        <button v-on:click="deleteItem()" class="ml-5 btn btn-danger btn-sm"><i class="bi bi-trash"></i>
+                            Eliminar</button>
+                    </td>
                 </tr>
                 <tr>
                     <td>1</td>
                     <td>Prod1</td>
                     <td>1</td>
                     <td>10-09-05</td>
-                    <td><button>ADD</button><button >EDITAR</button></td>
+                    <td>
+                        <button v-on:click="viewMode()" type="button" class="btn btn-dark btn-sm button-space">
+                            <i class="bi bi-journal"></i> Ver</button>
+                        <button class="ml-5 btn btn-danger btn-sm"><i class="bi bi-trash"></i> Eliminar</button>
+                    </td>
                 </tr>
                 <tr>
                     <td>1</td>
                     <td>Prod1</td>
                     <td>1</td>
                     <td>10-09-05</td>
-                    <td><button>ADD</button><button>EDITAR</button></td>
+                    <td>
+                        <button v-on:click="viewMode()" type="button" class="btn btn-dark btn-sm button-space">
+                            <i class="bi bi-journal"></i> Ver</button>
+                        <button class="ml-5 btn btn-danger btn-sm"><i class="bi bi-trash"></i> Eliminar</button>
+                    </td>
                 </tr>
                 <tr>
                     <td>1</td>
                     <td>Prod1</td>
                     <td>1</td>
                     <td>10-09-05</td>
-                    <td><button>ADD</button><button>EDITAR</button></td>
+                    <td>
+                        <button v-on:click="viewMode()" type="button" class="btn btn-dark btn-sm button-space">
+                            <i class="bi bi-journal"></i> Ver</button>
+                        <button class="ml-5 btn btn-danger btn-sm"><i class="bi bi-trash"></i> Eliminar</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -96,4 +136,8 @@ export default defineComponent({
 </template>
 <script></script>
 
-<style></style>
+<style scoped>
+.button-space {
+    margin-right: 0.25rem;
+}
+</style>

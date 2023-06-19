@@ -4,20 +4,40 @@ import { RouterLink, RouterView } from 'vue-router'
 import Sidebar from './components/Sidebar.vue'
 </script>
 <template>
-    <div class="container-fluid">
-        <div class="row flex-nowrap">
-            <div class="col-auto col-md-3 col-xl-2 p-0 color-sidebar">
-                <Sidebar/>
-            </div>
-            <div class="col p-4">
-                <RouterView />
-            </div>
+    <div>
+        <div id="sidebar">
+            <Sidebar />
+        </div>
+        <div id="content">
+            <RouterView />
         </div>
     </div>
 </template>
 
 <style>
-.color-sidebar{
+.color-sidebar {}
+
+#sidebar {
+    overflow: hidden;
+    height: 100%;
+    /* 100% Full-height */
+    width: 250px;
+    /* 0 width - change this with JavaScript */
+    position: fixed;
+    /* Stay in place */
+    z-index: 100;
+    /* Stay on top */
+    top: 0;
+    /* Stay at the top */
+    left: 0;
     background-color: var(--my-2th-color);
+}
+
+#content {
+    transition: margin-left 0.5s;
+    margin-left: 250px;
+
+    min-height: 100vh;
+    background-size: cover;
 }
 </style>
