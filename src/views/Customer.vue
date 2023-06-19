@@ -3,7 +3,7 @@ import AddCustomer from "../components/AddCustomer.vue";
 
 import TableLite from "vue3-table-lite";
 import axios from "axios";
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, computed } from "vue";
 // Fake Data for 'asc' sortable
 const sampleData1 = (offst, limit) => {
   offst = offst + 1;
@@ -65,24 +65,20 @@ export default defineComponent({
           sortable: true,
         },
         {
-          label: "",
+          label: " ",
           field: "quick",
-          width: "10%",
-          display: function (row) {
-            return (
-              '<button type="button"  data-id="' +
-              row.id +
-              '" class="is-rows-el quick-btn" @click="verDato" >Button</button>'
-            );
-          },
+          sortable: false,
         },
       ],
       rows: [],
-      totalRecordCount: 0,
+      totalRecordCount: computed(() => {
+        return table.rows.length;
+      }),
       sortable: {
-        order: "id",
+        order: "name",
         sort: "asc",
       },
+
     });
     /**
      * Search Event
@@ -128,7 +124,7 @@ export default defineComponent({
     return {
       table,
       doSearch,
-      verDato
+      verDato,
     };
   },
   components: {
@@ -152,15 +148,21 @@ export default defineComponent({
       Agregar
     </button>
     <table-lite
+      :is-static-mode="true"
+      :is-slot-mode="true"
       :is-loading="table.isLoading"
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"
       :sortable="table.sortable"
-      :messages="table.messages"
-      @do-search="doSearch"
       @is-finished="table.isLoading = false"
-    ></table-lite>
+    >
+    <template v-slot:quick="data">
+      <div>
+        <button type="button"  data-id="01" class="is-rows-el quick-btn" @click="verDato" >Button</button>'
+      </div>
+    </template>
+  </table-lite>
   </div>
 </template>
 
