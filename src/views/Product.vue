@@ -4,7 +4,6 @@ import ConfirmDialogue from '@/components/ConfirmDialogue.vue'
 import MyToast from '@/components/MyToast.vue'
 import axios from "axios";
 import { defineComponent } from "vue";
-const url = import.meta.env.VITE_APP_RUTA_API;
 export default defineComponent({
     name: "Product",
     data() {
