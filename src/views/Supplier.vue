@@ -1,11 +1,11 @@
-<script setup lang="ts">
-import AddSupplierVue from '@/components/AddSupplier.vue';
+<script setup>
+import AddCustomer from '../components/AddCustomer.vue'
 </script>
 <template>
     <!-- Modal -->
-    <AddSupplierVue/>
+    <AddCustomer/>
     <div>
-        <h1>Provedores</h1>
+        <h1>Clientes</h1>
 
         <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Agregar</button>
         <table class="table">
