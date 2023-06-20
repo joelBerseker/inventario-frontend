@@ -33,7 +33,7 @@
                 <i class="bi bi-pen"></i>
                 Editar
             </button>
-            <button type="button" @click="saveItem" class="btn btn-dark btn-sm button-margin" v-if="mode != 2">
+            <button type="button" @click="saveItem()" class="btn btn-dark btn-sm button-margin" v-if="mode != 2">
                 <i class="bi bi-check-circle"></i>
                 Guardar
             </button>
@@ -49,109 +49,93 @@
     margin-bottom: 0;
 }
 </style>
-<script>
-import axios from "axios";
-import { defineComponent } from "vue";
+<script setup>
+import { ref  } from "vue";
 import MyModal from '@/components/my_components/MyModal.vue'
 const url = import.meta.env.VITE_APP_RUTA_API;
-
-export default defineComponent({
-    props: [
-        "item_selected", "deleteItem", "showToast"
-    ],
-    components: {
-        MyModal
-    },
-    name: "Product",
-    data() {
-        return {
-            mode: 0,
-            title: "",
-            loading: false,
-            newTask: "",
-            product: {
-                name: "",
-                description: "",
-                code: "",
-                price: 0,
-                count: 0,
-                cost: 0,
-            },
-        };
-    },
-    /*watch: {
-        mode: function (value) {
-            switch (value) {
-                case 1:
-                    this.title = "Agregar Producto"
-                    break;
-                case 2:
-                    this.title = "Visualizar Producto"
-                    break;
-                case 3:
-                    this.title = "Editar Producto"
-                    break;
-
-                default:
-                    this.title = "Error"
-                    break;
-            }
-            console.log(value);
-        }
-    },*/
-    /**created() {
-      this.getTasks();
-    },*/
-    methods: {
-        async getTasks() {
-            /*this.loading = true;
-            axios.get(url + `posts/` + 1).then((res) => {
-              const persons = res.data;
-              console.log(persons);
-            });*/
-
-        },
-        saveItem() {
-            //alert(`Hello ${this.product}!`);
-            this.showToast();
-            this.closeModal();
-            this.resetForm();
-
-        },
-        changeMode(mode) {
-            switch (mode) {
-                case 1:
-                    this.title = "Agregar Producto"
-                    break;
-                case 2:
-                    this.title = "Visualizar Producto"
-                    break;
-                case 3:
-                    this.title = "Editar Producto"
-                    break;
-                default:
-                    this.title = "Error"
-                    break;
-            }
-            this.mode = mode;
-        },
-        editMode() {
-            this.changeMode(3);
-        },
-        closeModal() {
-            this.$refs.myModal.closeModal();
-        },
-        openModal() {
-            this.$refs.myModal.openModal();
-        },
-        resetForm() {
-            this.product.name = "";
-            this.product.description = "";
-            this.product.code = "";
-            this.product.price = 0;
-            this.product.count = 0;
-            this.product.cost = 0;
-        },
-    },
+var mode= ref (0);
+var title= ref ("");
+const myModal = ref(null)
+var product= ref ({
+    name: "",
+    description: "",
+    code: "",
+    price: 0,
+    count: 0,
+    cost: 0,
 });
+const props = defineProps({
+  item_selected: Object,
+  deleteItem: Object,
+  showToast: Boolean
+});
+/*watch: {
+    mode: function (value) {
+        switch (value) {
+            case 1:
+                this.title = "Agregar Producto"
+                break;
+            case 2:
+                this.title = "Visualizar Producto"
+                break;
+            case 3:
+                this.title = "Editar Producto"
+                break;
+
+            default:
+                this.title = "Error"
+                break;
+        }
+        console.log(value);
+    }
+},*/
+
+const saveItem = () => {
+    //alert(`Hello ${this.product}!`);
+    this.showToast();
+    this.closeModal();
+    this.resetForm();
+
+};
+const changeMode= (mode)=> {
+    switch (mode) {
+        case 1:
+            title = "Agregar Producto"
+            break;
+        case 2:
+            title = "Visualizar Producto"
+            break;
+        case 3:
+            title = "Editar Producto"
+            break;
+        default:
+                title = "Error"
+            break;
+    }
+    mode = mode;
+};
+const editMode = () => {
+    this.changeMode(3);
+};
+const closeModal = () => {
+    myModal.value.closeModal();
+};
+const openModal = () => {
+    myModal.value.openModal();
+};
+const resetForm = () => {
+    product.name = "";
+    product.description = "";
+    product.code = "";
+    product.price = 0;
+    product.count = 0;
+    product.cost = 0;
+};
+defineExpose({
+    changeMode,
+    openModal,
+    editMode,
+    closeModal,
+    mode
+  });
 </script>
