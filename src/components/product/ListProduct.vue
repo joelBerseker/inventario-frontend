@@ -192,7 +192,6 @@ getTasks();
     </table-lite>
   </MainContent>
 </template>
-<script></script>
 
 <style scoped>
 .button-space {

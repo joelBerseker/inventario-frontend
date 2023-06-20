@@ -15,12 +15,12 @@
         </div>
         <div class="py-1 px-2 d-flex w-100">
             <RouterLink to="/supplier" class="w-100 item-menu m-0">
-                <div class="py-2 px-3"><i class="bi bi-people"></i> Clientes</div>
+                <div class="py-2 px-3"><i class="bi bi-truck"></i> Proveedores</div>
             </RouterLink>
         </div>
         <div class="py-1 px-2 d-flex w-100">
             <RouterLink to="/customer" class="w-100 item-menu m-0">
-                <div class="py-2 px-3"><i class="bi bi-truck"></i> Proveedores</div>
+                <div class="py-2 px-3"><i class="bi bi-people"></i>Clientes </div>
             </RouterLink>
         </div>
     </div>
