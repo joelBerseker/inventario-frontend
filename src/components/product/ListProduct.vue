@@ -5,7 +5,7 @@ import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
 import TableLite from "vue3-table-lite";
 import axios from "axios";
-import { ref , reactive, computed } from "vue";
+import { ref, reactive, computed } from "vue";
 
 const url = import.meta.env.VITE_APP_RUTA_API;
 const table = reactive({
@@ -15,6 +15,13 @@ const table = reactive({
       label: "ID",
       field: "id",
       width: "3%",
+      sortable: true,
+      isKey: true,
+    },
+    {
+      label: "Code",
+      field: "code",
+      width: "5%",
       sortable: true,
       isKey: true,
     },
@@ -30,7 +37,7 @@ const table = reactive({
       width: "20%",
       sortable: true,
     },
-    
+
     {
       label: "Cost",
       field: "cost",
@@ -54,9 +61,7 @@ const table = reactive({
       field: "updated_at",
       width: "10%",
       display: function (row) {
-        return (
-            'Data '+timeAgo(row.updated_at)
-        );
+        return "Data " + timeAgo(row.updated_at);
       },
     },
     {
@@ -79,11 +84,11 @@ const modal = ref(null);
 var item_selected = ref({});
 
 const verDato = (data) => {
-  item_selected=data;
+  item_selected = data;
   console.log(item_selected.name);
 };
 const getTasks = () => {
-var path = url + `products/products/`;
+  var path = url + `products/products/`;
   console.log(path);
   axios.get(path).then(function (response) {
     // handle success
@@ -96,49 +101,51 @@ const DataTable = (response) => {
   });
 };
 
-const addMode= () => {
-    modal.value.changeMode(1);
-    modal.value.openModal();
+const addMode = () => {
+  modal.value.changeMode(1);
+  modal.value.openModal();
 };
-const viewMode= () => {
-    modal.value.changeMode(2);
-    modal.value.openModal();
+const viewMode = (data) => {
+  modal.value.changeMode(2);
+  item_selected = data;
+  modal.value.openModal();
 };
-const showToast=(opts = {}) =>{
-    this.$refs.toast.show(opts);
+const showToast = (opts = {}) => {
+  this.$refs.toast.show(opts);
 };
 const deleteItem = () => {
-    this.$refs.confirmDialogue
+  this.$refs.confirmDialogue
     .show({
-        title: "Eliminar Producto",
-        message: "¿Estas seguro que quieres eliminar el producto?",
-        okButton: "Eliminar",
+      title: "Eliminar Producto",
+      message: "¿Estas seguro que quieres eliminar el producto?",
+      okButton: "Eliminar",
     })
     .then((result) => {
-        if (result) {
-        this.showToast({ 
-            title: "Eliminar Producto",
-            message: "Se realizo la acción con exito",
+      if (result) {
+        this.showToast({
+          title: "Eliminar Producto",
+          message: "Se realizo la acción con exito",
         });
-        }
+      }
     });
 };
-const timeAgo = (time)=>{
-var date = new Date(time),
-    diff = (((new Date()).getTime() - date.getTime()) / 1000),
+const timeAgo = (time) => {
+  var date = new Date(time),
+    diff = (new Date().getTime() - date.getTime()) / 1000,
     day_diff = Math.floor(diff / 86400);
-if ( isNaN(day_diff) || day_diff < 0 || day_diff >= 31 )
-    return 'puto';
+  if (isNaN(day_diff) || day_diff < 0 || day_diff >= 31) return "puto";
 
-return day_diff == 0 && (
-        diff < 60 && "just now" ||
-        diff < 120 && "1 minute ago" ||
-        diff < 3600 && Math.floor( diff / 60 ) + " minutes ago" ||
-        diff < 7200 && "1 hour ago" ||
-        diff < 86400 && Math.floor( diff / 3600 ) + " hours ago") ||
-    day_diff == 1 && "Yesterday" ||
-    day_diff < 7 && day_diff + " days ago" ||
-    day_diff < 31 && Math.ceil( day_diff / 7 ) + " weeks ago";
+  return (
+    (day_diff == 0 &&
+      ((diff < 60 && "just now") ||
+        (diff < 120 && "1 minute ago") ||
+        (diff < 3600 && Math.floor(diff / 60) + " minutes ago") ||
+        (diff < 7200 && "1 hour ago") ||
+        (diff < 86400 && Math.floor(diff / 3600) + " hours ago"))) ||
+    (day_diff == 1 && "Yesterday") ||
+    (day_diff < 7 && day_diff + " days ago") ||
+    (day_diff < 31 && Math.ceil(day_diff / 7) + " weeks ago")
+  );
 };
 
 getTasks();
@@ -168,9 +175,16 @@ getTasks();
     >
       <template v-slot:quick="data">
         <div>
-            <button v-on:click="viewMode()" type="button" class="btn btn-dark btn-sm button-space">
-                            <i class="bi bi-journal"></i> Ver</button>
-                        <button class="ml-5 btn btn-danger btn-sm"><i class="bi bi-trash"></i> Eliminar</button>
+          <button
+            v-on:click="viewMode(data.value)"
+            type="button"
+            class="btn btn-dark btn-sm button-space"
+          >
+            <i class="bi bi-journal"></i> Ver
+          </button>
+          <button class="ml-5 btn btn-danger btn-sm">
+            <i class="bi bi-trash"></i> Eliminar
+          </button>
         </div>
       </template>
     </table-lite>
