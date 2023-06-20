@@ -13,7 +13,7 @@
     </div>
 </template>
 <style ></style>
-<script>
+<script setup>
 import { Toast } from "bootstrap";
 import { defineProps, ref } from "vue";
 

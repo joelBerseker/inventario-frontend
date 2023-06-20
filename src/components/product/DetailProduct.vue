@@ -115,13 +115,20 @@
 }
 </style>
 <script setup>
-import { ref, toRaw  } from "vue";
+import { ref, toRaw } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 var mode = ref(0);
 var title = ref("");
 const myModal = ref(null);
-var product = ref(props.item_selected);
+var product = ref({
+  name: "",
+  description: "",
+  code: "",
+  price: 0,
+  count: 0,
+  cost: 0,
+});
 const props = defineProps({
   item_selected: Object,
   deleteItem: Object,
@@ -177,12 +184,13 @@ const editMode = () => {
 const closeModal = () => {
   myModal.value.closeModal();
   resetForm();
-  
 };
 const openModal = () => {
-  product = toRaw(props.item_selected);
-  console.log(toRaw(product));
   myModal.value.openModal();
+};
+const data = (item) => {
+  product = toRaw(item);
+  console.log(product);
 };
 const resetForm = () => {
   product.name = "";
@@ -198,6 +206,7 @@ defineExpose({
   openModal,
   editMode,
   closeModal,
+  data,
   mode,
 });
 </script>

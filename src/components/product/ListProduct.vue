@@ -82,7 +82,7 @@ const table = reactive({
 });
 const modal = ref(null);
 var item_selected = ref({});
-
+//methods
 const verDato = (data) => {
   item_selected = data;
   console.log(item_selected.name);
@@ -109,6 +109,7 @@ const viewMode = (data) => {
   modal.value.changeMode(2);
   item_selected = toRaw(toRaw(data.value));
   console.log(item_selected);
+  modal.value.data(item_selected);
   modal.value.openModal();
 };
 const showToast = (opts = {}) => {
@@ -148,7 +149,7 @@ const timeAgo = (time) => {
     (day_diff < 31 && Math.ceil(day_diff / 7) + " weeks ago")
   );
 };
-
+//ejecucion
 getTasks();
 </script>
 <template>
