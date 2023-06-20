@@ -12,24 +12,26 @@
     </div>
 </template>
 <style ></style>
-<script>
+<script setup>
 import { Modal } from "bootstrap";
-import { defineComponent } from "vue";
-export default defineComponent({
-    name: 'MyModal',
-    props: [
-        "id", "title"
-    ],
-    methods: {
-        closeModal() {
-            var modal = Modal.getInstance(document.getElementById(this.id));
-            modal.hide();
-        },
-        openModal() {
-            var modal = new Modal(document.getElementById(this.id), {});
-            modal.show();
-        },
-
-    },
+import { defineProps, reactive } from "vue";
+const props = defineProps({
+  id: Number,
+  title: String,
 });
+
+
+const closeModal = () => {
+    var modal = Modal.getInstance(document.getElementById(props.id));
+    modal.hide();
+};
+const openModal = () => {
+    var modal = new Modal(document.getElementById(props.id), {});
+    modal.show();
+};
+defineExpose({
+    closeModal,
+    openModal,
+  });
+
 </script>
