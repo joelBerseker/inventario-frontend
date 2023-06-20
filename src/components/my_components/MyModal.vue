@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <p class="title-text">{{ this.title }}</p>
+          <p class="title-text">{{ "Titulo "+props.title }}</p>
           <button
             type="button"
             class="btn-close"
