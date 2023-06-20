@@ -5,7 +5,7 @@ import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
 import TableLite from "vue3-table-lite";
 import axios from "axios";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, toRaw } from "vue";
 
 const url = import.meta.env.VITE_APP_RUTA_API;
 const table = reactive({
@@ -107,7 +107,8 @@ const addMode = () => {
 };
 const viewMode = (data) => {
   modal.value.changeMode(2);
-  item_selected = data;
+  item_selected = toRaw(toRaw(data.value));
+  console.log(item_selected);
   modal.value.openModal();
 };
 const showToast = (opts = {}) => {
@@ -176,7 +177,7 @@ getTasks();
       <template v-slot:quick="data">
         <div>
           <button
-            v-on:click="viewMode(data.value)"
+            v-on:click="viewMode(data)"
             type="button"
             class="btn btn-dark btn-sm button-space"
           >

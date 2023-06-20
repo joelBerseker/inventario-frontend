@@ -115,7 +115,7 @@
 }
 </style>
 <script setup>
-import { ref } from "vue";
+import { ref, toRaw  } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 var mode = ref(0);
@@ -177,11 +177,12 @@ const editMode = () => {
 const closeModal = () => {
   myModal.value.closeModal();
   resetForm();
+  
 };
 const openModal = () => {
-  product = props.item_selected;
+  product = toRaw(props.item_selected);
+  console.log(toRaw(product));
   myModal.value.openModal();
-  console.log(product.name);
 };
 const resetForm = () => {
   product.name = "";
