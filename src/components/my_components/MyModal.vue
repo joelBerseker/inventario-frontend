@@ -3,7 +3,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <p class="title-text">{{ "Titulo "+props.title }}</p>
+          <p class="title-text">{{ props.title }}</p>
           <button
             type="button"
             class="btn-close"
@@ -19,17 +19,18 @@
 <style></style>
 <script setup>
 import { Modal } from "bootstrap";
-import { defineProps, reactive } from "vue";
-const props = defineProps({
-  id: Number,
-  title: String,
-});
+import { ref, defineProps } from 'vue'
 
+const props =defineProps({
+  id:Number,
+  title:String
+})
 const closeModal = () => {
   var modal = Modal.getInstance(document.getElementById(props.id));
   modal.hide();
 };
 const openModal = () => {
+  console.log(props);
   var modal = new Modal(document.getElementById(props.id), {});
   modal.show();
 };

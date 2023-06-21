@@ -7,6 +7,7 @@ import TableLite from "vue3-table-lite";
 import axios from "axios";
 import { ref, reactive, computed, toRaw } from "vue";
 
+const renderKey = ref(0)
 const url = import.meta.env.VITE_APP_RUTA_API;
 const table = reactive({
   isLoading: false,
@@ -107,10 +108,12 @@ const addMode = () => {
 };
 const viewMode = (data) => {
   modal.value.changeMode(2);
-  item_selected = toRaw(toRaw(data.value));
+  item_selected.value = toRaw(toRaw(data.value));
   console.log(item_selected);
   modal.value.data(item_selected);
   modal.value.openModal();
+  renderKey.value = renderKey.value + 1
+  console.log(renderKey.value);
 };
 const showToast = (opts = {}) => {
   this.$refs.toast.show(opts);
@@ -156,6 +159,7 @@ getTasks();
   <MyToast ref="toast"></MyToast>
   <DetailProduct
     ref="modal"
+    :key="renderKey"
     :deleteItem="deleteItem"
     :item_selected="item_selected"
     :showToast="showToast"

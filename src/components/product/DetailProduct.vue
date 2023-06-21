@@ -1,5 +1,6 @@
 <template>
-  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
+  <Suspense>
+  <MyModal :key="title" ref="myModal" :id="id" :title="title">
     <div class="modal-body">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
@@ -105,6 +106,7 @@
       </button>
     </div>
   </MyModal>
+</Suspense>
 </template>
 <style scoped>
 .button-margin {
@@ -115,11 +117,12 @@
 }
 </style>
 <script setup>
-import { ref, toRaw } from "vue";
+import { ref, toRaw,reactive } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 var mode = ref(0);
-var title = ref("");
+const id = ref("productDetailModal");
+var title = reactive("");
 const myModal = ref(null);
 var product = ref({
   name: "",
@@ -129,7 +132,7 @@ var product = ref({
   count: 0,
   cost: 0,
 });
-const props = defineProps({
+const props =  defineProps({
   item_selected: Object,
   deleteItem: Object,
   showToast: Boolean,
@@ -162,20 +165,22 @@ const saveItem = () => {
   this.resetForm();
 };
 const changeMode = (mode) => {
+  console.log("hola");
   switch (mode) {
     case 1:
-      title = "Agregar Producto";
+      title.value = "Agregar Producto";
       break;
     case 2:
-      title = "Visualizar Producto";
+      title.value = "Visualizar Producto";
       break;
     case 3:
-      title = "Editar Producto";
+      title.value = "Editar Producto";
       break;
     default:
-      title = "Error";
+      title.value = "Error";
       break;
   }
+  console.log("adios")
   mode = mode;
 };
 const editMode = () => {
@@ -208,5 +213,6 @@ defineExpose({
   closeModal,
   data,
   mode,
+  title,
 });
 </script>
