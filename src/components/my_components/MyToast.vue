@@ -15,33 +15,24 @@
 <style ></style>
 <script>
 import { Toast } from "bootstrap";
-import { defineComponent } from "vue";
-export default defineComponent({
-    name: 'MyToast',
-    data() {
-        return {
-            title: undefined,
-            message: undefined,
-        };
-    },
-    methods: {
-        show(opts = {}) {
-            this.title = opts.title
-            this.message = opts.message
+import { defineProps, ref } from "vue";
 
-            var myToastEl = document.getElementById('myToastEl')
-            var myToast = Toast.getOrCreateInstance(myToastEl)
-            myToast.show();
-        },
-        /*closeToast() {
-            var myToastEl = document.getElementById('myToastEl')
-            var myToast = Toast.getOrCreateInstance(myToastEl)
-            myToast.show();
-        },*/
-        openToast() {
-            
-        },
+var title= ref(undefined);
+var message= ref(undefined);
+const show =(opts = {}) => {
+    title = opts.title;
+    message = opts.message;
 
-    },
-});
+    var myToastEl = document.getElementById('myToastEl')
+    var myToast = Toast.getOrCreateInstance(myToastEl)
+    myToast.show();
+};
+/*closeToast() {
+    var myToastEl = document.getElementById('myToastEl')
+    var myToast = Toast.getOrCreateInstance(myToastEl)
+    myToast.show();
+},*/
+const openToast = () => {
+    
+};
 </script>
