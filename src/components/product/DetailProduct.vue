@@ -1,6 +1,6 @@
 <template>
   <Suspense>
-  <MyModal :key="title" ref="myModal" :id="id" :title="title">
+    <MyModal :key="title" ref="myModal" :id="id" :title="title.value">
     <div class="modal-body">
       <div class="form-group">
         <label for="nombre">Nombre:</label>
@@ -108,23 +108,17 @@
   </MyModal>
 </Suspense>
 </template>
-<style scoped>
-.button-margin {
-  margin-left: 0.25rem;
-  margin-right: 0 !important;
-  margin-top: 0;
-  margin-bottom: 0;
-}
-</style>
 <script setup>
-import { ref, toRaw,reactive } from "vue";
+import { ref, toRaw, defineProps, defineExpose,reactive  } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
+
 const url = import.meta.env.VITE_APP_RUTA_API;
-var mode = ref(0);
-const id = ref("productDetailModal");
-var title = reactive("");
+
+const mode = ref(0);
+const id = "productDetailModal";
+const title = ref("");
 const myModal = ref(null);
-var product = ref({
+const product = reactive({
   name: "",
   description: "",
   code: "",
@@ -132,41 +126,21 @@ var product = ref({
   count: 0,
   cost: 0,
 });
-const props =  defineProps({
+
+const props = defineProps({
   item_selected: Object,
   deleteItem: Object,
   showToast: Boolean,
 });
-/*watch: {
-    mode: function (value) {
-        switch (value) {
-            case 1:
-                this.title = "Agregar Producto"
-                break;
-            case 2:
-                this.title = "Visualizar Producto"
-                break;
-            case 3:
-                this.title = "Editar Producto"
-                break;
-
-            default:
-                this.title = "Error"
-                break;
-        }
-        console.log(value);
-    }
-},*/
 
 const saveItem = () => {
-  //alert(`Hello ${this.product}!`);
-  this.showToast();
-  this.closeModal();
-  this.resetForm();
+  showToast();
+  closeModal();
+  resetForm();
 };
-const changeMode = (mode) => {
-  console.log("hola");
-  switch (mode) {
+
+const changeMode = (newMode) => {
+  switch (newMode) {
     case 1:
       title.value = "Agregar Producto";
       break;
@@ -180,23 +154,27 @@ const changeMode = (mode) => {
       title.value = "Error";
       break;
   }
-  console.log("adios")
-  mode = mode;
+  mode.value = newMode;
 };
+
 const editMode = () => {
-  this.changeMode(3);
+  changeMode(3);
 };
+
 const closeModal = () => {
   myModal.value.closeModal();
   resetForm();
 };
+
 const openModal = () => {
   myModal.value.openModal();
 };
+
 const data = (item) => {
-  product = toRaw(item);
+  Object.assign(product, toRaw(item));
   console.log(product);
 };
+
 const resetForm = () => {
   product.name = "";
   product.description = "";
@@ -204,8 +182,9 @@ const resetForm = () => {
   product.price = 0;
   product.count = 0;
   product.cost = 0;
-  item_selected = {};
+  props.item_selected = {};
 };
+
 defineExpose({
   changeMode,
   openModal,
@@ -216,3 +195,11 @@ defineExpose({
   title,
 });
 </script>
+<style scoped>
+.button-margin {
+  margin-left: 0.25rem;
+  margin-right: 0 !important;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+</style>

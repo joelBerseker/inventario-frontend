@@ -109,8 +109,7 @@ const addMode = () => {
 const viewMode = (data) => {
   modal.value.changeMode(2);
   item_selected.value = toRaw(toRaw(data.value));
-  console.log(item_selected);
-  modal.value.data(item_selected);
+  modal.value.data(item_selected.value);
   modal.value.openModal();
   renderKey.value = renderKey.value + 1
   console.log(renderKey.value);
@@ -160,8 +159,8 @@ getTasks();
   <DetailProduct
     ref="modal"
     :key="renderKey"
-    :deleteItem="deleteItem"
-    :item_selected="item_selected"
+    :deleteItem="deleteItem.value"
+    :item_selected="item_selected.value"
     :showToast="showToast"
   />
   <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
