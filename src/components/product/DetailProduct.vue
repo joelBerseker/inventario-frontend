@@ -136,6 +136,7 @@ export default defineComponent({
             this.mode = mode;
         },
         editMode() {
+            
             this.changeMode(3);
         },
         closeModal() {
