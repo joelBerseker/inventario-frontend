@@ -7,6 +7,7 @@ import TableLite from "vue3-table-lite";
 import axios from "axios";
 import { ref, reactive, computed, toRaw } from "vue";
 
+const renderKey = ref(0)
 const url = import.meta.env.VITE_APP_RUTA_API;
 const table = reactive({
   isLoading: false,
@@ -82,7 +83,7 @@ const table = reactive({
 });
 const modal = ref(null);
 var item_selected = ref({});
-
+//methods
 const verDato = (data) => {
   item_selected = data;
   console.log(item_selected.name);
@@ -107,9 +108,11 @@ const addMode = () => {
 };
 const viewMode = (data) => {
   modal.value.changeMode(2);
-  item_selected = toRaw(toRaw(data.value));
-  console.log(item_selected);
+  item_selected.value = toRaw(toRaw(data.value));
+  modal.value.data(item_selected.value);
   modal.value.openModal();
+  renderKey.value = renderKey.value + 1
+  console.log(renderKey.value);
 };
 const showToast = (opts = {}) => {
   this.$refs.toast.show(opts);
@@ -148,15 +151,16 @@ const timeAgo = (time) => {
     (day_diff < 31 && Math.ceil(day_diff / 7) + " weeks ago")
   );
 };
-
+//ejecucion
 getTasks();
 </script>
 <template>
   <MyToast ref="toast"></MyToast>
   <DetailProduct
     ref="modal"
-    :deleteItem="deleteItem"
-    :item_selected="item_selected"
+    :key="renderKey"
+    :deleteItem="deleteItem.value"
+    :item_selected="item_selected.value"
     :showToast="showToast"
   />
   <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
@@ -191,7 +195,6 @@ getTasks();
     </table-lite>
   </MainContent>
 </template>
-<script></script>
 
 <style scoped>
 .button-space {

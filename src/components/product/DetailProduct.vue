@@ -155,3 +155,11 @@ export default defineComponent({
     },
 });
 </script>
+<style scoped>
+.button-margin {
+  margin-left: 0.25rem;
+  margin-right: 0 !important;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+</style>

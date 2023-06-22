@@ -9,7 +9,9 @@ import Sidebar from './components/home/Sidebar.vue'
             <Sidebar />
         </div>
         <div id="content">
-            <RouterView />
+            <Suspense>
+                <RouterView />
+            </Suspense>
         </div>
     </div>
 </template>
