@@ -1,4 +1,4 @@
-<template>
+<template> 
     <div class="d-flex flex-column align-items-center">
         <div class="mt-4 mb-4 px-3 main-text">
             <p class="title-text text-center">Sistema de Inventarios</p>

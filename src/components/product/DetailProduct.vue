@@ -1,4 +1,4 @@
-<template>
+<template> 
     <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
        
         <div class="modal-body">

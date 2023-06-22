@@ -1,4 +1,4 @@
-<template>
+<template> 
     <MyModal ref="myModal" :id="'confirmDialogue'" :title="title">
         <div class="modal-body">
             <p>{{ message }}</p>

@@ -1,4 +1,4 @@
-<script>
+<script> 
 import MainContent from '@/components/my_components/MainContent.vue'
 import DetailProduct from "./DetailProduct.vue";
 import ConfirmDialogue from '@/components/my_components/ConfirmDialogue.vue'
