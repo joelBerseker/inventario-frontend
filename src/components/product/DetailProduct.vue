@@ -1,24 +1,34 @@
-<template> 
+<template>
     <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
-       
+
         <div class="modal-body">
-            <label for="nombre">Nombre:</label>
-            <input type="text" id="nombre" name="nombre" v-model="product.name" required /><br /><br />
-
-            <label for="descripcion">Descripción:</label>
-            <textarea id="descripcion" name="descripcion" v-model="product.description" required></textarea><br /><br />
-
-            <label for="codigo">Código:</label>
-            <input type="text" id="codigo" name="codigo" v-model="product.code" required /><br /><br />
-            <label for="nivel_minimo">Precio de Compra:</label>
-            <input type="number" id="costo" name="costo" v-model="product.cost" required /><br /><br />
-
-            <label for="precio">Precio de Venta:</label>
-            <input type="number" id="precio" name="precio" step="0.01" v-model="product.price" required /><br /><br />
-
-            <label for="inventario">Cantidad en Inventario:</label>
-            <input type="number" id="inventario" name="inventario" v-model.number="product.count" required /><br /><br />
-
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" class="form-control" id="nombre" name="nombre" v-model="item_selected.name" required />
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea class="form-control" id="descripcion" name="descripcion" v-model="item_selected.description"
+                    required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="codigo">Código:</label>
+                <input type="text" class="form-control" id="codigo" name="codigo" v-model="item_selected.code" required />
+            </div>
+            <div class="form-group">
+                <label for="costo">Precio de Compra:</label>
+                <input type="number" class="form-control" id="costo" name="costo" v-model="item_selected.cost" required />
+            </div>
+            <div class="form-group">
+                <label for="precio">Precio de Venta:</label>
+                <input type="number" class="form-control" id="precio" name="precio" step="0.01" v-model="item_selected.price"
+                    required />
+            </div>
+            <div class="form-group">
+                <label for="inventario">Cantidad en Inventario:</label>
+                <input type="number" class="form-control" id="inventario" name="inventario" v-model.number="item_selected.stock"
+                    required />
+            </div>
 
         </div>
         <div class="modal-footer">
@@ -136,7 +146,7 @@ export default defineComponent({
             this.mode = mode;
         },
         editMode() {
-            
+
             this.changeMode(3);
         },
         closeModal() {
