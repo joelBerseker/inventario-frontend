@@ -1,4 +1,4 @@
-<template>
+<template> 
     <MainContent :title="'Inicio'" :icon="'bi bi-house'">
         <div class="row">
             <div class="col-6">

@@ -1,4 +1,4 @@
-<template>
+<template> 
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 10">
         <div id="myToastEl" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" >
             <div class="toast-header">
@@ -13,26 +13,35 @@
     </div>
 </template>
 <style ></style>
-<script setup>
+<script>
 import { Toast } from "bootstrap";
-import { defineProps, ref } from "vue";
+import { defineComponent } from "vue";
+export default defineComponent({
+    name: 'MyToast',
+    data() {
+        return {
+            title: undefined,
+            message: undefined,
+        };
+    },
+    methods: {
+        show(opts = {}) {
+            this.title = opts.title
+            this.message = opts.message
 
-var title= ref(undefined);
-var message= ref(undefined);
-const show =(opts = {}) => {
-    title = opts.title;
-    message = opts.message;
+            var myToastEl = document.getElementById('myToastEl')
+            var myToast = Toast.getOrCreateInstance(myToastEl)
+            myToast.show();
+        },
+        /*closeToast() {
+            var myToastEl = document.getElementById('myToastEl')
+            var myToast = Toast.getOrCreateInstance(myToastEl)
+            myToast.show();
+        },*/
+        openToast() {
+            
+        },
 
-    var myToastEl = document.getElementById('myToastEl')
-    var myToast = Toast.getOrCreateInstance(myToastEl)
-    myToast.show();
-};
-/*closeToast() {
-    var myToastEl = document.getElementById('myToastEl')
-    var myToast = Toast.getOrCreateInstance(myToastEl)
-    myToast.show();
-},*/
-const openToast = () => {
-    
-};
+    },
+});
 </script>

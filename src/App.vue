@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<script setup lang="ts"> 
 import { RouterLink, RouterView } from 'vue-router'
 
 import Sidebar from './components/home/Sidebar.vue'
@@ -9,9 +9,7 @@ import Sidebar from './components/home/Sidebar.vue'
             <Sidebar />
         </div>
         <div id="content">
-            <Suspense>
-                <RouterView />
-            </Suspense>
+            <RouterView />
         </div>
     </div>
 </template>
