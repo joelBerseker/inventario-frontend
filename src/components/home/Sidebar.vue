@@ -30,6 +30,43 @@
         <RouterView />
     </div>
 </template>
+<script>
+import axios from "axios";
+import AuthService from "@/services/AuthService";
+
+import { defineComponent } from "vue";
+export default defineComponent({
+  name: "Sidebar",
+  data() {
+    return {
+      newTask: "",
+    };
+  },
+  created() {
+    
+    const credentials = {
+      username: "admin",
+      password: "jose123as",
+    };
+    //AuthService.obtain_token(credentials);
+  },
+  async updated() {
+    const tokenActual = {
+        refresh: this.$store.getters.isLoggedIn2,
+    };
+    try {
+        const obtainToken = await AuthService.refresh_token(tokenActual);
+        const token = obtainToken.access;
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+        this.$store.dispatch("login", { token });
+    } catch (e) {
+      console.log(e);
+      axios.defaults.headers.common["Authorization"] = null;
+      this.logout();
+    }
+  },
+});
+</script>
 <style scoped>
 .item-menu {
     text-decoration-line: none;
@@ -46,8 +83,6 @@
 .router-link-exact-active {
     background-color: var(--my-3th-color);
 }
-
-.color-sidebar {}
 
 #sidebar {
     overflow: hidden;

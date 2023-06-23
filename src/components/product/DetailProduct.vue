@@ -4,29 +4,29 @@
         <div class="modal-body">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" v-model="item_selected.name" required />
+                <input type="text" class="form-control" id="nombre" name="nombre" :disabled="disabled" v-model="item_selected.name" required />
             </div>
             <div class="form-group">
                 <label for="descripcion">Descripción:</label>
-                <textarea class="form-control" id="descripcion" name="descripcion" v-model="item_selected.description"
+                <textarea class="form-control" id="descripcion" name="descripcion" :disabled="disabled" v-model="item_selected.description"
                     required></textarea>
             </div>
             <div class="form-group">
                 <label for="codigo">Código:</label>
-                <input type="text" class="form-control" id="codigo" name="codigo" v-model="item_selected.code" required />
+                <input type="text" class="form-control" id="codigo" name="codigo" :disabled="disabled" v-model="item_selected.code" required />
             </div>
             <div class="form-group">
                 <label for="costo">Precio de Compra:</label>
-                <input type="number" class="form-control" id="costo" name="costo" v-model="item_selected.cost" required />
+                <input type="number" class="form-control" id="costo" name="costo" :disabled="disabled" v-model="item_selected.cost" required />
             </div>
             <div class="form-group">
                 <label for="precio">Precio de Venta:</label>
-                <input type="number" class="form-control" id="precio" name="precio" step="0.01" v-model="item_selected.price"
+                <input type="number" class="form-control" id="precio" name="precio" :disabled="disabled" step="0.01" v-model="item_selected.price"
                     required />
             </div>
             <div class="form-group">
                 <label for="inventario">Cantidad en Inventario:</label>
-                <input type="number" class="form-control" id="inventario" name="inventario" v-model.number="item_selected.stock"
+                <input type="number" class="form-control" id="inventario" name="inventario" :disabled="disabled" v-model.number="item_selected.stock"
                     required />
             </div>
 
@@ -67,7 +67,7 @@ const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
     props: [
-        "item_selected", "deleteItem", "showToast"
+        "item_selected", "deleteItem", "showToast", "getProducts"
     ],
     components: {
         MyModal
@@ -75,6 +75,7 @@ export default defineComponent({
     name: "Product",
     data() {
         return {
+            disabled : false,
             mode: 0,
             title: "",
             loading: false,
@@ -121,23 +122,32 @@ export default defineComponent({
             });*/
 
         },
-        saveItem() {
+        async saveItem() {
             //alert(`Hello ${this.product}!`);
+            var form_data = new FormData();
+            for ( var key in this.item_selected ) {
+                form_data.append(key, this.item_selected[key]);
+            }
+            const response = await axios
+            .post(url + 'products/products/', form_data);
+            console.log(response);
             this.showToast();
+            this.getProducts();
             this.closeModal();
-            this.resetForm();
-
         },
         changeMode(mode) {
             switch (mode) {
                 case 1:
                     this.title = "Agregar Producto"
+                    this.disabled=false
                     break;
                 case 2:
                     this.title = "Visualizar Producto"
+                    this.disabled=true
                     break;
                 case 3:
                     this.title = "Editar Producto"
+                    this.disabled=false
                     break;
                 default:
                     this.title = "Error"
@@ -146,22 +156,18 @@ export default defineComponent({
             this.mode = mode;
         },
         editMode() {
-
             this.changeMode(3);
         },
         closeModal() {
+            console.log("holax2");
             this.$refs.myModal.closeModal();
         },
         openModal() {
             this.$refs.myModal.openModal();
         },
         resetForm() {
-            this.product.name = "";
-            this.product.description = "";
-            this.product.code = "";
-            this.product.price = 0;
-            this.product.count = 0;
-            this.product.cost = 0;
+            console.log("hola");
+            this.item_selected=this.product;
         },
     },
 });
