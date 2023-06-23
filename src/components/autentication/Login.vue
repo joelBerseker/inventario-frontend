@@ -1,58 +1,66 @@
 <template>
-    <MainContent :title="'Inicio'" :icon="'bi bi-house'">
-        <div class="row">
-            <div class="col-6 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
-                <div class="card box" :id="key">
+    <div class="mx-auto center justify-content-center bg-dark">
+        <div class="container">
+            <div class="row justify-content-md-center" align-h="center">
+                <div class="col-4 mb-3 ">
+                    <div class="card box">
 
-                    <div class="card-body">
-                        <p class="title-text"><i :class="item.icon"></i> {{ item.title }}</p>
-                        <p class="card-text">{{ item.desc }}</p>
+                        <div class="card-body">
+                            <p class="title-text mb-3">Sistema de Inventarios</p>
+                            <div class="mb-3">
+                                <label for="ruc" class="form-label">Usuario</label>
+
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="ruc" required>
+
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="direccion" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                                    <input type="text" class="form-control" id="ruc" required>
+
+                                </div>
+
+                            </div>
+
+                            <div class="text-end">
+                                <button type="button" class="btn btn-dark btn-sm button-space ">
+                                    <i class="bi bi-send"></i> Ingresar
+                                </button>
+
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </MainContent>
+    </div>
 </template>
 <style scoped>
-.box{
-    cursor: pointer;
-}
-.box:hover{
-    background-color: rgb(224, 224, 224);
+.center {
+    height: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+    min-height: 100%;
 }
 </style>
 <script>
-import MainContent from '@/components/my_components/MainContent.vue'
 import { defineComponent } from "vue";
 export default defineComponent({
-    name: "Home",
-    props: [
-        "title", "icon"
-    ],
-    components: {
-        MainContent
-    },
+    name: "Login",
     data() {
         return {
             list: [
-                {
-                    title: "Productos",
-                    desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-box-seam",
-                    url: "/product"
-                },
-                {
-                    title: "Clientes",
-                    desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-people",
-                    url: "/supplier"
-                },
-                {
-                    title: "Proveedores",
-                    desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-truck",
-                    url: "/customer"
-                }
+
             ]
         }
     },
