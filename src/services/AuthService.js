@@ -5,14 +5,15 @@ export default new class {
     //metodo para obtener token de un usuario enviando sus credenciales (correo,contraseña)
     async obtain_token (credentials) {
         const response = await axios
-            .post(url + 'users/token/', credentials);3
+            .post(url + 'users/token/', credentials);
         store.commit("SET_TOKEN", response.data.access);
+        store.commit("SET_REFRESH", response.data.refresh);
         return response.data;
     }
     //metodo para extender el tiempo de vida de un token
     async refresh_token (token) {
         const response = await axios
-            .post(url + 'user/refresh_token/', token);
+            .post(url + 'users/refresh-token/', token);
         return response.data;
     }
     //metodo para registrar un usuario enviando sus credenciales(correo,contraseña)

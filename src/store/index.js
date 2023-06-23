@@ -5,6 +5,7 @@ const getDefaultState = () => {
   return {
     idUser: "01",
     token: "",
+    refresh:"",
     id: "",
   };
 };
@@ -15,6 +16,10 @@ export const store = createStore({
     isLoggedIn(state) {
       return state.token;
     },
+    isLoggedIn2(state) {
+      return state.refresh;
+    },
+
     getId(state) {
       return state.id;
     },
@@ -25,6 +30,9 @@ export const store = createStore({
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token;
+    },
+    SET_REFRESH: (state, refresh) => {
+      state.refresh = refresh;
     },
     SET_ID: (state, id) => {
       state.id = id;
@@ -45,6 +53,9 @@ export const store = createStore({
     },
     login: ({ commit }, { token }) => {
       commit("SET_TOKEN", token);
+    },
+    isLoggedIn2: ({ commit }, { refresh }) => {
+      commit("SET_REFRESH", refresh);
     },
     logout: ({ commit }) => {
       commit("RESET", "");

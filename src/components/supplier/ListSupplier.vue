@@ -20,8 +20,8 @@ export default defineComponent({
       username: "admin",
       password: "jose123as",
     };
+    console.log(credentials);
     AuthService.obtain_token(credentials);
-    //AuthService.prueba();
   },
   methods: {
     async getTasks() {
