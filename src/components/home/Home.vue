@@ -36,6 +36,18 @@ export default defineComponent({
         return {
             list: [
                 {
+                    title: "Entradas",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-box-seam",
+                    url: "/inputs"
+                },
+                {
+                    title: "Salidass",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-box-seam",
+                    url: "/outputs"
+                },
+                {
                     title: "Productos",
                     desc: "With supporting text below as a natural lead-in to additional content.",
                     icon: "bi bi-box-seam",

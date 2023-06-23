@@ -5,6 +5,8 @@ import MainContainer from '../components/home/SideBar.vue'
 import Product from '../components/product/ListProduct.vue'
 import Supplier from '../components/supplier/ListSupplier.vue'
 import Customer from '../components/customer/ListCustomer.vue'
+import Inputs from '../components/manage/ListInput.vue'
+import Outputs from '../components/manage/ListOutput.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,6 +17,16 @@ const router = createRouter({
             component: MainContainer,
             redirect: {name: 'home'}, 
             children: [
+                {
+                    path: '/inputs',
+                    name: 'inputs',
+                    component: Inputs
+                },
+                {
+                    path: '/outputs',
+                    name: 'outputs',
+                    component: Outputs
+                },
                 {
                     path: '/home',
                     name: 'home',
