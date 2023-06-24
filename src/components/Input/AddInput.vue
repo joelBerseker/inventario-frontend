@@ -10,7 +10,9 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar Entrada</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Agregar Entrada
+          </h1>
           <button
             type="button"
             class="btn-close"
@@ -42,14 +44,31 @@
               />
             </div>
             <div class="form-group">
-              <label for="cliente">Cliente:</label>
+              <label for="emails">PROVEEDOR:</label>
               <input
-                type="text"
-                v-model="factura.cliente"
+                type="email"
                 class="form-control"
-                id="cliente"
+                multiple
+                name="emails"
+                id="emails"
+                list="drawfemails"
                 required
+                size="64"
+                :readonly="isEmailSelected"
+                @change="selectEmail"
+                v-model="factura.cliente"
               />
+
+              <datalist id="drawfemails">
+                <option
+                  v-for="email in emailOptions"
+                  :key="email"
+                  :value="email"
+                >
+                  {{ email }}
+                </option>
+              </datalist>
+
             </div>
 
             <!-- Detalle de la factura -->
@@ -105,41 +124,67 @@
             </div>
           </form>
         </div>
-        
       </div>
     </div>
   </div>
 </template>
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import emailsData from '../Input/emails.json';
 
 export default {
-  name: 'App',
+  name: "App",
   setup() {
+    const emailOptions = ref([]);
+    const isEmailSelected = ref(false);
+    
     const factura = ref({
-      numero: '',
-      fecha: '',
-      cliente: '',
-      detalle: [
-        { producto: '', cantidad: '', precio: '' }
-      ]
+      numero: "",
+      fecha: "",
+      cliente: "",
+      detalle: [{ producto: "", cantidad: "", precio: "" }],
+    });
+    onMounted(() => {
+      // Simulando una llamada asíncrona para obtener los datos de los correos electrónicos
+      fetchEmailsData()
+        .then((data) => {
+          emailOptions.value = data;
+        })
+        .catch((error) => {
+          console.error('Error al obtener los correos electrónicos:', error);
+        });
     });
 
+    const fetchEmailsData = () => {
+      // Devuelve una promesa que resuelve los datos de los correos electrónicos
+      return new Promise((resolve, reject) => {
+        // Aquí puedes realizar la llamada a la API o importar los datos del archivo JSON
+        // En este ejemplo, simplemente utilizamos los datos importados del archivo JSON
+        resolve(emailsData);
+      });
+    };
+
     const agregarItem = () => {
-      factura.value.detalle.push({ producto: '', cantidad: '', precio: '' });
+      factura.value.detalle.push({ producto: "", cantidad: "", precio: "" });
     };
 
     const guardarFactura = () => {
       // Aquí puedes realizar la lógica para guardar la factura en la base de datos
       console.log(factura.value);
     };
+    const selectEmail = () => {
+      isEmailSelected.value = true;
+    };
 
     return {
       factura,
       agregarItem,
-      guardarFactura
+      guardarFactura,
+      emailOptions,
+      selectEmail,
+      isEmailSelected,
     };
-  }
+  },
 };
 </script>
 
