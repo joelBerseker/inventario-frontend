@@ -2,7 +2,7 @@
 import MainContent from "@/components/my_components/MainContent.vue";
 import axios from "axios";
 import AuthService from "@/services/AuthService";
-
+import AddInput from "../Input/AddInput.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -32,20 +32,33 @@ export default defineComponent({
       });
     },
   },
+  components: {
+    AddInput,
+  },
 });
 </script>
 <template>
-  <MainContent :title="'Inputs'" :icon="'bi bi-people'">
+  <!-- Modal -->
+  <AddInput />
+  <MainContent :title="'Clientes'" :icon="'bi bi-people'">
+    <button
+      type="button"
+      class="btn btn-secondary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+      data-bs-whatever="@mdo"
+    >
+      Agregar
+    </button>
+
     <table class="table">
       <thead class="table-dark">
         <tr>
           <th>ID</th>
-          <th>Nombres</th>
-          <th>RUC</th>
-          <th>Direccion</th>
-          <th>Telefono</th>
-          <th>Correo Electronico</th>
-          <th>Ultimo ingresado</th>
+          <th>Numero de Factura</th>
+          <th>Fecha</th>
+          <th>PROVEEDOR</th>
+          <th>Ultima Edicion</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -55,8 +68,6 @@ export default defineComponent({
           <td>Jhon Mamani</td>
           <td>74578899911</td>
           <td>En la Esquina</td>
-          <td>9544477711</td>
-          <td>jhon@kun.com</td>
           <td>10-09-05</td>
           <td><button>EDITAR</button></td>
         </tr>
@@ -65,8 +76,6 @@ export default defineComponent({
           <td>Jhon Mamani</td>
           <td>74578899911</td>
           <td>En la Esquina</td>
-          <td>9544477711</td>
-          <td>jhon@kun.com</td>
           <td>10-09-05</td>
           <td><button>EDITAR</button></td>
         </tr>
@@ -75,8 +84,6 @@ export default defineComponent({
           <td>Jhon Mamani</td>
           <td>74578899911</td>
           <td>En la Esquina</td>
-          <td>9544477711</td>
-          <td>jhon@kun.com</td>
           <td>10-09-05</td>
           <td><button>EDITAR</button></td>
         </tr>
@@ -85,8 +92,6 @@ export default defineComponent({
           <td>Jhon Mamani</td>
           <td>74578899911</td>
           <td>En la Esquina</td>
-          <td>9544477711</td>
-          <td>jhon@kun.com</td>
           <td>10-09-05</td>
           <td><button>EDITAR</button></td>
         </tr>

@@ -5,8 +5,8 @@ import MainContainer from '../components/home/SideBar.vue'
 import Product from '../components/product/ListProduct.vue'
 import Supplier from '../components/supplier/ListSupplier.vue'
 import Customer from '../components/customer/ListCustomer.vue'
-import Inputs from '../components/manage/ListInput.vue'
-import Outputs from '../components/manage/ListOutput.vue'
+import Inputs from '../components/Input/ListInput.vue'
+import Outputs from '../components/Output/ListOutput.vue'
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
