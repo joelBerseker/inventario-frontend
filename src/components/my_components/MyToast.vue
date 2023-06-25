@@ -1,5 +1,5 @@
 <template> 
-    <div class="position-fixed top-0 end-0 p-3" style="z-index: 10">
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 5000">
         <div id="myToastEl" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" >
             <div class="toast-header">
                 <strong class="me-auto">{{title}}</strong>

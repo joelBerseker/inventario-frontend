@@ -2,40 +2,49 @@
     <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
 
         <div class="modal-body">
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" :disabled="disabled" v-model="item_selected.name" required />
+            <div class="row">
+                <div class="col-4">
+                    <MyForm class="mb-3" name="Código" :message="validationCode.message">
+                        <input type="text" :class="'form-control ' + validationCode.validText" id="codigo" name="codigo"
+                            :disabled="disabled" v-model="item_selected.code" required />
+                    </MyForm>
+                </div>
+                <div class="col">
+                    <MyForm class="mb-3" name="Nombre">
+                        <input type="text" class="form-control" id="nombre" name="nombre" :disabled="disabled"
+                            v-model="item_selected.name" required />
+                    </MyForm>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="descripcion">Descripción:</label>
-                <textarea class="form-control" id="descripcion" name="descripcion" :disabled="disabled" v-model="item_selected.description"
-                    required></textarea>
+            <MyForm class="mb-3" name="Descripción">
+                <textarea class="form-control" id="descripcion" name="descripcion" :disabled="disabled"
+                    v-model="item_selected.description" required></textarea>
+            </MyForm>
+            <div class="row">
+                <div class="col">
+                    <MyForm class="mb-3" name="Precio de Compra">
+                        <input type="number" class="form-control" id="costo" name="costo" :disabled="disabled"
+                            v-model="item_selected.cost" required />
+                    </MyForm>
+                </div>
+                <div class="col">
+                    <MyForm class="mb-3" name="Precio de Venta">
+                        <input type="number" class="form-control" id="precio" name="precio" :disabled="disabled" step="0.01"
+                            v-model="item_selected.price" required />
+                    </MyForm>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="codigo">Código:</label>
-                <input type="text" class="form-control" id="codigo" name="codigo" :disabled="disabled" v-model="item_selected.code" required />
-            </div>
-            <div class="form-group">
-                <label for="costo">Precio de Compra:</label>
-                <input type="number" class="form-control" id="costo" name="costo" :disabled="disabled" v-model="item_selected.cost" required />
-            </div>
-            <div class="form-group">
-                <label for="precio">Precio de Venta:</label>
-                <input type="number" class="form-control" id="precio" name="precio" :disabled="disabled" step="0.01" v-model="item_selected.price"
-                    required />
-            </div>
-            <div class="form-group">
-                <label for="inventario">Cantidad en Inventario:</label>
-                <input type="number" class="form-control" id="inventario" name="inventario" :disabled="disabled" v-model.number="item_selected.stock"
-                    required />
-            </div>
-
+            <MyForm class="mb-3" name="Cantidad en Inventario">
+                <input type="number" class="form-control" id="inventario" name="inventario" :disabled="disabled"
+                    v-model.number="item_selected.stock" required />
+            </MyForm>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
                 <i class="bi bi-x-circle"></i> Cerrar
             </button>
-            <button type="button" @click="deleteItem" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
+            <button type="button" @click="deleteItem(item_selected)" class="btn btn-danger btn-sm button-margin"
+                v-if="mode == 2">
                 <i class="bi bi-trash"></i>
                 Eliminar
             </button>
@@ -43,11 +52,11 @@
                 <i class="bi bi-pen"></i>
                 Editar
             </button>
-            <button type="button" @click="saveItem" class="btn btn-dark btn-sm button-margin" v-if="mode != 2">
+            <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
                 <i class="bi bi-check-circle"></i>
                 Guardar
             </button>
-
+            {{ validateForm }}
         </div>
     </MyModal>
 </template>
@@ -63,91 +72,133 @@
 import axios from "axios";
 import { defineComponent } from "vue";
 import MyModal from '@/components/my_components/MyModal.vue'
+import MyForm from '@/components/my_components/MyForm.vue'
+import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
     props: [
         "item_selected", "deleteItem", "showToast", "getProducts"
     ],
+    mixins: [ValidationFunctions],
     components: {
-        MyModal
+        MyModal,
+        MyForm,
+        MyForm
     },
     name: "Product",
     data() {
         return {
-            disabled : false,
+            disabled: false,
             mode: 0,
             title: "",
-            loading: false,
-            newTask: "",
-            product: {
-                name: "",
-                description: "",
-                code: "",
-                price: 0,
-                count: 0,
-                cost: 0,
-            },
+            errorMessage: {},
+            validated: false,
         };
     },
-    /*watch: {
-        mode: function (value) {
-            switch (value) {
-                case 1:
-                    this.title = "Agregar Producto"
-                    break;
-                case 2:
-                    this.title = "Visualizar Producto"
-                    break;
-                case 3:
-                    this.title = "Editar Producto"
-                    break;
-
-                default:
-                    this.title = "Error"
-                    break;
-            }
-            console.log(value);
-        }
-    },*/
-    /**created() {
-      this.getTasks();
-    },*/
-    methods: {
-        async getTasks() {
-            /*this.loading = true;
-            axios.get(url + `posts/` + 1).then((res) => {
-              const persons = res.data;
-              console.log(persons);
-            });*/
-
+    computed: {
+        validateForm: function () {
+            var result = this.validationCode.valid;
+            return result
         },
-        async saveItem() {
-            //alert(`Hello ${this.product}!`);
-            var form_data = new FormData();
-            for ( var key in this.item_selected ) {
-                form_data.append(key, this.item_selected[key]);
+        validationCode: function () {
+            var text = this.item_selected.code;
+            var _message = "";
+            var _valid_text = "";
+            var _valid = true;
+            if (this.showValidation(text, this.validated)) {
+                _message = this.onlyText(text, _message);
+                _message = this.textEmpty(text, _message);
+                _message = this.textLength(text, _message, 3, 6);
+
+                _valid_text = (_message != "") ? " is-invalid" : " is-valid";
+                _valid = (_message != "") ? false : true;
             }
-            const response = await axios
-            .post(url + 'products/products/', form_data);
-            console.log(response);
-            this.showToast();
-            this.getProducts();
-            this.closeModal();
+            var response = { message: _message, validText: _valid_text, valid:_valid}
+            return response;
+        }
+
+    },
+    methods: {
+        async saveItem() {
+            this.validated = true;
+            if (this.validateForm) {
+                var form_data = new FormData();
+                for (var key in this.item_selected) {
+                    if (this.mode == 3 && (key == 'id' || key == 'created_at' || key == 'updated_at' || key == 'product_image')) {
+                        console.log("key ->" + key);
+                        continue;
+                    }
+                    form_data.append(key, this.item_selected[key]);
+                }
+                switch (this.mode) {
+                    case 1:
+                        this.addItem(form_data);
+                        break;
+                    case 3:
+                        this.editItem(form_data);
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                this.showToast({
+                    title: "Validar Registro",
+                    message: "Ocurrió un error, revise todos si todos los campos se llenaron correctamente",
+                    type: 2,
+                });
+            }
+        },
+        addItem(data) {
+            var path = url + `products/products/`;
+            axios.post(path, data).then((response) => {
+                this.showToast({
+                    title: "Agregar Registro",
+                    message: "Operación exitosa",
+                    type: 1,
+                });
+                this.getProducts();
+                this.closeModal();
+            }).catch(() => {
+                this.showToast({
+                    title: "Agregar Registro",
+                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                    type: 2,
+                });
+            });
+        },
+        editItem(data) {
+            console.log(data);
+            var path = url + `products/products/` + this.item_selected.id + '/';
+            axios.put(path, data).then((response) => {
+                this.showToast({
+                    title: "Agregar Registro",
+                    message: "Operación exitosa",
+                    type: 1,
+                });
+                this.getProducts();
+                this.closeModal();
+            }).catch(() => {
+                this.showToast({
+                    title: "Agregar Registro",
+                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                    type: 2,
+                });
+            });
         },
         changeMode(mode) {
             switch (mode) {
                 case 1:
                     this.title = "Agregar Producto"
-                    this.disabled=false
+                    this.disabled = false
                     break;
                 case 2:
                     this.title = "Visualizar Producto"
-                    this.disabled=true
+                    this.disabled = true
                     break;
                 case 3:
                     this.title = "Editar Producto"
-                    this.disabled=false
+                    this.disabled = false
                     break;
                 default:
                     this.title = "Error"
@@ -159,15 +210,11 @@ export default defineComponent({
             this.changeMode(3);
         },
         closeModal() {
-            console.log("holax2");
             this.$refs.myModal.closeModal();
         },
         openModal() {
+            this.validated = false;
             this.$refs.myModal.openModal();
-        },
-        resetForm() {
-            console.log("hola");
-            this.item_selected=this.product;
         },
     },
 });

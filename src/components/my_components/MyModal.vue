@@ -1,6 +1,6 @@
 <template> 
-    <div class="modal fade" :id="id">
-        <div class="modal-dialog ">
+    <div class="modal fade " :id="id">
+        <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <p class="title-text">{{ this.title }}</p>
