@@ -3,3 +3,6 @@
 #app {
     height: 100vh;
 }
+.vtl-paging-change-div, .vtl-paging-info{
+    visibility: hidden;
+}

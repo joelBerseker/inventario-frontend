@@ -49,14 +49,14 @@ export default defineComponent({
                         field: "address",
                         width: "10%",
                         sortable: true,
-                       
+
                     },
                     {
                         label: "Correo",
                         field: "mail",
                         width: "10%",
                         sortable: true,
-                       
+
                     },
                     {
                         label: "Actualizado",
@@ -147,9 +147,9 @@ export default defineComponent({
             var path = url + `clients/clients/`;
             axios.get(path).then((response) => {
                 response.data.forEach((element) => {
-                this.table.rows.push(element);
-                this.table.totalRecordCount = this.table.rows.length;
-            });
+                    this.table.rows.push(element);
+                    this.table.totalRecordCount = this.table.rows.length;
+                });
             }).catch(() => {
                 this.showToast({
                     title: "Obtener Registros",
@@ -168,13 +168,43 @@ export default defineComponent({
     <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
         :getCustomers="getCustomers" />
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
-    <MainContent :title="'Proveedores'" :icon="'bi bi-truck'">
-        <button v-on:click="addMode" type="button" class="btn btn-dark btn-sm mb-3">
-            <i class="bi bi-plus-circle"></i> Agregar
-        </button>
+    <MainContent :title="'Clientes'" :icon="'bi bi-truck'">
+        <div class="row justify-content-md-end">
+            <div class="col-6">
+
+                <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+                    <i class="bi bi-plus-circle"></i> Agregar Cliente
+                </button>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    
+
+                    <div class="dropdown">
+                        <button class="btn btn-secondary margin-dropdown" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown">
+                        <i class="bi bi-sliders"></i>
+                        Filtro
+                    </button>
+                        <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
+                            <p>
+                                Some example text that's free-flowing within the dropdown menu.
+                            </p>
+                            <p class="mb-0">
+                                And this is more example text.
+                            </p>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control form-control-sm" id="name" name="name" :disabled="disabled"
+                        required />
+                    <button class="btn btn-sm btn-secondary" type="button"><i class="bi bi-search"></i></button>
+
+                </div>
+            </div>
+        </div>
+
         <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
             :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-            @is-finished="table.isLoading = false" :messages="table.messages" >
+            @is-finished="table.isLoading = false" :messages="table.messages">
             <template v-slot:quick="data">
                 <div>
                     <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
@@ -186,4 +216,9 @@ export default defineComponent({
     </MainContent>
 </template>
 
-<style></style>
+<style scoped>
+.margin-dropdown{
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+</style>

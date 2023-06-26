@@ -96,6 +96,14 @@ body {
     font-size: 0.9rem !important;
     border-radius: 0.5rem !important;
 }
+.input-group>:not(:first-child):not(.dropdown-toggle):not(.dropdown-menu){
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+.input-group>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu){
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
 
 .modal-backdrop {
     display: none !important;
