@@ -23,14 +23,21 @@
             <div class="row">
                 <div class="col">
                     <MyForm class="mb-3" name="Precio de Compra">
-                        <input type="number" class="form-control" id="costo" name="costo" :disabled="disabled"
-                            v-model="item_selected.cost" required />
+                        <div class="input-group">
+                            <span class="input-group-text">S/.</span>
+                            <input type="number" class="form-control" id="costo" name="costo" :disabled="disabled"
+                                v-model="item_selected.cost" required />
+                        </div>
                     </MyForm>
                 </div>
                 <div class="col">
                     <MyForm class="mb-3" name="Precio de Venta">
-                        <input type="number" class="form-control" id="precio" name="precio" :disabled="disabled" step="0.01"
-                            v-model="item_selected.price" required />
+                        <div class="input-group">
+                            <span class="input-group-text">S/.</span>
+                            <input @input="changeCurrency()" type="text" class="form-control" id="precio" name="precio" :disabled="disabled"
+                                v-model="item_selected.price" />
+                        </div>
+
                     </MyForm>
                 </div>
             </div>
@@ -96,6 +103,7 @@ export default defineComponent({
             validated: false,
         };
     },
+   
     computed: {
         validateForm: function () {
             var result = this.validationCode.valid;
@@ -106,7 +114,7 @@ export default defineComponent({
             var _message = "";
             var _valid_text = "";
             var _valid = true;
-            if (this.showValidation(text, this.validated)) {
+            if (this.showValidation(text, this.validated, this.mode)) {
                 _message = this.onlyText(text, _message);
                 _message = this.textEmpty(text, _message);
                 _message = this.textLength(text, _message, 3, 6);
@@ -114,12 +122,36 @@ export default defineComponent({
                 _valid_text = (_message != "") ? " is-invalid" : " is-valid";
                 _valid = (_message != "") ? false : true;
             }
-            var response = { message: _message, validText: _valid_text, valid:_valid}
+            var response = { message: _message, validText: _valid_text, valid: _valid }
             return response;
-        }
+        },
+
 
     },
     methods: {
+        changeCurrency() {
+            this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, '')
+            console.log("-------------")
+       
+            console.log("value -> " + this.item_selected.price)
+            var text = this.item_selected.price.toString().replace(/[^0-9]/, '')
+            console.log("lengh -> " + text.length)
+            console.log("text -> " + text)
+            if (text.length >= 3) {
+                var firsPart = text.slice(0, -2);
+                var lastPart = text.slice(text.length - 2)
+                var complete = firsPart + "." + lastPart
+                console.log((complete))
+                this.item_selected.price = Number(complete).toFixed(2)
+            }
+
+            /*if (this.item_selected.price.toString().length == 3) {
+                this.item_selected.price = (this.item_selected.price / 100).toFixed(2)
+            } else if (this.item_selected.price.toString().length >= 4) {
+                this.item_selected.price = (this.item_selected.price * 1000 / 100).toFixed(2)
+            }*/
+
+        },
         async saveItem() {
             this.validated = true;
             if (this.validateForm) {

@@ -1,155 +1,185 @@
 <script>
-import MainContent from '@/components/my_components/MainContent.vue'
-import AddCustomer from "./DetailCustomer.vue";
-
-import TableLite from "vue3-table-lite";
+import MainContent from "@/components/my_components/MainContent.vue";
+import DetailCustomer from "./DetailCustomer.vue";
+import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
+import MyToast from "@/components/my_components/MyToast.vue";
 import axios from "axios";
-import { defineComponent, reactive, computed } from "vue";
-// Fake Data for 'asc' sortable
-const sampleData1 = (offst, limit) => {
-    offst = offst + 1;
-    let data = [];
-    for (let i = offst; i <= limit; i++) {
-        data.push({
-            id: i,
-            name: "TEST" + i,
-            email: "test" + i + "@example.com",
-        });
-    }
-    return data;
-};
-// Fake Data for 'desc' sortable
-const sampleData2 = (offst, limit) => {
-    let data = [];
-    for (let i = limit; i > offst; i--) {
-        data.push({
-            id: i,
-            name: "TEST" + i,
-            email: "test" + i + "@example.com",
-        });
-    }
-    return data;
-};
+import TableLite from "vue3-table-lite";
+import UtilityFunctions from "@/mixin/UtilityFunctions.js";
+
+const url = import.meta.env.VITE_APP_RUTA_API;
+import { defineComponent } from "vue";
 export default defineComponent({
-    name: "App",
-    components: { TableLite },
-    setup() {
-        // Table config
+    name: "Customer",
 
-        const url = import.meta.env.VITE_APP_RUTA_API;
-        const table = reactive({
-            isLoading: false,
-            columns: [
-                {
-                    label: "ID",
-                    field: "id",
-                    width: "3%",
-                    sortable: true,
-                    isKey: true,
-                },
-                {
-                    label: "Name",
-                    field: "name",
-                    width: "10%",
-                    sortable: true,
-                },
-                {
-                    label: "Phone",
-                    field: "phone",
-                    width: "10%",
-                    sortable: true,
-                },
-                {
-                    label: "Email",
-                    field: "address",
-                    width: "15%",
-                    sortable: true,
-                },
-                {
-                    label: " ",
-                    field: "quick",
-                    sortable: false,
-                },
-            ],
-            rows: [],
-            totalRecordCount: computed(() => {
-                return table.rows.length;
-            }),
-            sortable: {
-                order: "name",
-                sort: "asc",
-            },
-
-        });
-        /**
-         * Search Event
-         */
-        const verDato = (event) => {
-            console.log("entre");
-        };
-        const getTasks = () => {
-            var path = url + `providers/providers/`;
-            console.log(path);
-            axios.get(path).then(function (response) {
-                // handle success
-                DataTable(response.data);
-            });
-        };
-        const DataTable = (response) => {
-            let data = [];
-            response.forEach(element => {
-                table.rows.push(element);
-            });
-        };
-        getTasks();
-        const doSearch = (offset, limit, order, sort) => {
-            table.isLoading = true;
-            setTimeout(() => {
-                table.isReSearch = offset == undefined ? true : false;
-                if (offset >= 10 || limit >= 20) {
-                    limit = 20;
-                }
-                if (sort == "asc") {
-                    table.rows = sampleData1(offset, limit);
-                } else {
-                    table.rows = sampleData2(offset, limit);
-                }
-                table.totalRecordCount = 50;
-                table.sortable.order = order;
-                table.sortable.sort = sort;
-            }, 600);
-        };
-
-        // First get data
-        //doSearch(0, 10, 'id', 'asc');
+    data() {
         return {
-            table,
-            doSearch,
-            verDato,
+            item_selected: {},
+            Products: [],
+            table: {
+                isLoading: false,
+                columns: [
+                    {
+                        label: "Nombre",
+                        field: "name",
+                        width: "5%",
+                        sortable: true,
+                    },
+                    {
+                        label: "Tipo",
+                        field: "documentType",
+                        width: "10%",
+                        sortable: true,
+                    },
+                    {
+                        label: "Document",
+                        field: "document",
+                        width: "20%",
+                        sortable: true,
+                    },
+
+                    {
+                        label: "Telefono",
+                        field: "phone",
+                        width: "10%",
+                        sortable: true,
+                    },
+                    {
+                        label: "Dirección",
+                        field: "address",
+                        width: "10%",
+                        sortable: true,
+                       
+                    },
+                    {
+                        label: "Correo",
+                        field: "mail",
+                        width: "10%",
+                        sortable: true,
+                       
+                    },
+                    {
+                        label: "Actualizado",
+                        field: "updated_at",
+                        width: "10%",
+                        display: (row) => {
+                            return this.timeAgo(row.updated_at);
+                        },
+                    },
+                    {
+                        label: " ",
+                        field: "quick",
+                        width: "10%",
+                        sortable: false,
+                    },
+                ],
+                rows: [],
+                totalRecordCount: 0,
+                sortable: {
+                    order: "name",
+                    sort: "asc",
+                },
+                messages: {
+                    pagingInfo: "Mostrando {0} - {1} de {2}",
+                    pageSizeChangeLabel: "Filas: ",
+                    gotoPageLabel: " Pagina: ",
+                    noDataAvailable: "No se encontraron elementos",
+                },
+            },
         };
     },
+    mixins: [UtilityFunctions],
     components: {
-        AddCustomer,
+        DetailCustomer,
+        ConfirmDialogue,
+        MyToast,
+        MainContent,
         TableLite,
-        MainContent
+    },
+    async created() {
+        await this.getCustomers();
+    },
+    methods: {
+        addMode() {
+            this.item_selected = {};
+            this.$refs.modal.changeMode(1);
+            this.$refs.modal.openModal();
+        },
+        viewMode(row) {
+            this.item_selected = row;
+            this.$refs.modal.changeMode(2);
+            this.$refs.modal.openModal();
+        },
+        showToast(opts = {}) {
+            this.$refs.toast.show(opts);
+        },
+        async deleteItem(row) {
+            this.$refs.confirmDialogue
+                .show({
+                    title: "Eliminar Producto",
+                    message: "¿Estas seguro que quieres eliminar el producto?",
+                    okButton: "Eliminar",
+                })
+                .then((result) => {
+                    if (result) {
+                        var path = url + "clients/clients/" + row.id + "/";
+                        axios.delete(path).then((response) => {
+                            console.log(response);
+                            this.showToast({
+                                title: "Eliminar Registro",
+                                message: "Operación exitosa",
+                                type: 1,
+                            });
+                            this.getCustomers();
+                            this.$refs.modal.closeModal();
+                        }).catch(() => {
+                            this.showToast({
+                                title: "Eliminar Registro",
+                                message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                                type: 2,
+                            });
+                        });
+                    }
+                });
+        },
+        async getCustomers() {
+            this.table.rows = [];
+            var path = url + `clients/clients/`;
+            axios.get(path).then((response) => {
+                response.data.forEach((element) => {
+                this.table.rows.push(element);
+                this.table.totalRecordCount = this.table.rows.length;
+            });
+            }).catch(() => {
+                this.showToast({
+                    title: "Obtener Registros",
+                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                    type: 2,
+                });
+            });
+        },
     },
 });
 </script>
 <template>
     <!-- Modal -->
-    <AddCustomer />
 
+    <MyToast ref="toast"></MyToast>
+    <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
+        :getCustomers="getCustomers" />
+    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
     <MainContent :title="'Proveedores'" :icon="'bi bi-truck'">
-
-        <button type="button" class="btn btn-dark mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Agregar
+        <button v-on:click="addMode" type="button" class="btn btn-dark btn-sm mb-3">
+            <i class="bi bi-plus-circle"></i> Agregar
         </button>
         <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
             :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-            @is-finished="table.isLoading = false">
+            @is-finished="table.isLoading = false" :messages="table.messages" >
             <template v-slot:quick="data">
                 <div>
-                    <button type="button" data-id="01" class="is-rows-el quick-btn" @click="verDato">Button</button>'
+                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+                        <i class="bi bi-journal"></i> Ver
+                    </button>
                 </div>
             </template>
         </table-lite>

@@ -5,8 +5,8 @@ export default {
           if (!required) activated = false;
           return !(((text == null || text === 0) && !activated) || mode == 1);
         },*/
-        showValidation(_text, _validated) {
-            if (_text == null && _validated == false) {
+        showValidation(_text, _validated, _mode) {
+            if ((_text == null && _validated == false) || _mode==2) {
                 return false;
             } else {
                 return true
