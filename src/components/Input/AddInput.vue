@@ -46,41 +46,54 @@
             <div class="form-group">
               <label for="emails">PROVEEDOR:</label>
               <input
-                type="email"
+                type="text"
                 class="form-control"
-                multiple
                 name="emails"
                 id="emails"
-                list="drawfemails"
-                required
-                size="64"
-                :readonly="isEmailSelected"
-                @change="selectEmail"
+                autocomplete="off"
                 v-model="factura.cliente"
               />
-
-              <datalist id="drawfemails">
-                <option
-                  v-for="email in emailOptions"
-                  :key="email"
-                  :value="email"
-                >
+              <select
+                class="form-select"
+                :readonly="isEmailSelected"
+                v-model="factura.cliente"
+                required
+              >
+                <option v-for="email in items" v-bind:key="email">
                   {{ email }}
                 </option>
-              </datalist>
-
+              </select>
             </div>
 
             <!-- Detalle de la factura -->
             <h2>Detalle de la Factura</h2>
+
+            <div class="row">
+              <div class="col-4">
+                <label>Producto:</label>
+              </div>
+              
+              <div class="col-2">
+                <label>Precio Compra:</label>
+              </div>
+              <div class="col-2">
+                <label>Precio Venta:</label>
+              </div>
+              <div class="col-2">
+                <label>Cantidad:</label>
+              </div>
+              <div class="col-2">
+                <label>Subtotal:</label>
+              </div>
+            </div>
+
             <div
               v-for="(item, index) in factura.detalle"
               :key="index"
               class="detalle-item"
             >
               <div class="row">
-                <div class="form-group col-sm-6 col-md-6">
-                  <label :for="'producto_' + index">Producto:</label>
+                <div class="form-group col-sm-4 col-md-4">
                   <input
                     type="text"
                     v-model="item.producto"
@@ -89,8 +102,26 @@
                     required
                   />
                 </div>
-                <div class="form-group col-sm-3 col-md-3">
-                  <label :for="'cantidad_' + index">Cantidad:</label>
+
+                <div class="form-group col-sm-2 col-md-2">
+                  <input
+                    type="number"
+                    v-model="item.precio"
+                    class="form-control"
+                    :id="'precio_' + index"
+                    required
+                  />
+                </div>
+                <div class="form-group col-sm-2 col-md-2">
+                  <input
+                    type="number"
+                    v-model="item.compra"
+                    class="form-control"
+                    :id="'precio_' + index"
+                    required
+                  />
+                </div>
+                <div class="form-group col-sm-2 col-md-2">
                   <input
                     type="number"
                     v-model="item.cantidad"
@@ -99,13 +130,12 @@
                     required
                   />
                 </div>
-                <div class="form-group col-sm-3 col-md-3">
-                  <label :for="'precio_' + index">Precio:</label>
+                <div class="form-group col-sm-2 col-md-2">
                   <input
                     type="number"
-                    v-model="item.precio"
+                    v-model="item.sub"
                     class="form-control"
-                    :id="'precio_' + index"
+                    :id="'cantidad_' + index"
                     required
                   />
                 </div>
@@ -129,61 +159,73 @@
   </div>
 </template>
 <script>
-import { ref, onMounted } from 'vue';
-import emailsData from '../Input/emails.json';
+import { ref, onMounted } from "vue";
+import emailsData from "../Input/emails.json";
 
 export default {
   name: "App",
-  setup() {
-    const emailOptions = ref([]);
-    const isEmailSelected = ref(false);
-    
-    const factura = ref({
-      numero: "",
-      fecha: "",
-      cliente: "",
-      detalle: [{ producto: "", cantidad: "", precio: "" }],
-    });
-    onMounted(() => {
-      // Simulando una llamada asíncrona para obtener los datos de los correos electrónicos
-      fetchEmailsData()
-        .then((data) => {
-          emailOptions.value = data;
-        })
-        .catch((error) => {
-          console.error('Error al obtener los correos electrónicos:', error);
-        });
-    });
+  data() {
+    return {
+      factura: {
+        numero: "",
+        fecha: "",
+        cliente: "",
+        detalle: [{ producto: "", cantidad: "", precio: "", compra: "",sub:"" }],
+      },
+      emailOptions: [],
+      isEmailSelected: false,
+    };
+  },
+  computed: {
+    items() {
+      return emailsData.filter((item) => {
+        return item.toLowerCase().includes(this.factura.cliente.toLowerCase());
+      });
+    },
+  },
 
-    const fetchEmailsData = () => {
+  async created() {
+    this.fetchEmailsData()
+      .then((data) => {
+        this.emailOptions = data;
+      })
+      .catch((error) => {
+        console.error("Error al obtener los correos electrónicos:", error);
+      });
+  },
+  methods: {
+    fetchEmailsData() {
       // Devuelve una promesa que resuelve los datos de los correos electrónicos
       return new Promise((resolve, reject) => {
         // Aquí puedes realizar la llamada a la API o importar los datos del archivo JSON
         // En este ejemplo, simplemente utilizamos los datos importados del archivo JSON
+        console.log(emailsData);
         resolve(emailsData);
       });
-    };
+    },
 
-    const agregarItem = () => {
-      factura.value.detalle.push({ producto: "", cantidad: "", precio: "" });
-    };
+    agregarItem() {
+      this.factura.detalle.push({
+        producto: "",
+        cantidad: "",
+        precio: "",
+        compra: "",
+        sub:""
+      });
+    },
 
-    const guardarFactura = () => {
+    guardarFactura() {
       // Aquí puedes realizar la lógica para guardar la factura en la base de datos
-      console.log(factura.value);
-    };
-    const selectEmail = () => {
-      isEmailSelected.value = true;
-    };
-
-    return {
-      factura,
-      agregarItem,
-      guardarFactura,
-      emailOptions,
-      selectEmail,
-      isEmailSelected,
-    };
+      console.log(this.factura);
+    },
+    selectEmail() {
+      this.isEmailSelected = true;
+    },
+  },
+  filteredList() {
+    return fruits.filter((fruit) =>
+      fruit.toLowerCase().includes(input.value.toLowerCase())
+    );
   },
 };
 </script>
