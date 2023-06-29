@@ -72,7 +72,7 @@ export default defineComponent({
                     {
                         label: " ",
                         field: "quick",
-                        width: "10%",
+                        width: "7%",
                         sortable: false,
                     },
                 ],
@@ -170,8 +170,8 @@ export default defineComponent({
         :getProducts="getProducts" />
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
     <MainContent :title="'Productos'" :icon="'bi bi-box-seam'">
-        <button v-on:click="addMode" type="button" class="btn btn-dark btn-sm mb-3">
-            <i class="bi bi-plus-circle"></i> Agregar
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+            <i class="bi bi-plus-circle"></i> Agregar Producto
         </button>
         <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
             :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"

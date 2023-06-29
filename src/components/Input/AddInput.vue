@@ -55,6 +55,7 @@
               />
               <select
                 class="form-select"
+                data-live-search="true"
                 :readonly="isEmailSelected"
                 v-model="factura.cliente"
                 required

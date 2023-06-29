@@ -6,3 +6,7 @@
 .vtl-paging-change-div, .vtl-paging-info{
     visibility: hidden;
 }
+.btn-primary{
+    background-color: #114ba1 !important;
+    border-color: #114ba1 !important;
+}

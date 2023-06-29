@@ -177,14 +177,15 @@ export default defineComponent({
                 </button>
             </div>
             <div class="col">
-                <div class="input-group">
-                    
+                <div class="input-group input-group-sm">
+
 
                     <div class="dropdown">
-                        <button class="btn btn-secondary margin-dropdown" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown">
-                        <i class="bi bi-sliders"></i>
-                        Filtro
-                    </button>
+                        <button class="btn btn-sm btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
+                            data-bs-toggle="dropdown">
+                            <i class="bi bi-sliders"></i>
+                            Filtro
+                        </button>
                         <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
                             <p>
                                 Some example text that's free-flowing within the dropdown menu.
@@ -217,7 +218,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.margin-dropdown{
+.margin-dropdown {
     border-top-right-radius: 0px !important;
     border-bottom-right-radius: 0px !important;
 }

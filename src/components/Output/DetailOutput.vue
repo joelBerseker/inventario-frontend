@@ -1,18 +1,19 @@
 <template>
-    <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
+    <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl">
 
         <div class="modal-body">
             <div class="row">
                 <div class="col-4">
                     <MyForm class="mb-3" name="Código" :message="validationCode.message">
-                        <input type="text" :class="'form-control form-control-sm ' + validationCode.validText" id="codigo" name="codigo"
-                            :disabled="disabled" v-model="item_selected.code" required />
+
+                        <input type="text" :class="'form-control form-control-sm ' + validationCode.validText" id="codigo"
+                            name="codigo" :disabled="disabled" v-model="item_selected.code" required />
                     </MyForm>
                 </div>
                 <div class="col">
                     <MyForm class="mb-3" name="Nombre">
-                        <input type="text" class="form-control form-control-sm" id="nombre" name="nombre" :disabled="disabled"
-                            v-model="item_selected.name" required />
+                        <input type="text" class="form-control form-control-sm" id="nombre" name="nombre"
+                            :disabled="disabled" v-model="item_selected.name" required />
                     </MyForm>
                 </div>
             </div>
@@ -25,8 +26,8 @@
                     <MyForm class="mb-3" name="Precio de Compra">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text">S/.</span>
-                            <input type="number" class="form-control form-control-sm" id="costo" name="costo" :disabled="disabled"
-                                v-model="item_selected.cost" required />
+                            <input type="number" class="form-control form-control-sm" id="costo" name="costo"
+                                :disabled="disabled" v-model="item_selected.cost" required />
                         </div>
                     </MyForm>
                 </div>
@@ -34,17 +35,80 @@
                     <MyForm class="mb-3" name="Precio de Venta">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text">S/.</span>
-                            <input @input="changeCurrency()" type="text" class="form-control form-control-sm" id="precio" name="precio" :disabled="disabled"
-                                v-model="item_selected.price" />
+                            <input @input="changeCurrency()" type="text" class="form-control form-control-sm" id="precio"
+                                name="precio" :disabled="disabled" v-model="item_selected.price" />
                         </div>
 
                     </MyForm>
                 </div>
             </div>
             <MyForm class="mb-3" name="Cantidad en Inventario">
-                <input type="number" class="form-control form-control-sm" id="inventario" name="inventario" :disabled="disabled"
-                    v-model.number="item_selected.stock" required />
+                <input type="number" class="form-control form-control-sm" id="inventario" name="inventario"
+                    :disabled="disabled" v-model.number="item_selected.stock" required />
             </MyForm>
+
+
+            <MyForm class="mb-3" name="Select Search">
+                <SelectSearch v-model="prueba_select_search"  :list="providers" ></SelectSearch>
+            </MyForm>
+            <p>---- {{ this.prueba_select_search }}</p>
+            <hr />
+            <div class="row mb-3">
+                <div class="col">
+                    <p class="title-text">Productos</p>
+                </div>
+                <div class="col text-end"><button type="button" class="form-select" @click="agregarItem">
+                        Agregar Producto
+                    </button> </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <label>Nombre:</label>
+                </div>
+
+                <div class="col-2">
+                    <label>Precio Compra:</label>
+                </div>
+                <div class="col-2">
+                    <label>Precio Venta:</label>
+                </div>
+                <div class="col-2">
+                    <label>Cantidad:</label>
+                </div>
+                <div class="col-2">
+                    <label>Subtotal:</label>
+                </div>
+            </div>
+
+            <div v-for="(item, index) in factura.detalle" :key="index" class="detalle-item">
+                <div class="row">
+                    <div class="form-group col-sm-4 col-md-4">
+                        <input type="text" v-model="item.producto" class="form-control form-control-sm"
+                            :id="'producto_' + index" required />
+                    </div>
+
+                    <div class="form-group col-sm-2 col-md-2">
+                        <input type="number" v-model="item.precio" class="form-control form-control-sm"
+                            :id="'precio_' + index" required />
+                    </div>
+                    <div class="form-group col-sm-2 col-md-2">
+                        <input type="number" v-model="item.compra" class="form-control form-control-sm"
+                            :id="'precio_' + index" required />
+                    </div>
+                    <div class="form-group col-sm-2 col-md-2">
+                        <input type="number" v-model="item.cantidad" class="form-control form-control-sm"
+                            :id="'cantidad_' + index" required />
+                    </div>
+                    <div class="form-group col-sm-2 col-md-2">
+                        <input type="number" v-model="item.sub" class="form-control form-control-sm"
+                            :id="'cantidad_' + index" required />
+                    </div>
+                </div>
+            </div>
+
+
+
+
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
@@ -81,6 +145,7 @@ import { defineComponent } from "vue";
 import MyModal from '@/components/my_components/MyModal.vue'
 import MyForm from '@/components/my_components/MyForm.vue'
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
+import SelectSearch from "../my_components/SelectSearch.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
@@ -91,19 +156,38 @@ export default defineComponent({
     components: {
         MyModal,
         MyForm,
-        MyForm
+        MyForm,
+        SelectSearch
     },
     name: "Product",
     data() {
         return {
+            providers: [
+                "p1",
+                "p2",
+                "p3",
+                "p4",
+                "p5",
+            ],
+            prueba_select_search: "no se seleccion",
+
             disabled: false,
             mode: 0,
             title: "",
             errorMessage: {},
             validated: false,
+
+            factura: {
+                numero: "",
+                fecha: "",
+                cliente: "",
+                detalle: [{ producto: "", cantidad: "", precio: "", compra: "", sub: "" }],
+            },
+            emailOptions: [],
+            isEmailSelected: false,
         };
     },
-   
+
     computed: {
         validateForm: function () {
             var result = this.validationCode.valid;
@@ -125,14 +209,52 @@ export default defineComponent({
             var response = { message: _message, validText: _valid_text, valid: _valid }
             return response;
         },
+        items() {
+            return emailsData.filter((item) => {
+                return item.toLowerCase().includes(this.factura.cliente.toLowerCase());
+            });
+        },
 
 
     },
     methods: {
+        fetchEmailsData() {
+            // Devuelve una promesa que resuelve los datos de los correos electrónicos
+            return new Promise((resolve, reject) => {
+                // Aquí puedes realizar la llamada a la API o importar los datos del archivo JSON
+                // En este ejemplo, simplemente utilizamos los datos importados del archivo JSON
+                console.log(emailsData);
+                resolve(emailsData);
+            });
+        },
+        guardarFactura() {
+            // Aquí puedes realizar la lógica para guardar la factura en la base de datos
+            console.log(this.factura);
+        },
+        selectEmail() {
+            this.isEmailSelected = true;
+        },
+        filteredList() {
+            return fruits.filter((fruit) =>
+                fruit.toLowerCase().includes(input.value.toLowerCase())
+            );
+        },
+        agregarItem() {
+            this.factura.detalle.push({
+                producto: "",
+                cantidad: "",
+                precio: "",
+                compra: "",
+                sub: ""
+            });
+        },
+
+
+
         changeCurrency() {
             this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, '')
             console.log("-------------")
-       
+
             console.log("value -> " + this.item_selected.price)
             var text = this.item_selected.price.toString().replace(/[^0-9]/, '')
             console.log("lengh -> " + text.length)

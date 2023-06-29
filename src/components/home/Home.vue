@@ -38,13 +38,13 @@ export default defineComponent({
                 {
                     title: "Entradas",
                     desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-box-seam",
+                    icon: "bi bi-arrow-bar-right",
                     url: "/inputs"
                 },
                 {
-                    title: "Salidass",
+                    title: "Salidas",
                     desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-box-seam",
+                    icon: "bi bi-arrow-bar-left",
                     url: "/outputs"
                 },
                 {
@@ -57,13 +57,13 @@ export default defineComponent({
                     title: "Clientes",
                     desc: "With supporting text below as a natural lead-in to additional content.",
                     icon: "bi bi-people",
-                    url: "/supplier"
+                    url: "/customer"
                 },
                 {
                     title: "Proveedores",
                     desc: "With supporting text below as a natural lead-in to additional content.",
                     icon: "bi bi-truck",
-                    url: "/customer"
+                    url: "/supplier"
                 }
             ]
         }

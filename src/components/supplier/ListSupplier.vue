@@ -170,8 +170,8 @@ export default defineComponent({
         :getSuppliers="getSuppliers" />
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
     <MainContent :title="'Proveedores'" :icon="'bi bi-truck'">
-        <button v-on:click="addMode" type="button" class="btn btn-dark btn-sm mb-3">
-            <i class="bi bi-plus-circle"></i> Agregar
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+            <i class="bi bi-plus-circle"></i> Agregar Proveedor
         </button>
         <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
             :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"

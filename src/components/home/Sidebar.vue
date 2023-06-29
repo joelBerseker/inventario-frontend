@@ -4,24 +4,9 @@
             <div class="mt-4 mb-4 px-3 main-text">
                 <p class="title-text text-center">Sistema de Inventarios</p>
             </div>
-            <div class="py-1 px-2 d-flex w-100">
-                <RouterLink to="/home" class="w-100 item-menu m-0">
-                    <div class="py-2 px-3"><i class="bi bi-house"></i> Inicio</div>
-                </RouterLink>
-            </div>
-            <div class="py-1 px-2 d-flex w-100">
-                <RouterLink to="/product" class="w-100 item-menu m-0">
-                    <div class="py-2 px-3"><i class="bi bi-box-seam"></i> Productos</div>
-                </RouterLink>
-            </div>
-            <div class="py-1 px-2 d-flex w-100">
-                <RouterLink to="/supplier" class="w-100 item-menu m-0">
-                    <div class="py-2 px-3"><i class="bi bi-people"></i> Proveedores</div>
-                </RouterLink>
-            </div>
-            <div class="py-1 px-2 d-flex w-100">
-                <RouterLink to="/customer" class="w-100 item-menu m-0">
-                    <div class="py-2 px-3"><i class="bi bi-truck"></i> Clientes</div>
+            <div v-for="item in list" :key="item.title" class="pt-1 px-2 d-flex w-100">
+                <RouterLink :to="item.url" class="w-100 item-menu m-0">
+                    <div class="py-2 px-3"><i :class="item.icon"></i> {{item.title}}</div>
                 </RouterLink>
             </div>
         </div>
@@ -36,35 +21,67 @@ import AuthService from "@/services/AuthService";
 
 import { defineComponent } from "vue";
 export default defineComponent({
-  name: "Sidebar",
-  data() {
-    return {
-      newTask: "",
-    };
-  },
-  created() {
-    
-    const credentials = {
-      username: "admin",
-      password: "jose123as",
-    };
-    //AuthService.obtain_token(credentials);
-  },
-  async updated() {
-    const tokenActual = {
-        refresh: this.$store.getters.isLoggedIn2,
-    };
-    try {
-        const obtainToken = await AuthService.refresh_token(tokenActual);
-        const token = obtainToken.access;
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        this.$store.dispatch("login", { token });
-    } catch (e) {
-      console.log(e);
-      axios.defaults.headers.common["Authorization"] = null;
-      this.logout();
-    }
-  },
+    name: "Sidebar",
+    data() {
+        return {
+            newTask: "",
+            list: [
+                {
+                    title: "Entradas",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-arrow-bar-right",
+                    url: "/inputs"
+                },
+                {
+                    title: "Salidas",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-arrow-bar-left",
+                    url: "/outputs"
+                },
+                {
+                    title: "Productos",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-box-seam",
+                    url: "/product"
+                },
+                {
+                    title: "Clientes",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-people",
+                    url: "/customer"
+                },
+                {
+                    title: "Proveedores",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-truck",
+                    url: "/supplier"
+                }
+            ]
+        };
+    },
+    created() {
+
+        const credentials = {
+            username: "admin",
+            password: "jose123as",
+        };
+        //AuthService.obtain_token(credentials);
+    },
+    async updated() {
+        const tokenActual = {
+            refresh: this.$store.getters.isLoggedIn2,
+        };
+        try {
+            const obtainToken = await AuthService.refresh_token(tokenActual);
+            const token = obtainToken.access;
+            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            this.$store.dispatch("login", { token });
+        } catch (e) {
+            console.log(e);
+            axios.defaults.headers.common["Authorization"] = null;
+            this.logout();
+        }
+    },
 });
 </script>
 <style scoped>

@@ -16,7 +16,7 @@
 <script>
 import { defineComponent } from "vue";
 export default defineComponent({
-    name: 'MyModal',
+    name: 'MyForm',
     props: [
         "name", "message"
     ],

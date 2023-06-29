@@ -150,6 +150,10 @@ tr:last-child td:last-child {
     background-color: var(--my-2th-color) !important;
 }
 
+.vtl-table thead th{
+    border-bottom: 1px solid #dee2e6 !important
+}
+
 .vtl-paging-change-div,
 .vtl-paging-info {
     align-self: center;

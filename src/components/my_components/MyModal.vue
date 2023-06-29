@@ -1,6 +1,6 @@
 <template> 
     <div class="modal fade " :id="id">
-        <div class="modal-dialog modal-dialog-scrollable">
+        <div :class="'modal-dialog modal-dialog-scrollable '+ size ">
             <div class="modal-content">
                 <div class="modal-header">
                     <p class="title-text">{{ this.title }}</p>
@@ -18,7 +18,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
     name: 'MyModal',
     props: [
-        "id", "title"
+        "id", "title", "size"
     ],
     methods: {
         closeModal() {

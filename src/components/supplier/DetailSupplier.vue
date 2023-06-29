@@ -3,30 +3,30 @@
 
         <div class="modal-body">
             <MyForm class="mb-3" name="Nombre">
-                <input type="text" class="form-control" id="name" name="name" :disabled="disabled"
+                <input type="text" class="form-control form-control-sm" id="name" name="name" :disabled="disabled"
                     v-model="item_selected.name" required />
             </MyForm>
             <div class="row">
                 <div class="col-4">
                     <MyForm class="mb-3" name="Tipo de documento">
-                        <input type="text" :class="'form-control '" id="documentType" name="documentType"
+                        <input type="text" :class="'form-control form-control-sm '" id="documentType" name="documentType"
                             :disabled="disabled" v-model="item_selected.documentType" required />
                     </MyForm>
                 </div>
                 <div class="col">
                     <MyForm class="mb-3" name="Documento">
-                        <input type="text" class="form-control" id="document" name="document" :disabled="disabled"
+                        <input type="text" class="form-control form-control-sm" id="document" name="document" :disabled="disabled"
                             v-model="item_selected.document" required />
                     </MyForm>
                 </div>
             </div>
 
             <MyForm class="mb-3" name="Telefono">
-                <input type="text" class="form-control" id="phone" name="phone" :disabled="disabled"
+                <input type="text" class="form-control form-control-sm" id="phone" name="phone" :disabled="disabled"
                     v-model="item_selected.phone" required />
             </MyForm>
             <MyForm class="mb-3" name="Dirección">
-                <input type="text" class="form-control" id="address" name="address" :disabled="disabled"
+                <input type="text" class="form-control form-control-sm" id="address" name="address" :disabled="disabled"
                     v-model="item_selected.address" required />
             </MyForm>
         </div>
