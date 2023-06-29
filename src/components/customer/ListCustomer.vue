@@ -146,7 +146,7 @@ export default defineComponent({
             this.table.rows = [];
             var path = url + `clients/clients/`;
             axios.get(path).then((response) => {
-                response.data.forEach((element) => {
+                response.data.results.forEach((element) => {
                     this.table.rows.push(element);
                     this.table.totalRecordCount = this.table.rows.length;
                 });

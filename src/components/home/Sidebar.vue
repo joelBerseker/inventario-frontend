@@ -6,7 +6,7 @@
             </div>
             <div v-for="item in list" :key="item.title" class="pt-1 px-2 d-flex w-100">
                 <RouterLink :to="item.url" class="w-100 item-menu m-0">
-                    <div class="py-2 px-3"><i :class="item.icon"></i> {{item.title}}</div>
+                    <div class="py-2 px-3"><i :class="item.icon"></i> {{ item.title }}</div>
                 </RouterLink>
             </div>
         </div>
@@ -67,15 +67,32 @@ export default defineComponent({
         };
         //AuthService.obtain_token(credentials);
     },
+    methods: {
+        logout() {
+            this.$store.dispatch("RESET");
+            this.$router.push("/login");
+        },
+
+    },
+    created() {
+
+        const credentials = {
+            username: "admin",
+            password: "jose123as",
+        };
+        //AuthService.obtain_token(credentials);
+    },
     async updated() {
+        console.log("entro");
         const tokenActual = {
             refresh: this.$store.getters.isLoggedIn2,
         };
         try {
             const obtainToken = await AuthService.refresh_token(tokenActual);
+            console.log("paso");
+            console.log(obtainToken);
             const token = obtainToken.access;
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            this.$store.dispatch("login", { token });
         } catch (e) {
             console.log(e);
             axios.defaults.headers.common["Authorization"] = null;
