@@ -5,7 +5,6 @@ import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
-import AuthService from "@/services/AuthService";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -91,13 +90,7 @@ export default defineComponent({
         TableLite,
     },
     async created() {
-        //this.getTasks();
-        const credentials = {
-            username: "admin",
-            password: "jose123as",
-        };
-        console.log(credentials);
-        AuthService.obtain_token(credentials);
+        
         await this.getSuppliers();
     },
     methods: {
@@ -147,7 +140,7 @@ export default defineComponent({
             this.table.rows = [];
             var path = url + `providers/providers/`;
             axios.get(path).then((response) => {
-                response.data.forEach((element) => {
+                response.data.results.forEach((element) => {
                 this.table.rows.push(element);
                 this.table.totalRecordCount = this.table.rows.length;
             });

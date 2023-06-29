@@ -3,9 +3,11 @@ import axios from 'axios';
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default new class {
     //metodo para obtener token de un usuario enviando sus credenciales (correo,contraseña)
-    async obtain_token (credentials) {
+    async obtain_token(credentials) {
+        console.log(url + 'user/token/');
         const response = await axios
-            .post(url + 'users/token/', credentials);
+            .post(url + 'user/token/', credentials);
+        console.log(response.data);
         store.commit("SET_TOKEN", response.data.access);
         store.commit("SET_REFRESH", response.data.refresh);
         return response.data;
@@ -13,7 +15,9 @@ export default new class {
     //metodo para extender el tiempo de vida de un token
     async refresh_token (token) {
         const response = await axios
-            .post(url + 'users/refresh-token/', token);
+            .post(url + 'user/refresh-token/', token);
+        store.commit("SET_TOKEN", response.data.access);
+        store.commit("SET_REFRESH", response.data.refresh);
         return response.data;
     }
     //metodo para registrar un usuario enviando sus credenciales(correo,contraseña)
