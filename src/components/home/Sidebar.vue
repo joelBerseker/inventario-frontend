@@ -58,14 +58,11 @@ export default defineComponent({
     //AuthService.obtain_token(credentials);
   },
   async updated() {
-    console.log("entro");
     const tokenActual = {
         refresh: this.$store.getters.isLoggedIn2,
     };
     try {
         const obtainToken = await AuthService.refresh_token(tokenActual);
-        console.log("paso");
-        console.log(obtainToken);
         const token = obtainToken.access;
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } catch (e) {

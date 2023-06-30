@@ -124,7 +124,6 @@ export default defineComponent({
         email: this.user.username,
         password: this.user.password,
       };
-      console.log(credentials);
       try {
         //Verifica si un usuario existe en la BD , y si existe guarda su token
         // de manera persistenta para que quede en el sistema durante su
@@ -141,8 +140,6 @@ export default defineComponent({
       }
       
     },
-
-
   },
 });
 </script>
