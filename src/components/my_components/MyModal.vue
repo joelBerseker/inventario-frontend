@@ -1,5 +1,5 @@
 <template> 
-    <div class="modal fade " :id="id">
+    <div class="modal fade " :id="id" data-bs-backdrop="static" data-bs-keyboard="false">
         <div :class="'modal-dialog modal-dialog-scrollable '+ size ">
             <div class="modal-content">
                 <div class="modal-header">

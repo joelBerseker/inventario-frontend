@@ -10,3 +10,15 @@
     background-color: #114ba1 !important;
     border-color: #114ba1 !important;
 }
+.form-control-sm{
+    font-size: 0.9rem !important;
+}
+
+.dropdown-menu {
+    font-size: 0.9rem !important;
+}
+
+.modal.modal-static .modal-dialog {
+    -webkit-transform: none !important;
+    transform: none !important;
+  }

@@ -4,63 +4,41 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-4">
-                    <MyForm class="mb-3" name="Código" :message="validationCode.message">
+                    <MyForm class="mb-3" name="Numero de factura" :message="validationCode.message">
 
-                        <input type="text" :class="'form-control form-control-sm ' + validationCode.validText" id="codigo"
-                            name="codigo" :disabled="disabled" v-model="item_selected.code" required />
+                        <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero"
+                            required />
                     </MyForm>
                 </div>
                 <div class="col">
-                    <MyForm class="mb-3" name="Nombre">
-                        <input type="text" class="form-control form-control-sm" id="nombre" name="nombre"
-                            :disabled="disabled" v-model="item_selected.name" required />
+
+                    <MyForm class="mb-3" name="Proveedor">
+                        <SelectSearch v-model="prueba_select_search" :list="providers"></SelectSearch>
+                    </MyForm>
+                </div>
+                <div class="col">
+
+                    <MyForm class="mb-3" name="Fecha">
+                        <input type="date" v-model="factura.fecha" class="form-control form-control-sm" id="fecha"
+                            required />
                     </MyForm>
                 </div>
             </div>
-            <MyForm class="mb-3" name="Descripción">
-                <textarea class="form-control form-control-sm" id="descripcion" name="descripcion" :disabled="disabled"
-                    v-model="item_selected.description" required></textarea>
-            </MyForm>
-            <div class="row">
-                <div class="col">
-                    <MyForm class="mb-3" name="Precio de Compra">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">S/.</span>
-                            <input type="number" class="form-control form-control-sm" id="costo" name="costo"
-                                :disabled="disabled" v-model="item_selected.cost" required />
-                        </div>
-                    </MyForm>
-                </div>
-                <div class="col">
-                    <MyForm class="mb-3" name="Precio de Venta">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text">S/.</span>
-                            <input @input="changeCurrency()" type="text" class="form-control form-control-sm" id="precio"
-                                name="precio" :disabled="disabled" v-model="item_selected.price" />
-                        </div>
-
-                    </MyForm>
-                </div>
-            </div>
-            <MyForm class="mb-3" name="Cantidad en Inventario">
-                <input type="number" class="form-control form-control-sm" id="inventario" name="inventario"
-                    :disabled="disabled" v-model.number="item_selected.stock" required />
-            </MyForm>
 
 
-            <MyForm class="mb-3" name="Select Search">
-                <SelectSearch v-model="prueba_select_search"  :list="providers" ></SelectSearch>
-            </MyForm>
-            <p>---- {{ this.prueba_select_search }}</p>
-            <hr />
-            <div class="row mb-3">
+
+
+            <div class="row mb-0">
                 <div class="col">
                     <p class="title-text">Productos</p>
                 </div>
-                <div class="col text-end"><button type="button" class="form-select" @click="agregarItem">
+                <div class="col text-end">
+                    <button type="button" class="btn btn-sm btn-primary" @click="agregarItem">
                         Agregar Producto
-                    </button> </div>
+                    </button>
+                </div>
             </div>
+            <hr class="my-3" />
             <div class="row">
                 <div class="col-4">
                     <label>Nombre:</label>
@@ -343,15 +321,15 @@ export default defineComponent({
         changeMode(mode) {
             switch (mode) {
                 case 1:
-                    this.title = "Agregar Producto"
+                    this.title = "Agregar Salida"
                     this.disabled = false
                     break;
                 case 2:
-                    this.title = "Visualizar Producto"
+                    this.title = "Visualizar Salida"
                     this.disabled = true
                     break;
                 case 3:
-                    this.title = "Editar Producto"
+                    this.title = "Editar Salida"
                     this.disabled = false
                     break;
                 default:

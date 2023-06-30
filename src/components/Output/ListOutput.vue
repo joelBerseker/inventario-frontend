@@ -171,7 +171,7 @@ export default defineComponent({
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
     <MainContent :title="'Salidas'" :icon="'bi bi-arrow-bar-left'">
         <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-            <i class="bi bi-plus-circle"></i> Agregar Outputo
+            <i class="bi bi-plus-circle"></i> Agregar Salida
         </button>
         <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
             :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
