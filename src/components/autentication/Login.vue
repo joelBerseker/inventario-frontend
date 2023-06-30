@@ -75,8 +75,8 @@ export default defineComponent({
   data() {
     return {
       user: {
-        username: "joel@admin.com",
-        password: "pedrin123as",
+        username: "",
+        password: "",
       },
     };
   },
