@@ -1,8 +1,10 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
     --my-1th-color: #ffffff;
-    --my-2th-color: #212529;
-    --my-3th-color: #0e1113;
+    --my-2th-color: #0D1321;
+    --my-3th-color: #1D2D44;
+    --my-4th-color: #3E5C76;
+    --my-5th-color: #748CAB;
 
     --vt-c-white: #ffffff;
     --vt-c-white-soft: #f8f8f8;
@@ -72,6 +74,24 @@
 
 .color-3 {
     color: var(--my-3th-color) !important;
+}
+
+.bg-color-1 {
+    background-color: var(--my-1th-color) !important;
+}
+
+.bg-color-2 {
+    background-color: var(--my-2th-color) !important;
+}
+
+.bg-color-3 {
+    background-color: var(--my-3th-color) !important;
+}
+.bg-color-4 {
+    background-color: var(--my-4th-color) !important;
+}
+.bg-color-5 {
+    background-color: var(--my-5th-color) !important;
 }
 
 body {
@@ -167,3 +187,4 @@ td, th{
 .toast{
     background-color: white !important;
 }
+
