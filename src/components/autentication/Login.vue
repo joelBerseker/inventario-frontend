@@ -125,13 +125,10 @@ export default defineComponent({
         password: this.user.password,
       };
       try {
-        //Verifica si un usuario existe en la BD , y si existe guarda su token
-        // de manera persistenta para que quede en el sistema durante su
-        //this.getTasks();
+
         const obtainToken = await AuthService.obtain_token(credentials);
         const token = obtainToken.access;
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-        // o un usuario sin rol que este ultimo no puede ni ingresar al sistema
         this.$router.push("/home");
       } catch (e) {
         this.showAlert("al validar token");

@@ -49,7 +49,6 @@ export default defineComponent({
     name: "Sidebar",
     data() {
         return {
-            newTask: "",
             list: [
                 {
                     title: "Inicio",
