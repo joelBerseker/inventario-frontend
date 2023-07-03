@@ -3,9 +3,8 @@
         <div class="d-flex flex-column align-items-center">
             <div class="mt-4 mb-2 px-3 main-text ">
                 <div class="d-flex flex-column align-items-center">
-                    <Icon size="70px"></Icon>
+                    <Icon size="60px"></Icon>
                 </div>
-
                 <p class="title-text text-center">Gestion de inventarios</p>
             </div>
             <div class="d-flex w-100 color-1 px-3 my-0 py-0">
@@ -14,15 +13,11 @@
             <div v-for="item in list" :key="item.title" class="my-1 px-2 d-flex w-100">
                 <RouterLink :to="item.url" class="w-100 item-menu m-0">
                     <div class="py-2 px-3"><i :class="item.icon"></i> {{ item.title }}</div>
-
                 </RouterLink>
-
             </div>
             <div class="d-flex w-100 color-1 px-3">
                 <hr class="w-100 my-2" />
             </div>
-
-
             <div class="my-1 px-2 d-flex w-100 ">
                 <RouterLink to="/inputs" class="w-100 item-menu m-0 ">
                     <div class="py-2 px-3"><i class="bi bi-info-circle "></i> Mas información</div>
@@ -30,38 +25,39 @@
             </div>
             <div class="my-1 px-2 d-flex w-100">
 
-                <button
-                  type="submit"
-                  @click="logoutButton"
-                  class=" w-100 item-menu m-0 btn btn-dark btn-sm button-space"
-                >
-                <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Cerrar Sesión</div>
-                </button>
+                <div type="submit" @click="logoutButton" class=" w-100 item-menu m-0 ">
+                    <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Cerrar Sesión</div>
+                </div>
             </div>
         </div>
     </div>
     <div id="content">
         <MainContent :title="title.name" :icon="title.icon">
-            <RouterView :changeTitle="changeTitle"/>
+            <RouterView :changeTitle="changeTitle" :showToast="showToast" :confirmDialogue="confirmDialogue" />
         </MainContent>
     </div>
+    <MyToast ref="toast"></MyToast>
+    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
 </template>
 <script>
 import axios from "axios";
 import AuthService from "@/services/AuthService";
 import Icon from '@/components/my_components/Icon.vue'
 import MainContent from "@/components/my_components/MainContent.vue";
+import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
+import MyToast from "@/components/my_components/MyToast.vue";
 
 import { defineComponent } from "vue";
 export default defineComponent({
     name: "Sidebar",
     components: {
-        Icon, MainContent
+        Icon, MainContent, ConfirmDialogue,
+        MyToast,
     },
     data() {
         return {
             newTask: "",
-            title:{
+            title: {
                 name: "",
                 icon: "",
             },
@@ -106,18 +102,34 @@ export default defineComponent({
         };
     },
     methods: {
-        changeTitle(title){
-            this.title.name=title.name;
+        changeTitle(title) {
+            this.title.name = title.name;
             this.title.icon = title.icon
+        },
+        showToast(opts = {}) {
+            this.$refs.toast.show(opts);
+        },
+        async confirmDialogue(opts = {}) {
+            var resp = false;
+            await this.$refs.confirmDialogue
+                .show({
+                    title: opts.title,
+                    message: opts.message,
+                    okButton: opts.okButton,
+                }).then((result) => {
+                    resp = result
+                }
+                )
+            return resp;
         },
         logout() {
             this.$store.dispatch("logout");
             this.$router.push("/login");
         },
         logoutButton(evt) {
-        evt.preventDefault();
-        this.logout();
-    },
+            evt.preventDefault();
+            this.logout();
+        },
 
     },
     created() {
@@ -126,12 +138,12 @@ export default defineComponent({
             username: "admin",
             password: "jose123as",
         };
-        if(!this.$store.getters.isActive){
+        if (!this.$store.getters.isActive) {
             this.logout();
         }
     },
     async updated() {
-        if(!this.$store.getters.isActive){
+        if (!this.$store.getters.isActive) {
             this.logout();
             return;
         }
@@ -175,7 +187,7 @@ export default defineComponent({
     border-radius: 0.5rem !important;
     z-index: -3;
     transform: translateX(-15px);
-    transition: 0.3s;
+    transition: 0.4s;
 }
 
 .main-text {
@@ -210,5 +222,6 @@ export default defineComponent({
 
     min-height: 100vh;
     background-size: cover;
+    overflow-x: hidden;
 }
 </style>

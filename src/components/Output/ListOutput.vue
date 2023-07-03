@@ -1,8 +1,5 @@
 <script>
-import MainContent from "@/components/my_components/MainContent.vue";
 import DetailOutput from "./DetailOutput.vue";
-import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
-import MyToast from "@/components/my_components/MyToast.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -94,13 +91,10 @@ export default defineComponent({
     mixins: [UtilityFunctions],
     components: {
         DetailOutput,
-        ConfirmDialogue,
-        MyToast,
-        MainContent,
         TableLite,
     },
     props: [
-        "changeTitle",
+        "changeTitle", "showToast", "confirmDialogue"
     ],
     methods: {
         addMode() {
@@ -113,16 +107,12 @@ export default defineComponent({
             this.$refs.modal.changeMode(2);
             this.$refs.modal.openModal();
         },
-        showToast(opts = {}) {
-            this.$refs.toast.show(opts);
-        },
         async deleteItem(row) {
-            this.$refs.confirmDialogue
-                .show({
-                    title: "Eliminar Salida",
-                    message: "¿Estas seguro que quieres eliminar el producto?",
-                    okButton: "Eliminar",
-                })
+            this.confirmDialogue({
+                title: "Eliminar Salida",
+                message: "¿Estas seguro que quieres eliminar el producto?",
+                okButton: "Eliminar",
+            })
                 .then((result) => {
                     if (result) {
                         var path = url + "products/products/" + row.id + "/";
@@ -150,9 +140,9 @@ export default defineComponent({
             var path = url + `products/products/`;
             axios.get(path).then((response) => {
                 response.data.forEach((element) => {
-                this.table.rows.push(element);
-                this.table.totalRecordCount = this.table.rows.length;
-            });
+                    this.table.rows.push(element);
+                    this.table.totalRecordCount = this.table.rows.length;
+                });
             }).catch(() => {
                 this.showToast({
                     title: "Obtener Registros",
@@ -163,32 +153,29 @@ export default defineComponent({
         },
     },
     async created() {
-        this.changeTitle({name:"Salidas", icon:"bi bi-box-arrow-left"})
+        this.changeTitle({ name: "Salidas", icon: "bi bi-box-arrow-left" })
         await this.getOutputs();
     },
 });
 </script>
 <template>
-    <MyToast ref="toast"></MyToast>
     <DetailOutput ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
         :getOutputs="getOutputs" />
-    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
-    <MainContent :title="'Salidas'" :icon="'bi bi-arrow-bar-left'">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-            <i class="bi bi-plus-circle"></i> Agregar Salida
-        </button>
-        <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-            @is-finished="table.isLoading = false" :messages="table.messages">
-            <template v-slot:quick="data">
-                <div>
-                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                        <i class="bi bi-journal"></i> Ver
-                    </button>
-                </div>
-            </template>
-        </table-lite>
-    </MainContent>
+
+    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <i class="bi bi-plus-circle"></i> Agregar Salida
+    </button>
+    <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
+        :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="table.isLoading = false"
+        :messages="table.messages">
+        <template v-slot:quick="data">
+            <div>
+                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+                    <i class="bi bi-journal"></i> Ver
+                </button>
+            </div>
+        </template>
+    </table-lite>
 </template>
 <script></script>
 

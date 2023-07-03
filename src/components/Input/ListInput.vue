@@ -48,7 +48,6 @@ export default defineComponent({
 <template>
     <!-- Modal -->
     <AddInput />
-    <MainContent :title="'Entradas'" :icon="'bi bi-arrow-bar-right'">
         <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"
             data-bs-whatever="@mdo">
             <i class="bi bi-plus-circle"></i> Agregar Entrada
@@ -100,7 +99,6 @@ export default defineComponent({
                 </tr>
             </tbody>
         </table>
-    </MainContent>
 </template>
 
 <style></style>

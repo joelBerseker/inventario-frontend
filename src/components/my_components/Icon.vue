@@ -41,7 +41,7 @@ export default defineComponent({
     left: 8%;
 
 
-    transform: rotate(-25deg);
+    transform: rotate(-40deg);
 }
 
 .fig-1 {
@@ -94,8 +94,8 @@ export default defineComponent({
 }
 
 .fig-4 {
-    width: 35%;
-    height: 35%;
+    width: 30%;
+    height: 30%;
     position: absolute;
     bottom: 15%;
     left: 35%;
@@ -106,7 +106,7 @@ export default defineComponent({
     width: 30%;
     height: 30%;
     position: absolute;
-    bottom: 52%;
+    bottom: 47%;
     left: 35%;
     border-radius: 13%;
 }

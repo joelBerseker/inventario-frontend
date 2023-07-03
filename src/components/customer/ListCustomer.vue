@@ -1,8 +1,5 @@
 <script>
-import MainContent from "@/components/my_components/MainContent.vue";
 import DetailCustomer from "./DetailCustomer.vue";
-import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
-import MyToast from "@/components/my_components/MyToast.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -91,13 +88,14 @@ export default defineComponent({
     mixins: [UtilityFunctions],
     components: {
         DetailCustomer,
-        ConfirmDialogue,
-        MyToast,
-        MainContent,
         TableLite,
     },
+    props: [
+        "changeTitle", "showToast", "confirmDialogue"
+    ],
     async created() {
-        if(this.$store.getters.isActive){
+        this.changeTitle({ name: "Clientes", icon: "bi bi-people" })
+        if (this.$store.getters.isActive) {
             await this.getCustomers();
         }
     },
@@ -112,16 +110,12 @@ export default defineComponent({
             this.$refs.modal.changeMode(2);
             this.$refs.modal.openModal();
         },
-        showToast(opts = {}) {
-            this.$refs.toast.show(opts);
-        },
         async deleteItem(row) {
-            this.$refs.confirmDialogue
-                .show({
-                    title: "Eliminar Producto",
-                    message: "¿Estas seguro que quieres eliminar el producto?",
-                    okButton: "Eliminar",
-                })
+            this.confirmDialogue({
+                title: "Eliminar Producto",
+                message: "¿Estas seguro que quieres eliminar el producto?",
+                okButton: "Eliminar",
+            })
                 .then((result) => {
                     if (result) {
                         var path = url + "clients/clients/" + row.id + "/";
@@ -164,59 +158,53 @@ export default defineComponent({
 });
 </script>
 <template>
-    <!-- Modal -->
-
-    <MyToast ref="toast"></MyToast>
     <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
         :getCustomers="getCustomers" />
-    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
-    <MainContent :title="'Clientes'" :icon="'bi bi-truck'">
-        <div class="row justify-content-md-end">
-            <div class="col-6">
+    <div class="row justify-content-md-end">
+        <div class="col-6">
 
-                <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-                    <i class="bi bi-plus-circle"></i> Agregar Cliente
-                </button>
-            </div>
-            <div class="col">
-                <div class="input-group input-group-sm">
+            <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+                <i class="bi bi-plus-circle"></i> Agregar Cliente
+            </button>
+        </div>
+        <div class="col">
+            <div class="input-group input-group-sm">
 
 
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
-                            data-bs-toggle="dropdown">
-                            <i class="bi bi-sliders"></i>
-                            Filtro
-                        </button>
-                        <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
-                            <p>
-                                Some example text that's free-flowing within the dropdown menu.
-                            </p>
-                            <p class="mb-0">
-                                And this is more example text.
-                            </p>
-                        </div>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
+                        data-bs-toggle="dropdown">
+                        <i class="bi bi-sliders"></i>
+                        Filtro
+                    </button>
+                    <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
+                        <p>
+                            Some example text that's free-flowing within the dropdown menu.
+                        </p>
+                        <p class="mb-0">
+                            And this is more example text.
+                        </p>
                     </div>
-                    <input type="text" class="form-control form-control-sm" id="name" name="name" :disabled="disabled"
-                        required />
-                    <button class="btn btn-sm btn-secondary" type="button"><i class="bi bi-search"></i></button>
-
                 </div>
+                <input type="text" class="form-control form-control-sm" id="name" name="name"
+                    required />
+                <button class="btn btn-sm btn-secondary" type="button"><i class="bi bi-search"></i></button>
+
             </div>
         </div>
+    </div>
 
-        <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-            @is-finished="table.isLoading = false" :messages="table.messages">
-            <template v-slot:quick="data">
-                <div>
-                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                        <i class="bi bi-journal"></i> Ver
-                    </button>
-                </div>
-            </template>
-        </table-lite>
-    </MainContent>
+    <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
+        :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="table.isLoading = false"
+        :messages="table.messages">
+        <template v-slot:quick="data">
+            <div>
+                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+                    <i class="bi bi-journal"></i> Ver
+                </button>
+            </div>
+        </template>
+    </table-lite>
 </template>
 
 <style scoped>
