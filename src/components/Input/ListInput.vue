@@ -12,7 +12,11 @@ export default defineComponent({
             tasks: [],
         };
     },
+    props: [
+        "changeTitle",
+    ],
     created() {
+        this.changeTitle({name:"Entradas", icon:"bi bi-box-arrow-left"})
         //this.getTasks();
         const credentials = {
             username: "admin",

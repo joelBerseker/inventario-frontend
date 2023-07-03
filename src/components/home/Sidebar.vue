@@ -1,8 +1,12 @@
 <template>
     <div id="sidebar">
         <div class="d-flex flex-column align-items-center">
-            <div class="mt-4 mb-2 px-3 main-text">
-                <p class="title-text text-center">Sistema de Inventarios</p>
+            <div class="mt-4 mb-2 px-3 main-text ">
+                <div class="d-flex flex-column align-items-center">
+                    <Icon size="70px"></Icon>
+                </div>
+
+                <p class="title-text text-center">Gestion de inventarios</p>
             </div>
             <div class="d-flex w-100 color-1 px-3 my-0 py-0">
                 <hr class="w-100 my-2" />
@@ -32,19 +36,30 @@
         </div>
     </div>
     <div id="content">
-        <RouterView />
+        <MainContent :title="title.name" :icon="title.icon">
+            <RouterView :changeTitle="changeTitle"/>
+        </MainContent>
     </div>
 </template>
 <script>
 import axios from "axios";
 import AuthService from "@/services/AuthService";
+import Icon from '@/components/my_components/Icon.vue'
+import MainContent from "@/components/my_components/MainContent.vue";
 
 import { defineComponent } from "vue";
 export default defineComponent({
     name: "Sidebar",
+    components: {
+        Icon, MainContent
+    },
     data() {
         return {
             newTask: "",
+            title:{
+                name: "",
+                icon: "",
+            },
             list: [
                 {
                     title: "Inicio",
@@ -86,6 +101,10 @@ export default defineComponent({
         };
     },
     methods: {
+        changeTitle(title){
+            this.title.name=title.name;
+            this.title.icon = title.icon
+        },
         logout() {
             this.$store.dispatch("logout");
             this.$router.push("/login");

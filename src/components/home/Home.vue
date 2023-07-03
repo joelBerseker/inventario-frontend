@@ -10,14 +10,18 @@
                     </div>
                 </div>
             </div>
+
         </div>
+        
     </MainContent>
 </template>
 <style scoped>
-.box{
+
+.box {
     cursor: pointer;
 }
-.box:hover{
+
+.box:hover {
     background-color: rgb(224, 224, 224);
 }
 </style>

@@ -99,6 +99,9 @@ export default defineComponent({
         MainContent,
         TableLite,
     },
+    props: [
+        "changeTitle",
+    ],
     methods: {
         addMode() {
             this.item_selected = {};
@@ -160,6 +163,7 @@ export default defineComponent({
         },
     },
     async created() {
+        this.changeTitle({name:"Salidas", icon:"bi bi-box-arrow-left"})
         await this.getOutputs();
     },
 });
