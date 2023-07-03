@@ -60,6 +60,19 @@ export default {
             var message_ = "Por favor suba un archivo";
             return { valid: !valid_, message: message_ };
         },
+        changeCurrency(data){
+            var text = data.toString().replace(/[^0-9]/, '')
+            console.log("lengh -> " + text.length)
+            console.log("text -> " + text)
+            if (text.length >= 3) {
+                var firsPart = text.slice(0, -2);
+                var lastPart = text.slice(text.length - 2)
+                var complete = firsPart + "." + lastPart
+                console.log((complete))
+                return Number(complete).toFixed(2)
+            }
+            return data
+        },
     },
     data() {
         return {
