@@ -1,8 +1,5 @@
 <script>
-import MainContent from "@/components/my_components/MainContent.vue";
 import DetailProduct from "./DetailProduct.vue";
-import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
-import MyToast from "@/components/my_components/MyToast.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -91,12 +88,12 @@ export default defineComponent({
             },
         };
     },
+    props: [
+        "changeTitle", "showToast", "confirmDialogue"
+    ],
     mixins: [UtilityFunctions],
     components: {
         DetailProduct,
-        ConfirmDialogue,
-        MyToast,
-        MainContent,
         TableLite,
     },
     methods: {
@@ -110,12 +107,8 @@ export default defineComponent({
             this.$refs.modal.changeMode(2);
             this.$refs.modal.openModal();
         },
-        showToast(opts = {}) {
-            this.$refs.toast.show(opts);
-        },
         async deleteItem(row) {
-            this.$refs.confirmDialogue
-                .show({
+            this.confirmDialogue({
                     title: "Eliminar Producto",
                     message: "¿Estas seguro que quieres eliminar el producto?",
                     okButton: "Eliminar",
@@ -147,9 +140,9 @@ export default defineComponent({
             var path = url + `products/products/`;
             axios.get(path).then((response) => {
                 response.data.results.forEach((element) => {
-                this.table.rows.push(element);
-                this.table.totalRecordCount = this.table.rows.length;
-            });
+                    this.table.rows.push(element);
+                    this.table.totalRecordCount = this.table.rows.length;
+                });
             }).catch(() => {
                 this.showToast({
                     title: "Obtener Registros",
@@ -160,33 +153,31 @@ export default defineComponent({
         },
     },
     async created() {
-        if(this.$store.getters.isActive){
-        await this.getProducts();}
-        
+        this.changeTitle({ name: "Productos", icon: "bi bi-box-seam" })
+        if (this.$store.getters.isActive) {
+            await this.getProducts();
+        }
+
     },
 });
 </script>
 <template>
-    <MyToast ref="toast"></MyToast>
     <DetailProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
         :getProducts="getProducts" />
-    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
-    <MainContent :title="'Productos'" :icon="'bi bi-box-seam'">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-            <i class="bi bi-plus-circle"></i> Agregar Producto
-        </button>
-        <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-            @is-finished="table.isLoading = false" :messages="table.messages">
-            <template v-slot:quick="data">
-                <div>
-                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                        <i class="bi bi-journal"></i> Ver
-                    </button>
-                </div>
-            </template>
-        </table-lite>
-    </MainContent>
+    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <i class="bi bi-plus-circle"></i> Agregar Producto
+    </button>
+    <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
+        :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="table.isLoading = false"
+        :messages="table.messages">
+        <template v-slot:quick="data">
+            <div>
+                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+                    <i class="bi bi-journal"></i> Ver
+                </button>
+            </div>
+        </template>
+    </table-lite>
 </template>
 <script></script>
 

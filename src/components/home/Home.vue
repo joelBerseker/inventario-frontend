@@ -1,8 +1,8 @@
 <template>
-    <MainContent :title="'Inicio'" :icon="'bi bi-house'">
+
         <div class="row">
             <div class="col-6 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
-                <div class="card box" :id="key">
+                <div class="card box" :id="item.title">
 
                     <div class="card-body">
                         <p class="title-text"><i :class="item.icon"></i> {{ item.title }}</p>
@@ -10,28 +10,28 @@
                     </div>
                 </div>
             </div>
+
         </div>
-    </MainContent>
+        
+
 </template>
 <style scoped>
-.box{
+
+.box {
     cursor: pointer;
 }
-.box:hover{
+
+.box:hover {
     background-color: rgb(224, 224, 224);
 }
 </style>
 <script>
-import MainContent from '@/components/my_components/MainContent.vue'
 import { defineComponent } from "vue";
 export default defineComponent({
     name: "Home",
     props: [
-        "title", "icon"
+        "title", "icon", "changeTitle"
     ],
-    components: {
-        MainContent
-    },
     data() {
         return {
             list: [
@@ -72,6 +72,9 @@ export default defineComponent({
         goTo(url) {
             this.$router.push(url);
         }
+    },
+    created(){
+        this.changeTitle({name:"Inicio", icon:"bi bi-house"})
     }
 });
 </script>
