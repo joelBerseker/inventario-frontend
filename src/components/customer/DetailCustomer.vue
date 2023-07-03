@@ -51,7 +51,6 @@
                 <i class="bi bi-check-circle"></i>
                 Guardar
             </button>
-            {{ validateForm }}
         </div>
     </MyModal>
 </template>
@@ -193,7 +192,7 @@ export default defineComponent({
             var path = url + `clients/clients/` + this.item_selected.id + '/';
             axios.put(path, data).then((response) => {
                 this.showToast({
-                    title: "Agregar Registro",
+                    title: "Se edito el registro",
                     message: "Operación exitosa",
                     type: 1,
                 });
@@ -201,7 +200,7 @@ export default defineComponent({
                 this.closeModal();
             }).catch(() => {
                 this.showToast({
-                    title: "Agregar Registro",
+                    title: "Error al editar",
                     message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
                     type: 2,
                 });
@@ -210,15 +209,15 @@ export default defineComponent({
         changeMode(mode) {
             switch (mode) {
                 case 1:
-                    this.title = "Agregar Proveedor"
+                    this.title = "Agregar Cliente"
                     this.disabled = false
                     break;
                 case 2:
-                    this.title = "Visualizar Proveedor"
+                    this.title = "Visualizar Cliente"
                     this.disabled = true
                     break;
                 case 3:
-                    this.title = "Editar Proveedor"
+                    this.title = "Editar Cliente"
                     this.disabled = false
                     break;
                 default:
