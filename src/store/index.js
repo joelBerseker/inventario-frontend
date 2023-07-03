@@ -26,6 +26,9 @@ export const store = createStore({
     getIdUser(state) {
       return state.idUser;
     },
+    isActive(state){
+      return state.token != "";
+    }
   },
   mutations: {
     SET_TOKEN: (state, token) => {

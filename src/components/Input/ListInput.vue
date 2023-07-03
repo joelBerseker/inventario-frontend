@@ -22,6 +22,9 @@ export default defineComponent({
             username: "admin",
             password: "jose123as",
         };
+        if(this.$store.getters.isActive){
+            
+        }
         console.log(credentials);
         //AuthService.obtain_token(credentials);
     },

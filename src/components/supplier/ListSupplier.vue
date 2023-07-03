@@ -90,8 +90,9 @@ export default defineComponent({
         TableLite,
     },
     async created() {
-        
-        await this.getSuppliers();
+        if(this.$store.getters.isActive){
+            await this.getSuppliers();
+    }
     },
     methods: {
         addMode() {

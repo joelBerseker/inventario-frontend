@@ -97,7 +97,9 @@ export default defineComponent({
         TableLite,
     },
     async created() {
-        await this.getCustomers();
+        if(this.$store.getters.isActive){
+            await this.getCustomers();
+        }
     },
     methods: {
         addMode() {
