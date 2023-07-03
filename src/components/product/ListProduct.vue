@@ -160,7 +160,9 @@ export default defineComponent({
         },
     },
     async created() {
-        await this.getProducts();
+        if(this.$store.getters.isActive){
+        await this.getProducts();}
+        
     },
 });
 </script>

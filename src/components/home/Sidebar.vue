@@ -25,9 +25,14 @@
                 </RouterLink>
             </div>
             <div class="my-1 px-2 d-flex w-100">
-                <RouterLink to="/inputs" class="w-100 item-menu m-0">
-                    <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Cerrar Sesión</div>
-                </RouterLink>
+
+                <button
+                  type="submit"
+                  @click="logoutButton"
+                  class=" w-100 item-menu m-0 btn btn-dark btn-sm button-space"
+                >
+                <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Cerrar Sesión</div>
+                </button>
             </div>
         </div>
     </div>
@@ -90,6 +95,10 @@ export default defineComponent({
             this.$store.dispatch("logout");
             this.$router.push("/login");
         },
+        logoutButton(evt) {
+        evt.preventDefault();
+        this.logout();
+    },
 
     },
     created() {
@@ -98,9 +107,15 @@ export default defineComponent({
             username: "admin",
             password: "jose123as",
         };
-        //AuthService.obtain_token(credentials);
+        if(!this.$store.getters.isActive){
+            this.logout();
+        }
     },
     async updated() {
+        if(!this.$store.getters.isActive){
+            this.logout();
+            return;
+        }
         const tokenActual = {
             refresh: this.$store.getters.isLoggedIn2,
         };
