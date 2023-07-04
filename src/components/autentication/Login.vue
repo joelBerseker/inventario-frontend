@@ -14,7 +14,7 @@
                     ><i class="bi bi-person"></i
                   ></span>
                   <input
-                    type="text"
+                    type="email"
                     class="form-control"
                     v-model="user.username"
                     id="user"
