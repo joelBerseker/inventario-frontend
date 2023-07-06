@@ -11,14 +11,14 @@ export default {
 
             return (
                 (day_diff == 0 &&
-                    ((diff < 60 && "hace un momento") ||
-                        (diff < 120 && "hace 1 minuto") ||
-                        (diff < 3600 && +Math.floor(diff / 60) + " minutos atras") ||
-                        (diff < 7200 && "1 hora atras") ||
-                        (diff < 86400 && Math.floor(diff / 3600) + " horas atras"))) ||
+                    ((diff < 60 && "Hace un momento") ||
+                        (diff < 120 && "Hace 1 minuto") ||
+                        (diff < 3600 && "Hace "+Math.floor(diff / 60) + " minutos") ||
+                        (diff < 7200 && "Hace 1 hora") ||
+                        (diff < 86400 && "Hace "+Math.floor(diff / 3600) + " horas"))) ||
                 (day_diff == 1 && "Ayer") ||
-                (day_diff < 7 && day_diff + " dias atras") ||
-                (day_diff < 31 && Math.ceil(day_diff / 7) + " semanas atras")
+                (day_diff < 7 && "Hace " + day_diff + " dias") ||
+                (day_diff < 31 && "Hace "+ Math.ceil(day_diff / 7) + " semanas")
             );
         },
     },

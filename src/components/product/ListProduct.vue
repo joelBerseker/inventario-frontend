@@ -13,6 +13,17 @@ export default defineComponent({
     return {
       item_selected: {},
       Products: [],
+      breadcrumb: [
+        {
+          name: "Inicio",
+          link: "/home"
+        },
+        {
+          name: "Productos",
+          link: ""
+        },
+
+      ],
       table: {
         isLoading: false,
         columns: [
@@ -37,6 +48,7 @@ export default defineComponent({
 
           {
             label: "Compra",
+            columnClasses: ["text-end"],
             field: "cost",
             width: "10%",
             sortable: true,
@@ -46,6 +58,7 @@ export default defineComponent({
           },
           {
             label: "Venta",
+            columnClasses: ["text-end"],
             field: "price",
             width: "10%",
             sortable: true,
@@ -55,6 +68,7 @@ export default defineComponent({
           },
           {
             label: "Cantidad",
+            columnClasses: ["text-end"],
             field: "stock",
             width: "10%",
             sortable: true,
@@ -184,7 +198,7 @@ export default defineComponent({
     },
   },
   async created() {
-    this.changeTitle({ name: "Productos", icon: "bi bi-box-seam" });
+    this.changeTitle({ name: "Productos", icon: "bi bi-box-seam", breadcrumb: this.breadcrumb });
     if (this.$store.getters.isActive) {
       await this.getProducts();
     }
@@ -192,54 +206,24 @@ export default defineComponent({
 });
 </script>
 <template>
-  <DetailProduct
-    ref="modal"
-    :deleteItem="deleteItem"
-    :showToast="showToast"
-    :item_selected="item_selected"
-    :getProducts="getProducts"
-  />
-  <button
-    v-on:click="addMode"
-    type="button"
-    class="btn btn-primary btn-sm mb-3"
-  >
+  <DetailProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
+    :getProducts="getProducts" />
+  <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
     <i class="bi bi-plus-circle"></i> Agregar Producto
   </button>
-  <table-lite
-    :is-static-mode="false"
-    :is-slot-mode="true"
-    :is-hide-paging="true"
-    :is-loading="table.isLoading"
-    :columns="table.columns"
-    :rows="table.rows"
-    :total="table.totalRecordCount"
-    :sortable="table.sortable"
-    @is-finished="table.isLoading = false"
-    :messages="table.messages"
-  >
+  <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
+    :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+    @is-finished="table.isLoading = false" :messages="table.messages">
     <template v-slot:quick="data">
       <div>
-        <button
-          v-on:click="viewMode(data.value)"
-          type="button"
-          class="btn btn-secondary btn-sm button-space"
-        >
+        <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
           <i class="bi bi-journal"></i> Ver
         </button>
       </div>
     </template>
   </table-lite>
-  <paginate
-    :page-count="numPag"
-    :page-range="3"
-    :margin-pages="2"
-    :click-handler="clickCallback"
-    :prev-text="'Prev'"
-    :next-text="'Next'"
-    :container-class="'pagination'"
-    :page-class="'page-item'"
-  >
+  <paginate :page-count="numPag" :page-range="3" :margin-pages="2" :click-handler="clickCallback" :prev-text="'Prev'"
+    :next-text="'Next'" :container-class="'pagination'" :page-class="'page-item'">
   </paginate>
 </template>
 <script></script>

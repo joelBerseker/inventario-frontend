@@ -19,7 +19,7 @@
                 <hr class="w-100 my-2" />
             </div>
             <div class="my-1 px-2 d-flex w-100 ">
-                <RouterLink to="/inputs" class="w-100 item-menu m-0 ">
+                <RouterLink to="/about" class="w-100 item-menu m-0 ">
                     <div class="py-2 px-3"><i class="bi bi-info-circle "></i> Mas información</div>
                 </RouterLink>
             </div>
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div id="content">
-        <MainContent :title="title.name" :icon="title.icon">
+        <MainContent :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb">
             <RouterView :changeTitle="changeTitle" :showToast="showToast" :confirmDialogue="confirmDialogue" />
         </MainContent>
     </div>
@@ -60,6 +60,7 @@ export default defineComponent({
             title: {
                 name: "",
                 icon: "",
+                breadcrumb: []
             },
             list: [
                 {
@@ -104,7 +105,8 @@ export default defineComponent({
     methods: {
         changeTitle(title) {
             this.title.name = title.name;
-            this.title.icon = title.icon
+            this.title.icon = title.icon;
+            this.title.breadcrumb = title.breadcrumb
         },
         showToast(opts = {}) {
             this.$refs.toast.show(opts);

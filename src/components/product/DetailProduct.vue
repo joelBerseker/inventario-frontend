@@ -4,48 +4,48 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-4">
-                    <MyForm class="mb-3" name="Código" :message="validationCode.message">
-                        <input type="text" :class="'form-control form-control-sm ' + validationCode.validText" id="codigo"
+                    <MyForm class="mb-3" name="Código" :message="validationCode.validationMessage">
+                        <input type="text" :class="'form-control form-control-sm ' + validationCode.validationStyle" id="codigo"
                             name="codigo" :disabled="disabled" v-model="item_selected.code" required />
                     </MyForm>
                 </div>
                 <div class="col">
-                    <MyForm class="mb-3" name="Nombre" :message="validationName.message">
-                        <input type="text" :class="'form-control form-control-sm ' + validationName.validText" id="nombre"
+                    <MyForm class="mb-3" name="Nombre" :message="validationName.validationMessage">
+                        <input type="text" :class="'form-control form-control-sm ' + validationName.validationStyle" id="nombre"
                             name="nombre" :disabled="disabled" v-model="item_selected.name" required />
                     </MyForm>
                 </div>
             </div>
-            <MyForm class="mb-3" name="Descripción" :message="validationDescription.message">
-                <textarea :class="'form-control form-control-sm ' + validationDescription.validText" id="descripcion"
+            <MyForm class="mb-3" name="Descripción" :message="validationDescription.validationMessage">
+                <textarea :class="'form-control form-control-sm ' + validationDescription.validationStyle" id="descripcion"
                     name="descripcion" :disabled="disabled" v-model="item_selected.description" required></textarea>
             </MyForm>
             <div class="row">
                 <div class="col">
-                    <MyForm class="mb-3" name="Precio de Compra" :message="validationCost.message">
+                    <MyForm class="mb-3" name="Precio de Compra" :message="validationCost.validationMessage">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text">S/.</span>
-                            <input @input="changeCurrencyCost()" type="text"
-                                :class="'form-control form-control-sm ' + validationCost.validText" id="costo" name="costo"
+                            <input @input="inputCost()" type="text"
+                                :class="'form-control form-control-sm ' + validationCost.validationStyle" id="costo" name="costo"
                                 :disabled="disabled" v-model="item_selected.cost" />
                         </div>
                     </MyForm>
                 </div>
                 <div class="col">
-                    <MyForm class="mb-3" name="Precio de Venta" :message="validationPrice.message">
+                    <MyForm class="mb-3" name="Precio de Venta" :message="validationPrice.validationMessage">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text">S/.</span>
-                            <input @input="changeCurrencyPrice()" type="text"
-                                :class="'form-control form-control-sm ' + validationPrice.validText" id="precio"
+                            <input @input="inputPrice()" type="text"
+                                :class="'form-control form-control-sm ' + validationPrice.validationStyle" id="precio"
                                 name="precio" :disabled="disabled" v-model="item_selected.price" />
                         </div>
 
                     </MyForm>
                 </div>
             </div>
-            <MyForm class="mb-3" name="Cantidad en Inventario">
-                <input type="number" class="form-control form-control-sm" id="inventario" name="inventario"
-                    :disabled="disabled" v-model.number="item_selected.stock" required />
+            <MyForm class="mb-3" name="Cantidad en Inventario" :message="validationStock.validationMessage">
+                <input type="text" :class="'form-control form-control-sm ' + validationStock.validationStyle" id="inventario" name="inventario"
+                @input="inputStock()" :disabled="disabled" v-model="item_selected.stock" required />
             </MyForm>
         </div>
         <div class="modal-footer">
@@ -109,109 +109,92 @@ export default defineComponent({
     computed: {
         validateForm: function () {
             var result =
-                this.validationCode.valid &&
-                this.validationName.valid &&
-                this.validationCost.valid &&
-                this.validationPrice.valid &&
-                this.validationDescription.valid
+                this.validationCode.isValid &&
+                this.validationName.isValid &&
+                this.validationCost.isValid &&
+                this.validationPrice.isValid &&
+                this.validationStock.isValid &&
+                this.validationDescription.isValid
                 ;
             return result
         },
+
         validationCode: function () {
             var text = this.item_selected.code;
-            var _message = "";
-            var _valid_text = "";
-            var _valid = true;
-            if (this.showValidation(text, this.validated, this.mode)) {
-                _message = this.textEmpty(text, _message);
-                _message = this.textLength(text, _message, 3, 10);
 
-                _valid_text = (_message != "") ? " is-invalid" : " is-valid";
-                _valid = (_message != "") ? false : true;
-            }
-            var response = { message: _message, validText: _valid_text, valid: _valid }
-            return response;
+            var validationMessage = "";
+            validationMessage = this.textEmpty(text, validationMessage);
+            validationMessage = this.textLength(text, validationMessage, 3, 10);
+
+            return this.validateInput(text, validationMessage, true);
         },
 
         validationName: function () {
             var text = this.item_selected.name;
-            var _message = "";
-            var _valid_text = "";
-            var _valid = true;
-            if (this.showValidation(text, this.validated, this.mode)) {
-                _message = this.textEmpty(text, _message);
-                _message = this.textLength(text, _message, 3, 50);
 
-                _valid_text = (_message != "") ? " is-invalid" : " is-valid";
-                _valid = (_message != "") ? false : true;
-            }
-            var response = { message: _message, validText: _valid_text, valid: _valid }
-            return response;
+            var validationMessage = "";
+            validationMessage = this.textEmpty(text, validationMessage);
+            validationMessage = this.textLength(text, validationMessage, 3, 50);
+
+            return this.validateInput(text, validationMessage, true);
         },
 
         validationCost: function () {
             var text = this.item_selected.cost;
-            var _message = "";
-            var _valid_text = "";
-            var _valid = true;
-            if (this.showValidation(text, this.validated, this.mode)) {
-                _message = this.textEmpty(text, _message);
-                _message = this.textLength(text, _message, 3, 15);
 
-                _valid_text = (_message != "") ? " is-invalid" : " is-valid";
-                _valid = (_message != "") ? false : true;
-            }
-            var response = { message: _message, validText: _valid_text, valid: _valid }
-            return response;
+            var validationMessage = "";
+            validationMessage = this.textEmpty(text, validationMessage);
+            validationMessage = this.textLength(text, validationMessage, 3, 15);
+
+            return this.validateInput(text, validationMessage, true);
         },
 
         validationPrice: function () {
             var text = this.item_selected.price;
-            var _message = "";
-            var _valid_text = "";
-            var _valid = true;
-            if (this.showValidation(text, this.validated, this.mode)) {
-                _message = this.textEmpty(text, _message);
-                _message = this.textLength(text, _message, 3, 15);
+            
+            var validationMessage = "";
+            validationMessage = this.textEmpty(text, validationMessage);
+            validationMessage = this.textLength(text, validationMessage, 3, 15);
 
-                _valid_text = (_message != "") ? " is-invalid" : " is-valid";
-                _valid = (_message != "") ? false : true;
-            }
-            var response = { message: _message, validText: _valid_text, valid: _valid }
-            return response;
+            return this.validateInput(text, validationMessage, true);
         },
 
         validationDescription: function () {
             var text = this.item_selected.description;
-            var _message = "";
-            var _valid_text = "";
-            var _valid = true;
-            if (this.showValidation(text, this.validated, this.mode)) {
-                if (!this.textEmpty(text, _message)) {
-                    _message = this.textLength(text, _message, 3, 50);
+            
+            var validationMessage = "";
+            validationMessage = this.textEmpty(text, validationMessage);
+            validationMessage = this.textLength(text, validationMessage, 3, 50);
 
-                    _valid_text = (_message != "") ? " is-invalid" : " is-valid";
-                    _valid = (_message != "") ? false : true;
-                }
-            }
-            var response = { message: _message, validText: _valid_text, valid: _valid }
-            return response;
+            return this.validateInput(text, validationMessage, false);
+        },
+        validationStock: function () {
+            var text = this.item_selected.stock;
+            
+            var validationMessage = "";
+            validationMessage = this.textEmpty(text, validationMessage);
+
+            return this.validateInput(text, validationMessage, true);
         },
 
     },
     methods: {
-        changeCurrencyPrice() {
+        inputPrice() {
             this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, '')
             this.item_selected.price = this.changeCurrency(this.item_selected.price)
         },
-        changeCurrencyCost() {
+        inputCost() {
             this.item_selected.cost = this.item_selected.cost.replace(/[^0-9]/, '')
             this.item_selected.cost = this.changeCurrency(this.item_selected.cost)
+        },
+        inputStock(){
+            this.item_selected.stock = this.item_selected.stock.replace(/[^0-9]/, '')
         },
 
         async saveItem() {
             this.validated = true;
             if (this.validateForm) {
+                if(this.textEmpty(this.item_selected.description, "")) this.item_selected.description = "Ninguna";
                 var form_data = new FormData();
                 for (var key in this.item_selected) {
                     if (this.mode == 3 && (key == 'id' || key == 'created_at' || key == 'updated_at' || key == 'product_image')) {

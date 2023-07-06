@@ -1,22 +1,18 @@
 <template>
+    <div class="row">
+        <div class="col-6 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
+            <div class="card box" :id="item.title">
 
-        <div class="row">
-            <div class="col-6 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
-                <div class="card box" :id="item.title">
-
-                    <div class="card-body">
-                        <p class="title-text"><i :class="item.icon"></i> {{ item.title }}</p>
-                        <p class="card-text">{{ item.desc }}</p>
-                    </div>
+                <div class="card-body">
+                    <p class="title-text"><i :class="item.icon"></i> {{ item.title }}</p>
+                    <p class="card-text">{{ item.desc }}</p>
                 </div>
             </div>
-
         </div>
-        
 
+    </div>
 </template>
 <style scoped>
-
 .box {
     cursor: pointer;
 }
@@ -65,6 +61,12 @@ export default defineComponent({
                     icon: "bi bi-truck",
                     url: "/supplier"
                 }
+            ],
+            breadcrumb: [
+                {
+                    name: "Inicio",
+                    link: "/home"
+                },
             ]
         }
     },
@@ -73,8 +75,8 @@ export default defineComponent({
             this.$router.push(url);
         }
     },
-    created(){
-        this.changeTitle({name:"Inicio", icon:"bi bi-house"})
+    created() {
+        this.changeTitle({ name: "Inicio", icon: "bi bi-house", breadcrumb: this.breadcrumb })
     }
 });
 </script>

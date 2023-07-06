@@ -13,6 +13,29 @@ export default {
             }
         },
 
+        validateInput(text, validationMessage, required) {
+            var validationStyle = "";
+            var isValid = true;
+
+            if (this.showValidation(text, this.validated, this.mode)) {
+                if (this.textEmpty(text, "") && !required) {
+                    validationMessage = "*No requerido"
+                } else {
+                    validationStyle = (validationMessage != "") ? " is-invalid" : " is-valid";
+                    isValid = (validationMessage != "") ? false : true;
+                }
+            } else {
+                validationMessage = ""
+            }
+
+            var response = {
+                validationMessage: validationMessage,
+                validationStyle: validationStyle,
+                isValid: isValid
+            }
+            return response;
+        },
+
         onlyText(text, previus_message) {
             var message_ = previus_message;
             if (message_ == "") {

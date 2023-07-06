@@ -1,114 +1,56 @@
 <template>
   <MyModal ref="myModal" :id="'supplierDetailModal'" :title="this.title">
     <div class="modal-body">
-      <MyForm class="mb-3" name="Nombre">
-        <input
-          type="text"
-          class="form-control form-control-sm"
-          id="name"
-          name="name"
-          :disabled="disabled"
-          v-model="item_selected.name"
-          required
-        />
+      <MyForm class="mb-3" name="Nombre" :message="validationName.validationMessage">
+        <input type="text" :class="'form-control form-control-sm ' + validationName.validationStyle" id="name" name="name"
+          :disabled="disabled" v-model="item_selected.name" required />
       </MyForm>
       <div class="row">
         <div class="col-4">
-          <MyForm class="mb-3" name="Tipo de documento">
-            <select 
-            :class="'form-control form-control-sm'"
-              id="documentType"
-              name="documentType"
-              :disabled="disabled"
-              v-model="item_selected.documentType"
-              required>
-                <option v-for="option in options" :value="option.value">
+          <MyForm class="mb-3" name="Tipo de documento" :message="validationDocumentType.validationMessage">
+            <select :class="'form-control form-control-sm ' + validationDocumentType.validationStyle" id="documentType"
+              name="documentType" :disabled="disabled" v-model="item_selected.documentType" required>
+              <option v-for="option in options" :value="option.value">
                 {{ option.text }}
-                </option>
-  </select>
+              </option>
+            </select>
           </MyForm>
         </div>
         <div class="col">
-          <MyForm class="mb-3" name="Documento">
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              id="document"
-              name="document"
-              :disabled="disabled"
-              v-model="item_selected.document"
-              required
-            />
+          <MyForm class="mb-3" name="Documento" :message="validationDocument.validationMessage">
+            <input type="text" :class="'form-control form-control-sm ' + validationDocument.validationStyle" id="document"
+              name="document" :disabled="disabled" v-model="item_selected.document" required />
           </MyForm>
         </div>
       </div>
 
-      <MyForm class="mb-3" name="Telefono">
-        <input
-          type="text"
-          class="form-control form-control-sm"
-          id="phone"
-          name="phone"
-          :disabled="disabled"
-          v-model="item_selected.phone"
-          required
-        />
+      <MyForm class="mb-3" name="Telefono" :message="validationPhone.validationMessage">
+        <input type="text" :class="'form-control form-control-sm ' + validationPhone.validationStyle" id="phone"
+          name="phone" :disabled="disabled" v-model="item_selected.phone" required />
       </MyForm>
-      <MyForm class="mb-3" name="Dirección">
-        <input
-          type="text"
-          class="form-control form-control-sm"
-          id="address"
-          name="address"
-          :disabled="disabled"
-          v-model="item_selected.address"
-          required
-        />
+      <MyForm class="mb-3" name="Dirección" :message="validationAddress.validationMessage">
+        <input type="text" :class="'form-control form-control-sm ' + validationAddress.validationStyle" id="address"
+          name="address" :disabled="disabled" v-model="item_selected.address" required />
       </MyForm>
-      <MyForm class="mb-3" name="Correo">
-        <input
-          type="text"
-          class="form-control form-control-sm"
-          id="mail"
-          name="mail"
-          :disabled="disabled"
-          v-model="item_selected.mail"
-          required
-        />
+      <MyForm class="mb-3" name="Correo" :message="validationMail.validationMessage">
+        <input type="text" :class="'form-control form-control-sm ' + validationMail.validationStyle" id="mail" name="mail"
+          :disabled="disabled" v-model="item_selected.mail" required />
       </MyForm>
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary btn-sm button-margin"
-        data-bs-dismiss="modal"
-      >
+      <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
         <i class="bi bi-x-circle"></i> Cerrar
       </button>
-      <button
-        type="button"
-        @click="deleteItem(item_selected)"
-        class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="deleteItem(item_selected)" class="btn btn-danger btn-sm button-margin"
+        v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button
-        type="button"
-        @click="editMode"
-        class="btn btn-dark btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="editMode" class="btn btn-dark btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button
-        type="button"
-        @click="saveItem"
-        class="btn btn-success btn-sm button-margin"
-        v-if="mode != 2"
-      >
+      <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -157,29 +99,71 @@ export default defineComponent({
 
   computed: {
     validateForm: function () {
-      var result = true;
-      return result;
+      var result =
+        this.validationName.isValid &&
+        this.validationDocumentType.isValid &&
+        this.validationDocument.isValid &&
+        this.validationPhone.isValid &&
+        this.validationAddress.isValid &&
+        this.validationMail.isValid
+        ;
+      return result
     },
-    validationCode: function () {
-      var text = this.item_selected.code;
-      var _message = "";
-      var _valid_text = "";
-      var _valid = true;
-      if (this.showValidation(text, this.validated, this.mode)) {
-        _message = this.onlyText(text, _message);
-        _message = this.textEmpty(text, _message);
-        _message = this.textLength(text, _message, 3, 6);
 
-        _valid_text = _message != "" ? " is-invalid" : " is-valid";
-        _valid = _message != "" ? false : true;
-      }
-      var response = {
-        message: _message,
-        validText: _valid_text,
-        valid: _valid,
-      };
-      return response;
+    validationName: function () {
+      var text = this.item_selected.name;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 3, 50);
+
+      return this.validateInput(text, validationMessage, true);
     },
+    validationDocumentType: function () {
+      var text = this.item_selected.documentType;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationDocument: function () {
+      var text = this.item_selected.document;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 3, 10);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationPhone: function () {
+      var text = this.item_selected.phone;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 9, 9);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationAddress: function () {
+      var text = this.item_selected.address;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 3, 50);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationMail: function () {
+      var text = this.item_selected.mail;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 3, 50);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+
   },
   methods: {
     changeCurrency() {

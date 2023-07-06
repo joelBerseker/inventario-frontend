@@ -2,7 +2,10 @@
     <div class="form-group">
         <label for="nombre">{{name}}:</label>
         <slot></slot>
-        <div v-if="message!=''">
+        <div v-if="message=='*No requerido'">
+            <span class="message">{{ message }}</span>
+        </div>
+        <div v-else-if="message!=''">
             <span class="text-danger message">{{ message }}</span>
         </div>
         
