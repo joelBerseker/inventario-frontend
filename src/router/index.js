@@ -8,6 +8,7 @@ import Customer from '../components/customer/ListCustomer.vue'
 import Inputs from '../components/Input/ListInput.vue'
 import Outputs from '../components/Output/ListOutput.vue'
 import About from '../components/about/about.vue'
+import viewUser from '../components/user/viewUser.vue'
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -17,6 +18,11 @@ const router = createRouter({
             component: MainContainer,
             redirect: {name: 'home'}, 
             children: [
+                {
+                    path: '/user',
+                    name: 'user',
+                    component: viewUser
+                },
                 {
                     path: '/inputs',
                     name: 'inputs',

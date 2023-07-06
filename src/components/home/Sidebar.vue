@@ -70,6 +70,12 @@ export default defineComponent({
                     url: "/"
                 },
                 {
+                    title: "Usuario",
+                    desc: "Perfil del Usuario, donde se pone los datos internos de la pag.",
+                    icon: "bi bi-person-vcard",
+                    url: "/user"
+                },
+                {
                     title: "Entradas",
                     desc: "With supporting text below as a natural lead-in to additional content.",
                     icon: "bi bi-box-arrow-in-right",
