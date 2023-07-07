@@ -86,6 +86,17 @@ export default defineComponent({
                     noDataAvailable: "No se encontraron elementos",
                 },
             },
+            breadcrumb: [
+                {
+                    name: "Inicio",
+                    link: "/home"
+                },
+                {
+                    name: "Salidas",
+                    link: ""
+                },
+
+            ],
         };
     },
     mixins: [UtilityFunctions],
@@ -153,7 +164,7 @@ export default defineComponent({
         },
     },
     async created() {
-        this.changeTitle({ name: "Salidas", icon: "bi bi-box-arrow-left" })
+        this.changeTitle({ name: "Salidas", icon: "bi bi-box-arrow-left", breadcrumb: this.breadcrumb })
         await this.getOutputs();
     },
 });

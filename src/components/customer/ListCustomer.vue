@@ -83,6 +83,17 @@ export default defineComponent({
                     noDataAvailable: "No se encontraron elementos",
                 },
             },
+            breadcrumb: [
+                {
+                    name: "Inicio",
+                    link: "/home"
+                },
+                {
+                    name: "Clientes",
+                    link: ""
+                },
+
+            ],
         };
     },
     mixins: [UtilityFunctions],
@@ -94,7 +105,7 @@ export default defineComponent({
         "changeTitle", "showToast", "confirmDialogue"
     ],
     async created() {
-        this.changeTitle({ name: "Clientes", icon: "bi bi-people" })
+        this.changeTitle({ name: "Clientes", icon: "bi bi-people", breadcrumb: this.breadcrumb })
         if (this.$store.getters.isActive) {
             await this.getCustomers();
         }
@@ -186,8 +197,7 @@ export default defineComponent({
                         </p>
                     </div>
                 </div>
-                <input type="text" class="form-control form-control-sm" id="name" name="name"
-                    required />
+                <input type="text" class="form-control form-control-sm" id="name" name="name" required />
                 <button class="btn btn-sm btn-secondary" type="button"><i class="bi bi-search"></i></button>
 
             </div>

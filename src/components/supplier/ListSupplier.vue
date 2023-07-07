@@ -76,6 +76,17 @@ export default defineComponent({
                     noDataAvailable: "No se encontraron elementos",
                 },
             },
+            breadcrumb: [
+                {
+                    name: "Inicio",
+                    link: "/home"
+                },
+                {
+                    name: "Proveedores",
+                    link: ""
+                },
+
+            ],
         };
     },
     mixins: [UtilityFunctions],
@@ -87,7 +98,7 @@ export default defineComponent({
         "changeTitle", "showToast", "confirmDialogue"
     ],
     async created() {
-        this.changeTitle({ name: "Proveedores", icon: "bi bi-truck" })
+        this.changeTitle({ name: "Proveedores", icon: "bi bi-truck", breadcrumb: this.breadcrumb })
         if (this.$store.getters.isActive) {
             await this.getSuppliers();
         }

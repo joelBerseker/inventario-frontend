@@ -13,7 +13,7 @@ export default defineComponent({
 
             <p :key="title" class="title-text "><i :class=icon></i> {{ title }}</p>
         </transition>
-        <div class="row mt-2" v-if="breadcrumb">
+        <div class="row mt-2">
             <div class="col-auto breadcrumb-item">
                 <span v-if="breadcrumb.length > 1"><i class="bi bi-arrow-left-circle"></i>
                     <RouterLink :to="breadcrumb[breadcrumb.length - 2].link" class="color-1"> Atras</RouterLink>
@@ -37,22 +37,6 @@ export default defineComponent({
                 </transition>
             </div>
 
-        </div>
-        <div class="row mt-2" v-else>
-            <div class="col-auto breadcrumb-item">
-                <span><i class="bi bi-arrow-left-circle"></i>
-                    <RouterLink to="/home" class="color-1"> Atras</RouterLink>
-                </span>
-            </div>
-            <div class="col">
-                <transition name="slide-fade" mode="out-in">
-                <nav :key="title" aria-label="breadcrumb" class="color-1 margin-breadcrumb">
-                    <ol class="breadcrumb mb-0  breadcrumb-ol">
-                        <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Productos</li>
-                    </ol>
-                </nav></transition>
-            </div>
         </div>
 
 
