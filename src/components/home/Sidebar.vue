@@ -29,10 +29,16 @@
                     <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Cerrar Sesión</div>
                 </div>
             </div>
+            <div class="my-1 px-2 d-flex w-100">
+
+                <div type="submit" @click="changeLoading()" class=" w-100 item-menu m-0 ">
+                    <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Loading</div>
+                </div>
+            </div>
         </div>
     </div>
     <div id="content">
-        <MainContent :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb">
+        <MainContent :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb" ref="content">
             <RouterView :changeTitle="changeTitle" :showToast="showToast" :confirmDialogue="confirmDialogue" />
         </MainContent>
     </div>
@@ -109,6 +115,9 @@ export default defineComponent({
         };
     },
     methods: {
+        changeLoading(){
+            this.$refs.content.changeLoading();
+        },
         changeTitle(title) {
             this.title.name = title.name;
             this.title.icon = title.icon;
