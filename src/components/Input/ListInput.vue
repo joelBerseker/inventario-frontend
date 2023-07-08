@@ -1,5 +1,4 @@
 <script>
-import MainContent from "@/components/my_components/MainContent.vue";
 import axios from "axios";
 import AuthService from "@/services/AuthService";
 import AddInput from "../Input/AddInput.vue";
@@ -27,7 +26,7 @@ export default defineComponent({
         "changeTitle",
     ],
     created() {
-        this.changeTitle({ name: "Entradas", icon: "bi bi-box-arrow-left", breadcrumb: this.breadcrumb})
+        this.changeTitle({ name: "Entradas", icon: "bi bi-box-arrow-left", breadcrumb: this.breadcrumb })
         //this.getTasks();
         const credentials = {
             username: "admin",
@@ -52,64 +51,66 @@ export default defineComponent({
     },
     components: {
         AddInput,
-        MainContent
+
     },
 });
 </script>
 <template>
-    <!-- Modal -->
-    <AddInput />
-    <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"
-        data-bs-whatever="@mdo">
-        <i class="bi bi-plus-circle"></i> Agregar Entrada
-    </button>
+    <div>
+        <!-- Modal -->
+        <AddInput />
+        <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            data-bs-whatever="@mdo">
+            <i class="bi bi-plus-circle"></i> Agregar Entrada
+        </button>
 
-    <table class="table">
-        <thead class="table-dark">
-            <tr>
-                <th>ID</th>
-                <th>Numero de Factura</th>
-                <th>Fecha</th>
-                <th>PROVEEDOR</th>
-                <th>Ultima Edicion</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>Jhon Mamani</td>
-                <td>74578899911</td>
-                <td>En la Esquina</td>
-                <td>10-09-05</td>
-                <td><button>EDITAR</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Jhon Mamani</td>
-                <td>74578899911</td>
-                <td>En la Esquina</td>
-                <td>10-09-05</td>
-                <td><button>EDITAR</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Jhon Mamani</td>
-                <td>74578899911</td>
-                <td>En la Esquina</td>
-                <td>10-09-05</td>
-                <td><button>EDITAR</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>Jhon Mamani</td>
-                <td>74578899911</td>
-                <td>En la Esquina</td>
-                <td>10-09-05</td>
-                <td><button>EDITAR</button></td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Numero de Factura</th>
+                    <th>Fecha</th>
+                    <th>PROVEEDOR</th>
+                    <th>Ultima Edicion</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Jhon Mamani</td>
+                    <td>74578899911</td>
+                    <td>En la Esquina</td>
+                    <td>10-09-05</td>
+                    <td><button>EDITAR</button></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Jhon Mamani</td>
+                    <td>74578899911</td>
+                    <td>En la Esquina</td>
+                    <td>10-09-05</td>
+                    <td><button>EDITAR</button></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Jhon Mamani</td>
+                    <td>74578899911</td>
+                    <td>En la Esquina</td>
+                    <td>10-09-05</td>
+                    <td><button>EDITAR</button></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Jhon Mamani</td>
+                    <td>74578899911</td>
+                    <td>En la Esquina</td>
+                    <td>10-09-05</td>
+                    <td><button>EDITAR</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 
 <style></style>

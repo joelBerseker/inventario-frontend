@@ -1,23 +1,13 @@
 <script>
 import { defineComponent, renderSlot } from "vue";
-import Icon from '@/components/my_components/Icon.vue'
+
 export default defineComponent({
-    name: "MainContent",
+    name: "TopBar",
     props: [
         "title", "icon", "breadcrumb"
     ],
-    components: {
-        Icon
-    },
-    data() {
-        return {
-            loading: false,
-        };
-    },
+
     methods: {
-        changeLoading() {
-            this.loading = !this.loading;
-        }
     },
     computed: {
         styleBreadcrumb: function () {
@@ -29,7 +19,8 @@ export default defineComponent({
             }
             return resp
         }
-    }
+    },
+
 });
 </script>
 <template>
@@ -70,37 +61,10 @@ export default defineComponent({
                 </div>
             </div>
         </div>
+
     </div>
-    <transition name="slide-fade" mode="out-in">
-        <div :key="loading">
-            <div v-show="loading">
-                <div class="mx-auto center justify-content-center">
-                    <div class="container">
-                        <div class="row justify-content-md-center" align-h="center">
-                            <Icon size="70px" :speed="true" speedSize="40px"></Icon>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div v-show="!loading" class="p-3">
-                <slot></slot>
-            </div>
-        </div>
-    </transition>
 </template>
 <style scoped>
-.center {
-    height: 100%;
-    height: 70vh;
-    display: flex;
-    align-items: center;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
-
-    min-height: 100%;
-}
-
 .slide-fade-enter-active {
     transition: all 0.25s ease;
 }

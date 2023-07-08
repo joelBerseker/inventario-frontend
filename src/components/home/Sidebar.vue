@@ -3,7 +3,7 @@
         <div class="d-flex flex-column align-items-center">
             <div class="mt-4 mb-2 px-3 main-text ">
                 <div class="d-flex flex-column align-items-center">
-                    <Icon size="60px"></Icon>
+                    <Icon size="55px"></Icon>
                 </div>
                 <p class="title-text text-center">Gestion de inventarios</p>
             </div>
@@ -31,16 +31,27 @@
             </div>
             <div class="my-1 px-2 d-flex w-100">
 
-                <div type="submit" @click="changeLoading()" class=" w-100 item-menu m-0 ">
+                <div type="submit" @click="switchLoading()" class=" w-100 item-menu m-0 ">
                     <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Loading</div>
                 </div>
             </div>
         </div>
     </div>
     <div id="content">
-        <MainContent :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb" ref="content">
-            <RouterView :changeTitle="changeTitle" :showToast="showToast" :confirmDialogue="confirmDialogue" />
-        </MainContent>
+        <TopBar :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb">
+
+
+        </TopBar>
+        <div class="p-3">
+            <RouterView v-slot="{ Component }">
+                <transition name="slide-fade" mode="out-in">
+                    <component :is="Component" :changeTitle="changeTitle" :showToast="showToast"
+                        :confirmDialogue="confirmDialogue" />
+
+                </transition>
+            </RouterView>
+        </div>
+
     </div>
     <MyToast ref="toast"></MyToast>
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
@@ -49,7 +60,7 @@
 import axios from "axios";
 import AuthService from "@/services/AuthService";
 import Icon from '@/components/my_components/Icon.vue'
-import MainContent from "@/components/my_components/MainContent.vue";
+import TopBar from "@/components/my_components/TopBar.vue";
 import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
 
@@ -57,7 +68,7 @@ import { defineComponent } from "vue";
 export default defineComponent({
     name: "Sidebar",
     components: {
-        Icon, MainContent, ConfirmDialogue,
+        Icon, TopBar, ConfirmDialogue,
         MyToast,
     },
     data() {
@@ -115,9 +126,6 @@ export default defineComponent({
         };
     },
     methods: {
-        changeLoading(){
-            this.$refs.content.changeLoading();
-        },
         changeTitle(title) {
             this.title.name = title.name;
             this.title.icon = title.icon;
@@ -180,6 +188,28 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.slide-fade-enter-active {
+    transition: all 0.25s ease;
+}
+.slide-fade-enter {
+    transition: all 0.25s ease;
+}
+
+.slide-fade-leave-active {}
+
+.slide-fade-leave-to {
+    transform: translateX(10px);
+    opacity: 0;
+}
+
+.slide-fade-enter-from
+
+/* .slide-fade-leave-active below version 2.1.8 */
+    {
+
+    opacity: 0;
+}
+
 .prueba {
     position: absolute;
     top: 0;

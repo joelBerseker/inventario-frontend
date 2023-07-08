@@ -1,5 +1,6 @@
 <script>
 import DetailProduct from "./DetailProduct.vue";
+import Content from '@/components/my_components/Content.vue'
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
@@ -102,16 +103,21 @@ export default defineComponent({
         },
       },
       numPag: 4,
+      loading: true,
     };
+
   },
   props: ["changeTitle", "showToast", "confirmDialogue"],
   mixins: [UtilityFunctions],
   components: {
     DetailProduct,
-    TableLite,
+    TableLite, Content,
     paginate: Paginate,
   },
   methods: {
+    changeLoading(_loading) {
+            setTimeout(() => { this.loading = _loading }, 300);
+        },
     addMode() {
       this.item_selected = {};
       this.$refs.modal.changeMode(1);
@@ -164,6 +170,8 @@ export default defineComponent({
           });
           this.table.totalRecordCount = response.data.count;
           this.numPag = Math.ceil(response.data.count / 10);
+
+          this.changeLoading(false)
         })
         .catch(() => {
           this.showToast({
@@ -198,33 +206,40 @@ export default defineComponent({
     },
   },
   async created() {
+
     this.changeTitle({ name: "Productos", icon: "bi bi-box-seam", breadcrumb: this.breadcrumb });
+
     if (this.$store.getters.isActive) {
       await this.getProducts();
+
     }
   },
 });
 </script>
 <template>
-  <DetailProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
-    :getProducts="getProducts" />
-  <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-    <i class="bi bi-plus-circle"></i> Agregar Producto
-  </button>
-  <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
-    :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-    @is-finished="table.isLoading = false" :messages="table.messages">
-    <template v-slot:quick="data">
-      <div>
-        <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-          <i class="bi bi-journal"></i> Ver
-        </button>
-      </div>
-    </template>
-  </table-lite>
-  <paginate :page-count="numPag" :page-range="3" :margin-pages="2" :click-handler="clickCallback" :prev-text="'Prev'"
-    :next-text="'Next'" :container-class="'pagination'" :page-class="'page-item'">
-  </paginate>
+  <Content ref="mainContent" :loading="loading">
+    <DetailProduct ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
+      :getProducts="getProducts" />
+
+
+    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+      <i class="bi bi-plus-circle"></i> Agregar Producto
+    </button>
+    <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
+      :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+      @is-finished="table.isLoading = false" :messages="table.messages">
+      <template v-slot:quick="data">
+        <div>
+          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+            <i class="bi bi-journal"></i> Ver
+          </button>
+        </div>
+      </template>
+    </table-lite>
+    <paginate :page-count="numPag" :page-range="3" :margin-pages="2" :click-handler="clickCallback" :prev-text="'Prev'"
+      :next-text="'Next'" :container-class="'pagination'" :page-class="'page-item'">
+    </paginate>
+  </Content>
 </template>
 <script></script>
 

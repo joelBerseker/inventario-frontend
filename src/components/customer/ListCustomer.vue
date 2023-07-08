@@ -1,5 +1,6 @@
 <script>
 import DetailCustomer from "./DetailCustomer.vue";
+import Content from '@/components/my_components/Content.vue'
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -94,12 +95,14 @@ export default defineComponent({
                 },
 
             ],
+            loading: true,
         };
     },
     mixins: [UtilityFunctions],
     components: {
         DetailCustomer,
         TableLite,
+        Content,
     },
     props: [
         "changeTitle", "showToast", "confirmDialogue"
@@ -111,6 +114,9 @@ export default defineComponent({
         }
     },
     methods: {
+        changeLoading(_loading) {
+            setTimeout(() => { this.loading = _loading }, 300);
+        },
         addMode() {
             this.item_selected = {};
             this.$refs.modal.changeMode(1);
@@ -149,6 +155,7 @@ export default defineComponent({
                     }
                 });
         },
+
         async getCustomers() {
             this.table.rows = [];
             var path = url + `clients/clients/`;
@@ -156,7 +163,9 @@ export default defineComponent({
                 response.data.results.forEach((element) => {
                     this.table.rows.push(element);
                     this.table.totalRecordCount = this.table.rows.length;
+                    
                 });
+                this.changeLoading(false)
             }).catch(() => {
                 this.showToast({
                     title: "Obtener Registros",
@@ -169,52 +178,54 @@ export default defineComponent({
 });
 </script>
 <template>
-    <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
-        :getCustomers="getCustomers" />
-    <div class="row justify-content-md-end">
-        <div class="col-6">
+    <Content ref="mainContent" :loading="loading">
+        <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
+            :getCustomers="getCustomers" />
+        <div class="row justify-content-md-end">
+            <div class="col-6">
 
-            <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-                <i class="bi bi-plus-circle"></i> Agregar Cliente
-            </button>
-        </div>
-        <div class="col">
-            <div class="input-group input-group-sm">
-
-
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
-                        data-bs-toggle="dropdown">
-                        <i class="bi bi-sliders"></i>
-                        Filtro
-                    </button>
-                    <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
-                        <p>
-                            Some example text that's free-flowing within the dropdown menu.
-                        </p>
-                        <p class="mb-0">
-                            And this is more example text.
-                        </p>
-                    </div>
-                </div>
-                <input type="text" class="form-control form-control-sm" id="name" name="name" required />
-                <button class="btn btn-sm btn-secondary" type="button"><i class="bi bi-search"></i></button>
-
-            </div>
-        </div>
-    </div>
-
-    <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-        :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="table.isLoading = false"
-        :messages="table.messages">
-        <template v-slot:quick="data">
-            <div>
-                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                    <i class="bi bi-journal"></i> Ver
+                <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+                    <i class="bi bi-plus-circle"></i> Agregar Cliente
                 </button>
             </div>
-        </template>
-    </table-lite>
+            <div class="col">
+                <div class="input-group input-group-sm">
+
+
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
+                            data-bs-toggle="dropdown">
+                            <i class="bi bi-sliders"></i>
+                            Filtro
+                        </button>
+                        <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
+                            <p>
+                                Some example text that's free-flowing within the dropdown menu.
+                            </p>
+                            <p class="mb-0">
+                                And this is more example text.
+                            </p>
+                        </div>
+                    </div>
+                    <input type="text" class="form-control form-control-sm" id="name" name="name" required />
+                    <button class="btn btn-sm btn-secondary" type="button"><i class="bi bi-search"></i></button>
+
+                </div>
+            </div>
+        </div>
+
+        <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
+            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+            @is-finished="table.isLoading = false" :messages="table.messages">
+            <template v-slot:quick="data">
+                <div>
+                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+                        <i class="bi bi-journal"></i> Ver
+                    </button>
+                </div>
+            </template>
+        </table-lite>
+    </Content>
 </template>
 
 <style scoped>

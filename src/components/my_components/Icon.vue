@@ -1,30 +1,25 @@
 <template>
     <div class="d-flex justify-content-center">
-        <div v-if="speed" class="bg-color-2 icon" :style="'width: ' + speedSize + '; height: ' + size">
-
+        <div v-if="speed" :class="bg +'icon'" :style="'width: calc(' + size + '/2) ; height: ' + size">
             <div class="fig-7">
 
-                <div class=" bg-color-4 fig-8"></div>
-                <div class=" bg-color-4 fig-9"></div>
-                <div class=" bg-color-4 fig-10"></div>
+                <div :class="color+ 'fig-8'"></div>
+                <div :class="color+ 'fig-9'"></div>
+                <div :class="color+ 'fig-10'"></div>
             </div>
         </div>
-        <div class="bg-color-2 icon" :style="'width: ' + size + '; height: ' + size">
-
+        <div :class="bg +'icon'" :style="'width: ' + size + '; height: ' + size">
             <div class="fig-0">
-                <div class=" bg-color-4 fig-1"></div>
-                <div class=" bg-color-4 fig-2"></div>
-                <div class=" bg-color-2 fig-3">
-                    <div class=" bg-color-4 fig-3-1"></div>
+                <div :class="color+ 'fig-1'"></div>
+                <div :class="color+ 'fig-2'"></div>
+                <div :class="bg+ 'fig-3'">
+                    <div :class="color+ 'fig-3-1'"></div>
                 </div>
 
-                <div class=" bg-color-1 fig-4"></div>
-                <div class=" bg-color-1 fig-5"></div>
-                <div class=" bg-color-4 fig-6"></div>
+                <div :class="color+ 'fig-4'"></div>
+                <div :class="color+ 'fig-5'"></div>
+                <div :class="color+ 'fig-6'"></div>
             </div>
-
-
-
         </div>
     </div>
 </template>
@@ -34,8 +29,41 @@ import { defineComponent } from "vue";
 export default defineComponent({
 
     props: [
-        "size", "speed", "speedSize"
+        "size", "speed", "mode", "bgMode"
     ],
+    computed: {
+        color: function () {
+            var resp = ""
+            switch (this.mode) {
+                case 1:
+                    resp = " bg-color-1 "
+                    break;
+                case 2:
+                    resp = " bg-color-2 "
+                    break;
+                default:
+                    resp = " bg-color-1 "
+                    break;
+            }
+            return resp
+        },
+        bg: function () {
+            var resp = ""
+            switch (this.bgMode) {
+                case 1:
+                    resp = " bg-color-1 "
+                    break;
+                case 2:
+                    resp = " bg-color-2 "
+                    break;
+                default:
+                    resp = " bg-color-2 "
+                    break;
+            }
+            return resp
+        }
+    }
+
 })
 </script>
 
@@ -44,9 +72,11 @@ export default defineComponent({
     0% {
         width: 100%;
     }
+
     50% {
         width: 50%;
     }
+
     100% {
         width: 100%;
     }
@@ -56,6 +86,7 @@ export default defineComponent({
     0% {
         width: 50%;
     }
+
     50% {
         width: 100%;
     }
@@ -68,7 +99,7 @@ export default defineComponent({
 :root {
     --fig-lines-width: 9%;
     --fig-space: 4%;
-    --fig-box: 33%;
+    --fig-box: 31%;
 
     --fig-floor: 5%;
     --fig-back: 25%;
@@ -91,7 +122,7 @@ export default defineComponent({
     animation-name: line-1;
     animation-duration: 0.7s;
     animation-iteration-count: infinite;
- 
+
 
 }
 
@@ -201,4 +232,5 @@ export default defineComponent({
     bottom: calc(var(--fig-floor) + var(--fig-lines-width) + var(--fig-space) + var(--fig-box) + var(--fig-space));
     left: calc(var(--fig-back) + var(--fig-lines-width) + var(--fig-space));
     border-radius: 13%;
-}</style>
+}
+</style>

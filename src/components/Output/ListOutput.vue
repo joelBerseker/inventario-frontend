@@ -170,23 +170,25 @@ export default defineComponent({
 });
 </script>
 <template>
-    <DetailOutput ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
-        :getOutputs="getOutputs" />
+    <div>
+        <DetailOutput ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
+            :getOutputs="getOutputs" />
 
-    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-        <i class="bi bi-plus-circle"></i> Agregar Salida
-    </button>
-    <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-        :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="table.isLoading = false"
-        :messages="table.messages">
-        <template v-slot:quick="data">
-            <div>
-                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                    <i class="bi bi-journal"></i> Ver
-                </button>
-            </div>
-        </template>
-    </table-lite>
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+            <i class="bi bi-plus-circle"></i> Agregar Salida
+        </button>
+        <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
+            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+            @is-finished="table.isLoading = false" :messages="table.messages">
+            <template v-slot:quick="data">
+                <div>
+                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+                        <i class="bi bi-journal"></i> Ver
+                    </button>
+                </div>
+            </template>
+        </table-lite>
+    </div>
 </template>
 <script></script>
 

@@ -1,5 +1,6 @@
 <script>
 import DetailSupplier from "./DetailSupplier.vue";
+import Content from '@/components/my_components/Content.vue'
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -87,12 +88,14 @@ export default defineComponent({
                 },
 
             ],
+            loading: true,
         };
     },
     mixins: [UtilityFunctions],
     components: {
         DetailSupplier,
         TableLite,
+        Content,
     },
     props: [
         "changeTitle", "showToast", "confirmDialogue"
@@ -104,6 +107,10 @@ export default defineComponent({
         }
     },
     methods: {
+        changeLoading(_loading) {
+            setTimeout(() => { this.loading = _loading }, 300);
+    
+        },
         addMode() {
             this.item_selected = {};
             this.$refs.modal.changeMode(1);
@@ -148,7 +155,9 @@ export default defineComponent({
                 response.data.results.forEach((element) => {
                     this.table.rows.push(element);
                     this.table.totalRecordCount = this.table.rows.length;
+                    
                 });
+                this.changeLoading(false)
             }).catch(() => {
                 this.showToast({
                     title: "Obtener Registros",
@@ -161,23 +170,25 @@ export default defineComponent({
 });
 </script>
 <template>
-    <DetailSupplier ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
-        :getSuppliers="getSuppliers" />
+    <Content ref="mainContent" :loading="loading">
+        <DetailSupplier ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
+            :getSuppliers="getSuppliers" />
 
-    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-        <i class="bi bi-plus-circle"></i> Agregar Proveedor
-    </button>
-    <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-        :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable" @is-finished="table.isLoading = false"
-        :messages="table.messages">
-        <template v-slot:quick="data">
-            <div>
-                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                    <i class="bi bi-journal"></i> Ver
-                </button>
-            </div>
-        </template>
-    </table-lite>
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+            <i class="bi bi-plus-circle"></i> Agregar Proveedor
+        </button>
+        <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
+            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+            @is-finished="table.isLoading = false" :messages="table.messages">
+            <template v-slot:quick="data">
+                <div>
+                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
+                        <i class="bi bi-journal"></i> Ver
+                    </button>
+                </div>
+            </template>
+        </table-lite>
+    </Content>
 </template>
 
 <style></style>
