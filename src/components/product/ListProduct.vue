@@ -227,7 +227,7 @@ export default defineComponent({
     </button>
     <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
       :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-      @is-finished="table.isLoading = false" :messages="table.messages">
+      @is-finished="table.isLoading = false" :messages="table.messages" class="mb-3">
       <template v-slot:quick="data">
         <div>
           <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
@@ -236,8 +236,8 @@ export default defineComponent({
         </div>
       </template>
     </table-lite>
-    <paginate :page-count="numPag" :page-range="3" :margin-pages="2" :click-handler="clickCallback" :prev-text="'Prev'"
-      :next-text="'Next'" :container-class="'pagination'" :page-class="'page-item'">
+    <paginate :page-count="numPag" :page-range="3" :margin-pages="2" :click-handler="clickCallback" :prev-text="'Anterior'"
+      :next-text="'Siguiente'" :container-class="'pagination pagination-sm'" :page-class="'page-item'">
     </paginate>
   </Content>
 </template>

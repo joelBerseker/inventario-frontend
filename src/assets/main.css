@@ -3,7 +3,9 @@
 #app {
     height: 100vh;
 }
-
+.vtl-table{
+    margin-bottom: 0rem !important;
+}
 .vtl-paging-change-div,
 .vtl-paging-info {
     visibility: hidden;
@@ -30,4 +32,20 @@
 .modal.modal-static .modal-dialog {
     -webkit-transform: none !important;
     transform: none !important;
+}
+
+.pagination-sm {
+    --bs-pagination-font-size: 0.9rem !important;
+    
+    --bs-pagination-color: var(--my-2th-color) !important;
+    
+}
+.active>.page-link{
+    background-color: var(--my-5th-color) !important;
+    border-color: var(--my-5th-color) !important;
+    cursor: default;
+    
+}
+.page-link{
+    cursor: pointer;
 }
