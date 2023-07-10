@@ -1,10 +1,10 @@
 <template>
   <MyModal ref="myModal" :id="'supplierDetailModal'" :title="this.title">
     <div class="modal-body">
-      <MyForm class="mb-3" name="Nombre">
+      <MyForm class="mb-3" name="Nombre" :message="validationName.validationMessage">
         <input
           type="text"
-          class="form-control form-control-sm"
+          :class="'form-control form-control-sm ' + validationName.validationStyle"
           id="name"
           name="name"
           :disabled="disabled"
@@ -14,9 +14,9 @@
       </MyForm>
       <div class="row">
         <div class="col-4">
-          <MyForm class="mb-3" name="Tipo de documento">
+          <MyForm class="mb-3" name="Tipo de documento" :message="validationDocumentType.validationMessage">
             <select
-              :class="'form-control form-control-sm'"
+              :class="'form-control form-control-sm ' + validationDocumentType.validationStyle"
               id="documentType"
               name="documentType"
               :disabled="disabled"
@@ -30,10 +30,10 @@
           </MyForm>
         </div>
         <div class="col">
-          <MyForm class="mb-3" name="Documento">
+          <MyForm class="mb-3" name="Documento" :message="validationDocument.validationMessage">
             <input
               type="text"
-              class="form-control form-control-sm"
+              :class="'form-control form-control-sm ' + validationDocument.validationStyle"
               id="document"
               name="document"
               :disabled="disabled"
@@ -44,10 +44,10 @@
         </div>
       </div>
 
-      <MyForm class="mb-3" name="Telefono">
+      <MyForm class="mb-3" name="Telefono" :message="validationPhone.validationMessage">
         <input
           type="text"
-          class="form-control form-control-sm"
+          :class="'form-control form-control-sm ' + validationPhone.validationStyle"
           id="phone"
           name="phone"
           :disabled="disabled"
@@ -55,10 +55,10 @@
           required
         />
       </MyForm>
-      <MyForm class="mb-3" name="Dirección">
+      <MyForm class="mb-3" name="Dirección" :message="validationAddress.validationMessage">
         <input
           type="text"
-          class="form-control form-control-sm"
+          :class="'form-control form-control-sm ' + validationAddress.validationStyle"
           id="address"
           name="address"
           :disabled="disabled"
@@ -148,53 +148,62 @@ export default defineComponent({
 
   computed: {
     validateForm: function () {
-      var result = true;
-      return result;
+      var result =
+        this.validationName.isValid &&
+        this.validationDocumentType.isValid &&
+        this.validationDocument.isValid &&
+        this.validationPhone.isValid &&
+        this.validationAddress.isValid
+        ;
+      return result
     },
-    validationCode: function () {
-      var text = this.item_selected.code;
-      var _message = "";
-      var _valid_text = "";
-      var _valid = true;
-      if (this.showValidation(text, this.validated, this.mode)) {
-        _message = this.onlyText(text, _message);
-        _message = this.textEmpty(text, _message);
-        _message = this.textLength(text, _message, 3, 6);
 
-        _valid_text = _message != "" ? " is-invalid" : " is-valid";
-        _valid = _message != "" ? false : true;
-      }
-      var response = {
-        message: _message,
-        validText: _valid_text,
-        valid: _valid,
-      };
-      return response;
+    validationName: function () {
+      var text = this.item_selected.name;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 3, 50);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationDocumentType: function () {
+      var text = this.item_selected.documentType;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationDocument: function () {
+      var text = this.item_selected.document;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 3, 10);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationPhone: function () {
+      var text = this.item_selected.phone;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 9, 9);
+
+      return this.validateInput(text, validationMessage, true);
+    },
+    validationAddress: function () {
+      var text = this.item_selected.address;
+
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      validationMessage = this.textLength(text, validationMessage, 3, 50);
+
+      return this.validateInput(text, validationMessage, true);
     },
   },
   methods: {
-    changeCurrency() {
-      this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, "");
-      console.log("-------------");
-
-      console.log("value -> " + this.item_selected.price);
-      var text = this.item_selected.price.toString().replace(/[^0-9]/, "");
-      console.log("lengh -> " + text.length);
-      console.log("text -> " + text);
-      if (text.length >= 3) {
-        var firsPart = text.slice(0, -2);
-        var lastPart = text.slice(text.length - 2);
-        var complete = firsPart + "." + lastPart;
-        console.log(complete);
-        this.item_selected.price = Number(complete).toFixed(2);
-      }
-
-      /*if (this.item_selected.price.toString().length == 3) {
-                this.item_selected.price = (this.item_selected.price / 100).toFixed(2)
-            } else if (this.item_selected.price.toString().length >= 4) {
-                this.item_selected.price = (this.item_selected.price * 1000 / 100).toFixed(2)
-            }*/
-    },
     async saveItem() {
       this.validated = true;
       if (this.validateForm) {

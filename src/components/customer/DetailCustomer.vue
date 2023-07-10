@@ -166,28 +166,6 @@ export default defineComponent({
 
   },
   methods: {
-    changeCurrency() {
-      this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, "");
-      console.log("-------------");
-
-      console.log("value -> " + this.item_selected.price);
-      var text = this.item_selected.price.toString().replace(/[^0-9]/, "");
-      console.log("lengh -> " + text.length);
-      console.log("text -> " + text);
-      if (text.length >= 3) {
-        var firsPart = text.slice(0, -2);
-        var lastPart = text.slice(text.length - 2);
-        var complete = firsPart + "." + lastPart;
-        console.log(complete);
-        this.item_selected.price = Number(complete).toFixed(2);
-      }
-
-      /*if (this.item_selected.price.toString().length == 3) {
-                this.item_selected.price = (this.item_selected.price / 100).toFixed(2)
-            } else if (this.item_selected.price.toString().length >= 4) {
-                this.item_selected.price = (this.item_selected.price * 1000 / 100).toFixed(2)
-            }*/
-    },
     async saveItem() {
       this.validated = true;
       if (this.validateForm) {
