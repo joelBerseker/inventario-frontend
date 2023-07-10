@@ -114,7 +114,7 @@ body {
 
 .btn {
     font-size: 0.9rem !important;
-    border-radius: 0.5rem !important;
+    border-radius: 0.3rem !important;
 }
 .input-group>:not(:first-child):not(.dropdown-toggle):not(.dropdown-menu){
     border-top-left-radius: 0 !important;
@@ -142,25 +142,25 @@ p {
 table {
     border-collapse: separate !important;
     border-spacing: 0 !important;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
 
 }
 
 
 tr:first-child th:first-child {
-    border-top-left-radius: 0.5rem;
+    border-top-left-radius: 0.3rem;
 }
 
 tr:first-child th:last-child {
-    border-top-right-radius: 0.5rem;
+    border-top-right-radius: 0.3rem;
 }
 
 tr:last-child td:first-child {
-    border-bottom-left-radius: 0.5rem !important;
+    border-bottom-left-radius: 0.3rem !important;
 }
 
 tr:last-child td:last-child {
-    border-bottom-right-radius: 0.5rem !important;
+    border-bottom-right-radius: 0.3rem !important;
 }
 
 .vtl-tablec,
