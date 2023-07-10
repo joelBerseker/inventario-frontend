@@ -67,7 +67,7 @@ export default defineComponent({
                     {
                         label: " ",
                         field: "quick",
-                        width: "10%",
+                        width: "1%",
                         sortable: false,
                     },
                 ],
@@ -220,7 +220,7 @@ export default defineComponent({
             <template v-slot:quick="data">
                 <div>
                     <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                        <i class="bi bi-journal"></i> Ver
+                        <i class="bi bi-journal"></i>
                     </button>
                 </div>
             </template>

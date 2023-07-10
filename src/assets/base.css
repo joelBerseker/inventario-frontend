@@ -167,7 +167,7 @@ tr:last-child td:last-child {
 .vtl-thead,
 .vtl-thead-th {
 
-    background-color: var(--my-2th-color) !important;
+    background-color: var(--my-3th-color) !important;
 }
 
 .vtl-table thead th{

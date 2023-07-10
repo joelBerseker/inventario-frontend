@@ -23,18 +23,7 @@
                     <div class="py-2 px-3"><i class="bi bi-info-circle "></i> Mas información</div>
                 </RouterLink>
             </div>
-            <div class="my-1 px-2 d-flex w-100">
-
-                <div type="submit" @click="logoutButton" class=" w-100 item-menu m-0 ">
-                    <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Cerrar Sesión</div>
-                </div>
-            </div>
-            <div class="my-1 px-2 d-flex w-100">
-
-                <div type="submit" @click="switchLoading()" class=" w-100 item-menu m-0 ">
-                    <div class="py-2 px-3"><i class="bi bi-arrow-bar-left"></i> Loading</div>
-                </div>
-            </div>
+           
         </div>
     </div>
     <div id="content">
@@ -84,13 +73,7 @@ export default defineComponent({
                     title: "Inicio",
                     desc: "With supporting text below as a natural lead-in to additional content.",
                     icon: "bi bi-house",
-                    url: "/"
-                },
-                {
-                    title: "Usuario",
-                    desc: "Perfil del Usuario, donde se pone los datos internos de la pag.",
-                    icon: "bi bi-person-vcard",
-                    url: "/user"
+                    url: "/home"
                 },
                 {
                     title: "Entradas",
@@ -261,6 +244,7 @@ export default defineComponent({
     /* Stay at the top */
     left: 0;
     background-color: var(--my-2th-color);
+    border-right: 1px solid rgba(255, 255, 255, 0.164);
 }
 
 #content {
