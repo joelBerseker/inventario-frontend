@@ -92,15 +92,15 @@ export default defineComponent({
 <style scoped>
 
 .slide-fade-enter-active {
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .slide-fade-enter {
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .slide-fade-leave-active {
-    transition: all 0.25s ease;
+    /*transition: all 0.25s ease;*/
 }
 
 .slide-fade-leave-to {
@@ -127,6 +127,7 @@ export default defineComponent({
 
 .content {
     transition: 0.5s;
+    border-left: 1px solid rgba(255, 255, 255, 0.137);
 
 }
 

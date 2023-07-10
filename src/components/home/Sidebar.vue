@@ -216,7 +216,7 @@ export default defineComponent({
     height: 100%;
     border-radius: 0.3rem !important;
     z-index: -3;
-    transform: translateX(-15px);
+    transform: translateX(-10px);
     transition: 0.4s;
 }
 

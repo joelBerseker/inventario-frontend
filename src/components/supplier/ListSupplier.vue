@@ -12,6 +12,7 @@ export default defineComponent({
 
     data() {
         return {
+            cardView: false,
             item_selected: {},
             Products: [],
             table: {
@@ -60,7 +61,7 @@ export default defineComponent({
                     {
                         label: " ",
                         field: "quick",
-                        width: "1%",
+                        width: "0%",
                         sortable: false,
                     },
                 ],
@@ -109,7 +110,7 @@ export default defineComponent({
     methods: {
         changeLoading(_loading) {
             setTimeout(() => { this.loading = _loading }, 300);
-    
+
         },
         addMode() {
             this.item_selected = {};
@@ -155,7 +156,7 @@ export default defineComponent({
                 response.data.results.forEach((element) => {
                     this.table.rows.push(element);
                     this.table.totalRecordCount = this.table.rows.length;
-                    
+
                 });
                 this.changeLoading(false)
             }).catch(() => {
@@ -177,17 +178,47 @@ export default defineComponent({
         <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
             <i class="bi bi-plus-circle"></i> Agregar Proveedor
         </button>
-        <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
-            :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-            @is-finished="table.isLoading = false" :messages="table.messages">
-            <template v-slot:quick="data">
-                <div>
-                    <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-                        <i class="bi bi-journal"></i>
-                    </button>
+        <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
+            <i class="bi bi-view-list"></i> Vista por tarjetas
+        </button>
+        <div v-if="!cardView">
+            <table-lite :is-static-mode="true" :is-slot-mode="true" :is-loading="table.isLoading" :columns="table.columns"
+                :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+                @is-finished="table.isLoading = false" :messages="table.messages">
+                <template v-slot:quick="data">
+                    <div>
+                        <button v-on:click="viewMode(data.value)" type="button"
+                            class="btn btn-secondary btn-sm">
+                            <i class="bi bi-journal"></i>
+                        </button>
+                    </div>
+                </template>
+            </table-lite>
+        </div>
+        <div v-else>
+            <div class="row">
+                <div class="col-4 mb-3" v-for="item in table.rows" :key="item.id">
+                    <div class="card box" :id="item.title">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <h1><i class="bi bi-person-circle"></i></h1>
+                                </div>
+                                <div class="col">
+                                    <p class="title-text"> {{ item.name }}</p>
+                                    <p class="card-text">{{ item.phone }}</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-            </template>
-        </table-lite>
+
+            </div>
+        </div>
+
     </Content>
 </template>
 
