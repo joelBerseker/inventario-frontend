@@ -170,10 +170,11 @@ export default defineComponent({
           });
           this.table.totalRecordCount = response.data.count;
           this.numPag = Math.ceil(response.data.count / 10);
-
+          
           this.changeLoading(false)
         })
-        .catch(() => {
+        .catch((e) => {
+          console.log(e.message);
           this.showToast({
             title: "Obtener Registros",
             message:
@@ -211,8 +212,8 @@ export default defineComponent({
 
     if (this.$store.getters.isActive) {
       await this.getProducts();
-
     }
+    console.log("perro");
   },
 });
 </script>

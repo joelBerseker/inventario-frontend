@@ -1,6 +1,7 @@
 import { store } from '@/store'
 import axios from 'axios';
 const url = import.meta.env.VITE_APP_RUTA_API;
+
 export default new class {
     //metodo para obtener token de un usuario enviando sus credenciales (correo,contraseña)
     async obtain_token(credentials) {
@@ -10,6 +11,7 @@ export default new class {
         console.log(response.data);
         store.commit("SET_TOKEN", response.data.access);
         store.commit("SET_REFRESH", response.data.refresh);
+        store.commit("SET_ID", response.data.user_id);
         return response.data;
     }
     //metodo para extender el tiempo de vida de un token
@@ -36,8 +38,8 @@ export default new class {
     }
     //metodo para obtener todos los datos de un usuario logueado
     async getUser() {
-        const response = await axios.get(url + 'user/profile/'+store.getters.getId+"/");
-        return response.data;
+        const response = await axios.get(url + 'user/api/'+store.getters.getId+"/");
+        const user = response.data;
     }
     prueba(){
         console.log("hola");
