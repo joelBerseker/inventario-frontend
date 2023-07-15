@@ -1,6 +1,6 @@
 <script>
 import DetailSupplier from "./DetailSupplier.vue";
-import Content from '@/components/my_components/Content.vue'
+import Content from '@/components/home/Content.vue'
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
