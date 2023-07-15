@@ -3,7 +3,7 @@ import createPersistedState from 'vuex-persistedstate';
 
 const getDefaultState = () => {
   return {
-    idUser: "01",
+    idUser: "",
     token: "",
     refresh:"",
     id: "",
