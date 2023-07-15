@@ -4,10 +4,29 @@ import { defineComponent, renderSlot } from "vue";
 export default defineComponent({
     name: "TopBar",
     props: [
-        "title", "icon", "breadcrumb"
+        "title", "icon", "breadcrumb", "confirmDialogue"
     ],
 
     methods: {
+        confirmLogout(){
+            this.confirmDialogue({
+                    title: "Cerrar Sesión",
+                    message: "¿Esta seguro que desea cerrar sesión?",
+                    okButton: "Aceptar",
+                }).then((result) => {
+                    if (result) {
+                        this.logout();
+                    }
+                })
+        },
+        logoutButton(evt) {
+            evt.preventDefault();
+            this.confirmLogout();
+        },
+        logout() {
+            this.$store.dispatch("logout");
+            this.$router.push("/login");
+        },
     },
     computed: {
         styleBreadcrumb: function () {
@@ -24,12 +43,29 @@ export default defineComponent({
 });
 </script>
 <template>
-    <div class="bg-color-3 py-3 px-3 color-1 content">
-        <transition name="slide-fade" mode="out-in">
+    <div class="bg-color-2 py-3 px-3 color-1 content">
+        <div class="row">
+            <div class="col">
+                <transition name="slide-fade" mode="out-in">
 
-            <p :key="title" class="title-text "><i :class=icon></i> {{ title }}</p>
+                    <p :key="title" class="title-text "><i :class=icon></i> {{ title }}</p>
 
-        </transition>
+                </transition>
+            </div>
+            <div class="col text-end">
+                <button v-on:click="this.$router.push('/user');" type="button" class="btn btn-primary btn-sm me-1">
+                    <i class="bi bi-person-vcard"></i> Usuario
+                </button>
+                <button v-on:click="logoutButton" type="button" class="btn btn-primary btn-sm me-1">
+                    <i class="bi bi-bell"></i>
+                </button>
+                <button v-on:click="logoutButton" type="button" class="btn btn-primary btn-sm">
+                    <i class="bi bi-power"></i>
+                </button>
+            </div>
+
+        </div>
+
         <div :style="styleBreadcrumb" class="breadcrumb-content">
             <div v-if="breadcrumb.length <= 1">
             </div>
@@ -65,16 +101,17 @@ export default defineComponent({
     </div>
 </template>
 <style scoped>
+
 .slide-fade-enter-active {
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .slide-fade-enter {
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .slide-fade-leave-active {
-    transition: all 0.25s ease;
+    /*transition: all 0.25s ease;*/
 }
 
 .slide-fade-leave-to {
@@ -101,6 +138,7 @@ export default defineComponent({
 
 .content {
     transition: 0.5s;
+    border-left: 1px solid rgba(255, 255, 255, 0.137);
 
 }
 

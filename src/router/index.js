@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../components/home/Home.vue'
 import Login from '../components/autentication/Login.vue'
-import MainContainer from '../components/home/SideBar.vue'
+import System from '../components/home/System.vue'
 import Product from '../components/product/ListProduct.vue'
 import Supplier from '../components/supplier/ListSupplier.vue'
 import Customer from '../components/customer/ListCustomer.vue'
@@ -14,8 +14,8 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'main_container',
-            component: MainContainer,
+            name: 'system',
+            component: System,
             redirect: {name: 'home'}, 
             children: [
                 {

@@ -1,6 +1,6 @@
 <script>
 import DetailProduct from "./DetailProduct.vue";
-import Content from '@/components/my_components/Content.vue'
+import Content from '@/components/home/Content.vue'
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
@@ -85,7 +85,7 @@ export default defineComponent({
           {
             label: " ",
             field: "quick",
-            width: "7%",
+            width: "0%",
             sortable: false,
           },
         ],
@@ -231,8 +231,8 @@ export default defineComponent({
       @is-finished="table.isLoading = false" :messages="table.messages" class="mb-3">
       <template v-slot:quick="data">
         <div>
-          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm button-space">
-            <i class="bi bi-journal"></i> Ver
+          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm">
+            <i class="bi bi-journal"></i>
           </button>
         </div>
       </template>
