@@ -105,7 +105,6 @@
                 <i class="bi bi-check-circle"></i>
                 Guardar
             </button>
-            {{ validateForm }}
         </div>
     </MyModal>
 </template>
