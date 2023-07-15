@@ -4,13 +4,24 @@ import { defineComponent, renderSlot } from "vue";
 export default defineComponent({
     name: "TopBar",
     props: [
-        "title", "icon", "breadcrumb"
+        "title", "icon", "breadcrumb", "confirmDialogue"
     ],
 
     methods: {
+        confirmLogout(){
+            this.confirmDialogue({
+                    title: "Cerrar Sesión",
+                    message: "¿Esta seguro que desea cerrar sesión?",
+                    okButton: "Aceptar",
+                }).then((result) => {
+                    if (result) {
+                        this.logout();
+                    }
+                })
+        },
         logoutButton(evt) {
             evt.preventDefault();
-            this.logout();
+            this.confirmLogout();
         },
         logout() {
             this.$store.dispatch("logout");

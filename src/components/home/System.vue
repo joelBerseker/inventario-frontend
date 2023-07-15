@@ -3,7 +3,7 @@
         <SideBar></SideBar>
     </div>
     <div id="content">
-        <TopBar :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb"></TopBar>
+        <TopBar :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb" :confirmDialogue="confirmDialogue"></TopBar>
         <div class="p-3">
             <RouterView v-slot="{ Component }">
                 <transition name="slide-fade" mode="out-in">
