@@ -72,8 +72,7 @@ body {
 .btn {
     font-size: 0.9rem !important;
     border-radius: 100rem !important;
-    padding-left: 0.7rem !important;
-    padding-right: 0.7rem !important;
+  
 }
 .input-group>:not(:first-child):not(.dropdown-toggle):not(.dropdown-menu){
     border-top-left-radius: 0 !important;
@@ -139,8 +138,8 @@ tr:last-child td:last-child {
 }
 
 td, th{
-    padding-top: 0.5rem !important;
-    padding-bottom: 0.5rem !important;
+    padding-top: 0.4rem !important;
+    padding-bottom: 0.4rem !important;
 }
 
 .toast{
@@ -158,4 +157,7 @@ td, th{
 }
 .form-control-sm, .input-group-text{
     border-radius: var(--my-border-radius) !important;
+}
+.vtl-tbody-tr{
+    transition: 0.3s !important;
 }

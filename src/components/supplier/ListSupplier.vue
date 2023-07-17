@@ -187,9 +187,12 @@ export default defineComponent({
                 :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
                 @is-finished="table.isLoading = false" :messages="table.messages">
                 <template v-slot:quick="data">
-                    <div>
-                        <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm">
+                    <div class="d-flex">
+                        <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
                             <i class="bi bi-journal"></i>
+                        </button>
+                        <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i>
                         </button>
                     </div>
                 </template>

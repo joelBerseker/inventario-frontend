@@ -17,6 +17,7 @@
 <style scoped>
 .box {
     cursor: pointer;
+    transition: 0.3s;
 }
 
 .box:hover {
