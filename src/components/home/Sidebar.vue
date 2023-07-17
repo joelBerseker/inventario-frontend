@@ -1,30 +1,3 @@
-<template>
-    <div class="d-flex flex-column align-items-center">
-        <div class="mt-4 mb-2 px-3 main-text ">
-            <div class="d-flex flex-column align-items-center">
-                <Icon size="55px"></Icon>
-            </div>
-            <p class="title-text text-center">Gestion de inventarios</p>
-        </div>
-        <div class="d-flex w-100 color-1 px-3 my-0 py-0">
-            <hr class="w-100 my-2" />
-        </div>
-        <div v-for="item in list" :key="item.title" class="my-1 px-2 d-flex w-100">
-            <RouterLink :to="item.url" class="w-100 item-menu m-0">
-                <div class="py-2 px-3"><i :class="item.icon"></i> {{ item.title }}</div>
-            </RouterLink>
-        </div>
-        <div class="d-flex w-100 color-1 px-3">
-            <hr class="w-100 my-2" />
-        </div>
-        <div class="my-1 px-2 d-flex w-100 ">
-            <RouterLink to="/about" class="w-100 item-menu m-0 ">
-                <div class="py-2 px-3"><i class="bi bi-info-circle "></i> Mas información</div>
-            </RouterLink>
-        </div>
-
-    </div>
-</template>
 <script>
 import Icon from '@/components/my_components/Icon.vue'
 import { defineComponent } from "vue";
@@ -77,6 +50,33 @@ export default defineComponent({
     },
 });
 </script>
+<template>
+    <div class="d-flex flex-column align-items-center">
+        <div class="mt-4 mb-2 px-3 main-text ">
+            <div class="d-flex flex-column align-items-center">
+                <Icon size="55px"></Icon>
+            </div>
+            <p class="title-text text-center">Gestion de inventarios</p>
+        </div>
+        <div class="d-flex w-100 color-1 px-3 my-0 py-0">
+            <hr class="w-100 my-2" />
+        </div>
+        <div v-for="item in list" :key="item.title" class="my-1 px-2 d-flex w-100">
+            <RouterLink :to="item.url" class="w-100 item-menu m-0">
+                <div class="py-2 px-3"><i :class="item.icon"></i> {{ item.title }}</div>
+            </RouterLink>
+        </div>
+        <div class="d-flex w-100 color-1 px-3">
+            <hr class="w-100 my-2" />
+        </div>
+        <div class="my-1 px-2 d-flex w-100 ">
+            <RouterLink to="/about" class="w-100 item-menu m-0 ">
+                <div class="py-2 px-3"><i class="bi bi-info-circle "></i> Mas información</div>
+            </RouterLink>
+        </div>
+
+    </div>
+</template>
 <style scoped>
 .item-menu {
     text-decoration-line: none;

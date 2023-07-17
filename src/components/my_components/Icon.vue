@@ -1,24 +1,24 @@
 <template>
     <div class="d-flex justify-content-center">
-        <div v-if="speed" :class="bg +'icon'" :style="'width: calc(' + size + '/2) ; height: ' + size">
+        <div v-if="speed" :class="bg + 'icon'" :style="'width: calc(' + size + '/2) ; height: ' + size">
             <div class="fig-7">
 
-                <div :class="color+ 'fig-8'"></div>
-                <div :class="color+ 'fig-9'"></div>
-                <div :class="color+ 'fig-10'"></div>
+                <div :class="color + 'fig-8'"></div>
+                <div :class="color + 'fig-9'"></div>
+                <div :class="color + 'fig-10'"></div>
             </div>
         </div>
-        <div :class="bg +'icon'" :style="'width: ' + size + '; height: ' + size">
+        <div :class="bg + 'icon'" :style="'width: ' + size + '; height: ' + size">
             <div class="fig-0">
-                <div :class="color+ 'fig-1'"></div>
-                <div :class="color+ 'fig-2'"></div>
-                <div :class="bg+ 'fig-3'">
-                    <div :class="color+ 'fig-3-1'"></div>
+                <div :class="color + 'fig-1'"></div>
+                <div :class="color + 'fig-2'"></div>
+                <div :class="bg + 'fig-3'">
+                    <div :class="color + 'fig-3-1'"></div>
                 </div>
 
-                <div :class="color+ 'fig-4'"></div>
-                <div :class="color+ 'fig-5'"></div>
-                <div :class="color+ 'fig-6'"></div>
+                <div :class="color + 'fig-4'"></div>
+                <div :class="color + 'fig-5'"></div>
+                <div :class="color + 'fig-6'"></div>
             </div>
         </div>
     </div>
@@ -41,6 +41,9 @@ export default defineComponent({
                 case 2:
                     resp = " bg-color-2 "
                     break;
+                case 3:
+                    resp = " bg-color-3 "
+                    break;
                 default:
                     resp = " bg-color-1 "
                     break;
@@ -55,6 +58,9 @@ export default defineComponent({
                     break;
                 case 2:
                     resp = " bg-color-2 "
+                    break;
+                case 3:
+                    resp = " bg-color-3 "
                     break;
                 default:
                     resp = " bg-color-2 "
