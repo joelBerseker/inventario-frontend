@@ -3,7 +3,7 @@ import Content from '@/components/home/Content.vue'
 import { defineComponent } from "vue";
 
 export default defineComponent({
-    name: "About",
+    name: "templateContent",
     props: ["changeTopbar", "showToast", "confirmDialogue"],
     components: {
         Content,
@@ -12,8 +12,8 @@ export default defineComponent({
         return {
             loading: false,
             topbar: {
-                title: "Mas información",
-                icon: "bi bi-info-circle",
+                title: "template",
+                icon: "icon",
                 breadcrumb: [
                     {
                         name: "Inicio",
@@ -41,8 +41,9 @@ export default defineComponent({
 </script>
 <template>
     <Content ref="content" :loading="loading">
-        <a href="https://docs.google.com/spreadsheets/d/1shM2f3sb77z6Hm93w9DS7nfRkxQ9cxRTWAmNqDJ0y_c/edit#gid=0">Drive</a>
+        here information
     </Content>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

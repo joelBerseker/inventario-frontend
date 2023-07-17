@@ -30,7 +30,7 @@ export default defineComponent({
             if (loading) {
                 this._loading = loading
             } else {
-                setTimeout(() => { this._loading = loading }, 300);
+                setTimeout(() => { this._loading = loading }, 50);
             }
         },
     },
