@@ -6,7 +6,7 @@
     --my-4th-color: #3E5C76;
     --my-5th-color: #748CAB;
 
-    --my-border-radius: 0.3rem;
+    --my-border-radius: 0.5em;
 }
 *,
 *::before,
@@ -62,11 +62,18 @@ body {
 
 .modal {
     background: rgba(0, 0, 0, 0.5) !important;
+
+    
+}
+.modal-content{
+    border-radius: var(--my-border-radius) !important;
 }
 
 .btn {
     font-size: 0.9rem !important;
-    border-radius: 0.3rem !important;
+    border-radius: 100rem !important;
+    padding-left: 0.7rem !important;
+    padding-right: 0.7rem !important;
 }
 .input-group>:not(:first-child):not(.dropdown-toggle):not(.dropdown-menu){
     border-top-left-radius: 0 !important;
@@ -94,25 +101,25 @@ p {
 table {
     border-collapse: separate !important;
     border-spacing: 0 !important;
-    border-radius: 0.3rem;
+    border-radius: var(--my-border-radius) !important;
 
 }
 
 
 tr:first-child th:first-child {
-    border-top-left-radius: 0.3rem;
+    border-top-left-radius: var(--my-border-radius) !important;
 }
 
 tr:first-child th:last-child {
-    border-top-right-radius: 0.3rem;
+    border-top-right-radius: var(--my-border-radius) !important;
 }
 
 tr:last-child td:first-child {
-    border-bottom-left-radius: 0.3rem !important;
+    border-bottom-left-radius: var(--my-border-radius) !important;
 }
 
 tr:last-child td:last-child {
-    border-bottom-right-radius: 0.3rem !important;
+    border-bottom-right-radius: var(--my-border-radius) !important;
 }
 
 .vtl-tablec,
@@ -137,6 +144,18 @@ td, th{
 }
 
 .toast{
-    background-color: white !important;
+    background-color: white !important;  
+    border-radius: var(--my-border-radius) !important;
+    overflow: hidden;
+}
+.toast-header {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
 }
 
+.card {
+    border-radius: var(--my-border-radius) !important;
+}
+.form-control-sm, .input-group-text{
+    border-radius: var(--my-border-radius) !important;
+}

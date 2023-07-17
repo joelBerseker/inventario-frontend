@@ -1,108 +1,72 @@
 <template>
-  <div class="profile">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="profile-avatar">
-            <img
-              :src="displayUser.photo"
-              alt="Foto de perfil"
-              class="profile-photo"
-            />
-          </div>
-        </div>
-        <div class="col-lg-8">
-          <div class="profile-details">
-            <div class="profile-info">
-              <div class="profile-field">
-                <div class="profile-field-label">Nombre:</div>
-                <div class="profile-field-value" v-if="!editing">
-                  {{ displayUser.first_name }} {{ displayUser.last_name }}
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="editUser.first_name"
-                  v-if="editing"
-                />
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="editUser.last_name"
-                  v-if="editing"
-                />
-              </div>
-              <div class="profile-field">
-                <div class="profile-field-label">Email:</div>
-                <div class="profile-field-value">{{ displayUser.email }}</div>
-              </div>
-              <div class="profile-field">
-                <div class="profile-field-label">Dirección:</div>
-                <div class="profile-field-value" v-if="!editing">
-                  {{ displayUser.address }}
-                </div>
-                <textarea
-                  class="form-control"
-                  v-model="editUser.address"
-                  v-if="editing"
-                ></textarea>
-              </div>
-              <div class="profile-field">
-                <div class="profile-field-label">Teléfono:</div>
-                <div class="profile-field-value" v-if="!editing">
-                  {{ displayUser.phone }}
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="editUser.phone"
-                  v-if="editing"
-                />
-              </div>
-              <div class="profile-field">
-                <div class="profile-field-label">RUC:</div>
-                <div class="profile-field-value" v-if="!editing">
-                  {{ displayUser.ruc }}
-                </div>
-                <input
-                  type="text"
-                  class="form-control"
-                  v-model="editUser.ruc"
-                  v-if="editing"
-                />
-              </div>
+  <Content ref="content" :loading="loading">
+    <div class="profile">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="profile-avatar">
+              <img :src="displayUser.photo" alt="Foto de perfil" class="profile-photo" />
             </div>
-            <div class="profile-actions">
-              <button
-                class="btn btn-primary profile-action-btn"
-                @click="toggleEditing"
-              >
-                {{ editing ? "Cancelar" : "Editar perfil" }}
-              </button>
-              <button
-                class="btn btn-success profile-action-btn"
-                v-if="editing"
-                @click="saveChanges"
-              >
-                Guardar cambios
-              </button>
-              <button
-                class="btn btn-secondary profile-action-btn"
-                v-if="editing"
-                @click="cancelChanges"
-              >
-                Cancelar cambios
-              </button>
+          </div>
+          <div class="col-lg-8">
+            <div class="profile-details">
+              <div class="profile-info">
+                <div class="profile-field">
+                  <div class="profile-field-label">Nombre:</div>
+                  <div class="profile-field-value" v-if="!editing">
+                    {{ displayUser.first_name }} {{ displayUser.last_name }}
+                  </div>
+                  <input type="text" class="form-control" v-model="editUser.first_name" v-if="editing" />
+                  <input type="text" class="form-control" v-model="editUser.last_name" v-if="editing" />
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">Email:</div>
+                  <div class="profile-field-value">{{ displayUser.email }}</div>
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">Dirección:</div>
+                  <div class="profile-field-value" v-if="!editing">
+                    {{ displayUser.address }}
+                  </div>
+                  <textarea class="form-control" v-model="editUser.address" v-if="editing"></textarea>
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">Teléfono:</div>
+                  <div class="profile-field-value" v-if="!editing">
+                    {{ displayUser.phone }}
+                  </div>
+                  <input type="text" class="form-control" v-model="editUser.phone" v-if="editing" />
+                </div>
+                <div class="profile-field">
+                  <div class="profile-field-label">RUC:</div>
+                  <div class="profile-field-value" v-if="!editing">
+                    {{ displayUser.ruc }}
+                  </div>
+                  <input type="text" class="form-control" v-model="editUser.ruc" v-if="editing" />
+                </div>
+              </div>
+              <div class="profile-actions">
+                <button class="btn btn-primary profile-action-btn" @click="toggleEditing">
+                  {{ editing ? "Cancelar" : "Editar perfil" }}
+                </button>
+                <button class="btn btn-success profile-action-btn" v-if="editing" @click="saveChanges">
+                  Guardar cambios
+                </button>
+                <button class="btn btn-secondary profile-action-btn" v-if="editing" @click="cancelChanges">
+                  Cancelar cambios
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </Content>
 </template>
 
 <script>
 import axios from "axios";
+import Content from '@/components/home/Content.vue'
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   name: "Profile",
@@ -120,18 +84,37 @@ export default {
       },
       editUser: {},
       displayUser: {},
+      loading: true,
+      topbar: {
+        title: "Usuario",
+        icon: "bi bi-person-vcard",
+        breadcrumb: [
+          {
+            name: "Inicio",
+            link: "/home"
+          },
+          {
+            name: "Usuario",
+            link: ""
+          },
+
+        ],
+      }
     };
   },
   async created() {
-    this.loadingContent(true);
+    this.changeTopbar(this.topbar);
     this.getUser();
     console.log(this.user.value);
-    this.loadingContent(false);
   },
-  props: [
-        "loadingContent",
-    ],
+  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  components: {
+        Content,
+    },
   methods: {
+    loadingContent(loading) {
+      this.$refs.content.loadingContent(loading);
+    },
     getUser() {
       var path = url + "user/api/" + this.$store.getters.getId + "/";
       axios
@@ -140,6 +123,7 @@ export default {
           this.user = response.data;
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
+          this.loadingContent(false)
         })
         .catch((e) => {
           console.log(e.message);
@@ -186,9 +170,8 @@ export default {
 
 <style scoped>
 .profile {
-  min-height: calc(
-    100vh - 70px
-  ); /* Ajustar el valor 70px según la altura del encabezado de tu página */
+  min-height: calc(100vh - 70px);
+  /* Ajustar el valor 70px según la altura del encabezado de tu página */
   padding: 20px 0;
   background-color: #f8f8f8;
   display: flex;

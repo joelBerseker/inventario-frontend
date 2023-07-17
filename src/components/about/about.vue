@@ -30,7 +30,7 @@ export default defineComponent({
 
     },
     methods: {
-        changeLoading(loading) {
+        loadingContent(loading) {
             this.$refs.content.loadingContent(loading);
         },
     },

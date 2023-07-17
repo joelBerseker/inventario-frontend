@@ -53,13 +53,13 @@ export default defineComponent({
                 </transition>
             </div>
             <div class="col text-end">
-                <button v-on:click="this.$router.push('/user');" type="button" class="btn btn-primary btn-sm me-1">
+                <button v-on:click="this.$router.push('/user');" type="button" class="btn btn-primary-outline btn-sm me-1">
                     <i class="bi bi-person-vcard"></i> Usuario
                 </button>
-                <button v-on:click="logoutButton" type="button" class="btn btn-primary btn-sm me-1">
+                <button v-on:click="logoutButton" type="button" class="btn btn-primary-outline btn-sm me-1">
                     <i class="bi bi-bell"></i>
                 </button>
-                <button v-on:click="logoutButton" type="button" class="btn btn-primary btn-sm">
+                <button v-on:click="logoutButton" type="button" class="btn btn-primary-outline btn-sm">
                     <i class="bi bi-power"></i>
                 </button>
             </div>

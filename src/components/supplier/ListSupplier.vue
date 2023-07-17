@@ -110,7 +110,7 @@ export default defineComponent({
 
     },
     methods: {
-        changeLoading(loading) {
+        loadingContent(loading) {
             this.$refs.content.loadingContent(loading);
         },
         addMode() {
@@ -159,7 +159,7 @@ export default defineComponent({
                     this.table.totalRecordCount = this.table.rows.length;
 
                 });
-                this.changeLoading(false)
+                this.loadingContent(false)
             }).catch(() => {
                 this.showToast({
                     title: "Obtener Registros",

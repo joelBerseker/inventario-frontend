@@ -120,7 +120,7 @@ export default defineComponent({
     paginate: Paginate,
   },
   methods: {
-    changeLoading(loading) {
+    loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
     },
     addMode() {
@@ -176,7 +176,7 @@ export default defineComponent({
           this.table.totalRecordCount = response.data.count;
           this.numPag = Math.ceil(response.data.count / 10);
 
-          this.changeLoading(false)
+          this.loadingContent(false)
         })
         .catch((e) => {
           console.log(e.message);

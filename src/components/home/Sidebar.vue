@@ -81,7 +81,7 @@ export default defineComponent({
 .item-menu {
     text-decoration-line: none;
     color: var(--my-1th-color);
-    border-radius: 0.3rem !important;
+    border-radius: var(--my-border-radius) !important;
     margin: 0.25rem;
     transition: 0.8s;
     transform: translateX(0px);
@@ -93,7 +93,7 @@ export default defineComponent({
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: 0.3rem !important;
+    border-radius: var(--my-border-radius) !important;
     z-index: -3;
     transform: translateX(-10px);
     transition: 0.4s;
