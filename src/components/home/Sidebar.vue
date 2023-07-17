@@ -83,7 +83,7 @@ export default defineComponent({
     color: var(--my-1th-color);
     border-radius: var(--my-border-radius) !important;
     margin: 0.25rem;
-    transition: 0.8s;
+
     transform: translateX(0px);
 }
 
@@ -95,8 +95,8 @@ export default defineComponent({
     height: 100%;
     border-radius: var(--my-border-radius) !important;
     z-index: -3;
-    transform: translateX(-10px);
-    transition: 0.4s;
+    /*transform: translateX(-10px); */
+    transition: 0.5s;
 }
 
 .main-text {

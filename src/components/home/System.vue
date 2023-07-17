@@ -109,13 +109,13 @@ export default defineComponent({
 <style scoped>
 .t-main-content-enter-active,
 .t-main-content-enter {
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
 }
 
 .t-main-content-leave-active {}
 
 .t-main-content-leave-to {
-    transform: translateX(10px);
+    transform: translateY(10px);
     opacity: 0;
 }
 
