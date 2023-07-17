@@ -3,6 +3,7 @@ import Home from '../components/home/Home.vue'
 import Login from '../components/autentication/Login.vue'
 import System from '../components/home/System.vue'
 import Product from '../components/product/ListProduct.vue'
+import AddProductExcel from '../components/product/AddProductExcel.vue'
 import Supplier from '../components/supplier/ListSupplier.vue'
 import Customer from '../components/customer/ListCustomer.vue'
 import Inputs from '../components/Input/ListInput.vue'
@@ -57,6 +58,11 @@ const router = createRouter({
                     path: '/about',
                     name: 'about',
                     component: About
+                },
+                {
+                    path: '/product/add-product-excel',
+                    name: 'add-product-excel',
+                    component: AddProductExcel
                 }
             ]
         },

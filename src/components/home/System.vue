@@ -95,12 +95,15 @@ export default defineComponent({
         <SideBar></SideBar>
     </div>
     <div id="main-content">
-        <TopBar :loadingApp="loadingApp" :topbar="topbar"
-            :confirmDialogue="confirmDialogue"></TopBar>
-        <transition name="t-main-content" mode="out-in">
-            <RouterView :changeTopbar="changeTopbar" :showToast="showToast" :confirmDialogue="confirmDialogue">
-            </RouterView>
-        </transition>
+        <TopBar :loadingApp="loadingApp" :topbar="topbar" :confirmDialogue="confirmDialogue"></TopBar>
+
+        <RouterView v-slot="{ Component }">
+            <transition name="t-main-content" mode="out-in">
+                <component :is="Component" :changeTopbar="changeTopbar" :showToast="showToast"
+                    :confirmDialogue="confirmDialogue" />
+            </transition>
+        </RouterView>
+
     </div>
     <MyToast ref="toast"></MyToast>
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>

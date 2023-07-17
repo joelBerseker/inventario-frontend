@@ -12,7 +12,7 @@ export default defineComponent({
         return {
             loading: false,
             topbar: {
-                title: "templateContent",
+                title: "Agregar por Excel",
                 icon: "icon",
                 breadcrumb: [
                     {
@@ -20,7 +20,11 @@ export default defineComponent({
                         link: "/home"
                     },
                     {
-                        name: "templateContent",
+                        name: "Productos",
+                        link: "/product"
+                    },
+                    {
+                        name: "Agregar por Excel",
                         link: ""
                     },
 

@@ -226,6 +226,10 @@ export default defineComponent({
     <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
       <i class="bi bi-plus-circle"></i> Agregar Producto
     </button>
+    <button v-on:click="this.$router.push('/product/add-product-excel');" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
+      <i class="bi bi-file-earmark-spreadsheet"></i>
+      Agregar por Excel
+    </button>
     <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
       :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
       @is-finished="table.isLoading = false" :messages="table.messages" class="mb-3">
