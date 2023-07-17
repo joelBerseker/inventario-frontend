@@ -10,40 +10,23 @@
                 <label for="ruc" class="form-label">Usuario</label>
 
                 <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="bi bi-person"></i
-                  ></span>
-                  <input
-                    type="email"
-                    class="form-control"
-                    v-model="user.username"
-                    id="user"
-                    required
-                  />
+                  <span class="input-group-text"><i class="bi bi-person"></i></span>
+                  <input type="email" class="form-control" v-model="user.username" id="user" required />
                 </div>
               </div>
               <div class="mb-3">
                 <label for="direccion" class="form-label">Contraseña</label>
                 <div class="input-group">
-                  <span class="input-group-text"
-                    ><i class="bi bi-lock"></i
-                  ></span>
-                  <input
-                    type="password"
-                    v-model="user.password"
-                    class="form-control"
-                    id="ruc"
-                    required
-                  />
+                  <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                  <input type="password" v-model="user.password" class="form-control" id="ruc" required />
                 </div>
               </div>
               <div class="text-end">
-                <button
-                  type="submit"
-                  @click="onSubmit"
-                  class="btn btn-dark btn-sm button-space"
-                >
-                  <i class="bi bi-send"></i> Ingresar
+                <button type="submit" @click="onSubmit" class="btn btn-dark btn-sm button-space"
+                  :disabled="loadingButton">
+                  <i v-if="!loadingButton" class="bi bi-send"></i>
+                  <div v-else class="spinner-border spinner-border-sm"></div>
+                  Ingresar
                 </button>
               </div>
             </div>
@@ -78,12 +61,16 @@ export default defineComponent({
         username: "",
         password: "",
       },
+      loadingButton: false
     };
   },
+  props: [
+    "loadingApp",
+  ],
+  created() {
+    this.loadingApp(false)
+  },
   methods: {
-    goTo(url) {
-      this.$router.push(url);
-    },
     textEmpty(text) {
       return text == "";
     },
@@ -109,17 +96,18 @@ export default defineComponent({
     },
 
     onSubmit(evt) {
-        evt.preventDefault();
-        if (this.usernameValidation() && this.passwordValidation) {
-            this.login();
-        } else {
-            this.showAlert("luego de verificar");
-        }
+      evt.preventDefault();
+      if (this.usernameValidation() && this.passwordValidation) {
+        this.login();
+      } else {
+        this.showAlert("luego de verificar");
+      }
     },
     showAlert(msg) {
       console.log(msg);
     },
     async login() {
+      this.loadingButton = true;
       const credentials = {
         email: this.user.username,
         password: this.user.password,
@@ -129,14 +117,17 @@ export default defineComponent({
         const obtainToken = await AuthService.obtain_token(credentials);
         const token = obtainToken.access;
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
+        this.loadingApp(true)
         this.$router.push("/home");
       } catch (e) {
         this.showAlert("al validar token");
-      } finally {  
-        this.butom_loading = false;
+      } finally {
+        this.loadingButton = false;
       }
-      
+
     },
   },
+
 });
 </script>

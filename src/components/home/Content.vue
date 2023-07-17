@@ -1,20 +1,11 @@
 <template>
-    <transition name="slide-fade-1" mode="out-in">
-        <div :key="loading">
-            <div v-if="loading">
-                <div class="mx-auto center justify-content-center">
-                    <div class="container">
-                        <div class="row justify-content-md-center" align-h="center">
-                            <Icon size="70px" :speed="true" :mode="2" :bgMode="1"></Icon>
-                        </div>
-                    </div>
-                </div>
+    <transition name="t-content" mode="out-in">
+        <div :key="_loading">
+            <div v-if="_loading" class="center">
+                <Icon size="70px" :speed="true" :mode="2" :bgMode="1"></Icon>
             </div>
-            <div v-if="!loading">
-
-                <slot>
-                </slot>
-
+            <div v-if="!_loading" class="p-3">
+                <slot></slot>
             </div>
         </div>
     </transition>
@@ -27,7 +18,7 @@ export default defineComponent({
     name: "Content",
     data() {
         return {
-
+            _loading: true
         }
     },
     props: ["loading"],
@@ -35,44 +26,42 @@ export default defineComponent({
         Icon
     },
     methods: {
+        loadingContent(loading) {
+            if (loading) {
+                this._loading = loading
+            } else {
+                setTimeout(() => { this._loading = loading }, 300);
+            }
+        },
+    },
+    created() {
+        this._loading= this.loading
     }
 }
 )
 </script>
 <style scoped>
 .center {
-    height: 100%;
     height: 70vh;
     display: flex;
     align-items: center;
-    margin: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
-
-    min-height: 100%;
+    justify-content: center;
 }
 
-.slide-fade-1-enter-active {
+.t-content-enter-active, .t-content-enter {
     transition: all 0.25s ease;
 }
 
-.slide-fade-1-enter {
+.t-content-leave-active {
     transition: all 0.25s ease;
 }
 
-.slide-fade-1-leave-active {
-    transition: all 0.25s ease;
-}
-
-.slide-fade-1-leave-to {
+.t-content-leave-to {
     transform: translateX(10px);
     opacity: 0;
 }
 
-.slide-fade-1-enter-from
-
-/* .slide-fade-1-leave-active below version 2.1.8 */
-    {
+.t-content-enter-from {
     transform: translateX(-10px);
     opacity: 0;
 }

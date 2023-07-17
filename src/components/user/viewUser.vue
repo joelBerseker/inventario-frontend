@@ -123,9 +123,14 @@ export default {
     };
   },
   async created() {
+    this.loadingContent(true);
     this.getUser();
     console.log(this.user.value);
+    this.loadingContent(false);
   },
+  props: [
+        "loadingContent",
+    ],
   methods: {
     getUser() {
       var path = url + "user/api/" + this.$store.getters.getId + "/";

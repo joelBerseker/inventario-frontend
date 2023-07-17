@@ -1,16 +1,18 @@
 <template>
-    <div class="row">
-        <div class="col-6 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
-            <div class="card box" :id="item.title">
+    <Content ref="content" :loading="loading">
+        <div class="row">
+            <div class="col-6 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
+                <div class="card box" :id="item.title">
 
-                <div class="card-body">
-                    <p class="title-text"><i :class="item.icon"></i> {{ item.title }}</p>
-                    <p class="card-text">{{ item.desc }}</p>
+                    <div class="card-body">
+                        <p class="title-text"><i :class="item.icon"></i> {{ item.title }}</p>
+                        <p class="card-text">{{ item.desc }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
+    </Content>
 </template>
 <style scoped>
 .box {
@@ -23,15 +25,16 @@
 </style>
 <script>
 import { defineComponent } from "vue";
+import Content from '@/components/home/Content.vue'
 export default defineComponent({
     name: "Home",
     props: [
-        "title", "icon", "changeTitle"
+        "title", "icon", "changeTopbar"
     ],
     data() {
         return {
             list: [
-                
+
                 {
                     title: "Usuario",
                     desc: "Perfil del Usuario, donde se pone los datos internos de la pag.",
@@ -69,13 +72,20 @@ export default defineComponent({
                     url: "/supplier"
                 }
             ],
-            breadcrumb: [
-                {
-                    name: "Inicio",
-                    link: "/home"
-                },
-            ]
+            topbar: {
+                title: "Inicio",
+                icon: "bi bi-house",
+                breadcrumb: [
+                    {
+                        name: "Inicio",
+                        link: "/home"
+                    },
+                ]
+            },
         }
+    },
+    components: {
+        Content
     },
     methods: {
         goTo(url) {
@@ -83,7 +93,7 @@ export default defineComponent({
         }
     },
     created() {
-        this.changeTitle({ name: "Inicio", icon: "bi bi-house", breadcrumb: this.breadcrumb })
+        this.changeTopbar(this.topbar)
     }
 });
 </script>

@@ -1,23 +1,3 @@
-<template>
-    <div id="sidebar">
-        <SideBar></SideBar>
-    </div>
-    <div id="content">
-        <TopBar :title="title.name" :icon="title.icon" :breadcrumb="title.breadcrumb" :confirmDialogue="confirmDialogue"></TopBar>
-        <div class="p-3">
-            <RouterView v-slot="{ Component }">
-                <transition name="slide-fade" mode="out-in">
-                    <component :is="Component" :changeTitle="changeTitle" :showToast="showToast"
-                        :confirmDialogue="confirmDialogue" />
-                </transition>
-            </RouterView>
-        </div>
-      
-    </div>
-    <MyToast ref="toast"></MyToast>
-    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
-    <LoadingSystem ref="loadingSystem"></LoadingSystem>
-</template>
 <script>
 import axios from "axios";
 import AuthService from "@/services/AuthService";
@@ -36,10 +16,13 @@ export default defineComponent({
         Icon, TopBar, ConfirmDialogue,
         MyToast, LoadingSystem, SideBar
     },
+    props: [
+        "loadingApp",
+    ],
     data() {
         return {
-            title: {
-                name: "",
+            topbar: {
+                title: "",
                 icon: "",
                 breadcrumb: []
             },
@@ -47,16 +30,16 @@ export default defineComponent({
     },
     methods: {
         loadingSystem(loading) {
-            if(loading){
+            if (loading) {
                 this.$refs.loadingSystem.openModal();
-            }else{
+            } else {
                 this.$refs.loadingSystem.closeModal();
             }
         },
-        changeTitle(title) {
-            this.title.name = title.name;
-            this.title.icon = title.icon;
-            this.title.breadcrumb = title.breadcrumb
+        changeTopbar(topbar) {
+            this.topbar.title = topbar.title;
+            this.topbar.icon = topbar.icon;
+            this.topbar.breadcrumb = topbar.breadcrumb
         },
         showToast(opts = {}) {
             this.$refs.toast.show(opts);
@@ -85,14 +68,7 @@ export default defineComponent({
 
     },
     created() {
-
-        const credentials = {
-            username: "admin",
-            password: "jose123as",
-        };
-        if (!this.$store.getters.isActive) {
-            this.logout();
-        }
+        this.loadingApp(false);
     },
     async updated() {
         if (!this.$store.getters.isActive) {
@@ -114,54 +90,54 @@ export default defineComponent({
     },
 });
 </script>
+<template>
+    <div id="sidebar">
+        <SideBar></SideBar>
+    </div>
+    <div id="main-content">
+        <TopBar :loadingApp="loadingApp" :topbar="topbar"
+            :confirmDialogue="confirmDialogue"></TopBar>
+        <transition name="t-main-content" mode="out-in">
+            <RouterView :changeTopbar="changeTopbar" :showToast="showToast" :confirmDialogue="confirmDialogue">
+            </RouterView>
+        </transition>
+    </div>
+    <MyToast ref="toast"></MyToast>
+    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
+    <LoadingSystem ref="loadingSystem"></LoadingSystem>
+</template>
 <style scoped>
-.slide-fade-enter-active {
-    transition: all 0.25s ease;
+.t-main-content-enter-active,
+.t-main-content-enter {
+    transition: all 0.3s ease;
 }
 
-.slide-fade-enter {
-    transition: all 0.25s ease;
-}
+.t-main-content-leave-active {}
 
-.slide-fade-leave-active {}
-
-.slide-fade-leave-to {
+.t-main-content-leave-to {
     transform: translateX(10px);
     opacity: 0;
 }
 
-.slide-fade-enter-from
-
-/* .slide-fade-leave-active below version 2.1.8 */
-    {
-
+.t-main-content-enter-from {
     opacity: 0;
 }
-
-
-
 
 #sidebar {
     overflow: hidden;
     height: 100%;
-    /* 100% Full-height */
     width: 250px;
-    /* 0 width - change this with JavaScript */
     position: fixed;
-    /* Stay in place */
     z-index: 100;
-    /* Stay on top */
     top: 0;
-    /* Stay at the top */
     left: 0;
     background-color: var(--my-2th-color);
     border-right: 1px solid rgba(255, 255, 255, 0.164);
 }
 
-#content {
+#main-content {
     transition: margin-left 0.5s;
     margin-left: 250px;
-
     min-height: 100vh;
     background-size: cover;
     overflow-x: hidden;

@@ -84,18 +84,22 @@ export default defineComponent({
                     noDataAvailable: "No se encontraron elementos",
                 },
             },
-            breadcrumb: [
-                {
-                    name: "Inicio",
-                    link: "/home"
-                },
-                {
-                    name: "Clientes",
-                    link: ""
-                },
 
-            ],
             loading: true,
+            topbar: {
+                title: "Clientes",
+                icon: "bi bi-people",
+                breadcrumb: [
+                    {
+                        name: "Inicio",
+                        link: "/home"
+                    },
+                    {
+                        name: "Clientes",
+                        link: ""
+                    },
+                ],
+            }
         };
     },
     mixins: [UtilityFunctions],
@@ -105,17 +109,17 @@ export default defineComponent({
         Content,
     },
     props: [
-        "changeTitle", "showToast", "confirmDialogue"
+        "changeTopbar", "showToast", "confirmDialogue"
     ],
     async created() {
-        this.changeTitle({ name: "Clientes", icon: "bi bi-people", breadcrumb: this.breadcrumb })
+        this.changeTopbar(this.topbar)
         if (this.$store.getters.isActive) {
             await this.getCustomers();
         }
     },
     methods: {
-        changeLoading(_loading) {
-            setTimeout(() => { this.loading = _loading }, 30);
+        changeLoading(loading) {
+            this.$refs.content.loadingContent(loading);
         },
         addMode() {
             this.item_selected = {};
@@ -163,7 +167,7 @@ export default defineComponent({
                 response.data.results.forEach((element) => {
                     this.table.rows.push(element);
                     this.table.totalRecordCount = this.table.rows.length;
-                    
+
                 });
                 this.changeLoading(false)
             }).catch(() => {
@@ -178,7 +182,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <Content ref="mainContent" :loading="loading">
+    <Content ref="content" :loading="loading">
         <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
             :getCustomers="getCustomers" />
         <div class="row justify-content-md-end">

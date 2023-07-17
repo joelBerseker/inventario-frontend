@@ -78,18 +78,21 @@ export default defineComponent({
                     noDataAvailable: "No se encontraron elementos",
                 },
             },
-            breadcrumb: [
-                {
-                    name: "Inicio",
-                    link: "/home"
-                },
-                {
-                    name: "Proveedores",
-                    link: ""
-                },
 
-            ],
             loading: true,
+            topbar: {
+                title: "Proveedores", icon: "bi bi-truck", breadcrumb: [
+                    {
+                        name: "Inicio",
+                        link: "/home"
+                    },
+                    {
+                        name: "Proveedores",
+                        link: ""
+                    },
+
+                ],
+            }
         };
     },
     mixins: [UtilityFunctions],
@@ -99,18 +102,16 @@ export default defineComponent({
         Content,
     },
     props: [
-        "changeTitle", "showToast", "confirmDialogue"
+        "changeTopbar", "showToast", "confirmDialogue"
     ],
     async created() {
-        this.changeTitle({ name: "Proveedores", icon: "bi bi-truck", breadcrumb: this.breadcrumb })
-        if (this.$store.getters.isActive) {
-            await this.getSuppliers();
-        }
+        this.changeTopbar(this.topbar)
+        await this.getSuppliers();
+
     },
     methods: {
-        changeLoading(_loading) {
-            setTimeout(() => { this.loading = _loading }, 300);
-
+        changeLoading(loading) {
+            this.$refs.content.loadingContent(loading);
         },
         addMode() {
             this.item_selected = {};
@@ -171,7 +172,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <Content ref="mainContent" :loading="loading">
+    <Content ref="content" :loading="loading">
         <DetailSupplier ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
             :getSuppliers="getSuppliers" />
 
@@ -187,8 +188,7 @@ export default defineComponent({
                 @is-finished="table.isLoading = false" :messages="table.messages">
                 <template v-slot:quick="data">
                     <div>
-                        <button v-on:click="viewMode(data.value)" type="button"
-                            class="btn btn-secondary btn-sm">
+                        <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm">
                             <i class="bi bi-journal"></i>
                         </button>
                     </div>

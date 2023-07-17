@@ -4,9 +4,8 @@ import { defineComponent, renderSlot } from "vue";
 export default defineComponent({
     name: "TopBar",
     props: [
-        "title", "icon", "breadcrumb", "confirmDialogue"
+        "topbar", "confirmDialogue", "loadingApp"
     ],
-
     methods: {
         confirmLogout(){
             this.confirmDialogue({
@@ -24,6 +23,7 @@ export default defineComponent({
             this.confirmLogout();
         },
         logout() {
+            this.loadingApp(true)
             this.$store.dispatch("logout");
             this.$router.push("/login");
         },
@@ -31,7 +31,7 @@ export default defineComponent({
     computed: {
         styleBreadcrumb: function () {
             var resp = ""
-            if (this.breadcrumb.length <= 1) {
+            if (this.topbar.breadcrumb.length <= 1) {
                 resp = "height: 0px"
             } else {
                 resp = "height: 22px"
@@ -48,7 +48,7 @@ export default defineComponent({
             <div class="col">
                 <transition name="slide-fade" mode="out-in">
 
-                    <p :key="title" class="title-text "><i :class=icon></i> {{ title }}</p>
+                    <p :key="topbar.title" class="title-text "><i :class=topbar.icon></i> {{ topbar.title }}</p>
 
                 </transition>
             </div>
@@ -67,23 +67,23 @@ export default defineComponent({
         </div>
 
         <div :style="styleBreadcrumb" class="breadcrumb-content">
-            <div v-if="breadcrumb.length <= 1">
+            <div v-if="topbar.breadcrumb.length <= 1">
             </div>
             <div v-else>
                 <div class="row mt-2">
                     <div class="col-auto breadcrumb-item">
-                        <span v-if="breadcrumb.length > 1"><i class="bi bi-arrow-left-circle"></i>
-                            <RouterLink :to="breadcrumb[breadcrumb.length - 2].link" class="color-1"> Atras</RouterLink>
+                        <span v-if="topbar.breadcrumb.length > 1"><i class="bi bi-arrow-left-circle"></i>
+                            <RouterLink :to="topbar.breadcrumb[topbar.breadcrumb.length - 2].link" class="color-1"> Atras</RouterLink>
                         </span>
                         <span v-else class="active"><i class="bi bi-arrow-left-circle"></i> Atras</span>
                     </div>
                     <div class="col">
                         <transition name="slide-fade" mode="out-in">
-                            <nav :key="title" aria-label="breadcrumb" class="color-1 margin-breadcrumb">
+                            <nav :key="topbar.title" aria-label="breadcrumb" class="color-1 margin-breadcrumb">
                                 <ol class="breadcrumb mb-0  breadcrumb-ol">
 
-                                    <li v-for="(item, index) in breadcrumb" :key="item.name" class="breadcrumb-item">
-                                        <RouterLink v-if="index <= breadcrumb.length - 2" :to="item.link" class="color-1">{{
+                                    <li v-for="(item, index) in topbar.breadcrumb" :key="item.name" class="breadcrumb-item">
+                                        <RouterLink v-if="index <= topbar.breadcrumb.length - 2" :to="item.link" class="color-1">{{
                                             item.name }}
                                         </RouterLink>
                                         <span class="active" v-else>{{ item.name }}</span>

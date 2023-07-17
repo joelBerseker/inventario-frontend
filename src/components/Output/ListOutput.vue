@@ -3,6 +3,7 @@ import DetailOutput from "./DetailOutput.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
+import Content from '@/components/home/Content.vue'
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
@@ -86,26 +87,32 @@ export default defineComponent({
                     noDataAvailable: "No se encontraron elementos",
                 },
             },
-            breadcrumb: [
-                {
-                    name: "Inicio",
-                    link: "/home"
-                },
-                {
-                    name: "Salidas",
-                    link: ""
-                },
+            topbar: {
+                title: "Salidas",
+                icon: "bi bi-box-arrow-left",
+                breadcrumb: [
+                    {
+                        name: "Inicio",
+                        link: "/home"
+                    },
+                    {
+                        name: "Salidas",
+                        link: ""
+                    },
 
-            ],
+                ],
+            }
+
         };
     },
     mixins: [UtilityFunctions],
     components: {
         DetailOutput,
         TableLite,
+        Content
     },
     props: [
-        "changeTitle", "showToast", "confirmDialogue"
+        "changeTopbar", "showToast", "confirmDialogue"
     ],
     methods: {
         addMode() {
@@ -164,13 +171,13 @@ export default defineComponent({
         },
     },
     async created() {
-        this.changeTitle({ name: "Salidas", icon: "bi bi-box-arrow-left", breadcrumb: this.breadcrumb })
+        this.changeTopbar(this.topbar)
         await this.getOutputs();
     },
 });
 </script>
 <template>
-    <div>
+    <Content ref="content" :loading="loading">
         <DetailOutput ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
             :getOutputs="getOutputs" />
 
@@ -188,7 +195,7 @@ export default defineComponent({
                 </div>
             </template>
         </table-lite>
-    </div>
+    </Content>
 </template>
 <script></script>
 

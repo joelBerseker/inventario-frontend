@@ -1,5 +1,6 @@
 <script>
 import DetailInput from "./DetailInput.vue";
+import Content from '@/components/home/Content.vue'
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -86,26 +87,33 @@ export default defineComponent({
                     noDataAvailable: "No se encontraron elementos",
                 },
             },
-            breadcrumb: [
-                {
-                    name: "Inicio",
-                    link: "/home"
-                },
-                {
-                    name: "Entradas",
-                    link: ""
-                },
+            topbar: {
+                title: "Entradas", 
+                icon: "bi bi-box-arrow-left", 
+                breadcrumb: [
+                    {
+                        name: "Inicio",
+                        link: "/home"
+                    },
+                    {
+                        name: "Entradas",
+                        link: ""
+                    },
 
-            ],
+                ],
+            },
+            loading:false
+
         };
     },
     mixins: [UtilityFunctions],
     components: {
         DetailInput,
         TableLite,
+        Content
     },
     props: [
-        "changeTitle", "showToast", "confirmDialogue"
+        "changeTopbar", "showToast", "confirmDialogue", "loadingContent"
     ],
     methods: {
         addMode() {
@@ -164,13 +172,13 @@ export default defineComponent({
         },
     },
     async created() {
-        this.changeTitle({ name: "Salidas", icon: "bi bi-box-arrow-left", breadcrumb: this.breadcrumb })
+        this.changeTopbar(this.topbar)
         await this.getInputs();
     },
 });
 </script>
 <template>
-    <div>
+    <Content ref="content" :loading="loading">
         <DetailInput ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
             :getInputs="getInputs" />
 
@@ -188,7 +196,7 @@ export default defineComponent({
                 </div>
             </template>
         </table-lite>
-    </div>
+    </Content>
 </template>
 <script></script>
 
