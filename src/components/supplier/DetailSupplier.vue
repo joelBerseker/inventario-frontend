@@ -249,7 +249,7 @@ export default defineComponent({
             message: "Operación exitosa",
             type: 1,
           });
-          this.getSuppliers();
+          this.getSuppliers(1);
           this.closeModal();
         })
         .catch((error) => {
@@ -273,7 +273,7 @@ export default defineComponent({
             message: "Operación exitosa",
             type: 1,
           });
-          this.getSuppliers();
+          this.getSuppliers(1);
           this.closeModal();
         })
         .catch(() => {

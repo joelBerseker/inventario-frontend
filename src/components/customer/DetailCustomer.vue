@@ -212,7 +212,7 @@ export default defineComponent({
             message: "Operación exitosa",
             type: 1,
           });
-          this.getCustomers();
+          this.getCustomers(1);
           this.closeModal();
         })
         .catch((error) => {
@@ -236,7 +236,7 @@ export default defineComponent({
             message: "Operación exitosa",
             type: 1,
           });
-          this.getCustomers();
+          this.getCustomers(1);
           this.closeModal();
         })
         .catch(() => {
