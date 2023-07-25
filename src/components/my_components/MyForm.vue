@@ -1,6 +1,6 @@
 <template>
     <div class="form-group">
-        <label for="nombre">{{name}}:</label>
+        <label for="nombre" v-if="name!=''">{{name}}:</label>
         <slot></slot>
         <div v-if="message=='*No requerido'">
             <span class="message">{{ message }}</span>
