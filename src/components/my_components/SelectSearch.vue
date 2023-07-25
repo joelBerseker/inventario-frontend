@@ -29,6 +29,9 @@
           {{ item.name }}
         </div>
       </li>
+      <li class="text-center" v-if="count >= 10">
+        <div>HAY MAS ELEMENTOS SE MAS ESPECIFICO</div>
+      </li>
     </ul>
   </div>
 </template>
@@ -48,6 +51,8 @@ export default defineComponent({
   data() {
     return {
       search: "",
+      update: true,
+      count:0,
       _itemName: "",
       list: [],
     };
@@ -56,13 +61,17 @@ export default defineComponent({
   methods: {
     getData() {
       var path = url + this.link;
-      console.log(path);
       axios
         .get(path)
         .then((response) => {
-          response.data.results.forEach((element) => {
-            this.list.push(element);
-          });
+          this.count=response.count;
+          if (response.count == 0) {
+            this.update = false;
+          } else {
+            response.data.results.forEach((element) => {
+              this.list.push(element);
+            });
+          }
         })
         .catch(() => {
           console.log("error");
@@ -89,6 +98,18 @@ export default defineComponent({
       return this.list.filter((item) => {
         return item.name.toLowerCase().includes(this.search.toLowerCase());
       });
+    },
+  },
+  watch: {
+    search(newSearch, oldSearch) {
+      if (newSearch.length >= 3) {
+        if (newSearch.length > oldSearch.length && this.update) {
+          console.log("AUMENTA");
+        } else {
+          console.log("ELIMNA");
+          this.update = false;
+        }
+      }
     },
   },
   async created() {

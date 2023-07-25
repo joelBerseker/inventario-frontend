@@ -170,7 +170,7 @@ class Product {
   getGanancia() {
     this.sub = this.cantidad * this.precio;
     
-    return this.sub;
+    return this.sub.toFixed(2);
   }
   setPrecio(data){
     if(typeof data !="string")
@@ -389,7 +389,6 @@ export default defineComponent({
       axios
         .get(path)
         .then((response) => {
-          console.log(response);
           response.data.results.forEach((element) => {
             this.products.push(element);
           });
@@ -430,8 +429,8 @@ export default defineComponent({
     
   },
   async created() {
-    await this.getclients();
-    await this.getProducts();
+    //await this.getclients();
+    //await this.getProducts();
   },
 });
 </script>
