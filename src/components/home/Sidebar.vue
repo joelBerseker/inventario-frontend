@@ -76,7 +76,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center h-100">
         <transition name="t-sidebar-item" mode="out-in">
             <div class="mt-3 mb-2 px-3 main-text " v-if="showSidebar">
                 <div class="d-flex flex-column align-items-center">
@@ -86,8 +86,6 @@ export default defineComponent({
 
                 <p class="title-text text-center">Gestion de inventarios</p>
             </div>
-
-
             <div v-else class="mt-3 mb-2 px-3 main-text ">
                 <div class="d-flex flex-column align-items-center">
                     <Icon size="40px" class="mt-5"></Icon>
@@ -125,10 +123,21 @@ export default defineComponent({
                 </div>
             </RouterLink>
         </div>
-
+        <div class="color-1 footer-text">
+            Desarrollado por Gleaming Glow Team
+        </div>
     </div>
 </template>
 <style scoped>
+.footer-text{
+    font-size: 0.6rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+
+}
 .t-sidebar-item-enter-active,
 .t-sidebar-item-enter {
     transition: all 0.4s ease;
