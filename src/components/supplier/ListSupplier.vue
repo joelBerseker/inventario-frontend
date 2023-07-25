@@ -22,13 +22,13 @@ export default defineComponent({
           {
             label: "Nombre",
             field: "name",
-            width: "5%",
+            width: "15%",
             sortable: true,
           },
           {
             label: "Tipo",
             field: "documentType",
-            width: "10%",
+            width: "1%",
             sortable: true,
             display: (row) => {
               return this.documentType(row.documentType);
@@ -37,7 +37,7 @@ export default defineComponent({
           {
             label: "Document",
             field: "document",
-            width: "20%",
+            width: "10%",
             sortable: true,
           },
 
@@ -56,7 +56,7 @@ export default defineComponent({
           {
             label: "Actualizado",
             field: "updated_at",
-            width: "10%",
+            width: "1%",
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },
@@ -64,7 +64,7 @@ export default defineComponent({
           {
             label: " ",
             field: "quick",
-            width: "0%",
+            width: "1%",
             sortable: false,
           },
         ],

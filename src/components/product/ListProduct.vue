@@ -21,13 +21,13 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "code",
-            width: "5%",
+            width: "3%",
             sortable: true,
           },
           {
             label: "Nombre",
             field: "name",
-            width: "10%",
+            width: "20%",
             sortable: true,
           },
           {
@@ -41,7 +41,7 @@ export default defineComponent({
             label: "Compra",
             columnClasses: ["text-end"],
             field: "cost",
-            width: "10%",
+            width: "7%",
             sortable: true,
             display: (row) => {
               return this.priceCorrect(row.cost);
@@ -51,7 +51,7 @@ export default defineComponent({
             label: "Venta",
             columnClasses: ["text-end"],
             field: "price",
-            width: "10%",
+            width: "7%",
             sortable: true,
             display: (row) => {
               return this.priceCorrect(row.price);
@@ -61,13 +61,13 @@ export default defineComponent({
             label: "Cantidad",
             columnClasses: ["text-end"],
             field: "stock",
-            width: "10%",
+            width: "1%",
             sortable: true,
           },
           {
             label: "Actualizado",
             field: "updated_at",
-            width: "10%",
+            width: "1%",
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },
@@ -75,7 +75,7 @@ export default defineComponent({
           {
             label: " ",
             field: "quick",
-            width: "0%",
+            width: "1%",
             sortable: false,
           },
         ],
