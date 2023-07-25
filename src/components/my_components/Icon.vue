@@ -69,7 +69,6 @@ export default defineComponent({
             return resp
         }
     }
-
 })
 </script>
 
@@ -128,8 +127,6 @@ export default defineComponent({
     animation-name: line-1;
     animation-duration: 0.7s;
     animation-iteration-count: infinite;
-
-
 }
 
 .fig-9 {
@@ -169,7 +166,7 @@ export default defineComponent({
     width: 90%;
     height: 90%;
     position: absolute;
-    bottom: 12%;
+    bottom: 14%;
     left: 8%;
     transform: rotate(-20deg);
 }

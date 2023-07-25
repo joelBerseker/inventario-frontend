@@ -136,10 +136,11 @@ export default defineComponent({
     left: 0;
     background-color: var(--my-2th-color);
     border-right: 1px solid rgba(255, 255, 255, 0.164);
+    transition: width 0.3s;
 }
 
 #main-content {
-    transition: margin-left 0.5s;
+    transition: margin-left 0.3s;
     margin-left: 250px;
     min-height: 100vh;
     background-size: cover;

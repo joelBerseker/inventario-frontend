@@ -6,8 +6,10 @@ export default defineComponent({
     components: {
         Icon,
     },
+
     data() {
         return {
+            showSidebar: true,
             list: [
                 {
                     title: "Inicio",
@@ -47,23 +49,67 @@ export default defineComponent({
                 }
             ]
         };
+
     },
+    methods: {
+        closeSidebar() {
+            document.getElementById("sidebar").style.width = "63px";
+            document.getElementById("main-content").style.marginLeft = "63px";
+            this.showSidebar = false;
+        },
+        openSidebar() {
+            document.getElementById("sidebar").style.width = "250px";
+            document.getElementById("main-content").style.marginLeft = "250px";
+            setTimeout(() => {
+                this.showSidebar = true;
+            }, 200);
+
+        },
+        sidebarButton() {
+            if (this.showSidebar) {
+                this.closeSidebar()
+            } else {
+                this.openSidebar()
+            }
+        }
+    }
 });
 </script>
 <template>
     <div class="d-flex flex-column align-items-center">
-        <div class="mt-4 mb-2 px-3 main-text ">
-            <div class="d-flex flex-column align-items-center">
-                <Icon size="55px"></Icon>
+        <transition name="t-sidebar-item" mode="out-in">
+            <div class="mt-3 mb-2 px-3 main-text " v-if="showSidebar">
+                <div class="d-flex flex-column align-items-center">
+                    <Icon size="55px"></Icon>
+
+                </div>
+
+                <p class="title-text text-center">Gestion de inventarios</p>
             </div>
-            <p class="title-text text-center">Gestion de inventarios</p>
-        </div>
+
+
+            <div v-else class="mt-3 mb-2 px-3 main-text ">
+                <div class="d-flex flex-column align-items-center">
+                    <Icon size="40px" class="mt-5"></Icon>
+                </div>
+            </div>
+        </transition>
+        <button @click="sidebarButton()" type="button" class="btn btn-primary-outline btn-sm btn-sidebar">
+            <i class="bi bi-list"></i>
+        </button>
+
         <div class="d-flex w-100 color-1 px-3 my-0 py-0">
             <hr class="w-100 my-2" />
         </div>
         <div v-for="item in list" :key="item.title" class="my-1 px-2 d-flex w-100">
             <RouterLink :to="item.url" class="w-100 item-menu m-0">
-                <div class="py-2 px-3"><i :class="item.icon"></i> {{ item.title }}</div>
+                <div class="py-2 px-3">
+                    <i :class="item.icon"></i>
+                    <transition name="t-sidebar-item" mode="out-in">
+                        <span v-show="showSidebar">&nbsp;{{ item.title }}</span>
+                    </transition>
+
+                </div>
             </RouterLink>
         </div>
         <div class="d-flex w-100 color-1 px-3">
@@ -71,13 +117,34 @@ export default defineComponent({
         </div>
         <div class="my-1 px-2 d-flex w-100 ">
             <RouterLink to="/about" class="w-100 item-menu m-0 ">
-                <div class="py-2 px-3"><i class="bi bi-info-circle "></i> Mas información</div>
+                <div class="py-2 px-3">
+                    <i class="bi bi-info-circle "></i>
+                    <transition name="t-sidebar-item" mode="out-in">
+                        <span v-show="showSidebar">&nbsp;Mas información</span>
+                    </transition>
+                </div>
             </RouterLink>
         </div>
 
     </div>
 </template>
 <style scoped>
+.t-sidebar-item-enter-active,
+.t-sidebar-item-enter {
+    transition: all 0.4s ease;
+}
+
+.t-sidebar-item-leave-active {}
+
+.t-sidebar-item-leave-to {
+    transform: translateY(10px);
+    opacity: 0;
+}
+
+.t-sidebar-item-enter-from {
+    opacity: 0;
+}
+
 .item-menu {
     text-decoration-line: none;
     color: var(--my-1th-color);
@@ -101,6 +168,7 @@ export default defineComponent({
 
 .main-text {
     color: var(--my-1th-color);
+    height: 88px;
 }
 
 .item-menu:hover::before,
@@ -109,4 +177,9 @@ export default defineComponent({
     transform: translateX(0px);
 }
 
+.btn-sidebar {
+    position: absolute;
+    margin-top: 1rem;
+    right: 1rem;
+}
 </style>
