@@ -195,49 +195,44 @@ export default defineComponent({
 </script>
 <template>
   <Content ref="content" :loading="loading">
-    <DetailCustomer
-      ref="modal"
-      :deleteItem="deleteItem"
-      :showToast="showToast"
-      :item_selected="item_selected"
-      :getCustomers="getCustomers"
-    />
+    <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
+      :getCustomers="getCustomers" />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button
-          v-on:click="addMode"
-          type="button"
-          class="btn btn-primary btn-sm mb-3"
-        >
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Cliente
         </button>
       </div>
       <div class="col">
         <div class="input-group input-group-sm">
           <div class="dropdown">
-            <button
-              class="btn btn-sm btn-secondary margin-dropdown"
-              type="button"
-              id="dropdownMenuLink"
-              data-bs-toggle="dropdown"
-            >
+            <button class="btn btn-sm btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
+              data-bs-toggle="dropdown">
               <i class="bi bi-sliders"></i>
               Filtro
             </button>
             <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
-              <p>
-                Some example text that's free-flowing within the dropdown menu.
-              </p>
-              <p class="mb-0">And this is more example text.</p>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Nombre
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Documento
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                  Telefono
+                </label>
+              </div>
             </div>
           </div>
-          <input
-            type="text"
-            class="form-control form-control-sm"
-            id="name"
-            name="name"
-            required
-          />
+          <input type="text" class="form-control form-control-sm" id="name" name="name" required />
           <button class="btn btn-sm btn-secondary" type="button">
             <i class="bi bi-search"></i>
           </button>
@@ -245,47 +240,23 @@ export default defineComponent({
       </div>
     </div>
 
-    <table-lite
-      :is-static-mode="false"
-      :is-slot-mode="true"
-      :is-hide-paging="true"
-      :is-loading="table.isLoading"
-      :columns="table.columns"
-      :rows="table.rows"
-      :total="table.totalRecordCount"
-      :sortable="table.sortable"
-      @is-finished="table.isLoading = false"
-      :messages="table.messages"
-    >
+    <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
+      :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
+      @is-finished="table.isLoading = false" :messages="table.messages">
       <template v-slot:quick="data">
         <div class="d-flex">
-          <button
-            v-on:click="viewMode(data.value)"
-            type="button"
-            class="btn btn-secondary btn-sm me-1"
-          >
+          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
             <i class="bi bi-journal"></i>
           </button>
-          <button
-            v-on:click="deleteItem(data.value)"
-            type="button"
-            class="btn btn-danger btn-sm"
-          >
+          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
             <i class="bi bi-trash"></i>
           </button>
         </div>
       </template>
     </table-lite>
-    <paginate
-      :page-count="numPag"
-      :page-range="3"
-      :margin-pages="2"
-      :click-handler="clickCallback"
-      :prev-text="'Anterior'"
-      :next-text="'Siguiente'"
-      :container-class="'pagination pagination-sm'"
-      :page-class="'page-item'"
-    >
+    <paginate :page-count="numPag" :page-range="3" :margin-pages="2" :click-handler="clickCallback"
+      :prev-text="'Anterior'" :next-text="'Siguiente'" :container-class="'pagination pagination-sm'"
+      :page-class="'page-item'">
     </paginate>
   </Content>
 </template>
