@@ -240,9 +240,10 @@ export default defineComponent({
       </div>
     </div>
 
-    <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
+    <table-lite class="mb-3" :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
       :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-      @is-finished="table.isLoading = false" :messages="table.messages">
+      @is-finished="table.isLoading = false" :messages="table.messages"
+      >
       <template v-slot:quick="data">
         <div class="d-flex">
           <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">

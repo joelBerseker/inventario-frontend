@@ -1,5 +1,6 @@
 <template>
   <Content ref="content" :loading="loading">
+
     <div class="row">
       <div class="col-6">
         <div class="card">
@@ -9,33 +10,32 @@
             <div class="p-0">
               <div class="row">
                 <div class="container">
-                <div class="row justify-content-center mb-2">
-                  <div class="col-6">
+                  <div class="row justify-content-center mb-2">
+                    <div class="col-6">
 
-                    <div class="profile-avatar text-center" style="margin: 0 auto;">
+                      <div class="profile-avatar text-center" style="margin: 0 auto;">
 
-                      <img :src="displayUser.photo" alt="Foto de perfil" class="profile-photo">
+                        <img :src="displayUser.photo" alt="Foto de perfil" class="profile-photo">
+                      </div>
+                      <MyForm name="Imagen" v-if="editing">
+                        <input type="file" class="form-control form-control-sm mb-2" id="inputGroupFile01">
+                      </MyForm>
                     </div>
-                    <MyForm name="Imagen" v-if="editing">
-                      <input type="file" class="form-control form-control-sm mb-2" id="inputGroupFile01">
-                    </MyForm>
                   </div>
                 </div>
-              </div>
                 <div class="container">
                   <div class="row">
                     <div class="col-12 text-center" v-if="!editing">
                       <p class="title-text mb-2">{{ displayUser.first_name }} {{ displayUser.last_name }}</p>
-                      <hr class="w-75 m-auto mb-3 mt-0"/>
+                      <hr class="w-75 m-auto mb-3 mt-0" />
                     </div>
                     <div class="col-6" v-if="editing">
                       <MyForm class="mb-3" name="Nombre">
-                        <input type="text" class="form-control form-control-sm" v-model="editUser.first_name"
-                           />
+                        <input type="text" class="form-control form-control-sm" v-model="editUser.first_name" />
                       </MyForm>
                     </div>
                     <div class="col-6" v-if="editing">
-                      <MyForm class="mb-3" name="Apellidos" >
+                      <MyForm class="mb-3" name="Apellidos">
                         <input type="text" class="form-control form-control-sm" v-model="editUser.last_name" />
                       </MyForm>
                     </div>
@@ -66,14 +66,14 @@
                 <div class="container">
                   <div class="row">
                     <div class="col-6">
-                      <MyForm class="mb-3" name="Email">
+                      <MyForm name="Email">
                         <div class="profile-field-value" v-if="!editing">{{ displayUser.email }}</div>
                         <input disabled type="text" class="form-control form-control-sm" v-model="editUser.email"
                           v-if="editing" />
                       </MyForm>
                     </div>
                     <div class="col-6">
-                      <MyForm class="mb-3" name="RUC">
+                      <MyForm name="RUC">
                         <div class="profile-field-value" v-if="!editing">
                           {{ displayUser.ruc }}
                         </div>
@@ -83,22 +83,7 @@
                   </div>
                 </div>
               </div>
-              <div class="profile-actions text-end">
 
-                <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn" @click="toggleEditing">
-                  <i class="bi bi-pen"></i> Editar
-                </button>
-                <button v-else class="btn btn-sm btn-secondary profile-action-btn" @click="saveChanges">
-                  <i class="bi bi-x-circle"></i> Cancelar
-                </button>
-                <button class="btn btn-sm btn-success profile-action-btn ms-1" v-if="editing" @click="saveChanges">
-                  <i class="bi bi-check-circle"></i> Guardar
-                </button>
-                <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="saveChanges">
-                  <i class="bi bi-power"></i> Cerrar Sesión
-                </button>
-
-              </div>
             </div>
           </div>
         </div>
@@ -108,17 +93,31 @@
           <div class="card-body">
             <p class="title-text mb-3">Otras configuraciones</p>
             <MyForm class="mb-3" name="IGV">
-                        <div class="profile-field-value" v-if="!editing">
-                          0.18%
-                        </div>
-                        <input type="text" class="form-control form-control-sm" v-model="editUser.first_name"
-                          v-if="editing" />
-                      </MyForm>
+              <div class="profile-field-value" v-if="!editing">
+                0.18%
+              </div>
+              <input type="text" class="form-control form-control-sm" v-model="editUser.first_name" v-if="editing" />
+            </MyForm>
           </div>
         </div>
       </div>
     </div>
+    <div class="profile-actions mt-3">
 
+      <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn" @click="toggleEditing">
+        <i class="bi bi-pen"></i> Editar
+      </button>
+      <button v-else class="btn btn-sm btn-secondary profile-action-btn" @click="saveChanges">
+        <i class="bi bi-x-circle"></i> Cancelar
+      </button>
+      <button class="btn btn-sm btn-success profile-action-btn ms-1" v-if="editing" @click="saveChanges">
+        <i class="bi bi-check-circle"></i> Guardar
+      </button>
+      <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="saveChanges">
+        <i class="bi bi-power"></i> Cerrar Sesión
+      </button>
+
+    </div>
   </Content>
 </template>
 
@@ -203,7 +202,7 @@ export default {
       var path = url + `user/api/` + this.$store.getters.getId + "/";
       var form_data = new FormData();
       for (var key in this.editUser) {
-        if(key=="photo" && !this.editPhto)
+        if (key == "photo" && !this.editPhto)
           continue;
         form_data.append(key, this.editUser[key]);
       }

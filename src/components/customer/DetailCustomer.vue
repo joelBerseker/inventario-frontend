@@ -8,8 +8,11 @@
       <div class="row">
         <div class="col-4">
           <MyForm class="mb-3" name="Tipo de documento" :message="validationDocumentType.validationMessage">
-            <select :class="'form-control form-control-sm ' + validationDocumentType.validationStyle" id="documentType"
+            <select :class="'form-select form-select-sm ' + validationDocumentType.validationStyle" id="documentType"
               name="documentType" :disabled="disabled" v-model="item_selected.documentType" required>
+              <option disabled :value=undefined>
+                Seleccione una opción
+              </option>
               <option v-for="option in options" :value="option.value">
                 {{ option.text }}
               </option>

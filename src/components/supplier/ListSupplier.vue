@@ -220,6 +220,7 @@ export default defineComponent({
         :sortable="table.sortable"
         @is-finished="table.isLoading = false"
         :messages="table.messages"
+        class="mb-3"
       >
         <template v-slot:quick="data">
           <div class="d-flex">
@@ -249,6 +250,7 @@ export default defineComponent({
         :next-text="'Siguiente'"
         :container-class="'pagination pagination-sm'"
         :page-class="'page-item'"
+        
       >
       </paginate>
     </div>
