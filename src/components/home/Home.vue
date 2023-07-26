@@ -83,6 +83,7 @@ export default defineComponent({
                     },
                 ]
             },
+            loading: false
         }
     },
     components: {
