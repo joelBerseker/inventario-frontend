@@ -15,10 +15,17 @@
 
                       <div class="profile-avatar text-center" style="margin: 0 auto;">
 
-                        <img :src="displayUser.photo" alt="Foto de perfil" class="profile-photo">
+
+                        <img v-if="previewImage != null && editing" :src="previewImage" alt="Foto de perfil"
+                          class="profile-photo">
+                        <span v-else>
+                          <img v-if="user.photo == null" src="../../assets/person-circle.svg" alt="Foto de perfil"
+                            class="profile-photo">
+                          <img v-else :src="displayUser.photo" alt="Foto de perfil" class="profile-photo">
+                        </span>
                       </div>
                       <MyForm name="Imagen" v-if="editing">
-                        <input type="file" class="form-control form-control-sm mb-2" id="inputGroupFile01">
+                        <input type="file" class="form-control form-control-sm mb-2" @change=uploadImage />
                       </MyForm>
                     </div>
                   </div>
@@ -132,6 +139,7 @@ export default {
     return {
       editing: false,
       editPhto: false,
+      previewImage: null,
       user: {
         email: "",
         first_name: "",
@@ -170,6 +178,15 @@ export default {
     Content, MyForm
   },
   methods: {
+    uploadImage(e) {
+      const image = e.target.files[0];
+      this.editUser.photo = image
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onload = e => {
+        this.previewImage = e.target.result;
+      };
+    },
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
     },
@@ -179,7 +196,7 @@ export default {
         .get(path)
         .then((response) => {
           this.user = response.data;
-          console.log(this.user);
+          console.log("get user");
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
           this.loadingContent(false)
@@ -189,6 +206,7 @@ export default {
         });
     },
     toggleEditing() {
+      this.previewImage = null
       this.editing = !this.editing;
       if (this.editing) {
         this.editUser = { ...this.user };
@@ -202,13 +220,20 @@ export default {
       var path = url + `user/api/` + this.$store.getters.getId + "/";
       var form_data = new FormData();
       for (var key in this.editUser) {
-        if (key == "photo" && !this.editPhto)
-          continue;
+        /*if (key == "photo" && !this.editPhto)
+          continue;*/
         form_data.append(key, this.editUser[key]);
       }
-      console.log(form_data);
+      console.log(this.editUser);
+      /*if (this.editUser.photo != null) {
+        form_data.append("photo", this.editUser.photo);
+      }*/
       axios
-        .put(path, form_data)
+        .put(path, form_data, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
         .then((response) => {
           console.log("editado");
           console.log(response);
