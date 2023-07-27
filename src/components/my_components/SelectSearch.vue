@@ -8,7 +8,9 @@
       aria-expanded="false"
       v-on:click="focusSearch()"
     >
-      {{ _itemName }}
+      <span v-if="_itemName!=''">{{ _itemName }}</span>
+      <span v-else class="">Seleccione una opción</span>
+      
     </button>
     <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
       <li class="px-2 mb-2">
@@ -143,3 +145,8 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.disabled-item{
+  color: rgba(0, 0, 0, 0.493);
+}
+</style>
