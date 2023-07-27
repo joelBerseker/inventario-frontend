@@ -184,7 +184,7 @@ export default defineComponent({
 
 .item-menu:hover::before,
 .router-link-exact-active::before {
-    background-color: var(--my-3th-color);
+    background-color: var(--my-6th-color);
     transform: translateX(0px);
 }
 
