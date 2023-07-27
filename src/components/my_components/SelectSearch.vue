@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { defineComponent, toHandlers } from "vue";
+import { defineComponent } from "vue";
 
 import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
