@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, toHandlers } from "vue";
 
 import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -77,6 +77,31 @@ export default defineComponent({
           console.log("error");
         });
     },
+    getDataFilter(a){
+      var path = url + this.link+"?search_query="+a;
+      axios
+        .get(path)
+        .then((response) => {
+          this.count=response.count;
+          if (response.count == 0) {
+            this.update = false;
+          } else {
+            console.log("entro a buscar");
+            this.list=[];
+            response.data.results.forEach((element) => {
+              this.list.push(element);
+            });
+            console.log(this.list);
+            console.log(this.listFiltered);
+            console.log("termino a buscar");
+            if(this.count<10)
+            this.update = false;
+          }
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
     focusSearch() {
       this.$refs.search.focus();
     },
@@ -104,12 +129,13 @@ export default defineComponent({
     search(newSearch, oldSearch) {
       if (newSearch.length >= 3) {
         if (newSearch.length > oldSearch.length && this.update) {
-          console.log("AUMENTA");
+          this.getDataFilter(newSearch);
         } else {
           console.log("ELIMNA");
           this.update = false;
         }
       }
+      
     },
   },
   async created() {
