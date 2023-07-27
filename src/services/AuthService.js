@@ -5,10 +5,8 @@ const url = import.meta.env.VITE_APP_RUTA_API;
 export default new class {
     //metodo para obtener token de un usuario enviando sus credenciales (correo,contraseña)
     async obtain_token(credentials) {
-        console.log(url + 'user/token/');
         const response = await axios
             .post(url + 'user/token/', credentials);
-        console.log(response.data);
         store.commit("SET_TOKEN", response.data.access);
         store.commit("SET_REFRESH", response.data.refresh);
         store.commit("SET_ID", response.data.user_id);
