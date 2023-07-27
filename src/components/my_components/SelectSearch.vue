@@ -32,7 +32,7 @@
         </div>
       </li>
       <li class="text-center" v-if="count >= 10">
-        <div>HAY MAS ELEMENTOS SE MAS ESPECIFICO</div>
+        <div>Existen mas elementos, por favor sea mas especifico</div>
       </li>
     </ul>
   </div>
@@ -141,7 +141,7 @@ export default defineComponent({
     },
   },
   async created() {
-    await this.getData();
+    //await this.getData();
   },
 });
 </script>
