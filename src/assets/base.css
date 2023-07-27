@@ -2,10 +2,10 @@
 :root {
     --my-1th-color: #ffffff;
     --my-2th-color: #0D1321;
-    --my-3th-color: #1D2D44;
-    --my-4th-color: #3E5C76;
+    --my-6th-color: #1D2D44;
+    --my-4th-color: #3c678d;
     --my-5th-color: #748CAB;
-
+    --my-3th-color: #1D2D44;
     --my-border-radius: 0.5em;
 }
 *,
@@ -67,6 +67,7 @@ body {
 }
 .modal-content{
     border-radius: var(--my-border-radius) !important;
+
 }
 
 .btn {
@@ -124,7 +125,7 @@ tr:last-child td:last-child {
 .vtl-tablec,
 .vtl-thead,
 .vtl-thead-th {
-
+ 
     background-color: var(--my-3th-color) !important;
 }
 
@@ -138,6 +139,7 @@ tr:last-child td:last-child {
 }
 
 td, th{
+    border-color: rgba(0, 0, 0, 0.144) !important;
     padding-top: 0.4rem !important;
     padding-bottom: 0.4rem !important;
 }

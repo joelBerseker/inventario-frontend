@@ -92,8 +92,8 @@ export default defineComponent({
                     },
 
                 ],
-            }
-
+            },
+            loading: false,
         };
     },
     mixins: [UtilityFunctions],

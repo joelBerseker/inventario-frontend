@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <p class="title-text">{{ this.title }}</p>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn btn-secondary-outline btn-sm" data-bs-dismiss="modal" aria-label="Close"><i class="bi bi-x"></i></button>
                 </div>
                 <slot></slot>
             </div>
