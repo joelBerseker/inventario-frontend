@@ -123,9 +123,11 @@ export default defineComponent({
                 </div>
             </RouterLink>
         </div>
-        <div class="color-1 footer-text">
+        <transition name="t-sidebar-item" mode="out-in">
+        <div v-show="showSidebar" class="color-1 footer-text">
             Desarrollado por Gleaming Glow Team
         </div>
+    </transition>
     </div>
 </template>
 <style scoped>

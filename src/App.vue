@@ -28,7 +28,13 @@ export default defineComponent({
         if (!this.$store.getters.isActive) {
             this.logout()
         } else {
-            this.$router.push("/");
+            var link = window.location.href;
+            var linkSlice = link.substring(link.lastIndexOf("/"), link.length)
+         
+            if(linkSlice == "/login"){
+                this.$router.push("/");
+            }
+            
         }
     },
 })

@@ -130,7 +130,7 @@ export default defineComponent({
                     <Icon size="50px" :mode="2" :bg-mode="1"></Icon>
                     <p class="title-text mb-2">Gestion de Inventarios</p>
                     <hr class="m-0 mb-2" />
-                    <p>Ingrese su usuario y contraseña para ingresar al sistema</p>
+                    <p class="text-secondary-login">Ingrese su usuario y contraseña para ingresar al sistema</p>
                   </div>
 
                   <MyForm class="mb-3" name="Usuario" :message="validationUsername.validationMessage">
@@ -170,6 +170,10 @@ export default defineComponent({
   </div>
 </template>
 <style scoped>
+.text-secondary-login{
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.575);
+}
 .login {
   overflow: hidden;
 
