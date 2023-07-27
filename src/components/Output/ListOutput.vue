@@ -18,13 +18,13 @@ export default defineComponent({
                 columns: [
                     {
                         label: "Codigo",
-                        field: "code",
+                        field: "order_code",
                         width: "5%",
                         sortable: true,
                     },
                     {
-                        label: "Nombre",
-                        field: "name",
+                        label: "Cliente",
+                        field: "id_client",
                         width: "10%",
                         sortable: true,
                     },
@@ -40,11 +40,8 @@ export default defineComponent({
                         field: "cost",
                         width: "10%",
                         sortable: true,
-                        display: (row) => {
-                            return this.priceCorrect(row.cost);
-                        },
                     },
-                    {
+                    /**{
                         label: "Venta",
                         field: "price",
                         width: "10%",
@@ -52,19 +49,13 @@ export default defineComponent({
                         display: (row) => {
                             return this.priceCorrect(row.price);
                         },
-                    },
+                    },**/
                     {
-                        label: "Cantidad",
-                        field: "stock",
-                        width: "10%",
-                        sortable: true,
-                    },
-                    {
-                        label: "Actualizado",
-                        field: "updated_at",
+                        label: "Fecha",
+                        field: "date",
                         width: "10%",
                         display: (row) => {
-                            return this.timeAgo(row.updated_at);
+                            return this.timeAgo(row.date);
                         },
                     },
                     {
@@ -146,7 +137,7 @@ export default defineComponent({
                         }).catch(() => {
                             this.showToast({
                                 title: "Eliminar Registro",
-                                message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                                message: "Ocurrió un error, si continua sucediendo contacte con su proveedor4",
                                 type: 2,
                             });
                         });
@@ -155,16 +146,18 @@ export default defineComponent({
         },
         async getOutputs() {
             this.table.rows = [];
-            var path = url + `products/products/`;
+            var path = url + `orders/orders/`;
+            
             axios.get(path).then((response) => {
-                response.data.forEach((element) => {
+                response.data.results.forEach((element) => {
                     this.table.rows.push(element);
                     this.table.totalRecordCount = this.table.rows.length;
                 });
-            }).catch(() => {
+            }).catch((e) => {
+                console.log(e);
                 this.showToast({
                     title: "Obtener Registros",
-                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor5",
                     type: 2,
                 });
             });

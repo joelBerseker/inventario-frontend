@@ -184,7 +184,6 @@ export default defineComponent({
   components: {
     MyModal,
     MyForm,
-    MyForm,
     SelectSearch,
   },
   name: "Product",
@@ -349,7 +348,7 @@ export default defineComponent({
           this.showToast({
             title: "Agregar Registro",
             message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+              "Ocurrió un error, si continua sucediendo contacte con su proveedor3",
             type: 2,
           });
         });
@@ -399,7 +398,7 @@ export default defineComponent({
           this.showToast({
             title: "Obtener Registros",
             message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+              "Ocurrió un error, si continua sucediendo contacte con su proveedor1",
             type: 2,
           });
         });
@@ -420,7 +419,7 @@ export default defineComponent({
           this.showToast({
             title: "Obtener Registros",
             message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+              "Ocurrió un error, si continua sucediendo contacte con su proveedor2",
             type: 2,
           });
         });

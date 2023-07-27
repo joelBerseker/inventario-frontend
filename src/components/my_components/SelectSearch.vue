@@ -82,7 +82,8 @@ export default defineComponent({
       axios
         .get(path)
         .then((response) => {
-          this.count=response.count;
+          this.count=response.data.count;
+          console.log(this.count);
           if (response.count == 0) {
             this.update = false;
           } else {
@@ -132,14 +133,14 @@ export default defineComponent({
           this.getDataFilter(newSearch);
         } else {
           console.log("ELIMNA");
-          this.update = false;
+          this.update = true;
         }
       }
       
     },
   },
   async created() {
-    await this.getData();
+    //await this.getData();
   },
 });
 </script>
