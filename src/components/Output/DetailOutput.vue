@@ -1,143 +1,113 @@
 <template>
-  <MyModal
-    ref="myModal"
-    :id="'productDetailModal'"
-    :title="this.title"
-    size="modal-xl"
-  >
+  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl">
     <div class="modal-body">
       <div class="row">
-        <div class="col-4">
-          <MyForm
-            class="mb-3"
-            name="Numero de factura"
-            :message="validationCode.message"
-          >
-            <input
-              type="text"
-              v-model="factura.numero"
-              class="form-control form-control-sm"
-              id="numero"
-              required
-            />
-          </MyForm>
-        </div>
-        <div class="col">
-          <MyForm class="mb-3" name="Cliente">
-            <SelectSearch
-              v-model="factura.cliente"
-              link="clients/clients/"
-            ></SelectSearch>
-          </MyForm>
-        </div>
-        <div class="col">
-          <MyForm class="mb-3" name="Fecha">
-            <input
-              type="date"
-              v-model="factura.fecha"
-              class="form-control form-control-sm"
-              id="fecha"
-              required
-            />
-          </MyForm>
-        </div>
-      </div>
-
-      <div class="row mb-0">
-        <div class="col">
-          <p class="title-text">Productos</p>
-        </div>
-        <div class="col text-end">
-          <button
-            type="button"
-            class="btn btn-sm btn-primary"
-            @click="agregarItem"
-          >
-            Agregar Producto
-          </button>
-        </div>
-      </div>
-      <hr class="my-3" />
-      <div class="row">
-        <div class="col-4">
-          <label>Nombre:</label>
-        </div>
-        <div class="col-2">
-          <label>Precio Venta:</label>
-        </div>
-        <div class="col-2">
-          <label>Cantidad:</label>
-        </div>
-        <div class="col-2">
-          <label>Subtotal:</label>
-        </div>
-      </div>
-
-      <div
-        v-for="(item, index) in factura.detalle"
-        :key="index"
-        class="detalle-item"
-      >
-        <div class="row">
-          <div class="form-group col-sm-4 col-md-4">
-            <MyForm class="mb-3" name="">
-            <SelectSearch
-              v-model="item.producto"   
-              link="products/products/"
-            ></SelectSearch>
-          </MyForm>
+        <div class="col-4 head pe-3">
           
+          <MyForm class="mb-3" name="Numero de factura" :message="validationCode.message">
+            <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero" required />
+          </MyForm>
+          <MyForm class="mb-3" name="Cliente">
+            <SelectSearch v-model="factura.cliente" link="clients/clients/"></SelectSearch>
+          </MyForm>
+          <MyForm class="mb-3" name="Fecha">
+            <input type="date" v-model="factura.fecha" class="form-control form-control-sm" id="fecha" required />
+          </MyForm>
+          <MyForm class="mb-3" name="Descripción">
+            <textarea class="form-control form-control-sm" id="descripcion" name="descripcion" :disabled="disabled"
+              v-model="item_selected.description" required></textarea>
+          </MyForm>
+        </div>
+
+        <div class="col-8 ps-3">
+         
+          
+          <div class="row mb-3 d-flex align-items-end">
+            <div class="col">
+              <p class="title-text">Lista de Productos</p>
+            </div>
+            <div class="col text-end">
+              <button type="button" class="btn btn-sm btn-primary" @click="agregarItem">
+                <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
+              </button>
+            </div>
+            <div class="col-3">
+              <p>Total:</p>
+              <div class="input-group input-group-sm">
+                <span class="input-group-text form-control-disabled">S/.</span>
+                <input type="text" class="form-control form-control-sm text-end" id="nombre" name="nombre" v-model="facturaTotal"
+                  disabled />
+
+              </div>
+              
+              
+            </div>
+           
           </div>
-          <div class="form-group col-sm-2 col-md-2">
-            <label class="form-control form-control-sm">{{ item.setPrecio(item.producto) }}</label>
+          <hr class="mb-3 mt-3" />
+
+
+          <div class="row">
+            <div class="col-5">
+              <label>Nombre:</label>
+            </div>
+            <div class="col-2">
+              <label>Precio Venta:</label>
+            </div>
+            <div class="col-2">
+              <label>Cantidad:</label>
+            </div>
+            <div class="col-2">
+              <label>Subtotal:</label>
+            </div>
           </div>
-          <div class="form-group col-sm-2 col-md-2">
-            <input
-              type="number"
-              v-model="item.cantidad"
-              class="form-control form-control-sm"
-              :id="'cantidad_' + index"
-              required
-            />
-          </div>
-          <div class="form-group col-sm-2 col-md-2">
-            <label class="form-control form-control-sm">{{ item.getGanancia() }}</label>
+
+          <div v-for="(item, index) in factura.detalle" :key="index" class="detalle-item">
+            <div class="row">
+
+              <div class="form-group col-5">
+                <MyForm class="mb-3" name="">
+                  <SelectSearch v-model="item.producto" link="products/products/"></SelectSearch>
+                </MyForm>
+
+              </div>
+
+              <div class="form-group col-sm-2 col-md-2">
+                <label class="form-control form-control-sm form-control-disabled text-end">{{ item.setPrecio(item.producto)
+                }}</label>
+              </div>
+              <div class="form-group col-sm-2 col-md-2">
+                <input type="number" v-model="item.cantidad" class="form-control form-control-sm text-end"
+                  :id="'cantidad_' + index" required />
+              </div>
+              <div class="form-group col-sm-2 col-md-2">
+                <label class="form-control form-control-sm form-control-disabled text-end">{{ item.getGanancia() }}</label>
+              </div>
+              <div class="form-group col-1">
+                <button type="button" class="btn btn-sm btn-danger" @click="agregarItem">
+                  <i class="bi bi-trash"></i>
+                </button>
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary btn-sm button-margin"
-        data-bs-dismiss="modal"
-      >
+      <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
         <i class="bi bi-x-circle"></i> Cerrar
       </button>
-      <button
-        type="button"
-        @click="deleteItem(item_selected)"
-        class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="deleteItem(item_selected)" class="btn btn-danger btn-sm button-margin"
+        v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button
-        type="button"
-        @click="editMode"
-        class="btn btn-dark btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="editMode" class="btn btn-dark btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button
-        type="button"
-        @click="saveItem"
-        class="btn btn-success btn-sm button-margin"
-        v-if="mode != 2"
-      >
+      <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -150,6 +120,10 @@
   margin-right: 0 !important;
   margin-top: 0;
   margin-bottom: 0;
+}
+
+.head {
+  border-right: 1px solid rgba(0, 0, 0, 0.171);
 }
 </style>
 <script>
@@ -165,18 +139,21 @@ class Product {
     this.producto = "";
     this.cantidad = 1;
     this.precio = 0;
-    this.sub = 0;
+    /*this.sub = 0;*/
+    this.sub = function () {
+      return this.precio + this.cantidad
+    }
   }
   getGanancia() {
     this.sub = this.cantidad * this.precio;
     return this.sub.toFixed(2);
   }
-  getProduct(){
+  getProduct() {
     return this.producto.id;
   }
-  setPrecio(data){
-    if(typeof data !="string")
-      this.precio=data.price;
+  setPrecio(data) {
+    if (typeof data != "string")
+      this.precio = data.price;
     return this.precio;
   }
 }
@@ -192,9 +169,8 @@ export default defineComponent({
   data() {
     return {
       clients: [],
-      products:[],
-      count:0,
-      prueba_select_search: "no se seleccion",
+      products: [],
+      count: 0,
 
       disabled: false,
       mode: 0,
@@ -207,13 +183,21 @@ export default defineComponent({
         fecha: "",
         cliente: " ",
         detalle: [new Product()],
+        total: null
       },
       emailOptions: [],
       isEmailSelected: false,
     };
   },
   computed: {
-
+    facturaTotal: function () {
+      console.log("ENTRE");
+      var total = 0
+      this.factura.detalle.forEach(element => {
+        total += element.sub
+      });
+      return total
+    },
     validateForm: function () {
       var result = this.validationCode.valid;
       return true;
@@ -413,8 +397,8 @@ export default defineComponent({
           response.data.results.forEach((element) => {
             this.clients.push(element);
           });
-          
-          this.count =response.data.count;
+
+          this.count = response.data.count;
           this.loadingContent(false);
         })
         .catch(() => {
@@ -426,8 +410,8 @@ export default defineComponent({
           });
         });
     },
-    
-    
+
+
   },
   async created() {
     //await this.getclients();

@@ -38,7 +38,10 @@
     background-color: var(--my-4th-color) !important;
     border-color: var(--my-4th-color) !important;
 }
-
+.form-control-disabled{
+    background-color: var(--bs-secondary-bg) !important;
+    opacity: 1;
+}
 .form-control-sm {
     font-size: 0.9rem !important;
 }
@@ -76,3 +79,13 @@
     
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

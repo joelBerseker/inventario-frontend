@@ -45,13 +45,13 @@ export default defineComponent({
                 {
                     title: "Entradas",
                     desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-arrow-bar-right",
+                    icon: "bi bi-box-arrow-in-right",
                     url: "/inputs"
                 },
                 {
                     title: "Salidas",
                     desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-arrow-bar-left",
+                    icon: "bi bi-box-arrow-left",
                     url: "/outputs"
                 },
                 {
