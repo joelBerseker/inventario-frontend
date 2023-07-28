@@ -122,8 +122,6 @@ export default defineComponent({
     },
     onClick(event) {
       var json_arr = JSON.stringify(this.data_to_xls);
-
-      console.log(json_arr);
       this.addItem(json_arr);
     },
     addItem(data) {
@@ -141,14 +139,13 @@ export default defineComponent({
             message: "Operación exitosa",
             type: 1,
           });
-          this.getProducts();
-          this.closeModal();
         })
-        .catch(() => {
+        .catch((e) => {
+          console.log(e);
           this.showToast({
             title: "Agregar Registros",
             message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+              "Ocurrió un error, si continua sucediendo contacte con su proveedorx",
             type: 2,
           });
         });

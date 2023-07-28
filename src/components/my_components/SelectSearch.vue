@@ -130,7 +130,7 @@ export default defineComponent({
   },
   watch: {
     search(newSearch, oldSearch) {
-      if (newSearch.length >= 3) {
+      if (newSearch.length >= 2) {
         if (newSearch.length > oldSearch.length && this.update) {
           this.getDataFilter(newSearch);
         } else {

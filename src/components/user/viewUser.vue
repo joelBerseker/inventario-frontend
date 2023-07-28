@@ -114,7 +114,7 @@
       <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn" @click="toggleEditing">
         <i class="bi bi-pen"></i> Editar
       </button>
-      <button v-else class="btn btn-sm btn-secondary profile-action-btn" @click="saveChanges">
+      <button v-else class="btn btn-sm btn-secondary profile-action-btn" @click="cancelChanges">
         <i class="bi bi-x-circle"></i> Cancelar
       </button>
       <button class="btn btn-sm btn-success profile-action-btn ms-1" v-if="editing" @click="saveChanges">
@@ -235,6 +235,10 @@ export default {
           }
         })
         .then((response) => {
+          this.user=response.data;
+          this.editUser = { ...this.user };
+          this.displayUser = { ...this.user };
+
           console.log("editado");
           console.log(response);
         })

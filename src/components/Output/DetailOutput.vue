@@ -169,8 +169,10 @@ class Product {
   }
   getGanancia() {
     this.sub = this.cantidad * this.precio;
-    
     return this.sub.toFixed(2);
+  }
+  getProduct(){
+    return this.producto.id;
   }
   setPrecio(data){
     if(typeof data !="string")

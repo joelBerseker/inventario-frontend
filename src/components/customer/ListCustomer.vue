@@ -14,6 +14,7 @@ export default defineComponent({
   data() {
     return {
       item_selected: {},
+      search:"",
       numPag: 2,
       table: {
         isLoading: false,
@@ -119,6 +120,9 @@ export default defineComponent({
     }
   },
   methods: {
+    filterTable(){
+      
+    },
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
     },
@@ -232,8 +236,8 @@ export default defineComponent({
               </div>
             </div>
           </div>
-          <input type="text" class="form-control form-control-sm" id="name" name="name" required />
-          <button class="btn btn-sm btn-secondary" type="button">
+          <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="search" required />
+          <button class="btn btn-sm btn-secondary" type="button" @click="filterTable">
             <i class="bi bi-search"></i>
           </button>
         </div>
