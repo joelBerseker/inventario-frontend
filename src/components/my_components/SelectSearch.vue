@@ -75,8 +75,8 @@ export default defineComponent({
             });
           }
         })
-        .catch(() => {
-          console.log("error");
+        .catch((e) => {
+          console.log(e);
         });
     },
     getDataFilter(a){
@@ -85,18 +85,13 @@ export default defineComponent({
         .get(path)
         .then((response) => {
           this.count=response.data.count;
-          console.log(this.count);
           if (response.count == 0) {
             this.update = false;
           } else {
-            console.log("entro a buscar");
             this.list=[];
             response.data.results.forEach((element) => {
               this.list.push(element);
             });
-            console.log(this.list);
-            console.log(this.listFiltered);
-            console.log("termino a buscar");
             if(this.count<10)
             this.update = false;
           }
@@ -134,7 +129,6 @@ export default defineComponent({
         if (newSearch.length > oldSearch.length && this.update) {
           this.getDataFilter(newSearch);
         } else {
-          console.log("ELIMNA");
           this.update = true;
         }
       }

@@ -1,33 +1,64 @@
 <template>
-  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl">
+  <MyModal
+    ref="myModal"
+    :id="'productDetailModal'"
+    :title="this.title"
+    size="modal-xl"
+  >
     <div class="modal-body">
       <div class="row">
         <div class="col-4 head pe-3">
-          
-          <MyForm class="mb-3" name="Numero de factura" :message="validationCode.message">
-            <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero" required />
+          <MyForm
+            class="mb-3"
+            name="Numero de factura"
+            :message="validationCode.message"
+          >
+            <input
+              type="text"
+              v-model="factura.numero"
+              class="form-control form-control-sm"
+              id="numero"
+              required
+            />
           </MyForm>
           <MyForm class="mb-3" name="Cliente">
-            <SelectSearch v-model="factura.cliente" link="clients/clients/"></SelectSearch>
+            <SelectSearch
+              v-model="factura.cliente"
+              link="clients/clients/"
+            ></SelectSearch>
           </MyForm>
           <MyForm class="mb-3" name="Fecha">
-            <input type="date" v-model="factura.fecha" class="form-control form-control-sm" id="fecha" required />
+            <input
+              type="date"
+              v-model="factura.fecha"
+              class="form-control form-control-sm"
+              id="fecha"
+              required
+            />
           </MyForm>
           <MyForm class="mb-3" name="Descripción">
-            <textarea class="form-control form-control-sm" id="descripcion" name="descripcion" :disabled="disabled"
-              v-model="item_selected.description" required></textarea>
+            <textarea
+              class="form-control form-control-sm"
+              id="descripcion"
+              name="descripcion"
+              :disabled="disabled"
+              v-model="factura.description"
+              required
+            ></textarea>
           </MyForm>
         </div>
 
         <div class="col-8 ps-3">
-         
-          
           <div class="row mb-3 d-flex align-items-end">
             <div class="col">
               <p class="title-text">Lista de Productos</p>
             </div>
             <div class="col text-end">
-              <button type="button" class="btn btn-sm btn-primary" @click="agregarItem">
+              <button
+                type="button"
+                class="btn btn-sm btn-primary"
+                @click="agregarItem"
+              >
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
               </button>
             </div>
@@ -35,17 +66,18 @@
               <p>Total:</p>
               <div class="input-group input-group-sm">
                 <span class="input-group-text form-control-disabled">S/.</span>
-                <input type="text" class="form-control form-control-sm text-end" id="nombre" name="nombre" v-model="facturaTotal"
-                  disabled />
-
+                <input
+                  type="text"
+                  class="form-control form-control-sm text-end"
+                  id="nombre"
+                  name="nombre"
+                  v-model="facturaTotal"
+                  disabled
+                />
               </div>
-              
-              
             </div>
-           
           </div>
           <hr class="mb-3 mt-3" />
-
 
           <div class="row">
             <div class="col-5">
@@ -62,32 +94,49 @@
             </div>
           </div>
 
-          <div v-for="(item, index) in factura.detalle" :key="index" class="detalle-item">
+          <div
+            v-for="(item, index) in factura.detalle"
+            :key="index"
+            class="detalle-item"
+          >
             <div class="row">
-
               <div class="form-group col-5">
                 <MyForm class="mb-3" name="">
-                  <SelectSearch v-model="item.producto" link="products/products/"></SelectSearch>
+                  <SelectSearch
+                    v-model="item.producto"
+                    link="products/products/"
+                  ></SelectSearch>
                 </MyForm>
-
-              </div>
-
-              <div class="form-group col-sm-2 col-md-2">
-                <label class="form-control form-control-sm form-control-disabled text-end">{{ item.setPrecio(item.producto)
-                }}</label>
               </div>
               <div class="form-group col-sm-2 col-md-2">
-                <input type="number" v-model="item.cantidad" class="form-control form-control-sm text-end"
-                  :id="'cantidad_' + index" required />
+                <label
+                  class="form-control form-control-sm form-control-disabled text-end"
+                  >{{ item.setPrecio(item.producto) }}</label
+                >
               </div>
               <div class="form-group col-sm-2 col-md-2">
-                <label class="form-control form-control-sm form-control-disabled text-end">{{ item.getGanancia() }}</label>
+                <input
+                  type="number"
+                  v-model="item.cantidad"
+                  class="form-control form-control-sm text-end"
+                  :id="'cantidad_' + index"
+                  required
+                />
+              </div>
+              <div class="form-group col-sm-2 col-md-2">
+                <label
+                  class="form-control form-control-sm form-control-disabled text-end"
+                  >{{ item.getGanancia() }}</label
+                >
               </div>
               <div class="form-group col-1">
-                <button type="button" class="btn btn-sm btn-danger" @click="agregarItem">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-danger"
+                  @click="eliminarItem(index)"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
-
               </div>
             </div>
           </div>
@@ -95,19 +144,37 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm button-margin"
+        data-bs-dismiss="modal"
+      >
         <i class="bi bi-x-circle"></i> Cerrar
       </button>
-      <button type="button" @click="deleteItem(item_selected)" class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2">
+      <button
+        type="button"
+        @click="deleteItem(item_selected)"
+        class="btn btn-danger btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="editMode" class="btn btn-dark btn-sm button-margin" v-if="mode == 2">
+      <button
+        type="button"
+        @click="editMode"
+        class="btn btn-dark btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
+      <button
+        type="button"
+        @click="saveItem"
+        class="btn btn-success btn-sm button-margin"
+        v-if="mode != 2"
+      >
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -141,8 +208,8 @@ class Product {
     this.precio = 0;
     /*this.sub = 0;*/
     this.sub = function () {
-      return this.precio + this.cantidad
-    }
+      return this.precio + this.cantidad;
+    };
   }
   getGanancia() {
     this.sub = this.cantidad * this.precio;
@@ -152,8 +219,7 @@ class Product {
     return this.producto.id;
   }
   setPrecio(data) {
-    if (typeof data != "string")
-      this.precio = data.price;
+    if (typeof data != "string") this.precio = data.price;
     return this.precio;
   }
 }
@@ -179,11 +245,12 @@ export default defineComponent({
       validated: false,
 
       factura: {
+        description: "Sin Comentarios",
         numero: "",
         fecha: "",
         cliente: " ",
         detalle: [new Product()],
-        total: null
+        total: null,
       },
       emailOptions: [],
       isEmailSelected: false,
@@ -191,12 +258,11 @@ export default defineComponent({
   },
   computed: {
     facturaTotal: function () {
-      console.log("ENTRE");
-      var total = 0
-      this.factura.detalle.forEach(element => {
-        total += element.sub
+      var total = 0;
+      this.factura.detalle.forEach((element) => {
+        total += element.sub;
       });
-      return total
+      return total;
     },
     validateForm: function () {
       var result = this.validationCode.valid;
@@ -253,6 +319,10 @@ export default defineComponent({
     agregarItem() {
       this.factura.detalle.push(new Product());
     },
+    eliminarItem(index) {
+      console.log(index);
+      this.factura.detalle.splice(index, 1);
+    },
     changeCurrency() {
       this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, "");
       console.log("-------------");
@@ -275,47 +345,57 @@ export default defineComponent({
                 this.item_selected.price = (this.item_selected.price * 1000 / 100).toFixed(2)
             }*/
     },
+    dataToJson(index) {
+      var dataD = [];
+      
+      this.factura.detalle.forEach(element => {
+        dataD.push({"id_order":index,"id_product":element.producto.id,"new_sale_price":element.precio,"quantity":element.cantidad})
+      });
+      this.addItemD(JSON.stringify(dataD));
+    },
     async saveItem() {
       console.log(this.factura);
-      /**this.validated = true;
-      if (this.validateForm) {
-        var form_data = new FormData();
-        for (var key in this.item_selected) {
-          if (
-            this.mode == 3 &&
-            (key == "id" ||
-              key == "created_at" ||
-              key == "updated_at" ||
-              key == "product_image")
-          ) {
-            console.log("key ->" + key);
-            continue;
-          }
-          form_data.append(key, this.item_selected[key]);
-        }
-        switch (this.mode) {
-          case 1:
-            this.addItem(form_data);
-            break;
-          case 3:
-            this.editItem(form_data);
-            break;
-          default:
-            break;
-        }
-      } else {
-        this.showToast({
-          title: "Validar Registro",
-          message:
-            "Ocurrió un error, revise todos si todos los campos se llenaron correctamente",
-          type: 2,
-        });
-      
-      }*/
+      const formData = new FormData();
+      formData.append("id_client", this.factura.cliente.id);
+      formData.append("description", this.factura.description);
+      formData.append("order_code", this.factura.numero);
+      formData.append("total_price", this.facturaTotal.toFixed(2));
+      this.addItemC(formData);
     },
-    addItem(data) {
+    async addItemD(data){
       console.log(data);
+      const config = {
+        headers: {
+          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
+        },
+      };
+      var path = url + `order_details/order_details/`;
+      axios
+        .post(path, data, config)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
+
+    async addItemC(data) {
+      var index = 0;
+      var path = url + `orders/orders/`;
+      await axios
+        .post(path, data)
+        .then((response) => {
+          index=response.data.id;
+          console.log(index);
+          this.dataToJson(index);
+        })
+        .catch((e) => {
+          console.log(e);
+          index=-1;
+        });
+        return index;
+      },
     editItem(data) {
       console.log(data);
       var path = url + `products/products/` + this.item_selected.id + "/";
@@ -410,8 +490,6 @@ export default defineComponent({
           });
         });
     },
-
-
   },
   async created() {
     //await this.getclients();
