@@ -52,7 +52,7 @@
                   <div class="row">
                     <div class="col-6">
                       <MyForm class="mb-3" name="Dirección">
-                        <div class="profile-field-value" v-if="!editing">
+                        <div  v-if="!editing">
                           {{ displayUser.address }}
                         </div>
                         <input type="text" class="form-control form-control-sm" v-model="editUser.address"
@@ -62,7 +62,7 @@
                     <div class="col-6">
 
                       <MyForm class="mb-3" name="Telefono">
-                        <div class="profile-field-value" v-if="!editing">
+                        <div  v-if="!editing">
                           {{ displayUser.phone }}
                         </div>
                         <input type="text" class="form-control form-control-sm" v-model="editUser.phone" v-if="editing" />
@@ -74,14 +74,14 @@
                   <div class="row">
                     <div class="col-6">
                       <MyForm name="Email">
-                        <div class="profile-field-value" v-if="!editing">{{ displayUser.email }}</div>
+                        <div  v-if="!editing">{{ displayUser.email }}</div>
                         <input disabled type="text" class="form-control form-control-sm" v-model="editUser.email"
                           v-if="editing" />
                       </MyForm>
                     </div>
                     <div class="col-6">
                       <MyForm name="RUC">
-                        <div class="profile-field-value" v-if="!editing">
+                        <div  v-if="!editing">
                           {{ displayUser.ruc }}
                         </div>
                         <input type="text" class="form-control form-control-sm" v-model="editUser.ruc" v-if="editing" />
@@ -100,7 +100,7 @@
           <div class="card-body">
             <p class="title-text mb-3">Otras configuraciones</p>
             <MyForm class="mb-3" name="IGV">
-              <div class="profile-field-value" v-if="!editing">
+              <div  v-if="!editing">
                 0.18%
               </div>
               <input type="text" class="form-control form-control-sm" v-model="editUser.first_name" v-if="editing" />

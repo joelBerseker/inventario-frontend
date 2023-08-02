@@ -115,7 +115,7 @@ export default defineComponent({
 }
 
 .slide-fade-leave-to {
-    transform: translateX(10px);
+    transform: translateX(5px);
     opacity: 0;
 }
 
@@ -123,7 +123,7 @@ export default defineComponent({
 
 /* .slide-fade-leave-active below version 2.1.8 */
     {
-    transform: translateX(-10px);
+    transform: translateX(-5px);
     opacity: 0;
 }
 
@@ -144,6 +144,11 @@ export default defineComponent({
 
 .breadcrumb a {
     color: var(--my-1th-color);
+    text-decoration-line: none;
+}
+
+.breadcrumb-item a{
+    text-decoration-line: none;
 }
 
 .margin-breadcrumb {
@@ -151,10 +156,10 @@ export default defineComponent({
 }
 
 .breadcrumb .active {
-    color: rgba(255, 255, 255, 0.527);
+    color: rgba(255, 255, 255, 0.377);
 }
 
 .active {
-    color: rgba(255, 255, 255, 0.527) !important;
+    color: rgba(255, 255, 255, 0.377) !important;
 }
 </style>

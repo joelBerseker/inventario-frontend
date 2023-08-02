@@ -30,11 +30,9 @@ export default defineComponent({
         } else {
             var link = window.location.href;
             var linkSlice = link.substring(link.lastIndexOf("/"), link.length)
-         
             if(linkSlice == "/login"){
                 this.$router.push("/");
             }
-            
         }
     },
 })
@@ -75,12 +73,12 @@ export default defineComponent({
 }
 
 .t-app-leave-to {
-    transform: translateX(20px);
+    transform: translateX(10px);
     opacity: 0;
 }
 
 .t-app-enter-from {
-    transform: translateX(-20px);
+    transform: translateX(-10px);
     opacity: 0;
 }
 </style>

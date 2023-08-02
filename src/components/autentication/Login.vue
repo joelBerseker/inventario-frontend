@@ -28,10 +28,7 @@ export default defineComponent({
   },
   computed: {
     validateForm: function () {
-      var result =
-        this.validationUsername.isValid &&
-        this.validationpPassword.isValid
-        ;
+      var result = true
       return result
     },
 
@@ -128,23 +125,23 @@ export default defineComponent({
                 <div class="card-body">
                   <div class="text-center mb-1">
                     <Icon size="50px" :mode="2" :bg-mode="1"></Icon>
-                    <p class="title-text mb-2">Gestion de Inventarios</p>
+                    <p class="title-text color-3 mb-2">Gestion de Inventarios</p>
                     <hr class="m-0 mb-2" />
-                    <p class="text-secondary-login">Ingrese su usuario y contraseña para ingresar al sistema</p>
+                    <p class="text-secondary">Ingrese su usuario y contraseña para ingresar al sistema</p>
                   </div>
 
-                  <MyForm class="mb-3" name="Usuario" :message="validationUsername.validationMessage">
+                  <MyForm class="mb-3" name="Usuario">
                     <div class="input-group input-group-sm">
                       <span class="input-group-text"><i class="bi bi-person"></i></span>
-                      <input type="email" :class="'form-control form-control-sm ' + validationUsername.validationStyle"
+                      <input type="email" class="form-control form-control-sm"
                         v-model="user.username" />
                     </div>
                   </MyForm>
-                  <MyForm class="mb-3" name="Contraseña" :message="validationpPassword.validationMessage">
+                  <MyForm class="mb-3" name="Contraseña">
                     <div class="input-group input-group-sm">
                       <span class="input-group-text"><i class="bi bi-lock"></i></span>
                       <input type="password" v-model="user.password"
-                        :class="'form-control form-control-sm ' + validationpPassword.validationStyle" />
+                        class="form-control form-control-sm" />
                     </div>
                   </MyForm>
 
@@ -170,10 +167,7 @@ export default defineComponent({
   </div>
 </template>
 <style scoped>
-.text-secondary-login{
-  font-size: 0.8rem;
-  color: rgba(0, 0, 0, 0.575);
-}
+
 .login {
   overflow: hidden;
 
