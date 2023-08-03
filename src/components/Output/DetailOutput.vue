@@ -374,6 +374,7 @@ export default defineComponent({
         .post(path, data, config)
         .then((response) => {
           console.log(response);
+          this.closeModal();
         })
         .catch((e) => {
           console.log(e);
