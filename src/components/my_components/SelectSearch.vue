@@ -8,8 +8,8 @@
       aria-expanded="false"
       v-on:click="focusSearch()"
     >
-      <span v-if="_itemName!=''">{{ _itemName }}</span>
-      <span v-else class="">Seleccione una opción</span>
+      <p v-if="_itemName!=''" class="single-line">{{ _itemName }}</p>
+      <p v-else class="single-line">Seleccione una opción</p>
       
     </button>
     <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
@@ -21,14 +21,15 @@
           name="search"
           v-model="search"
           placeholder="Buscar..."
+          autocomplete="off"
         />
       </li>
       <li class="text-center" v-if="listFiltered.length <= 0">
         <div>No se encontraron elementos</div>
       </li>
       <li v-for="(item, index) in listFiltered" :key="index">
-        <div class="dropdown-item" v-on:click="selectItem(item)">
-          {{ item.name }}
+        <div class="dropdown-item item-select" v-on:click="selectItem(item)">
+          <p>{{ item.name }}</p>
         </div>
       </li>
       <li class="text-center" v-if="count >= 10">
@@ -143,5 +144,15 @@ export default defineComponent({
 <style>
 .disabled-item{
   color: rgba(0, 0, 0, 0.493);
+}
+.single-line {
+  width: 100%;
+  /*text-overflow: ellipsis;*/
+  overflow: hidden;
+  white-space: pre;
+}
+.item-select{
+  white-space: normal !important;
+  cursor: pointer;
 }
 </style>

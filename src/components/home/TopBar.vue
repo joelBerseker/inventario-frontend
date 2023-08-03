@@ -79,7 +79,7 @@ export default defineComponent({
                     </div>
                     <div class="col">
                         <transition name="slide-fade" mode="out-in">
-                            <nav :key="topbar.title" aria-label="breadcrumb" class="color-1 margin-breadcrumb">
+                            <nav :key="topbar.title" aria-label="breadcrumb" class="color-1 margin-breadcrumb" >
                                 <ol class="breadcrumb mb-0  breadcrumb-ol">
 
                                     <li v-for="(item, index) in topbar.breadcrumb" :key="item.name" class="breadcrumb-item">
