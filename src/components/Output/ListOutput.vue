@@ -213,8 +213,8 @@ export default defineComponent({
       <template v-slot:quick="data">
         <div class="d-flex">
           <button role="link"
-          class="btn btn-warning" @click="openInNewTab(data.value.id)">
-            Ver boleta
+          class="btn btn-warning btn-sm me-1" @click="openInNewTab(data.value.id)">
+          <i class="bi bi-receipt"></i> Boleta
           </button>
           <button
             v-on:click="viewMode(data.value)"

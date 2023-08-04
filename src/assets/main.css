@@ -17,24 +17,26 @@
 }
 .btn-primary-outline {
     color: var(--my-1th-color) !important;
-    border-color: var(--my-6th-color) !important;
+    
+    border-color: rgba(255, 255, 255, 0.2) !important;
 }
 .btn-primary-outline:hover {
-
+    border-color: var(--my-6th-color) !important;
     background-color: var(--my-6th-color) !important;
 }
 
 
 .btn-secondary-outline {
     color: var(--my-1th-color) !important;
-    border-color: var(--my-4th-color) !important;
+    border-color: rgba(255, 255, 255, 0.4) !important;
 }
 .btn-secondary-outline:hover {
-
+    border-color: var(--my-4th-color) !important;
     background-color: var(--my-4th-color) !important;
 }
 
 .btn-secondary {
+   
     background-color: var(--my-4th-color) !important;
     border-color: var(--my-4th-color) !important;
 }

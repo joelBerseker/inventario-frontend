@@ -2,9 +2,10 @@
     <div class="position-fixed top-0 end-0 p-3" style="z-index: 5000">
         <div id="myToastEl" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" >
             <div :class="'toast-header color-1 '+ styleHeader">
-                <strong class="me-auto">{{title}}</strong>
                 
-                <button type="button" class="btn-close " data-bs-dismiss="toast" aria-label="Close"></button>
+                <strong class="me-auto"><i :class=icon></i> {{title}}</strong>
+                
+                <button type="button" class="btn btn-toast" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x"></i></button>
             </div>
             <div class="toast-body">
                 {{message}}
@@ -12,7 +13,19 @@
         </div>
     </div>
 </template>
-<style ></style>
+<style scoped>
+.btn-toast{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    border-color: rgba(255, 255, 255, 0.4) !important;
+    color: var(--my-1th-color) !important;
+}
+.btn-toast:hover{
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+</style>
 <script>
 import { Toast } from "bootstrap";
 import { defineComponent } from "vue";
@@ -23,6 +36,7 @@ export default defineComponent({
             title: undefined,
             message: undefined,
             styleHeader: undefined,
+            icon: undefined,
         };
     },
   
@@ -42,10 +56,26 @@ export default defineComponent({
             }
             return resp;
         },
+        iconType(key){
+            var resp=""
+            switch (key) {
+                case 1:
+                    resp="bi bi-check-circle"
+                    break;
+                case 2:
+                    resp="bi bi-exclamation-circle"
+                    break;
+            
+                default:
+                    break;
+            }
+            return resp;
+        },
         show(opts = {}) {
             this.title = opts.title
             this.message = opts.message
             this.styleHeader = this.styleheader(opts.type)
+            this.icon = this.iconType(opts.type)
 
             var myToastEl = document.getElementById('myToastEl')
             var myToast = Toast.getOrCreateInstance(myToastEl)

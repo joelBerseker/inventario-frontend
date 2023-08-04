@@ -93,8 +93,8 @@ export default defineComponent({
         this.$router.push("/home");
       } catch (e) {
         this.showToast({
-          title: "Validar Ingreso",
-          message: "Usuario o contraseña no valido",
+          title: "Ocurrió un error ",
+          message: "Usuario y contraseña no validos, verifique si los datos ingresados son correctos.",
           type: 2,
         });
       } finally {
