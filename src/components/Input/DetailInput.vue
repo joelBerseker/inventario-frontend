@@ -66,7 +66,7 @@
                     <div v-for="(item, index) in selectedProducts" :key="index" class="detalle-item">
                         <div class="row">
                             <div class="form-group col-3">
-                                <MyForm class="mb-3" name="">
+                                <MyForm class="mb-3">
                                     <SelectSearch v-model="item.data" link="products/products/"
                                         v-on:update:modelValue="changeSelect(index, $event)"></SelectSearch>
                                 </MyForm>

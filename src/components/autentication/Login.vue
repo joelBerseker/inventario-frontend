@@ -94,7 +94,7 @@ export default defineComponent({
       } catch (e) {
         this.showToast({
           title: "Ocurrió un error ",
-          message: "Usuario y contraseña no validos, verifique si los datos ingresados son correctos.",
+          message: "Usuario y contraseña no válidos, verifique si los datos ingresados son correctos.",
           type: 2,
         });
       } finally {

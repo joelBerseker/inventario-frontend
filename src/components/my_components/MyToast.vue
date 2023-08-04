@@ -3,7 +3,7 @@
         <div id="myToastEl" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" >
             <div :class="'toast-header color-1 '+ styleHeader">
                 
-                <strong class="me-auto"><i :class=icon></i> {{title}}</strong>
+                <strong class="me-auto"><i :class="'bi-hover-bold '+icon"></i> {{title}}</strong>
                 
                 <button type="button" class="btn btn-toast" data-bs-dismiss="toast" aria-label="Close"><i class="bi bi-x"></i></button>
             </div>
@@ -22,6 +22,9 @@
     border-color: rgba(255, 255, 255, 0.4) !important;
     color: var(--my-1th-color) !important;
 }
+.bi-hover-bold {
+    -webkit-text-stroke: 0.03rem;
+  }
 .btn-toast:hover{
     background-color: rgba(255, 255, 255, 0.2) !important;
 }

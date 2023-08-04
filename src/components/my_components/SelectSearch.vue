@@ -1,7 +1,8 @@
 <template>
+  <MyForm :name="name" :message="validation.validationMessage">
   <div class="dropdown">
     <button
-      class="form-select form-select-sm text-start"
+      :class="'form-select form-select-sm text-start ' + validation.validationStyle"
       type="button"
       id="dropdownMenuButton1"
       data-bs-toggle="dropdown"
@@ -37,11 +38,12 @@
       </li>
     </ul>
   </div>
+</MyForm>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-
+import MyForm from "@/components/my_components/MyForm.vue";
 import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default defineComponent({
@@ -50,7 +52,19 @@ export default defineComponent({
     prop: "modelValue",
     event: "update:modelValue",
   },
-  props: ["modelValue", "link"],
+  props: ["modelValue"],
+  props:{
+    link:{},
+    validation:{
+      default:{
+        validationMessage: "",
+          validationStyle: ""
+      }
+    },
+    name:{
+      default:null
+    }
+  },
   data() {
     return {
       search: "",
@@ -60,6 +74,9 @@ export default defineComponent({
       list: [],
     };
   },
+  components: {
+        MyForm
+    },
 
   methods: {
     getData() {
