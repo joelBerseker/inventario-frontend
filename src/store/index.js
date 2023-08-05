@@ -3,7 +3,7 @@ import createPersistedState from 'vuex-persistedstate';
 
 const getDefaultState = () => {
   return {
-    idUser: "",
+    User: "",
     token: "",
     refresh:"",
     id: "",
@@ -23,8 +23,8 @@ export const store = createStore({
     getId(state) {
       return state.id;
     },
-    getIdUser(state) {
-      return state.idUser;
+    getUser(state) {
+      return state.User;
     },
     isActive(state){
       return state.token != "";
@@ -40,8 +40,8 @@ export const store = createStore({
     SET_ID: (state, id) => {
       state.id = id;
     },
-    SET_IDUSER: (state, idUser) => {
-      state.idUser = idUser;
+    SET_USER: (state, User) => {
+      state.User = User;
     },
     RESET: (state) => {
       Object.assign(state, getDefaultState());
@@ -51,8 +51,8 @@ export const store = createStore({
     userId: ({ commit }, { id }) => {
       commit("SET_ID", id);
     },
-    IdUser: ({ commit }, { idUser }) => {
-      commit("SET_IDUSER", idUser);
+    IdUser: ({ commit }, { User }) => {
+      commit("SET_USER", User);
     },
     login: ({ commit }, { token }) => {
       commit("SET_TOKEN", token);

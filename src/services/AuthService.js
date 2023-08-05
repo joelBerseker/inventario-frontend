@@ -10,6 +10,7 @@ export default new class {
         store.commit("SET_TOKEN", response.data.access);
         store.commit("SET_REFRESH", response.data.refresh);
         store.commit("SET_ID", response.data.user_id);
+        this.getUser();
         return response.data;
     }
     //metodo para extender el tiempo de vida de un token
@@ -38,6 +39,11 @@ export default new class {
     async getUser() {
         const response = await axios.get(url + 'user/api/'+store.getters.getId+"/");
         const user = response.data;
+        store.commit("SET_USER",user);
+        return user;
+    }
+    async setUser(data){
+        store.commit("SET_USER",data);
     }
     prueba(){
         console.log("hola");

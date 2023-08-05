@@ -18,23 +18,23 @@ export default defineComponent({
                 columns: [
                     {
                         label: "Codigo",
-                        field: "code",
+                        field: "order_code",
                         width: "5%",
                         sortable: true,
                     },
                     {
-                        label: "Nombre",
-                        field: "name",
+                        label: "Proveedor",
+                        field: "id_provider",
                         width: "10%",
                         sortable: true,
                     },
                     {
                         label: "Descripción",
-                        field: "description",
+                        field: "detail",
                         width: "20%",
                         sortable: true,
                     },
-
+/**
                     {
                         label: "Compra",
                         field: "cost",
@@ -58,13 +58,13 @@ export default defineComponent({
                         field: "stock",
                         width: "10%",
                         sortable: true,
-                    },
+                    }, */
                     {
                         label: "Actualizado",
-                        field: "updated_at",
+                        field: "date",
                         width: "10%",
                         display: (row) => {
-                            return this.timeAgo(row.updated_at);
+                            return this.timeAgo(row.date);
                         },
                     },
                     {
@@ -156,16 +156,18 @@ export default defineComponent({
         },
         async getInputs() {
             this.table.rows = [];
-            var path = url + `products/products/`;
+            var path = url + `purchase/purchase/`;
             axios.get(path).then((response) => {
-                response.data.forEach((element) => {
+                console.log(response);
+                response.data.results.forEach((element) => {
                     this.table.rows.push(element);
                     this.table.totalRecordCount = this.table.rows.length;
                 });
-            }).catch(() => {
+            }).catch((e) => {
+                console.log(e);
                 this.showToast({
                     title: "Obtener Registros",
-                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",
                     type: 2,
                 });
             });
