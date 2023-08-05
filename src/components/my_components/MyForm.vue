@@ -1,19 +1,20 @@
 <template>
     <div class="form-group">
-        <label for="nombre" v-if="name!=null" class="text-secondary">{{name}}:</label>
+        <label for="nombre" v-if="name != null" class="text-secondary">{{ name }}:</label>
         <slot></slot>
-        <div v-if="message=='*No requerido'">
-            <span class="message">{{ message }}</span>
+        <div v-if="message == 'No requerido'">
+            <span class="message text-secondary"><i class="bi bi-info-circle"></i> {{ message }}</span>
         </div>
-        <div v-else-if="message!=''">
-            <span class="text-danger message">{{ message }}</span>
+        <div v-else-if="message != ''&& message != null">
+            <span class="text-danger message ">
+                <i class="bi bi-exclamation-circle"></i>
+                {{ message }}</span>
         </div>
-        
+
     </div>
 </template>
 <style scoped>
-
-.message{
+.message {
     font-size: 0.75rem !important;
 }
 </style>

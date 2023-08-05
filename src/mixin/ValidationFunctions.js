@@ -19,7 +19,7 @@ export default {
 
             if (this.showValidation(text, this.validated, this.mode)) {
                 if (this.textEmpty(text, "") && !required) {
-                    validationMessage = "*No requerido"
+                    validationMessage = "No requerido"
                 } else {
                     validationStyle = (validationMessage != "") ? " is-invalid" : " is-valid";
                     isValid = (validationMessage != "") ? false : true;

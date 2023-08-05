@@ -226,22 +226,91 @@ export default defineComponent({
       :item_selected="item_selected"
       :getProducts="getProducts"
     />
+    <div class="row justify-content-md-end">
+      <div class="col-6">
+        <button
+          v-on:click="addMode"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
+          <i class="bi bi-plus-circle"></i> Agregar Producto
+        </button>
+        <button
+          v-on:click="this.$router.push('/product/add-product-excel')"
+          type="button"
+          class="btn btn-primary btn-sm mb-3 ms-1"
+        >
+          <i class="bi bi-file-earmark-spreadsheet"></i>
+          Agregar por Excel
+        </button>
+      </div>
+      <div class="col">
+        <div class="input-group input-group-sm">
+          <div class="dropdown">
+            <button
+              class="btn btn-sm btn-secondary margin-dropdown"
+              type="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+            >
+              <i class="bi bi-sliders"></i>
+              Filtro
+            </button>
+            <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Nombre
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Documento
+                </label>
+              </div>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+                <label class="form-check-label" for="flexCheckDefault">
+                  Telefono
+                </label>
+              </div>
+            </div>
+          </div>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            id="name"
+            name="name"
+            v-model="search"
+            required
+          />
+          <button
+            class="btn btn-sm btn-secondary"
+            type="button"
+            @click="filterTable"
+          >
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
 
-    <button
-      v-on:click="addMode"
-      type="button"
-      class="btn btn-primary btn-sm mb-3"
-    >
-      <i class="bi bi-plus-circle"></i> Agregar Producto
-    </button>
-    <button
-      v-on:click="this.$router.push('/product/add-product-excel')"
-      type="button"
-      class="btn btn-primary btn-sm mb-3 ms-1"
-    >
-      <i class="bi bi-file-earmark-spreadsheet"></i>
-      Agregar por Excel
-    </button>
     <table-lite
       :is-static-mode="false"
       :is-slot-mode="true"

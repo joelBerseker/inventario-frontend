@@ -267,8 +267,5 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.margin-dropdown {
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
-}
+
 </style>

@@ -96,3 +96,7 @@ input[type=number] {
     font-size: 0.8rem;
   color: rgba(0, 0, 0, 0.575);
 }
+.margin-dropdown {
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+  }

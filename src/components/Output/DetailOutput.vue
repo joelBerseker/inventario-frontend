@@ -5,9 +5,12 @@
         <div class="col-4 head pe-3">
           <MyInput class="mb-3" type="text" name="Numero de factura" :validation="validationOrderCode"
             v-model="factura.numero" />
-          <SelectSearch class="mb-3" v-model="factura.cliente" link="clients/clients/" name="Cliente"
-            :validation="validationClient">
+          
+              <SelectSearch class="mb-3" v-model="factura.cliente" link="clients/clients/" name="Cliente"
+            :validation="validationClient" id="cliente">
           </SelectSearch>
+          
+         
           <MyInput class="mb-3" type="date" name="Fecha" :validation="validationDate" v-model="factura.fecha" />
           <MyInput type="textarea" name="Descripción" :validation="validationDescription" v-model="factura.description" />
         </div>
@@ -49,11 +52,11 @@
           </div>
 
           <div v-for="(item, index) in factura.detalle" :key="index" class="detalle-item">
-            <div class="row">
+            <div class="row mb-3">
               <div class="form-group col-5">
 
                 <SelectSearch v-model="item.producto" link="products/products/"
-                  :validation="validationList[index].producto" v-on:update:modelValue="inputProducto(index)">
+                  :validation="validationList[index].producto" v-on:update:modelValue="inputProducto(index)" :id="index+'product'">
                 </SelectSearch>
 
               </div>
@@ -120,7 +123,7 @@ import MyModal from "@/components/my_components/MyModal.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
-import SelectSearch from "../my_components/SelectSearch.vue";
+import SelectSearch from "@/components/my_components/SelectSearch.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 class Product {
   constructor() {
