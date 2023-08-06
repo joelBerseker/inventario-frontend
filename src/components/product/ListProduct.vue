@@ -180,9 +180,9 @@ export default defineComponent({
         .catch((e) => {
           console.log(e.message);
           this.showToast({
-            title: "Obtener Registros",
+            title: "Ocurrió un error",
             message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -200,9 +200,9 @@ export default defineComponent({
         })
         .catch(() => {
           this.showToast({
-            title: "Obtener Registros",
+            title: "Ocurrió un error",
             message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });

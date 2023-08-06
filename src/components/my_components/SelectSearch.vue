@@ -140,6 +140,7 @@ export default defineComponent({
       },
       set: function (value) {
         this.$emit("update:modelValue", value);
+        this.$emit("update", value);
       },
     },
     listFiltered() {

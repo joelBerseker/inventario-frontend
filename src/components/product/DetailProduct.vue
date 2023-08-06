@@ -219,8 +219,8 @@ export default defineComponent({
         }
       } else {
         this.showToast({
-          title: "Validar Registro",
-          message: "Ocurrió un error, revise todos si todos los campos se llenaron correctamente",
+          title: "Ocurrió un error",
+          message: "Datos no válidos, revise si todos los campos se llenaron correctamente",
           type: 2,
         });
       }
@@ -231,8 +231,8 @@ export default defineComponent({
         .post(path, data)
         .then((response) => {
           this.showToast({
-            title: "Agregar Registro",
-            message: "Operación exitosa",
+            title: "Operación exitosa",
+            message: "El registro se agrego correctamente.",
             type: 1,
           });
           this.getProducts();
@@ -240,8 +240,8 @@ export default defineComponent({
         })
         .catch(() => {
           this.showToast({
-            title: "Agregar Registro",
-            message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+            title: "Ocurrió un error",
+            message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -253,8 +253,8 @@ export default defineComponent({
         .put(path, data)
         .then((response) => {
           this.showToast({
-            title: "Agregar Registro",
-            message: "Operación exitosa",
+            title: "Operación exitosa",
+            message: "El registro se edito correctamente.",
             type: 1,
           });
           this.getProducts();
@@ -262,8 +262,8 @@ export default defineComponent({
         })
         .catch(() => {
           this.showToast({
-            title: "Agregar Registro",
-            message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+            title: "Ocurrió un error",
+            message: "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });

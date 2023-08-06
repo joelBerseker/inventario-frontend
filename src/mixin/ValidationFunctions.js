@@ -101,6 +101,11 @@ export default {
       validationMessage = this.textEmpty(text, validationMessage);
       return this.validateInput(text, validationMessage, true);
     },
+    validationRequiredDate(text) {
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      return this.validateInput(text, validationMessage, true);
+    },
 
     inputOnlyNumberPlus(text){
         return text.toString().replace(/[^0-9+]/, "");

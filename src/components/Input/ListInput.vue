@@ -166,8 +166,8 @@ export default defineComponent({
             }).catch((e) => {
                 console.log(e);
                 this.showToast({
-                    title: "Obtener Registros",
-                    message: "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",
+                    title: "Ocurrió un error",
+                    message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
                     type: 2,
                 });
             });

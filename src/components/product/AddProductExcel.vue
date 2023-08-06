@@ -135,17 +135,17 @@ export default defineComponent({
         .post(path, data, config)
         .then((response) => {
           this.showToast({
-            title: "Registros Agregados",
-            message: "Operación exitosa",
+            title: "Operación exitosa",
+            message: "Los registros se agregaron correctamente.",
             type: 1,
           });
         })
         .catch((e) => {
           console.log(e);
           this.showToast({
-            title: "Agregar Registros",
+            title: "Ocurrió un error",
             message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedorx",
+              "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
