@@ -1,6 +1,7 @@
 <script>
 import DetailProduct from "./DetailProduct.vue";
 import Content from "@/components/home/Content.vue";
+import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
@@ -13,8 +14,8 @@ export default defineComponent({
   data() {
     return {
       item_selected: {},
+      search: "",
       Products: [],
-
       table: {
         columns: [
           {
@@ -75,7 +76,9 @@ export default defineComponent({
         totalRecordCount: 0,
       },
       numPag: 4,
+      page: 1,
       loading: true,
+      loadingTable: false,
       topbar: {
         title: "Productos",
         icon: "bi bi-box-seam",
@@ -99,10 +102,16 @@ export default defineComponent({
     TableLite,
     Content,
     paginate: Paginate,
+    TableContent,
   },
   methods: {
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
+    },
+    loadingTableContent(loading) {
+      try {
+        this.$refs.tableContent.loadingTableContent(loading);
+      } catch (error) {}
     },
     addMode() {
       this.item_selected = {};
@@ -145,6 +154,7 @@ export default defineComponent({
       });
     },
     async getProducts() {
+      this.loadingTableContent(true);
       this.table.rows = [];
       var path = url + `products/products/`;
       axios
@@ -157,6 +167,7 @@ export default defineComponent({
           this.numPag = Math.ceil(response.data.count / 10);
 
           this.loadingContent(false);
+          this.loadingTableContent(false);
         })
         .catch((e) => {
           console.log(e.message);
@@ -168,6 +179,8 @@ export default defineComponent({
         });
     },
     async getProductsNew(numPag) {
+      this.loadingTableContent(true);
+      this.page = numPag;
       this.table.rows = [];
       var path = url + `products/products/?page=` + numPag;
       axios
@@ -177,6 +190,8 @@ export default defineComponent({
             this.table.rows.push(element);
             this.numPag = Math.ceil(response.data.count / 10);
           });
+          this.loadingContent(false);
+          this.loadingTableContent(false);
         })
         .catch(() => {
           this.showToast({
@@ -253,38 +268,41 @@ export default defineComponent({
         </div>
       </div>
     </div>
-
-    <table-lite
-      :is-static-mode="false"
-      :is-slot-mode="true"
-      :is-hide-paging="true"
-      :columns="table.columns"
-      :rows="table.rows"
-      :total="table.totalRecordCount"
-      class="mb-3"
-    >
-      <template v-slot:quick="data">
-        <div class="d-flex">
-          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
-            <i class="bi bi-journal"></i>
-          </button>
-          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
-            <i class="bi bi-trash"></i>
-          </button>
-        </div>
-      </template>
-    </table-lite>
-    <paginate
-      :page-count="numPag"
-      :page-range="3"
-      :margin-pages="2"
-      :click-handler="clickCallback"
-      :prev-text="'Anterior'"
-      :next-text="'Siguiente'"
-      :container-class="'pagination pagination-sm'"
-      :page-class="'page-item'"
-    >
-    </paginate>
+    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+      <table-lite
+        :is-static-mode="false"
+        :is-slot-mode="true"
+        :is-hide-paging="true"
+        :columns="table.columns"
+        :rows="table.rows"
+        :total="table.totalRecordCount"
+        class="mb-3"
+      >
+        <template v-slot:quick="data">
+          <div class="d-flex">
+            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+              <i class="bi bi-journal"></i>
+            </button>
+            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </template>
+      </table-lite>
+      <paginate
+        v-if="numPag > 1"
+        v-model="page"
+        :page-count="numPag"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'Anterior'"
+        :next-text="'Siguiente'"
+        :container-class="'pagination pagination-sm'"
+        :page-class="'page-item'"
+      >
+      </paginate>
+    </TableContent>
   </Content>
 </template>
 <script></script>

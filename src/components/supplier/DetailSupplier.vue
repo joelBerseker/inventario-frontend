@@ -170,9 +170,9 @@ export default defineComponent({
       this.validateDocument();
     },
     inputPhone() {
-      var aux = this.item_selected.phone
-      this.item_selected.phone = this.inputOnlyNumber(this.item_selected.phone)
-      if(aux==this.item_selected.phone){
+      var aux = this.item_selected.phone;
+      this.item_selected.phone = this.inputOnlyNumber(this.item_selected.phone);
+      if (aux == this.item_selected.phone) {
         this.validatePhone();
       }
     },
@@ -280,7 +280,9 @@ export default defineComponent({
       this.changeMode(3);
     },
     closeModal() {
-      this.$refs.myModal.closeModal();
+      try {
+        this.$refs.myModal.closeModal();
+      } catch (error) {}
     },
     openModal() {
       this.$refs.myModal.openModal();

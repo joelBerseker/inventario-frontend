@@ -1,6 +1,7 @@
 <script>
 import DetailSupplier from "./DetailSupplier.vue";
 import Content from "@/components/home/Content.vue";
+import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
@@ -16,6 +17,7 @@ export default defineComponent({
       cardView: false,
       item_selected: {},
       numPag: 4,
+      page: 1,
       table: {
         columns: [
           {
@@ -66,6 +68,7 @@ export default defineComponent({
       },
 
       loading: true,
+      loadingTable: false,
       topbar: {
         title: "Proveedores",
         icon: "bi bi-truck",
@@ -88,6 +91,7 @@ export default defineComponent({
     TableLite,
     Content,
     paginate: Paginate,
+    TableContent,
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   async created() {
@@ -97,6 +101,11 @@ export default defineComponent({
   methods: {
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
+    },
+    loadingTableContent(loading) {
+      try {
+        this.$refs.tableContent.loadingTableContent(loading);
+      } catch (error) {}
     },
     addMode() {
       this.item_selected = {};
@@ -139,6 +148,9 @@ export default defineComponent({
       });
     },
     async getSuppliers(numpg) {
+      this.loadingTableContent(true);
+      this.page = numpg;
+
       this.table.rows = [];
       var path = url + `providers/providers/?page=` + numpg;
       axios
@@ -150,6 +162,7 @@ export default defineComponent({
             this.numPag = Math.ceil(response.data.count / 10);
           });
           this.loadingContent(false);
+          this.loadingTableContent(false);
         })
         .catch(() => {
           this.showToast({
@@ -181,58 +194,62 @@ export default defineComponent({
     <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
       <i class="bi bi-view-list"></i> Vista por tarjetas
     </button>
-    <div v-if="!cardView">
-      <table-lite
-        :is-static-mode="false"
-        :is-slot-mode="true"
-        :is-hide-paging="true"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        class="mb-3"
-      >
-        <template v-slot:quick="data">
-          <div class="d-flex">
-            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
-              <i class="bi bi-journal"></i>
-            </button>
-            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </template>
-      </table-lite>
-      <paginate
-        :page-count="numPag"
-        :page-range="3"
-        :margin-pages="2"
-        :click-handler="clickCallback"
-        :prev-text="'Anterior'"
-        :next-text="'Siguiente'"
-        :container-class="'pagination pagination-sm'"
-        :page-class="'page-item'"
-      >
-      </paginate>
-    </div>
-    <div v-else>
-      <div class="row">
-        <div class="col-4 mb-3" v-for="item in table.rows" :key="item.id">
-          <div class="card box" :id="item.title">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-auto">
-                  <h1><i class="bi bi-person-circle"></i></h1>
-                </div>
-                <div class="col">
-                  <p class="title-text">{{ item.name }}</p>
-                  <p class="card-text">{{ item.phone }}</p>
+    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+      <div v-if="!cardView">
+        <table-lite
+          :is-static-mode="false"
+          :is-slot-mode="true"
+          :is-hide-paging="true"
+          :columns="table.columns"
+          :rows="table.rows"
+          :total="table.totalRecordCount"
+          class="mb-3"
+        >
+          <template v-slot:quick="data">
+            <div class="d-flex">
+              <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+                <i class="bi bi-journal"></i>
+              </button>
+              <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </template>
+        </table-lite>
+        <paginate
+          v-if="numPag > 1"
+          v-model="page"
+          :page-count="numPag"
+          :page-range="3"
+          :margin-pages="2"
+          :click-handler="clickCallback"
+          :prev-text="'Anterior'"
+          :next-text="'Siguiente'"
+          :container-class="'pagination pagination-sm'"
+          :page-class="'page-item'"
+        >
+        </paginate>
+      </div>
+      <div v-else>
+        <div class="row">
+          <div class="col-4 mb-3" v-for="item in table.rows" :key="item.id">
+            <div class="card box" :id="item.title">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-auto">
+                    <h1><i class="bi bi-person-circle"></i></h1>
+                  </div>
+                  <div class="col">
+                    <p class="title-text">{{ item.name }}</p>
+                    <p class="card-text">{{ item.phone }}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </TableContent>
   </Content>
 </template>
 

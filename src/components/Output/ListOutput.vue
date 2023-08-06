@@ -4,6 +4,7 @@ import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import Content from "@/components/home/Content.vue";
+import TableContent from "@/components/home/TableContent.vue";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
@@ -12,6 +13,7 @@ export default defineComponent({
   data() {
     return {
       item_selected: {},
+      search: "",
       Outputs: [],
       table: {
         columns: [
@@ -71,6 +73,7 @@ export default defineComponent({
         ],
       },
       loading: false,
+      loadingTable: false,
     };
   },
   mixins: [UtilityFunctions],
@@ -78,9 +81,18 @@ export default defineComponent({
     DetailOutput,
     TableLite,
     Content,
+    TableContent
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {
+    loadingContent(loading) {
+      this.$refs.content.loadingContent(loading);
+    },
+    loadingTableContent(loading) {
+      try {
+        this.$refs.tableContent.loadingTableContent(loading);
+      } catch (error) {}
+    },
     openInNewTab(data) {
       var link = url + "orders/orders/boleta/" + data + "/";
       window.open(link, "_blank", "noreferrer");

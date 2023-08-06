@@ -1,6 +1,7 @@
 <script>
 import DetailInput from "./DetailInput.vue";
 import Content from "@/components/home/Content.vue";
+import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -62,6 +63,7 @@ export default defineComponent({
         ],
       },
       loading: false,
+      loadingTable: false,
     };
   },
   mixins: [UtilityFunctions],
@@ -69,9 +71,18 @@ export default defineComponent({
     DetailInput,
     TableLite,
     Content,
+    TableContent
   },
   props: ["changeTopbar", "showToast", "confirmDialogue", "loadingContent"],
   methods: {
+    loadingContent(loading) {
+      this.$refs.content.loadingContent(loading);
+    },
+    loadingTableContent(loading) {
+      try {
+        this.$refs.tableContent.loadingTableContent(loading);
+      } catch (error) {}
+    },
     addMode() {
       this.item_selected = {};
       this.$refs.modal.changeMode(1);
