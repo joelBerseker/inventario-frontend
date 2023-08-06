@@ -9,7 +9,7 @@ export default new class {
             .post(url + 'user/token/', credentials);
         store.commit("SET_TOKEN", response.data.access);
         store.commit("SET_REFRESH", response.data.refresh);
-        store.commit("SET_ID", response.data.user_id);
+        await store.commit("SET_ID", response.data.user_id);
         this.getUser(response.data.user_id);
         return response.data;
     }
@@ -40,7 +40,7 @@ export default new class {
         console.log("Entre en GetUser");
         const response = await axios.get(url + 'user/api/'+id+"/");
         const user = response.data;
-        store.commit("SET_USER",user);
+        await store.commit("SET_USER",user);
         console.log("sali en GetUser");
         return user;
     }

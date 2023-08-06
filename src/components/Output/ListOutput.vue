@@ -2,6 +2,7 @@
 import DetailOutput from "./DetailOutput.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
+import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import Content from "@/components/home/Content.vue";
 import TableContent from "@/components/home/TableContent.vue";
@@ -58,6 +59,8 @@ export default defineComponent({
         rows: [],
         totalRecordCount: 0,
       },
+      numPag: 4,
+      page: 1,
       topbar: {
         title: "Salidas",
         icon: "bi bi-box-arrow-left",
@@ -79,6 +82,7 @@ export default defineComponent({
   mixins: [UtilityFunctions],
   components: {
     DetailOutput,
+    paginate: Paginate,
     TableLite,
     Content,
     TableContent,
@@ -114,7 +118,7 @@ export default defineComponent({
         okButton: "Eliminar",
       }).then((result) => {
         if (result) {
-          var path = url + "products/products/" + row.id + "/";
+          var path = url + "orders/orders/" + row.id + "/";
           axios
             .delete(path)
             .then((response) => {
@@ -137,17 +141,17 @@ export default defineComponent({
         }
       });
     },
-    async getOutputs() {
+    async getOutputs(num) {
       this.table.rows = [];
-      var path = url + `orders/orders/`;
-
+      var path = url + `orders/orders/?page=`+num;
       axios
         .get(path)
         .then((response) => {
           response.data.results.forEach((element) => {
             this.table.rows.push(element);
-            this.table.totalRecordCount = this.table.rows.length;
           });
+          this.table.totalRecordCount = response.data.count;
+          this.numPag = Math.ceil(response.data.count / 10);
           this.loadingContent(false);
         })
         .catch((e) => {
@@ -159,10 +163,14 @@ export default defineComponent({
           });
         });
     },
+    clickCallback(pageNum) {
+      this.page = pageNum;
+      this.getOutputs(pageNum);
+    },
   },
   async created() {
     this.changeTopbar(this.topbar);
-    await this.getOutputs();
+    await this.getOutputs(1);
   },
 });
 </script>
@@ -200,6 +208,19 @@ export default defineComponent({
         </div>
       </template>
     </table-lite>
+    <paginate
+        v-if="numPag > 1"
+        v-model="page"
+        :page-count="numPag"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'Anterior'"
+        :next-text="'Siguiente'"
+        :container-class="'pagination pagination-sm'"
+        :page-class="'page-item'"
+      >
+      </paginate>
   </Content>
 </template>
 <script></script>

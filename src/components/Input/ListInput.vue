@@ -4,6 +4,7 @@ import Content from "@/components/home/Content.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
+import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -48,6 +49,8 @@ export default defineComponent({
         rows: [],
         totalRecordCount: 0,
       },
+      numPag: 4,
+      page: 1,
       topbar: {
         title: "Entradas",
         icon: "bi bi-box-arrow-left",
@@ -70,8 +73,9 @@ export default defineComponent({
   components: {
     DetailInput,
     TableLite,
+    paginate: Paginate,
     Content,
-    TableContent
+    TableContent,
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {
@@ -100,7 +104,7 @@ export default defineComponent({
         okButton: "Eliminar",
       }).then((result) => {
         if (result) {
-          var path = url + "products/products/" + row.id + "/";
+          var path = url + "purchase/purchase/" + row.id + "/";
           axios
             .delete(path)
             .then((response) => {
@@ -116,40 +120,46 @@ export default defineComponent({
             .catch(() => {
               this.showToast({
                 title: "Eliminar Registro",
-                message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                message:
+                  "Ocurrió un error, si continua sucediendo contacte con su proveedor",
                 type: 2,
               });
             });
         }
       });
     },
-    async getInputs() {
+    async getInputs(num) {
       this.table.rows = [];
-      var path = url + `purchase/purchase/`;
+      var path = url + `purchase/purchase/?page=` + num;
       axios
         .get(path)
         .then((response) => {
-          console.log(response);
           response.data.results.forEach((element) => {
             this.table.rows.push(element);
-            this.table.totalRecordCount = this.table.rows.length;
           });
-          this.loadingContent(false)
+          this.table.totalRecordCount = response.data.count;
+          this.numPag = Math.ceil(response.data.count / 10);
+          this.loadingContent(false);
         })
         .catch((e) => {
           console.log(e);
-          
+
           this.showToast({
             title: "Obtener Registros",
-            message: "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",
+            message:
+              "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",
             type: 2,
           });
         });
     },
+    clickCallback(pageNum) {
+      this.page = pageNum;
+      this.getOutputs(pageNum);
+    },
   },
   async created() {
     this.changeTopbar(this.topbar);
-    await this.getInputs();
+    await this.getInputs(1);
   },
 });
 </script>
@@ -163,7 +173,11 @@ export default defineComponent({
       :getInputs="getInputs"
     />
 
-    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+    <button
+      v-on:click="addMode"
+      type="button"
+      class="btn btn-primary btn-sm mb-3"
+    >
       <i class="bi bi-plus-circle"></i> Agregar Entrada
     </button>
     <table-lite
@@ -175,15 +189,36 @@ export default defineComponent({
     >
       <template v-slot:quick="data">
         <div class="d-flex">
-          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+          <button
+            v-on:click="viewMode(data.value)"
+            type="button"
+            class="btn btn-secondary btn-sm me-1"
+          >
             <i class="bi bi-journal"></i>
           </button>
-          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+          <button
+            v-on:click="deleteItem(data.value)"
+            type="button"
+            class="btn btn-danger btn-sm"
+          >
             <i class="bi bi-trash"></i>
           </button>
         </div>
       </template>
     </table-lite>
+    <paginate
+      v-if="numPag > 1"
+      v-model="page"
+      :page-count="numPag"
+      :page-range="3"
+      :margin-pages="2"
+      :click-handler="clickCallback"
+      :prev-text="'Anterior'"
+      :next-text="'Siguiente'"
+      :container-class="'pagination pagination-sm'"
+      :page-class="'page-item'"
+    >
+    </paginate>
   </Content>
 </template>
 <script></script>
