@@ -53,7 +53,7 @@
       />
       <MyInput
         class="mb-3"
-        name="Dirección"
+        name="Correo Electronico"
         type="text"
         v-model="item_selected.mail"
         :validation="validation.mail"
