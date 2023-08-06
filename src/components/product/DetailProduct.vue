@@ -1,23 +1,25 @@
 <template>
   <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
     <div class="modal-body">
-      <div class="row mb-3" >
+      <div class="row mb-3">
         <div class="col-4">
           <MyInput
             type="text"
             name="Código"
-            :validation="validationCode"
+            :validation="validation.code"
             v-model="item_selected.code"
             :disabled="disabled"
+            v-on:input="inputCode()"
           />
         </div>
         <div class="col">
           <MyInput
             type="text"
             name="Nombre"
-            :validation="validationName"
+            :validation="validation.name"
             v-model="item_selected.name"
             :disabled="disabled"
+            v-on:input="inputName()"
           />
         </div>
       </div>
@@ -26,7 +28,7 @@
           <MyInput
             type="text"
             name="Precio de Compra"
-            :validation="validationCost"
+            :validation="validation.cost"
             v-model="item_selected.cost"
             v-on:input="inputCost()"
             :disabled="disabled"
@@ -36,7 +38,7 @@
           <MyInput
             type="text"
             name="Precio de Venta"
-            :validation="validationPrice"
+            :validation="validation.price"
             v-model="item_selected.price"
             v-on:input="inputPrice()"
             :disabled="disabled"
@@ -46,27 +48,24 @@
           <MyInput
             type="text"
             name="Cantidad en Inventario"
-            :validation="validationStock"
+            :validation="validation.stock"
             v-model="item_selected.stock"
-            v-on:input="inputStock()"
             :disabled="disabled"
+            v-on:input="inputStock()"
           />
         </div>
       </div>
       <MyInput
         type="textarea"
         name="Descripción"
-        :validation="validationDescription"
+        :validation="validation.description"
         v-model="item_selected.description"
         :disabled="disabled"
+        v-on:input="inputDescription()"
       />
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        class="btn btn-secondary btn-sm button-margin"
-        data-bs-dismiss="modal"
-      >
+      <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
         <i class="bi bi-x-circle"></i> Cerrar
       </button>
       <button
@@ -78,21 +77,11 @@
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button
-        type="button"
-        @click="editMode"
-        class="btn btn-dark btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="editMode" class="btn btn-dark btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button
-        type="button"
-        @click="saveItem"
-        class="btn btn-success btn-sm button-margin"
-        v-if="mode != 2"
-      >
+      <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -128,108 +117,91 @@ export default defineComponent({
       disabled: false,
       mode: 0,
       title: "",
-      errorMessage: {},
-      validated: false,
+      validation: {
+        code: {},
+        name: {},
+        cost: {},
+        price: {},
+        stock: {},
+        description: {},
+      },
+      validationEmpty: {
+        code: {},
+        name: {},
+        cost: {},
+        price: {},
+        stock: {},
+        description: {},
+      },
     };
   },
+  methods: {
+    validateForm() {
+      this.validateCode();
+      this.validateName();
+      this.validatePrice();
+      this.validateCost();
+      this.validateStock();
+      this.validateDescription();
 
-  computed: {
-    validateForm: function () {
       var result =
-        this.validationCode.isValid &&
-        this.validationName.isValid &&
-        this.validationCost.isValid &&
-        this.validationPrice.isValid &&
-        this.validationStock.isValid &&
-        this.validationDescription.isValid;
+        this.validation.code.isValid &&
+        this.validation.name.isValid &&
+        this.validation.price.isValid &&
+        this.validation.cost.isValid &&
+        this.validation.stock.isValid &&
+        this.validation.description.isValid;
       return result;
     },
-
-    validationCode: function () {
-      var text = this.item_selected.code;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 3, 10);
-
-      return this.validateInput(text, validationMessage, true);
+    validateCode() {
+      this.validation.code = this.validationRequiredText(this.item_selected.code, 3, 10);
+    },
+    validateName() {
+      this.validation.name = this.validationRequiredText(this.item_selected.name, 3, 50);
+    },
+    validatePrice() {
+      this.validation.price = this.validationRequiredText(this.item_selected.price, 3, 15);
+    },
+    validateCost() {
+      this.validation.cost = this.validationRequiredText(this.item_selected.cost, 3, 15);
+    },
+    validateStock() {
+      this.validation.stock = this.validationRequiredNumber(this.item_selected.stock);
+    },
+    validateDescription() {
+      this.validation.description = this.validationNoRequiredText(this.item_selected.description, 3, 50);
     },
 
-    validationName: function () {
-      var text = this.item_selected.name;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 3, 50);
-
-      return this.validateInput(text, validationMessage, true);
+    inputCode() {
+      this.validateCode();
     },
-
-    validationCost: function () {
-      var text = this.item_selected.cost;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 3, 15);
-
-      return this.validateInput(text, validationMessage, true);
+    inputName() {
+      this.validateName();
     },
-
-    validationPrice: function () {
-      var text = this.item_selected.price;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 3, 15);
-
-      return this.validateInput(text, validationMessage, true);
-    },
-
-    validationDescription: function () {
-      var text = this.item_selected.description;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 3, 50);
-
-      return this.validateInput(text, validationMessage, false);
-    },
-    validationStock: function () {
-      var text = this.item_selected.stock;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-
-      return this.validateInput(text, validationMessage, true);
-    },
-  },
-  methods: {
     inputPrice() {
       this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, "");
       this.item_selected.price = this.changeCurrency(this.item_selected.price);
+      this.validatePrice();
     },
     inputCost() {
       this.item_selected.cost = this.item_selected.cost.replace(/[^0-9]/, "");
       this.item_selected.cost = this.changeCurrency(this.item_selected.cost);
+      this.validateCost();
     },
     inputStock() {
       this.item_selected.stock = this.item_selected.stock.replace(/[^0-9]/, "");
+      this.validateStock();
+    },
+    inputDescription() {
+      this.validateDescription();
     },
 
     async saveItem() {
-      this.validated = true;
-      if (this.validateForm) {
-        if (this.textEmpty(this.item_selected.description, ""))
-          this.item_selected.description = "Ninguna";
+      if (this.validateForm()) {
+        if (this.textEmpty(this.item_selected.description, "")) this.item_selected.description = "Ninguna";
         var form_data = new FormData();
         for (var key in this.item_selected) {
-          if (
-            this.mode == 3 &&
-            (key == "id" ||
-              key == "created_at" ||
-              key == "updated_at" ||
-              key == "product_image")
-          ) {
+          if (this.mode == 3 && (key == "id" || key == "created_at" || key == "updated_at" || key == "product_image")) {
             console.log("key ->" + key);
             continue;
           }
@@ -247,9 +219,8 @@ export default defineComponent({
         }
       } else {
         this.showToast({
-          title: "Validar Registro",
-          message:
-            "Ocurrió un error, revise todos si todos los campos se llenaron correctamente",
+          title: "Ocurrió un error",
+          message: "Datos no válidos, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }
@@ -260,8 +231,8 @@ export default defineComponent({
         .post(path, data)
         .then((response) => {
           this.showToast({
-            title: "Agregar Registro",
-            message: "Operación exitosa",
+            title: "Operación exitosa",
+            message: "El registro se agrego correctamente.",
             type: 1,
           });
           this.getProducts();
@@ -269,9 +240,8 @@ export default defineComponent({
         })
         .catch(() => {
           this.showToast({
-            title: "Agregar Registro",
-            message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+            title: "Ocurrió un error",
+            message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -283,8 +253,8 @@ export default defineComponent({
         .put(path, data)
         .then((response) => {
           this.showToast({
-            title: "Agregar Registro",
-            message: "Operación exitosa",
+            title: "Operación exitosa",
+            message: "El registro se edito correctamente.",
             type: 1,
           });
           this.getProducts();
@@ -292,14 +262,14 @@ export default defineComponent({
         })
         .catch(() => {
           this.showToast({
-            title: "Agregar Registro",
-            message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+            title: "Ocurrió un error",
+            message: "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
     },
     changeMode(mode) {
+      this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
       switch (mode) {
         case 1:
           this.title = "Agregar Producto";

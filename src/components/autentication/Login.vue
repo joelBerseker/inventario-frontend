@@ -66,7 +66,7 @@ export default defineComponent({
       } else {
         this.showToast({
           title: "Validar Ingreso",
-          message: "Ocurrió un error, revise todos si todos los campos se llenaron correctamente",
+          message: "Ocurrió un error, revise todos si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }

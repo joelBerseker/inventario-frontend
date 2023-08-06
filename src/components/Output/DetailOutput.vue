@@ -3,16 +3,39 @@
     <div class="modal-body">
       <div class="row">
         <div class="col-4 head pe-3">
-          <MyInput class="mb-3" type="text" name="Numero de factura" :validation="validationOrderCode"
-            v-model="factura.numero" />
-          
-              <SelectSearch class="mb-3" v-model="factura.cliente" link="clients/clients/" name="Cliente"
-            :validation="validationClient" id="cliente">
+          <MyInput
+            class="mb-3"
+            type="text"
+            name="Numero de factura"
+            :validation="validation.code"
+            v-model="factura.numero"
+            v-on:input="inputCode()"
+          />
+          <SelectSearch
+            class="mb-3"
+            v-model="factura.cliente"
+            link="clients/clients/"
+            name="Cliente"
+            :validation="validation.client"
+            id="cliente"
+            v-on:update="inputClient()"
+          >
           </SelectSearch>
-          
-         
-          <MyInput class="mb-3" type="date" name="Fecha" :validation="validationDate" v-model="factura.fecha" />
-          <MyInput type="textarea" name="Descripción" :validation="validationDescription" v-model="factura.description" />
+          <MyInput
+            class="mb-3"
+            type="date"
+            name="Fecha"
+            :validation="validation.date"
+            v-model="factura.fecha"
+            v-on:input="inputDate()"
+          />
+          <MyInput
+            type="textarea"
+            name="Descripción"
+            :validation="validation.description"
+            v-model="factura.description"
+            v-on:input="inputDescription()"
+          />
         </div>
 
         <div class="col-8 ps-3">
@@ -29,8 +52,14 @@
               <p class="text-secondary">Total:</p>
               <div class="input-group input-group-sm">
                 <span class="input-group-text form-control-disabled">S/.</span>
-                <input type="text" class="form-control form-control-sm text-end" id="nombre" name="nombre"
-                  v-model="facturaTotal" disabled />
+                <input
+                  type="text"
+                  class="form-control form-control-sm text-end"
+                  id="nombre"
+                  name="nombre"
+                  v-model="facturaTotal"
+                  disabled
+                />
               </div>
             </div>
           </div>
@@ -54,24 +83,32 @@
           <div v-for="(item, index) in factura.detalle" :key="index" class="detalle-item">
             <div class="row mb-3">
               <div class="form-group col-5">
-
-                <SelectSearch v-model="item.producto" link="products/products/"
-                  :validation="validationList[index].producto" v-on:update:modelValue="inputProducto(index)" :id="index+'product'">
+                <SelectSearch
+                  v-model="item.producto"
+                  link="products/products/"
+                  :validation="validation.detail[index].product"
+                  v-on:update:modelValue="inputProduct(index)"
+                  :id="index + 'product'"
+                >
                 </SelectSearch>
-
               </div>
-              <div class="form-group col-sm-2 col-md-2">
+              <div class="form-group col-2">
                 <label class="form-control form-control-sm form-control-disabled text-end">{{
-                  item.setPrecio(item.producto) }}</label>
+                  item.setPrecio(item.producto)
+                }}</label>
               </div>
-              <div class="form-group col-sm-2 col-md-2 ">
-
-                <MyInput type="number" inputClass="text-end" :validation="validationList[index].cantidad"
-                  v-model="item.cantidad" v-on:input="inputCantidad(index)" />
-
+              <div class="form-group col-2">
+                <MyInput
+                  type="number"
+                  inputClass="text-end"
+                  :validation="validation.detail[index].quantity"
+                  v-model="item.cantidad"
+                  v-on:input="inputQuantity(index)"
+                />
               </div>
-              <div class="form-group col-sm-2 col-md-2">
-                <label class="form-control form-control-sm form-control-disabled text-end">{{ item.getGanancia()
+              <div class="form-group col-2">
+                <label class="form-control form-control-sm form-control-disabled text-end">{{
+                  item.getGanancia()
                 }}</label>
               </div>
               <div class="form-group col-1">
@@ -88,8 +125,12 @@
       <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
         <i class="bi bi-x-circle"></i> Cerrar
       </button>
-      <button type="button" @click="deleteItem(item_selected)" class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2">
+      <button
+        type="button"
+        @click="deleteItem(item_selected)"
+        class="btn btn-danger btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
@@ -168,12 +209,30 @@ export default defineComponent({
       title: "",
       errorMessage: {},
       validated: false,
-      validationList: [
-        {
-          producto: {},
-          cantidad: {},
-        }
-      ],
+      validation: {
+        code: {},
+        client: {},
+        date: {},
+        description: {},
+        detail: [
+          {
+            product: {},
+            quantity: {},
+          },
+        ],
+      },
+      validationEmpty: {
+        code: {},
+        client: {},
+        date: {},
+        description: {},
+        detail: [
+          {
+            product: {},
+            quantity: {},
+          },
+        ],
+      },
       factura: {
         description: null,
         numero: null,
@@ -195,161 +254,100 @@ export default defineComponent({
       });
       return total;
     },
-
-    validateForm: function () {
-      var result =
-        this.validationOrderCode.isValid &&
-        this.validationDescription.isValid &&
-        this.validationDate.isValid &&
-        this.validationClient.isValid
-        ;
-      return result;
-    },
-    validationOrderCode: function () {
-      var text = this.factura.numero;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 10, 10);
-
-      return this.validateInput(text, validationMessage, true);
-    },
-    validationDescription: function () {
-      var text = this.factura.description;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 3, 50);
-
-      return this.validateInput(text, validationMessage, false);
-    },
-    validationDate: function () {
-      var text = this.factura.fecha;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-
-      return this.validateInput(text, validationMessage, true);
-    },
-    validationClient: function () {
-      var text = this.factura.cliente;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-
-      return this.validateInput(text, validationMessage, true);
-    },
-    items() {
-      return emailsData.filter((item) => {
-        return item.toLowerCase().includes(this.factura.cliente.toLowerCase());
-      });
-    },
   },
   methods: {
-    inputCantidad(index) {
-      this.validationList[index].cantidad = this.validationCantidad(this.factura.detalle[index].cantidad)
+    validateForm() {
+      this.validateCode();
+      this.validateClient();
+      this.validateDate();
+      this.validateDescription();
+      var _validateDetail = this.validateDetail();
+
+      var result =
+        this.validation.code.isValid &&
+        this.validation.client.isValid &&
+        this.validation.date.isValid &&
+        this.validation.description.isValid &&
+        _validateDetail;
+      return result;
     },
 
-    inputProducto(index) {
-      this.validationList[index].producto = this.validationProducto(this.factura.detalle[index].producto)
+    validateCode() {
+      this.validation.code = this.validationRequiredText(this.factura.numero, 3, 50);
     },
-    validateProductList(){
-      var resp = true
-      console.log("entre a ")
-      for(var i = 0; i< this.factura.detalle.length; i++){
-        console.log(i)
-        this.inputCantidad(i)
-        this.inputProducto(i)
-        if(this.validationList[i].producto.isValid==false || this.validationList[i].cantidad.isValid==false){
-          resp = false
-          console.log("entre a false en la lista")
+    validateClient() {
+      this.validation.client = this.validationRequiredSelect(this.factura.cliente);
+    },
+    validateDate() {
+      this.validation.date = this.validationRequiredDate(this.factura.fecha);
+    },
+    validateDescription() {
+      this.validation.description = this.validationNoRequiredText(this.factura.description, 3, 50);
+    },
+    validateProduct(index) {
+      this.validation.detail[index].product = this.validationRequiredSelect(this.factura.detalle[index].producto);
+    },
+    validateQuantity(index) {
+      this.validation.detail[index].quantity = this.validationRequiredNumber(this.factura.detalle[index].cantidad);
+    },
+    validateDetail() {
+      var resp = true;
+      for (var i = 0; i < this.validation.detail.length; i++) {
+        this.validateProduct(i);
+        this.validateQuantity(i);
+        if (this.validation.detail[i].product.isValid == false || this.validation.detail[i].quantity.isValid == false) {
+          resp = false;
         }
-
       }
       return resp;
     },
-    validationCantidad(data) {
-      var text = data;
 
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
+    inputCode() {
+      this.validateCode();
+    },
+    inputClient() {
+      this.validateClient();
+    },
+    inputDate() {
+      this.validateDate();
+    },
+    inputDescription() {
+      this.validateDescription();
+    },
+    inputProduct(index) {
+      this.validateProduct(index);
+    },
+    inputQuantity(index) {
+      this.validateQuantity(index);
+    },
 
-      return this.validateInput(text, validationMessage, true);
-    },
-    validationProducto(data) {
-      var text = data;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-
-      return this.validateInput(text, validationMessage, true);
-    },
-    fetchEmailsData() {
-      // Devuelve una promesa que resuelve los datos de los correos electrónicos
-      return new Promise((resolve, reject) => {
-        // Aquí puedes realizar la llamada a la API o importar los datos del archivo JSON
-        // En este ejemplo, simplemente utilizamos los datos importados del archivo JSON
-        console.log(emailsData);
-        resolve(emailsData);
-      });
-    },
-    guardarFactura() {
-      // Aquí puedes realizar la lógica para guardar la factura en la base de datos
-      console.log(this.factura);
-    },
-    selectEmail() {
-      this.isEmailSelected = true;
-    },
-    filteredList() {
-      return fruits.filter((fruit) =>
-        fruit.toLowerCase().includes(input.value.toLowerCase())
-      );
-    },
     agregarItem() {
       this.factura.detalle.push(new Product());
-      this.validationList.push({
-        producto: {},
-        cantidad: {},
+      this.validation.detail.push({
+        product: {},
+        quantity: {},
       });
     },
     eliminarItem(index) {
       console.log(index);
       this.factura.detalle.splice(index, 1);
-      this.validationList.splice(index, 1);
-    },
-    changeCurrency() {
-      this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, "");
-      console.log("-------------");
-
-      console.log("value -> " + this.item_selected.price);
-      var text = this.item_selected.price.toString().replace(/[^0-9]/, "");
-      console.log("lengh -> " + text.length);
-      console.log("text -> " + text);
-      if (text.length >= 3) {
-        var firsPart = text.slice(0, -2);
-        var lastPart = text.slice(text.length - 2);
-        var complete = firsPart + "." + lastPart;
-        console.log(complete);
-        this.item_selected.price = Number(complete).toFixed(2);
-      }
-
-      /*if (this.item_selected.price.toString().length == 3) {
-                this.item_selected.price = (this.item_selected.price / 100).toFixed(2)
-            } else if (this.item_selected.price.toString().length >= 4) {
-                this.item_selected.price = (this.item_selected.price * 1000 / 100).toFixed(2)
-            }*/
+      this.validation.detail.splice(index, 1);
     },
     dataToJson(index) {
       var dataD = [];
 
-      this.factura.detalle.forEach(element => {
-        dataD.push({ "id_order": index, "id_product": element.producto.id, "new_sale_price": element.precio, "quantity": element.cantidad })
+      this.factura.detalle.forEach((element) => {
+        dataD.push({
+          id_order: index,
+          id_product: element.producto.id,
+          new_sale_price: element.precio,
+          quantity: element.cantidad,
+        });
       });
       this.addItemD(JSON.stringify(dataD));
     },
     async saveItem() {
-      this.validated = true;
-      if (this.validateProductList()&&this.validateForm) {
+      if (this.validateForm()) {
         console.log(this.factura);
         if (this.textEmpty(this.factura.description, "")) this.factura.description = "Ninguna";
         const formData = new FormData();
@@ -360,12 +358,11 @@ export default defineComponent({
         this.addItemC(formData);
       } else {
         this.showToast({
-          title: "Validar Registro",
-          message: "Ocurrió un error, revise todos si todos los campos se llenaron correctamente",
+          title: "Ocurrió un error",
+          message: "Datos no válidos, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }
-
     },
     async addItemD(data) {
       console.log(data);
@@ -409,8 +406,8 @@ export default defineComponent({
         .put(path, data)
         .then((response) => {
           this.showToast({
-            title: "Agregar Registro",
-            message: "Operación exitosa",
+            title: "Operación exitosa",
+            message: "El registro se edito correctamente.",
             type: 1,
           });
           this.getProducts();
@@ -418,14 +415,14 @@ export default defineComponent({
         })
         .catch(() => {
           this.showToast({
-            title: "Agregar Registro",
-            message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor3",
+            title: "Ocurrió un error",
+            message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
     },
     changeMode(mode) {
+      this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
       switch (mode) {
         case 1:
           this.title = "Agregar Salida";
@@ -468,9 +465,8 @@ export default defineComponent({
         .catch((e) => {
           console.log(e.message);
           this.showToast({
-            title: "Obtener Registros",
-            message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor1",
+            title: "Ocurrió un error",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -489,9 +485,8 @@ export default defineComponent({
         })
         .catch(() => {
           this.showToast({
-            title: "Obtener Registros",
-            message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor2",
+            title: "Ocurrió un error",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });

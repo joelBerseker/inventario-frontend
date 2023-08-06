@@ -1,23 +1,18 @@
 <template>
   <div class="dropdown">
     <MyForm :name="name" :message="validation.validationMessage">
-      <textarea
-        v-if="type == 'textarea'"
-        :class="inputClass + ' form-control form-control-sm ' + validation.validationStyle"
+      <select
+        :class="'form-select form-select-sm ' + validation.validationStyle"
         :id="name"
-        v-model="itemLocal"
         :disabled="disabled"
+        v-model="itemLocal"
+        required
       >
-      </textarea>
-      <input
-        v-else
-        :type="type"
-        v-model="itemLocal"
-        :disabled="disabled"
-        :class="inputClass + ' form-control form-control-sm ' + validation.validationStyle"
-        autocomplete="off"
-        :id="name"
-      />
+        <option disabled :value="undefined">Seleccione una opción</option>
+        <option v-for="option in options" :value="option.value">
+          {{ option.text }}
+        </option>
+      </select>
     </MyForm>
   </div>
 </template>
@@ -31,7 +26,7 @@ export default defineComponent({
     prop: "modelValue",
     event: "update:modelValue",
   },
-
+  props: ["modelValue", "name", "validation", "options", "disabled"],
   props: {
     modelValue: {},
     name: {},
@@ -41,8 +36,7 @@ export default defineComponent({
         validationStyle: "",
       },
     },
-    type: {},
-    inputClass: {},
+    options: {},
     disabled: {},
   },
   data() {
@@ -51,8 +45,7 @@ export default defineComponent({
   components: {
     MyForm,
   },
-  methods: {
-  },
+  methods: {},
   computed: {
     itemLocal: {
       get: function () {
@@ -60,6 +53,7 @@ export default defineComponent({
       },
       set: function (value) {
         this.$emit("update:modelValue", value);
+        this.$emit("update", value);
       },
     },
   },
