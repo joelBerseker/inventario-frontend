@@ -145,8 +145,8 @@ export default defineComponent({
             .then((response) => {
               console.log(response);
               this.showToast({
-                title: "Eliminar Registro",
-                message: "Operación exitosa",
+                title: "Operación exitosa",
+                message: "El registro de elimino correctamente.",
                 type: 1,
               });
               this.getProducts();
@@ -154,9 +154,8 @@ export default defineComponent({
             })
             .catch(() => {
               this.showToast({
-                title: "Eliminar Registro",
-                message:
-                  "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                title: "Ocurrió un error",
+                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -181,8 +180,7 @@ export default defineComponent({
           console.log(e.message);
           this.showToast({
             title: "Ocurrió un error",
-            message:
-              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -201,8 +199,7 @@ export default defineComponent({
         .catch(() => {
           this.showToast({
             title: "Ocurrió un error",
-            message:
-              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -228,11 +225,7 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button
-          v-on:click="addMode"
-          type="button"
-          class="btn btn-primary btn-sm mb-3"
-        >
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Producto
         </button>
         <button
@@ -258,53 +251,21 @@ export default defineComponent({
             </button>
             <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  Nombre
-                </label>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
               </div>
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  Documento
-                </label>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label class="form-check-label" for="flexCheckDefault"> Documento </label>
               </div>
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  value=""
-                  id="flexCheckDefault"
-                />
-                <label class="form-check-label" for="flexCheckDefault">
-                  Telefono
-                </label>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
               </div>
             </div>
           </div>
-          <input
-            type="text"
-            class="form-control form-control-sm"
-            id="name"
-            name="name"
-            v-model="search"
-            required
-          />
-          <button
-            class="btn btn-sm btn-secondary"
-            type="button"
-            @click="filterTable"
-          >
+          <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="search" required />
+          <button class="btn btn-sm btn-secondary" type="button" @click="filterTable">
             <i class="bi bi-search"></i>
           </button>
         </div>
@@ -326,18 +287,10 @@ export default defineComponent({
     >
       <template v-slot:quick="data">
         <div class="d-flex">
-          <button
-            v-on:click="viewMode(data.value)"
-            type="button"
-            class="btn btn-secondary btn-sm me-1"
-          >
+          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
             <i class="bi bi-journal"></i>
           </button>
-          <button
-            v-on:click="deleteItem(data.value)"
-            type="button"
-            class="btn btn-danger btn-sm"
-          >
+          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
             <i class="bi bi-trash"></i>
           </button>
         </div>

@@ -138,8 +138,8 @@ export default defineComponent({
             .then((response) => {
               console.log(response);
               this.showToast({
-                title: "Eliminar Registro",
-                message: "Operación exitosa",
+                title: "Operación exitosa",
+                message: "El registro de elimino correctamente.",
                 type: 1,
               });
               this.getSuppliers(1);
@@ -147,9 +147,8 @@ export default defineComponent({
             })
             .catch(() => {
               this.showToast({
-                title: "Eliminar Registro",
-                message:
-                  "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                title: "Ocurrió un error",
+                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -172,8 +171,7 @@ export default defineComponent({
         .catch(() => {
           this.showToast({
             title: "Ocurrió un error",
-            message:
-              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -194,18 +192,10 @@ export default defineComponent({
       :getSuppliers="getSuppliers"
     />
 
-    <button
-      v-on:click="addMode"
-      type="button"
-      class="btn btn-primary btn-sm mb-3"
-    >
+    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
       <i class="bi bi-plus-circle"></i> Agregar Proveedor
     </button>
-    <button
-      v-on:click="cardView = !cardView"
-      type="button"
-      class="btn btn-primary btn-sm mb-3 ms-1"
-    >
+    <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
       <i class="bi bi-view-list"></i> Vista por tarjetas
     </button>
     <div v-if="!cardView">
@@ -224,18 +214,10 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button
-              v-on:click="viewMode(data.value)"
-              type="button"
-              class="btn btn-secondary btn-sm me-1"
-            >
+            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
               <i class="bi bi-journal"></i>
             </button>
-            <button
-              v-on:click="deleteItem(data.value)"
-              type="button"
-              class="btn btn-danger btn-sm"
-            >
+            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>
             </button>
           </div>
@@ -250,7 +232,6 @@ export default defineComponent({
         :next-text="'Siguiente'"
         :container-class="'pagination pagination-sm'"
         :page-class="'page-item'"
-        
       >
       </paginate>
     </div>

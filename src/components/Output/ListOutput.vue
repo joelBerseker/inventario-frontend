@@ -135,8 +135,8 @@ export default defineComponent({
             .then((response) => {
               console.log(response);
               this.showToast({
-                title: "Eliminar Registro",
-                message: "Operación exitosa",
+                title: "Operación exitosa",
+                message: "El registro de elimino correctamente.",
                 type: 1,
               });
               this.getOutputs();
@@ -144,9 +144,8 @@ export default defineComponent({
             })
             .catch(() => {
               this.showToast({
-                title: "Eliminar Registro",
-                message:
-                  "Ocurrió un error, si continua sucediendo contacte con su proveedor4",
+                title: "Ocurrió un error",
+                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });

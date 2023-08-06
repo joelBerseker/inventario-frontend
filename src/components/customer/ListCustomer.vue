@@ -14,7 +14,7 @@ export default defineComponent({
   data() {
     return {
       item_selected: {},
-      search:"",
+      search: "",
       numPag: 2,
       table: {
         isLoading: false,
@@ -120,9 +120,7 @@ export default defineComponent({
     }
   },
   methods: {
-    filterTable(){
-      
-    },
+    filterTable() {},
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
     },
@@ -149,8 +147,8 @@ export default defineComponent({
             .then((response) => {
               console.log(response);
               this.showToast({
-                title: "Eliminar Registro",
-                message: "Operación exitosa",
+                title: "Operación exitosa",
+                message: "El registro de elimino correctamente.",
                 type: 1,
               });
               this.getCustomers(numPag);
@@ -158,9 +156,8 @@ export default defineComponent({
             })
             .catch(() => {
               this.showToast({
-                title: "Eliminar Registro",
-                message:
-                  "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                title: "Ocurrió un error",
+                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -185,8 +182,7 @@ export default defineComponent({
           console.log("error aqui1");
           this.showToast({
             title: "Ocurrió un error",
-            message:
-              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -199,8 +195,13 @@ export default defineComponent({
 </script>
 <template>
   <Content ref="content" :loading="loading">
-    <DetailCustomer ref="modal" :deleteItem="deleteItem" :showToast="showToast" :item_selected="item_selected"
-      :getCustomers="getCustomers" />
+    <DetailCustomer
+      ref="modal"
+      :deleteItem="deleteItem"
+      :showToast="showToast"
+      :item_selected="item_selected"
+      :getCustomers="getCustomers"
+    />
     <div class="row justify-content-md-end">
       <div class="col-6">
         <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
@@ -210,29 +211,27 @@ export default defineComponent({
       <div class="col">
         <div class="input-group input-group-sm">
           <div class="dropdown">
-            <button class="btn btn-sm btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
-              data-bs-toggle="dropdown">
+            <button
+              class="btn btn-sm btn-secondary margin-dropdown"
+              type="button"
+              id="dropdownMenuLink"
+              data-bs-toggle="dropdown"
+            >
               <i class="bi bi-sliders"></i>
               Filtro
             </button>
             <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                  Nombre
-                </label>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                  Documento
-                </label>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label class="form-check-label" for="flexCheckDefault"> Documento </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                  Telefono
-                </label>
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+                <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
               </div>
             </div>
           </div>
@@ -244,10 +243,19 @@ export default defineComponent({
       </div>
     </div>
 
-    <table-lite class="mb-3" :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
-      :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-      @is-finished="table.isLoading = false" :messages="table.messages"
-      >
+    <table-lite
+      class="mb-3"
+      :is-static-mode="false"
+      :is-slot-mode="true"
+      :is-hide-paging="true"
+      :is-loading="table.isLoading"
+      :columns="table.columns"
+      :rows="table.rows"
+      :total="table.totalRecordCount"
+      :sortable="table.sortable"
+      @is-finished="table.isLoading = false"
+      :messages="table.messages"
+    >
       <template v-slot:quick="data">
         <div class="d-flex">
           <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
@@ -259,13 +267,18 @@ export default defineComponent({
         </div>
       </template>
     </table-lite>
-    <paginate :page-count="numPag" :page-range="3" :margin-pages="2" :click-handler="clickCallback"
-      :prev-text="'Anterior'" :next-text="'Siguiente'" :container-class="'pagination pagination-sm'"
-      :page-class="'page-item'">
+    <paginate
+      :page-count="numPag"
+      :page-range="3"
+      :margin-pages="2"
+      :click-handler="clickCallback"
+      :prev-text="'Anterior'"
+      :next-text="'Siguiente'"
+      :container-class="'pagination pagination-sm'"
+      :page-class="'page-item'"
+    >
     </paginate>
   </Content>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
