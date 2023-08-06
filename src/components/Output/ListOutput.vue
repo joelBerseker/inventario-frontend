@@ -14,47 +14,31 @@ export default defineComponent({
       item_selected: {},
       Outputs: [],
       table: {
-        isLoading: false,
         columns: [
           {
             label: "Codigo",
             field: "order_code",
             width: "5%",
-            sortable: true,
           },
           {
             label: "Cliente",
             field: "client_name",
             width: "10%",
-            sortable: true,
           },
           {
             label: "Descripción",
             field: "description",
             width: "20%",
-            sortable: true,
           },
-
           {
             label: "Compra",
-
             columnClasses: ["text-end"],
             field: "total_price",
             width: "10%",
-            sortable: true,
             display: (row) => {
               return this.priceCorrect(row.total_price);
             },
           },
-          /**{
-                        label: "Venta",
-                        field: "price",
-                        width: "10%",
-                        sortable: true,
-                        display: (row) => {
-                            return this.priceCorrect(row.price);
-                        },
-                    },**/
           {
             label: "Fecha",
             field: "date",
@@ -67,21 +51,10 @@ export default defineComponent({
             label: " ",
             field: "quick",
             width: "7%",
-            sortable: false,
           },
         ],
         rows: [],
         totalRecordCount: 0,
-        sortable: {
-          order: "name",
-          sort: "asc",
-        },
-        messages: {
-          pagingInfo: "Mostrando {0} - {1} de {2}",
-          pageSizeChangeLabel: "Filas: ",
-          gotoPageLabel: " Pagina: ",
-          noDataAvailable: "No se encontraron elementos",
-        },
       },
       topbar: {
         title: "Salidas",
@@ -201,13 +174,9 @@ export default defineComponent({
     <table-lite
       :is-static-mode="true"
       :is-slot-mode="true"
-      :is-loading="table.isLoading"
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"
-      :sortable="table.sortable"
-      @is-finished="table.isLoading = false"
-      :messages="table.messages"
     >
       <template v-slot:quick="data">
         <div class="d-flex">

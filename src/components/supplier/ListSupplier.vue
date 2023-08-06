@@ -17,19 +17,16 @@ export default defineComponent({
       item_selected: {},
       numPag: 4,
       table: {
-        isLoading: false,
         columns: [
           {
             label: "Nombre",
             field: "name",
             width: "15%",
-            sortable: true,
           },
           {
             label: "Tipo",
             field: "documentType",
             width: "1%",
-            sortable: true,
             display: (row) => {
               return this.documentType(row.documentType);
             },
@@ -38,20 +35,17 @@ export default defineComponent({
             label: "Document",
             field: "document",
             width: "10%",
-            sortable: true,
           },
 
           {
             label: "Telefono",
             field: "phone",
             width: "10%",
-            sortable: true,
           },
           {
             label: "Dirección",
             field: "address",
             width: "10%",
-            sortable: true,
           },
           {
             label: "Actualizado",
@@ -65,21 +59,10 @@ export default defineComponent({
             label: " ",
             field: "quick",
             width: "1%",
-            sortable: false,
           },
         ],
         rows: [],
         totalRecordCount: 0,
-        sortable: {
-          order: "name",
-          sort: "asc",
-        },
-        messages: {
-          pagingInfo: "Mostrando {0} - {1} de {2}",
-          pageSizeChangeLabel: "Filas: ",
-          gotoPageLabel: " Pagina: ",
-          noDataAvailable: "No se encontraron elementos",
-        },
       },
 
       loading: true,
@@ -203,13 +186,9 @@ export default defineComponent({
         :is-static-mode="false"
         :is-slot-mode="true"
         :is-hide-paging="true"
-        :is-loading="table.isLoading"
         :columns="table.columns"
         :rows="table.rows"
         :total="table.totalRecordCount"
-        :sortable="table.sortable"
-        @is-finished="table.isLoading = false"
-        :messages="table.messages"
         class="mb-3"
       >
         <template v-slot:quick="data">

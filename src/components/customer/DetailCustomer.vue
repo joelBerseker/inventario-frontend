@@ -304,9 +304,7 @@ export default defineComponent({
     closeModal() {
       try {
         this.$refs.myModal.closeModal();
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     },
     openModal() {
       this.validated = false;

@@ -16,25 +16,21 @@ export default defineComponent({
       Products: [],
 
       table: {
-        isLoading: false,
         columns: [
           {
             label: "Codigo",
             field: "code",
             width: "3%",
-            sortable: true,
           },
           {
             label: "Nombre",
             field: "name",
             width: "20%",
-            sortable: true,
           },
           {
             label: "Descripción",
             field: "description",
             width: "20%",
-            sortable: true,
           },
 
           {
@@ -42,7 +38,6 @@ export default defineComponent({
             columnClasses: ["text-end"],
             field: "cost",
             width: "7%",
-            sortable: true,
             display: (row) => {
               return this.priceCorrect(row.cost);
             },
@@ -52,7 +47,6 @@ export default defineComponent({
             columnClasses: ["text-end"],
             field: "price",
             width: "7%",
-            sortable: true,
             display: (row) => {
               return this.priceCorrect(row.price);
             },
@@ -62,7 +56,6 @@ export default defineComponent({
             columnClasses: ["text-end"],
             field: "stock",
             width: "1%",
-            sortable: true,
           },
           {
             label: "Actualizado",
@@ -76,21 +69,10 @@ export default defineComponent({
             label: " ",
             field: "quick",
             width: "1%",
-            sortable: false,
           },
         ],
         rows: [],
         totalRecordCount: 0,
-        sortable: {
-          order: "name",
-          sort: "asc",
-        },
-        messages: {
-          pagingInfo: "Mostrando {0} - {1} de {2}",
-          pageSizeChangeLabel: "Filas: ",
-          gotoPageLabel: " Pagina: ",
-          noDataAvailable: "No se encontraron elementos",
-        },
       },
       numPag: 4,
       loading: true,
@@ -276,13 +258,9 @@ export default defineComponent({
       :is-static-mode="false"
       :is-slot-mode="true"
       :is-hide-paging="true"
-      :is-loading="table.isLoading"
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"
-      :sortable="table.sortable"
-      @is-finished="table.isLoading = false"
-      :messages="table.messages"
       class="mb-3"
     >
       <template v-slot:quick="data">

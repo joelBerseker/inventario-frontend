@@ -17,20 +17,18 @@ export default defineComponent({
       item_selected: {},
       search: "",
       numPag: 2,
+      page: 1,
       table: {
-        isLoading: false,
         columns: [
           {
             label: "Nombre",
             field: "name",
             width: "15%",
-            sortable: true,
           },
           {
             label: "Tipo",
             field: "documentType",
             width: "1%",
-            sortable: true,
             display: (row) => {
               return this.documentType(row.documentType);
             },
@@ -39,26 +37,22 @@ export default defineComponent({
             label: "Document",
             field: "document",
             width: "10%",
-            sortable: true,
           },
 
           {
             label: "Telefono",
             field: "phone",
             width: "10%",
-            sortable: true,
           },
           {
             label: "Dirección",
             field: "address",
             width: "10%",
-            sortable: true,
           },
           {
             label: "Correo",
             field: "mail",
             width: "10%",
-            sortable: true,
           },
           {
             label: "Actualizado",
@@ -77,16 +71,6 @@ export default defineComponent({
         ],
         rows: [],
         totalRecordCount: 0,
-        sortable: {
-          order: "name",
-          sort: "asc",
-        },
-        messages: {
-          pagingInfo: "Mostrando {0} - {1} de {2}",
-          pageSizeChangeLabel: "Filas: ",
-          gotoPageLabel: " Pagina: ",
-          noDataAvailable: "No se encontraron elementos",
-        },
       },
 
       loading: true,
@@ -131,15 +115,9 @@ export default defineComponent({
     loadingTableContent(loading) {
       try {
         this.$refs.tableContent.loadingTableContent(loading);
-      } catch (error) {
-        
-      }
-      
+      } catch (error) {}
     },
-    switcht(){
-      this.loadingTable = !this.loadingTable
-      this.loadingTableContent(this.loadingTable)
-    },
+  
     addMode() {
       this.item_selected = {};
       this.$refs.modal.changeMode(1);
@@ -183,10 +161,9 @@ export default defineComponent({
     },
 
     async getCustomers(numpg) {
-    
       this.loadingTableContent(true);
-     
-      
+      this.page = numpg;
+
       this.table.rows = [];
       var path = url + `clients/clients/?page=` + numpg;
       axios
@@ -229,9 +206,6 @@ export default defineComponent({
         <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Cliente
         </button>
-        <button v-on:click="switcht()" type="button" class="btn btn-primary btn-sm mb-3">
-          <i class="bi bi-plus-circle"></i> switch
-        </button>
       </div>
       <div class="col">
         <div class="input-group input-group-sm">
@@ -268,19 +242,15 @@ export default defineComponent({
       </div>
     </div>
 
-    <TableContent ref="tableContent" :loading="this.loadingTable">
+    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
       <table-lite
         class="mb-3"
         :is-static-mode="false"
         :is-slot-mode="true"
         :is-hide-paging="true"
-        :is-loading="table.isLoading"
         :columns="table.columns"
         :rows="table.rows"
         :total="table.totalRecordCount"
-        :sortable="table.sortable"
-        @is-finished="table.isLoading = false"
-        :messages="table.messages"
       >
         <template v-slot:quick="data">
           <div class="d-flex">
@@ -293,9 +263,9 @@ export default defineComponent({
           </div>
         </template>
       </table-lite>
-      
-    </TableContent>
-    <paginate
+      <paginate
+        v-if="numPag>1"
+        v-model="page"
         :page-count="numPag"
         :page-range="3"
         :margin-pages="2"
@@ -306,6 +276,7 @@ export default defineComponent({
         :page-class="'page-item'"
       >
       </paginate>
+    </TableContent>
   </Content>
 </template>
 

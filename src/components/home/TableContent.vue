@@ -5,12 +5,19 @@
         <div v-show="_loading">
           <div class="d-flex justify-content-center mt-3 align-items-center">
             <div class="spinner-border spinner-border-sm color-3"></div>
-            <div class="color-3"> &nbsp;  Cargando...</div>
+            <div class="color-3">&nbsp; Cargando...</div>
           </div>
         </div>
 
         <div v-show="!_loading">
-          <slot></slot>
+          <div v-if="size <= 0">
+            <div class="d-flex justify-content-center align-items-center">
+              <div class="color-3"> No se encontraron registros, puede agregar uno nuevo con el boton de arriba a la izquierda.</div>
+            </div>
+          </div>
+          <div v-else>
+            <slot></slot>
+          </div>
         </div>
       </div>
     </transition>
@@ -27,7 +34,7 @@ export default defineComponent({
       _loading: true,
     };
   },
-  props: ["loading", "listInfo"],
+  props: ["loading", "listInfo", "size"],
   components: {
     Icon,
   },
