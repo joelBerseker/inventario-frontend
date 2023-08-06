@@ -228,7 +228,7 @@ export default defineComponent({
       } else {
         this.showToast({
           title: "Ocurrió un error",
-          message: "Datos no válidos, todos si todos los campos se llenaron correctamente.",
+          message: "Datos no válidos, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }
