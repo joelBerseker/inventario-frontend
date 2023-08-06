@@ -2,10 +2,14 @@
   <div>
     <transition name="t-content" mode="out-in">
       <div :key="_loading">
-        <div v-show="_loading" class="center">
-          <Icon size="70px" :speed="true" :mode="2" :bgMode="1"></Icon>
+        <div v-show="_loading">
+          <div class="d-flex justify-content-center mt-3 align-items-center">
+            <div class="spinner-border spinner-border-sm color-3"></div>
+            <div class="color-3"> &nbsp;  Cargando...</div>
+          </div>
         </div>
-        <div v-show="!_loading" class="p-3">
+
+        <div v-show="!_loading">
           <slot></slot>
         </div>
       </div>
@@ -17,24 +21,24 @@ import { defineComponent } from "vue";
 import Icon from "@/components/my_components/Icon.vue";
 
 export default defineComponent({
-  name: "Content",
+  name: "TableContent",
   data() {
     return {
       _loading: true,
     };
   },
-  props: ["loading"],
+  props: ["loading", "listInfo"],
   components: {
     Icon,
   },
   methods: {
-    loadingContent(loading) {
+    loadingTableContent(loading) {
       if (loading) {
         this._loading = loading;
       } else {
         setTimeout(() => {
           this._loading = loading;
-        }, 50);
+        }, 200);
       }
     },
   },
@@ -53,20 +57,20 @@ export default defineComponent({
 
 .t-content-enter-active,
 .t-content-enter {
-  transition: all 0.25s ease;
+  transition: all 0.3s ease;
 }
 
 .t-content-leave-active {
-  transition: all 0.25s ease;
+  /*transition: all 0.25s ease;*/
 }
 
 .t-content-leave-to {
-  transform: translateX(10px);
+  transform: translateY(5px);
   opacity: 0;
 }
 
 .t-content-enter-from {
-  transform: translateX(-10px);
+  transform: translateY(-5px);
   opacity: 0;
 }
 </style>

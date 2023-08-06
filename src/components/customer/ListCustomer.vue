@@ -1,6 +1,7 @@
 <script>
 import DetailCustomer from "./DetailCustomer.vue";
 import Content from "@/components/home/Content.vue";
+import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
@@ -89,6 +90,7 @@ export default defineComponent({
       },
 
       loading: true,
+      loadingTable: false,
       topbar: {
         title: "Clientes",
         icon: "bi bi-people",
@@ -109,6 +111,7 @@ export default defineComponent({
   components: {
     DetailCustomer,
     TableLite,
+    TableContent,
     Content,
     paginate: Paginate,
   },
@@ -123,6 +126,18 @@ export default defineComponent({
     filterTable() {},
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
+    },
+    loadingTableContent(loading) {
+      try {
+        this.$refs.tableContent.loadingTableContent(loading);
+      } catch (error) {
+        
+      }
+      
+    },
+    switcht(){
+      this.loadingTable = !this.loadingTable
+      this.loadingTableContent(this.loadingTable)
     },
     addMode() {
       this.item_selected = {};
@@ -151,10 +166,11 @@ export default defineComponent({
                 message: "El registro de elimino correctamente.",
                 type: 1,
               });
-              this.getCustomers(numPag);
+              this.getCustomers(1);
               this.$refs.modal.closeModal();
             })
-            .catch(() => {
+            .catch((e) => {
+              console.log(e);
               this.showToast({
                 title: "Ocurrió un error",
                 message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
@@ -166,6 +182,10 @@ export default defineComponent({
     },
 
     async getCustomers(numpg) {
+    
+      this.loadingTableContent(true);
+     
+      
       this.table.rows = [];
       var path = url + `clients/clients/?page=` + numpg;
       axios
@@ -177,9 +197,10 @@ export default defineComponent({
             this.numPag = Math.ceil(response.data.count / 10);
           });
           this.loadingContent(false);
+          this.loadingTableContent(false);
         })
-        .catch(() => {
-          console.log("error aqui1");
+        .catch((e) => {
+          console.log(e);
           this.showToast({
             title: "Ocurrió un error",
             message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
@@ -206,6 +227,9 @@ export default defineComponent({
       <div class="col-6">
         <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Cliente
+        </button>
+        <button v-on:click="switcht()" type="button" class="btn btn-primary btn-sm mb-3">
+          <i class="bi bi-plus-circle"></i> switch
         </button>
       </div>
       <div class="col">
@@ -243,41 +267,44 @@ export default defineComponent({
       </div>
     </div>
 
-    <table-lite
-      class="mb-3"
-      :is-static-mode="false"
-      :is-slot-mode="true"
-      :is-hide-paging="true"
-      :is-loading="table.isLoading"
-      :columns="table.columns"
-      :rows="table.rows"
-      :total="table.totalRecordCount"
-      :sortable="table.sortable"
-      @is-finished="table.isLoading = false"
-      :messages="table.messages"
-    >
-      <template v-slot:quick="data">
-        <div class="d-flex">
-          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
-            <i class="bi bi-journal"></i>
-          </button>
-          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
-            <i class="bi bi-trash"></i>
-          </button>
-        </div>
-      </template>
-    </table-lite>
+    <TableContent ref="tableContent" :loading="this.loadingTable">
+      <table-lite
+        class="mb-3"
+        :is-static-mode="false"
+        :is-slot-mode="true"
+        :is-hide-paging="true"
+        :is-loading="table.isLoading"
+        :columns="table.columns"
+        :rows="table.rows"
+        :total="table.totalRecordCount"
+        :sortable="table.sortable"
+        @is-finished="table.isLoading = false"
+        :messages="table.messages"
+      >
+        <template v-slot:quick="data">
+          <div class="d-flex">
+            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+              <i class="bi bi-journal"></i>
+            </button>
+            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </template>
+      </table-lite>
+      
+    </TableContent>
     <paginate
-      :page-count="numPag"
-      :page-range="3"
-      :margin-pages="2"
-      :click-handler="clickCallback"
-      :prev-text="'Anterior'"
-      :next-text="'Siguiente'"
-      :container-class="'pagination pagination-sm'"
-      :page-class="'page-item'"
-    >
-    </paginate>
+        :page-count="numPag"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'Anterior'"
+        :next-text="'Siguiente'"
+        :container-class="'pagination pagination-sm'"
+        :page-class="'page-item'"
+      >
+      </paginate>
   </Content>
 </template>
 

@@ -302,7 +302,11 @@ export default defineComponent({
       this.changeMode(3);
     },
     closeModal() {
-      this.$refs.myModal.closeModal();
+      try {
+        this.$refs.myModal.closeModal();
+      } catch (error) {
+        
+      }
     },
     openModal() {
       this.validated = false;
