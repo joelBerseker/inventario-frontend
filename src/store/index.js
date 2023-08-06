@@ -51,7 +51,7 @@ export const store = createStore({
     userId: ({ commit }, { id }) => {
       commit("SET_ID", id);
     },
-    IdUser: ({ commit }, { User }) => {
+    User: ({ commit }, { User }) => {
       commit("SET_USER", User);
     },
     login: ({ commit }, { token }) => {

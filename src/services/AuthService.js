@@ -10,7 +10,7 @@ export default new class {
         store.commit("SET_TOKEN", response.data.access);
         store.commit("SET_REFRESH", response.data.refresh);
         store.commit("SET_ID", response.data.user_id);
-        this.getUser();
+        this.getUser(response.data.user_id);
         return response.data;
     }
     //metodo para extender el tiempo de vida de un token
@@ -36,10 +36,12 @@ export default new class {
         return response;
     }
     //metodo para obtener todos los datos de un usuario logueado
-    async getUser() {
-        const response = await axios.get(url + 'user/api/'+store.getters.getId+"/");
+    async getUser(id) {
+        console.log("Entre en GetUser");
+        const response = await axios.get(url + 'user/api/'+id+"/");
         const user = response.data;
         store.commit("SET_USER",user);
+        console.log("sali en GetUser");
         return user;
     }
     async setUser(data){
