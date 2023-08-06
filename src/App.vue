@@ -25,9 +25,11 @@ export default defineComponent({
         },
     },
     created() {
-        if (!this.$store.getters.isActive) {
+        if (!this.$store.getters.isActive || this.$store.getters.isActive==null) {
+            console.log("no paso");
             this.logout()
         } else {
+            console.log("paso xd");
             var link = window.location.href;
             var linkSlice = link.substring(link.lastIndexOf("/"), link.length)
             if(linkSlice == "/login"){
