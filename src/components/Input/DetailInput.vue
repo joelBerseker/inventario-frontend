@@ -3,7 +3,7 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-4 head pe-3">
-                    <MyForm class="mb-3" name="Numero de factura" :message="validationCode.message">
+                    <MyForm class="mb-3" name="Numero de factura" >
                         <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero"
                             required />
                     </MyForm>
@@ -205,24 +205,7 @@ export default defineComponent({
             return true;
         },
         validationCode: function () {
-            var text = this.item_selected.code;
-            var _message = "";
-            var _valid_text = "";
-            var _valid = true;
-            if (this.showValidation(text, this.validated, this.mode)) {
-                _message = this.onlyText(text, _message);
-                _message = this.textEmpty(text, _message);
-                _message = this.textLength(text, _message, 3, 6);
-
-                _valid_text = _message != "" ? " is-invalid" : " is-valid";
-                _valid = _message != "" ? false : true;
-            }
-            var response = {
-                message: _message,
-                validText: _valid_text,
-                valid: _valid,
-            };
-            return response;
+            
         },
         items() {
             return emailsData.filter((item) => {
