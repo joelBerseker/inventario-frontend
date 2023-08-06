@@ -117,6 +117,7 @@ export default defineComponent({
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   async created() {
+    //console.log(this.$store.getters.getUser);
     this.changeTopbar(this.topbar);
     if (this.$store.getters.isActive) {
       await this.getCustomers(1);
