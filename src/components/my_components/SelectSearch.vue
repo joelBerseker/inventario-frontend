@@ -1,46 +1,45 @@
 <template>
   <MyForm :name="name" :message="validation.validationMessage">
-  <div class="dropdown">
-    <button
-      :class="'form-select form-select-sm text-start ' + validation.validationStyle"
-      type="button"
-      :id="id"
-      data-bs-toggle="dropdown" 
-      data-bs-auto-close="true"
-      aria-expanded="false"
-      v-on:click="focusSearch()"
-      data-bs-display="static"
-    >
-      <p v-if="_itemName!=''" class="single-line">{{ _itemName }}</p>
-      <p v-else class="single-line">Seleccione una opción</p>
-      
-    </button>
-    <ul class="dropdown-menu w-100 "  aria-labelledby="dropdownMenuButton1">
-      <li class="px-2 mb-2">
-        <input
-          class="form-control form-control-sm"
-          ref="search"
-          id="search"
-          name="search"
-          v-model="search"
-          placeholder="Buscar..."
-          autocomplete="off"
-        />
-      </li>
-      <li class="text-center" v-if="listFiltered.length <= 0">
-        <div>No se encontraron elementos</div>
-      </li>
-      <li v-for="(item, index) in listFiltered" :key="index">
-        <div class="dropdown-item item-select" v-on:click="selectItem(item)">
-          <p>{{ item.name }}</p>
-        </div>
-      </li>
-      <li class="text-center" v-if="count >= 10">
-        <div>Existen mas elementos, por favor sea mas especifico</div>
-      </li>
-    </ul>
-  </div>
-</MyForm>
+    <div class="dropdown">
+      <button
+        :class="'form-select form-select-sm text-start ' + validation.validationStyle"
+        type="button"
+        :id="id"
+        data-bs-toggle="dropdown"
+        data-bs-auto-close="true"
+        aria-expanded="false"
+        v-on:click="focusSearch()"
+        data-bs-display="static"
+      >
+        <p v-if="_itemName != ''" class="single-line">{{ _itemName }}</p>
+        <p v-else class="single-line">Seleccione una opción</p>
+      </button>
+      <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
+        <li class="px-2 mb-2">
+          <input
+            class="form-control form-control-sm"
+            ref="search"
+            id="search"
+            name="search"
+            v-model="search"
+            placeholder="Buscar..."
+            autocomplete="off"
+          />
+        </li>
+        <li class="text-center" v-if="listFiltered.length <= 0">
+          <div>No se encontraron elementos</div>
+        </li>
+        <li v-for="(item, index) in listFiltered" :key="index">
+          <div class="dropdown-item item-select" v-on:click="selectItem(item)">
+            <p>{{ item.name }}</p>
+          </div>
+        </li>
+        <li class="text-center" v-if="count >= 10">
+          <div>Existen mas elementos, por favor sea mas especifico</div>
+        </li>
+      </ul>
+    </div>
+  </MyForm>
 </template>
 
 <script>
@@ -55,34 +54,34 @@ export default defineComponent({
     prop: "modelValue",
     event: "update:modelValue",
   },
-  props: ["modelValue"],
-  props:{
-    id:{
-      default: "id"
+  props: {
+    modelValue: {},
+    id: {
+      default: "id",
     },
-    link:{},
-    validation:{
-      default:{
+    link: {},
+    validation: {
+      default: {
         validationMessage: "",
-          validationStyle: ""
-      }
+        validationStyle: "",
+      },
     },
-    name:{
-      default:null
-    }
+    name: {
+      default: null,
+    },
   },
   data() {
     return {
       search: "",
       update: true,
-      count:0,
+      count: 0,
       _itemName: "",
       list: [],
     };
   },
   components: {
-        MyForm
-    },
+    MyForm,
+  },
 
   methods: {
     getData() {
@@ -90,7 +89,7 @@ export default defineComponent({
       axios
         .get(path)
         .then((response) => {
-          this.count=response.count;
+          this.count = response.count;
           if (response.count == 0) {
             this.update = false;
           } else {
@@ -103,21 +102,20 @@ export default defineComponent({
           console.log(e);
         });
     },
-    getDataFilter(a){
-      var path = url + this.link+"?search_query="+a;
+    getDataFilter(a) {
+      var path = url + this.link + "?search_query=" + a;
       axios
         .get(path)
         .then((response) => {
-          this.count=response.data.count;
+          this.count = response.data.count;
           if (response.count == 0) {
             this.update = false;
           } else {
-            this.list=[];
+            this.list = [];
             response.data.results.forEach((element) => {
               this.list.push(element);
             });
-            if(this.count<10)
-            this.update = false;
+            if (this.count < 10) this.update = false;
           }
         })
         .catch((e) => {
@@ -159,7 +157,6 @@ export default defineComponent({
           this.update = true;
         }
       }
-      
     },
   },
   async created() {
@@ -168,7 +165,7 @@ export default defineComponent({
 });
 </script>
 <style>
-.disabled-item{
+.disabled-item {
   color: rgba(0, 0, 0, 0.493);
 }
 .single-line {
@@ -177,7 +174,7 @@ export default defineComponent({
   overflow: hidden;
   white-space: pre;
 }
-.item-select{
+.item-select {
   white-space: normal !important;
   cursor: pointer;
 }
