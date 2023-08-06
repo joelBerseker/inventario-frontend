@@ -62,7 +62,7 @@ export default defineComponent({
           },
         ],
       },
-      loading: false,
+      loading: true,
       loadingTable: false,
     };
   },
@@ -73,7 +73,7 @@ export default defineComponent({
     Content,
     TableContent
   },
-  props: ["changeTopbar", "showToast", "confirmDialogue", "loadingContent"],
+  props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
@@ -134,9 +134,11 @@ export default defineComponent({
             this.table.rows.push(element);
             this.table.totalRecordCount = this.table.rows.length;
           });
+          this.loadingContent(false)
         })
         .catch((e) => {
           console.log(e);
+          
           this.showToast({
             title: "Obtener Registros",
             message: "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",

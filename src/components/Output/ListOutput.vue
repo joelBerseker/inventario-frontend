@@ -72,7 +72,7 @@ export default defineComponent({
           },
         ],
       },
-      loading: false,
+      loading: true,
       loadingTable: false,
     };
   },
@@ -81,7 +81,7 @@ export default defineComponent({
     DetailOutput,
     TableLite,
     Content,
-    TableContent
+    TableContent,
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {
@@ -148,13 +148,13 @@ export default defineComponent({
             this.table.rows.push(element);
             this.table.totalRecordCount = this.table.rows.length;
           });
+          this.loadingContent(false);
         })
         .catch((e) => {
           console.log(e);
           this.showToast({
             title: "Ocurrió un error",
-            message:
-              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -176,11 +176,7 @@ export default defineComponent({
       :getOutputs="getOutputs"
     />
 
-    <button
-      v-on:click="addMode"
-      type="button"
-      class="btn btn-primary btn-sm mb-3"
-    >
+    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
       <i class="bi bi-plus-circle"></i> Agregar Salida
     </button>
     <table-lite
@@ -192,22 +188,13 @@ export default defineComponent({
     >
       <template v-slot:quick="data">
         <div class="d-flex">
-          <button role="link"
-          class="btn btn-warning btn-sm me-1" @click="openInNewTab(data.value.id)">
-          <i class="bi bi-receipt"></i> Boleta
+          <button role="link" class="btn btn-warning btn-sm me-1" @click="openInNewTab(data.value.id)">
+            <i class="bi bi-receipt"></i> Boleta
           </button>
-          <button
-            v-on:click="viewMode(data.value)"
-            type="button"
-            class="btn btn-secondary btn-sm me-1"
-          >
+          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
             <i class="bi bi-journal"></i>
           </button>
-          <button
-            v-on:click="deleteItem(data.value)"
-            type="button"
-            class="btn btn-danger btn-sm"
-          >
+          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
             <i class="bi bi-trash"></i>
           </button>
         </div>
