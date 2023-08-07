@@ -132,6 +132,7 @@
 import axios from "axios";
 import Content from '@/components/home/Content.vue'
 import MyForm from "@/components/my_components/MyForm.vue";
+import AuthService from "@/services/AuthService";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   name: "Profile",
@@ -196,7 +197,7 @@ export default {
         .get(path)
         .then((response) => {
           this.user = response.data;
-          console.log("get user");
+          console.log(response.data);
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
           this.loadingContent(false)
@@ -215,7 +216,7 @@ export default {
         this.displayUser = { ...this.user };
       }
     },
-    saveChanges() {
+    async saveChanges() {
       // Aquí puedes realizar la llamada a la API para guardar los cambios
       var path = url + `user/api/` + this.$store.getters.getId + "/";
       var form_data = new FormData();
@@ -238,7 +239,7 @@ export default {
           this.user=response.data;
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
-
+          AuthService.setUser(this.user);
           console.log("editado");
           console.log(response);
         })
