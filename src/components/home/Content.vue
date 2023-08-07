@@ -5,7 +5,7 @@
         <div v-show="_loading" class="center">
           <Icon size="70px" :speed="true" :mode="2" :bgMode="1"></Icon>
         </div>
-        <div v-show="!_loading" class="p-3">
+        <div v-show="!_loading" :class="classContent">
           <slot></slot>
         </div>
       </div>
@@ -24,6 +24,12 @@ export default defineComponent({
     };
   },
   props: ["loading"],
+  props:{
+    loading:{},
+    classContent:{
+      default:"p-3"
+    }
+  },
   components: {
     Icon,
   },

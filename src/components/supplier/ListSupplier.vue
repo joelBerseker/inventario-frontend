@@ -274,7 +274,7 @@ export default defineComponent({
 <style scoped>
 .t-card-view-enter-active,
 .t-card-view-enter {
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
 }
 
 .t-card-view-leave-active {
