@@ -190,6 +190,7 @@ export default {
       reader.readAsDataURL(image);
       reader.onload = e => {
         this.previewImage = e.target.result;
+        this.editPhto=true;
       };
     },
     loadingContent(loading) {
@@ -225,8 +226,8 @@ export default {
       var path = url + `user/api/` + this.$store.getters.getId + "/";
       var form_data = new FormData();
       for (var key in this.editUser) {
-        /*if (key == "photo" && !this.editPhto)
-          continue;*/
+        if (key == "photo" && !this.editPhto)
+          continue;
         form_data.append(key, this.editUser[key]);
       }
       console.log(this.editUser);

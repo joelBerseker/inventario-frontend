@@ -128,10 +128,11 @@ export default defineComponent({
                 message: "El registro de elimino correctamente.",
                 type: 1,
               });
-              this.getOutputs();
+              this.getOutputs(1);
               this.$refs.modal.closeModal();
             })
-            .catch(() => {
+            .catch((e) => {
+              console.log(e);
               this.showToast({
                 title: "Ocurrió un error",
                 message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
@@ -188,8 +189,9 @@ export default defineComponent({
       <i class="bi bi-plus-circle"></i> Agregar Salida
     </button>
     <table-lite
-      :is-static-mode="true"
-      :is-slot-mode="true"
+        :is-static-mode="false"
+        :is-slot-mode="true"
+        :is-hide-paging="true"
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"

@@ -181,8 +181,9 @@ export default defineComponent({
       <i class="bi bi-plus-circle"></i> Agregar Entrada
     </button>
     <table-lite
-      :is-static-mode="true"
-      :is-slot-mode="true"
+        :is-static-mode="false"
+        :is-slot-mode="true"
+        :is-hide-paging="true"
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"
