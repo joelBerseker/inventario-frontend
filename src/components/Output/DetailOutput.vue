@@ -21,13 +21,13 @@
             v-on:update="inputClient()"
           >
           </SelectSearch>
-          <MyInput
+          <MySelect
             class="mb-3"
-            type="date"
-            name="Fecha"
-            :validation="validation.date"
-            v-model="factura.fecha"
-            v-on:input="inputDate()"
+            name="Tipo de pago"
+            :options="options"
+            :validation="validation.paymentType"
+            v-model="factura.paymentType"
+            v-on:update="inputPaymentType()"
           />
           <MyInput
             type="textarea"
@@ -163,6 +163,7 @@ import { defineComponent } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
+import MySelect from "@/components/my_components/MySelect.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import SelectSearch from "@/components/my_components/SelectSearch.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -196,6 +197,7 @@ export default defineComponent({
     MyForm,
     SelectSearch,
     MyInput,
+    MySelect
   },
   name: "Product",
   data() {
@@ -212,7 +214,7 @@ export default defineComponent({
       validation: {
         code: {},
         client: {},
-        date: {},
+        paymentType: {},
         description: {},
         detail: [
           {
@@ -224,7 +226,7 @@ export default defineComponent({
       validationEmpty: {
         code: {},
         client: {},
-        date: {},
+        paymentType: {},
         description: {},
         detail: [
           {
@@ -233,10 +235,17 @@ export default defineComponent({
           },
         ],
       },
+      options: [
+        { text: "Efectivo", value: "1" },
+        { text: "YAPE", value: "2" },
+        { text: "Tarjeta", value: "3" },
+        { text: "Otro", value: "4" },
+      ],
       factura: {
         description: null,
         numero: null,
         fecha: null,
+        paymentType: undefined,
         cliente: null,
         detalle: [new Product()],
         total: null,
@@ -259,14 +268,14 @@ export default defineComponent({
     validateForm() {
       this.validateCode();
       this.validateClient();
-      this.validateDate();
+      this.validatePaymentType();
       this.validateDescription();
       var _validateDetail = this.validateDetail();
 
       var result =
         this.validation.code.isValid &&
         this.validation.client.isValid &&
-        this.validation.date.isValid &&
+        this.validation.paymentType.isValid &&
         this.validation.description.isValid &&
         _validateDetail;
       return result;
@@ -278,8 +287,8 @@ export default defineComponent({
     validateClient() {
       this.validation.client = this.validationRequiredSelect(this.factura.cliente);
     },
-    validateDate() {
-      this.validation.date = this.validationRequiredDate(this.factura.fecha);
+    validatePaymentType() {
+      this.validation.paymentType = this.validationRequiredSelect(this.factura.paymentType);
     },
     validateDescription() {
       this.validation.description = this.validationNoRequiredText(this.factura.description, 3, 50);
@@ -308,8 +317,8 @@ export default defineComponent({
     inputClient() {
       this.validateClient();
     },
-    inputDate() {
-      this.validateDate();
+    inputPaymentType() {
+      this.validatePaymentType();
     },
     inputDescription() {
       this.validateDescription();
