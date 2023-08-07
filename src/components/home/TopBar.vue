@@ -60,7 +60,7 @@ export default defineComponent({
         <button v-on:click="this.$router.push('/user')" type="button" class="btn btn-primary-outline btn-sm me-1">
           <i class="bi bi-person-vcard"></i> {{ name }}
         </button>
-        <button v-on:click="logoutButton" type="button" class="btn btn-primary-outline btn-sm me-1">
+        <button v-on:click="this.$router.push('/notifications')" type="button" class="btn btn-primary-outline btn-sm me-1">
           <i class="bi bi-bell"></i>
         </button>
         <button v-on:click="logoutButton" type="button" class="btn btn-primary-outline btn-sm">
