@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import Home from "../components/home/Home.vue";
 import Login from "../components/autentication/Login.vue";
 import System from "../components/home/System.vue";
+import Notification from "../components/notification/ListNotification.vue";
 import Product from "../components/product/ListProduct.vue";
 import AddProductExcel from "../components/product/AddProductExcel.vue";
 import Supplier from "../components/supplier/ListSupplier.vue";
@@ -23,6 +24,11 @@ const router = createRouter({
           path: "/user",
           name: "user",
           component: viewUser,
+        },
+        {
+          path: "/notifications",
+          name: "notifications",
+          component: Notification,
         },
         {
           path: "/inputs",
