@@ -83,8 +83,22 @@ export default defineComponent({
           },
         ],
       },
+      textButtonCard: "Visualizar en tarjetas",
+      iconButtonCard: "bi bi-view-list",
     };
   },
+  watch: {
+    cardView() {
+      if (this.cardView) {
+        this.textButtonCard = "Visualizar en tabla";
+        this.iconButtonCard = "bi bi-table";
+      } else {
+        this.textButtonCard = "Visualizar en tarjetas";
+        this.iconButtonCard = "bi bi-view-list";
+      }
+    },
+  },
+
   mixins: [UtilityFunctions],
   components: {
     DetailSupplier,
@@ -192,10 +206,11 @@ export default defineComponent({
       <i class="bi bi-plus-circle"></i> Agregar Proveedor
     </button>
     <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
-      <i class="bi bi-view-list"></i> Vista por tarjetas
+      <i :class="iconButtonCard"></i> {{ this.textButtonCard }}
     </button>
     <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
-      <div v-if="!cardView">
+      <transition name="t-card-view" mode="out-in">
+        <div v-if="!cardView">
         <table-lite
           :is-static-mode="false"
           :is-slot-mode="true"
@@ -216,19 +231,7 @@ export default defineComponent({
             </div>
           </template>
         </table-lite>
-        <paginate
-          v-if="numPag > 1"
-          v-model="page"
-          :page-count="numPag"
-          :page-range="3"
-          :margin-pages="2"
-          :click-handler="clickCallback"
-          :prev-text="'Anterior'"
-          :next-text="'Siguiente'"
-          :container-class="'pagination pagination-sm'"
-          :page-class="'page-item'"
-        >
-        </paginate>
+        
       </div>
       <div v-else>
         <div class="row">
@@ -249,8 +252,42 @@ export default defineComponent({
           </div>
         </div>
       </div>
+      </transition>
+      
+      <paginate
+          v-if="numPag > 1"
+          v-model="page"
+          :page-count="numPag"
+          :page-range="3"
+          :margin-pages="2"
+          :click-handler="clickCallback"
+          :prev-text="'Anterior'"
+          :next-text="'Siguiente'"
+          :container-class="'pagination pagination-sm'"
+          :page-class="'page-item'"
+        >
+        </paginate>
     </TableContent>
   </Content>
 </template>
 
-<style></style>
+<style scoped>
+.t-card-view-enter-active,
+.t-card-view-enter {
+  transition: all 0.3s ease;
+}
+
+.t-card-view-leave-active {
+  /*transition: all 0.25s ease;*/
+}
+
+.t-card-view-leave-to {
+  transform: translateX(5px);
+  opacity: 0;
+}
+
+.t-card-view-enter-from {
+  transform: translateX(-5px);
+  opacity: 0;
+}
+</style>
