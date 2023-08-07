@@ -120,8 +120,7 @@ export default defineComponent({
             .catch(() => {
               this.showToast({
                 title: "Eliminar Registro",
-                message:
-                  "Ocurrió un error, si continua sucediendo contacte con su proveedor",
+                message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
                 type: 2,
               });
             });
@@ -146,8 +145,7 @@ export default defineComponent({
 
           this.showToast({
             title: "Obtener Registros",
-            message:
-              "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",
+            message: "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",
             type: 2,
           });
         });
@@ -173,35 +171,24 @@ export default defineComponent({
       :getInputs="getInputs"
     />
 
-    <button
-      v-on:click="addMode"
-      type="button"
-      class="btn btn-primary btn-sm mb-3"
-    >
+    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
       <i class="bi bi-plus-circle"></i> Agregar Entrada
     </button>
     <table-lite
-        :is-static-mode="false"
-        :is-slot-mode="true"
-        :is-hide-paging="true"
+      class="mb-3"
+      :is-static-mode="false"
+      :is-slot-mode="true"
+      :is-hide-paging="true"
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"
     >
       <template v-slot:quick="data">
         <div class="d-flex">
-          <button
-            v-on:click="viewMode(data.value)"
-            type="button"
-            class="btn btn-secondary btn-sm me-1"
-          >
+          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
             <i class="bi bi-journal"></i>
           </button>
-          <button
-            v-on:click="deleteItem(data.value)"
-            type="button"
-            class="btn btn-danger btn-sm"
-          >
+          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
             <i class="bi bi-trash"></i>
           </button>
         </div>

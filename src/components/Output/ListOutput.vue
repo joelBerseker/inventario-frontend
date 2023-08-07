@@ -144,7 +144,7 @@ export default defineComponent({
     },
     async getOutputs(num) {
       this.table.rows = [];
-      var path = url + `orders/orders/?page=`+num;
+      var path = url + `orders/orders/?page=` + num;
       axios
         .get(path)
         .then((response) => {
@@ -189,9 +189,10 @@ export default defineComponent({
       <i class="bi bi-plus-circle"></i> Agregar Salida
     </button>
     <table-lite
-        :is-static-mode="false"
-        :is-slot-mode="true"
-        :is-hide-paging="true"
+      class="mb-3"
+      :is-static-mode="false"
+      :is-slot-mode="true"
+      :is-hide-paging="true"
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"
@@ -211,18 +212,18 @@ export default defineComponent({
       </template>
     </table-lite>
     <paginate
-        v-if="numPag > 1"
-        v-model="page"
-        :page-count="numPag"
-        :page-range="3"
-        :margin-pages="2"
-        :click-handler="clickCallback"
-        :prev-text="'Anterior'"
-        :next-text="'Siguiente'"
-        :container-class="'pagination pagination-sm'"
-        :page-class="'page-item'"
-      >
-      </paginate>
+      v-if="numPag > 1"
+      v-model="page"
+      :page-count="numPag"
+      :page-range="3"
+      :margin-pages="2"
+      :click-handler="clickCallback"
+      :prev-text="'Anterior'"
+      :next-text="'Siguiente'"
+      :container-class="'pagination pagination-sm'"
+      :page-class="'page-item'"
+    >
+    </paginate>
   </Content>
 </template>
 <script></script>
