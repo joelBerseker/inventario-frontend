@@ -120,7 +120,7 @@
       <button class="btn btn-sm btn-success profile-action-btn ms-1" v-if="editing" @click="saveChanges">
         <i class="bi bi-check-circle"></i> Guardar
       </button>
-      <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="saveChanges">
+      <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="signOff">
         <i class="bi bi-power"></i> Cerrar Sesión
       </button>
 
@@ -179,6 +179,10 @@ export default {
     Content, MyForm
   },
   methods: {
+    signOff(){
+      this.$store.dispatch("logout");
+      this.$router.push("/login");
+    },
     uploadImage(e) {
       const image = e.target.files[0];
       this.editUser.photo = image
