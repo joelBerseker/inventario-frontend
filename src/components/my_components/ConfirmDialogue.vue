@@ -1,5 +1,5 @@
 <template> 
-    <MyModal ref="myModal" :id="'confirmDialogue'" :title="title">
+    <MyModal ref="myModal" :id="'confirmDialogue'" :title="title" :closeButton="false">
         <div class="modal-body">
             <p>{{ message }}</p>
         </div>
@@ -8,7 +8,7 @@
                 <i class="bi bi-x-circle"></i>
                 Cancelar
             </button>
-            <button v-on:click="_confirm" type="button" class="btn btn-dark btn-sm button-margin">
+            <button v-on:click="_confirm" type="button" class="btn btn-primary btn-sm button-margin">
                 <i class="bi bi-check-circle"></i>
                 {{ okButton }}
             </button>

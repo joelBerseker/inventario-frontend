@@ -5,7 +5,7 @@
         class="mb-3"
         name="Nombre"
         type="text"
-        v-model="item_selected.name"
+        v-model="item.name"
         :validation="validation.name"
         :disabled="disabled"
         v-on:input="inputName()"
@@ -16,7 +16,7 @@
             name="Tipo de documento"
             :validation="validation.documentType"
             :options="options"
-            v-model="item_selected.documentType"
+            v-model="item.documentType"
             :disabled="disabled"
             v-on:update="inputDocumentType()"
           />
@@ -25,7 +25,7 @@
           <MyInput
             name="Documento"
             type="text"
-            v-model="item_selected.document"
+            v-model="item.document"
             :validation="validation.document"
             :disabled="disabled"
             v-on:input="inputDocument()"
@@ -37,7 +37,7 @@
         class="mb-3"
         name="Telefono"
         type="text"
-        v-model="item_selected.phone"
+        v-model="item.phone"
         :validation="validation.phone"
         :disabled="disabled"
         v-on:input="inputPhone()"
@@ -46,7 +46,7 @@
         class="mb-3"
         name="Dirección"
         type="text"
-        v-model="item_selected.address"
+        v-model="item.address"
         :validation="validation.address"
         :disabled="disabled"
         v-on:input="inputAddress()"
@@ -55,30 +55,31 @@
         class="mb-3"
         name="Correo Electronico"
         type="text"
-        v-model="item_selected.mail"
+        v-model="item.mail"
         :validation="validation.mail"
         :disabled="disabled"
         v-on:input="inputMail()"
       />
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
-        <i class="bi bi-x-circle"></i> Cerrar
-      </button>
       <button
         type="button"
-        @click="deleteItem(item_selected)"
+        @click="deleteItem(item)"
         class="btn btn-danger btn-sm button-margin"
         v-if="mode == 2"
       >
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="editMode" class="btn btn-dark btn-sm button-margin" v-if="mode == 2">
+      <button type="button" @click="editMode" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
+      <button type="button" @click="viewMode" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+        <i class="bi bi-arrow-left-circle"></i> 
+        Cancelar
+      </button>
+      <button type="button" @click="saveItem" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -139,7 +140,13 @@ export default defineComponent({
         { text: "RUC", value: "2" },
         { text: "Otro", value: "3" },
       ],
+      item:{}
     };
+  },
+  watch: {
+    item_selected() {
+      this.item = JSON.parse(JSON.stringify(this.item_selected));
+    },
   },
   methods: {
     validateForm() {
@@ -161,22 +168,22 @@ export default defineComponent({
     },
 
     validateName() {
-      this.validation.name = this.validationRequiredText(this.item_selected.name, 3, 50);
+      this.validation.name = this.validationRequiredText(this.item.name, 3, 50);
     },
     validateDocumentType() {
-      this.validation.documentType = this.validationRequiredSelect(this.item_selected.documentType);
+      this.validation.documentType = this.validationRequiredSelect(this.item.documentType);
     },
     validateDocument() {
-      this.validation.document = this.validationRequiredText(this.item_selected.document, 3, 10);
+      this.validation.document = this.validationRequiredText(this.item.document, 3, 10);
     },
     validatePhone() {
-      this.validation.phone = this.validationRequiredText(this.item_selected.phone, 9, 9);
+      this.validation.phone = this.validationRequiredText(this.item.phone, 9, 9);
     },
     validateAddress() {
-      this.validation.address = this.validationRequiredText(this.item_selected.address, 3, 50);
+      this.validation.address = this.validationRequiredText(this.item.address, 3, 50);
     },
     validateMail() {
-      this.validation.mail = this.validationRequiredText(this.item_selected.mail, 3, 50);
+      this.validation.mail = this.validationRequiredText(this.item.mail, 3, 50);
     },
 
     inputName() {
@@ -189,9 +196,9 @@ export default defineComponent({
       this.validateDocument();
     },
     inputPhone() {
-      var aux = this.item_selected.phone;
-      this.item_selected.phone = this.inputOnlyNumber(this.item_selected.phone);
-      if (aux == this.item_selected.phone) {
+      var aux = this.item.phone;
+      this.item.phone = this.inputOnlyNumber(this.item.phone);
+      if (aux == this.item.phone) {
         this.validatePhone();
       }
     },
@@ -205,7 +212,7 @@ export default defineComponent({
     async saveItem() {
       if (this.validateForm()) {
         var form_data = new FormData();
-        for (var key in this.item_selected) {
+        for (var key in this.item) {
           if (
             this.mode == 3 &&
             (key == "id" || key == "created_at" || key == "updated_at" || key == "supplier_image")
@@ -213,7 +220,7 @@ export default defineComponent({
             console.log("key ->" + key);
             continue;
           }
-          form_data.append(key, this.item_selected[key]);
+          form_data.append(key, this.item[key]);
         }
         switch (this.mode) {
           case 1:
@@ -257,7 +264,7 @@ export default defineComponent({
     },
     editItem(data) {
       console.log(data);
-      var path = url + `clients/clients/` + this.item_selected.id + "/";
+      var path = url + `clients/clients/` + this.item.id + "/";
       axios
         .put(path, data)
         .then((response) => {
@@ -279,6 +286,7 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
+      this.item = JSON.parse(JSON.stringify(this.item_selected));
       switch (mode) {
         case 1:
           this.title = "Agregar Cliente";
@@ -300,6 +308,9 @@ export default defineComponent({
     },
     editMode() {
       this.changeMode(3);
+    },
+    viewMode() {
+      this.changeMode(2);
     },
     closeModal() {
       try {

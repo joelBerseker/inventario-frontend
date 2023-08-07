@@ -7,7 +7,7 @@
             type="text"
             name="Código"
             :validation="validation.code"
-            v-model="item_selected.code"
+            v-model="item.code"
             :disabled="disabled"
             v-on:input="inputCode()"
           />
@@ -17,7 +17,7 @@
             type="text"
             name="Nombre"
             :validation="validation.name"
-            v-model="item_selected.name"
+            v-model="item.name"
             :disabled="disabled"
             v-on:input="inputName()"
           />
@@ -29,7 +29,7 @@
             type="text"
             name="Precio de Compra"
             :validation="validation.cost"
-            v-model="item_selected.cost"
+            v-model="item.cost"
             v-on:input="inputCost()"
             :disabled="disabled"
           />
@@ -39,7 +39,7 @@
             type="text"
             name="Precio de Venta"
             :validation="validation.price"
-            v-model="item_selected.price"
+            v-model="item.price"
             v-on:input="inputPrice()"
             :disabled="disabled"
           />
@@ -49,7 +49,7 @@
             type="text"
             name="Cantidad en Inventario"
             :validation="validation.stock"
-            v-model="item_selected.stock"
+            v-model="item.stock"
             :disabled="disabled"
             v-on:input="inputStock()"
           />
@@ -59,29 +59,30 @@
         type="textarea"
         name="Descripción"
         :validation="validation.description"
-        v-model="item_selected.description"
+        v-model="item.description"
         :disabled="disabled"
         v-on:input="inputDescription()"
       />
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
-        <i class="bi bi-x-circle"></i> Cerrar
-      </button>
       <button
         type="button"
-        @click="deleteItem(item_selected)"
+        @click="deleteItem(item)"
         class="btn btn-danger btn-sm button-margin"
         v-if="mode == 2"
       >
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="editMode" class="btn btn-dark btn-sm button-margin" v-if="mode == 2">
+      <button type="button" @click="editMode" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
+      <button type="button" @click="viewMode" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+        <i class="bi bi-arrow-left-circle"></i> 
+        Cancelar
+      </button>
+      <button type="button" @click="saveItem" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -133,7 +134,13 @@ export default defineComponent({
         stock: {},
         description: {},
       },
+      item:{}
     };
+  },
+  watch: {
+    item_selected() {
+      this.item = JSON.parse(JSON.stringify(this.item_selected));
+    },
   },
   methods: {
     validateForm() {
@@ -154,22 +161,22 @@ export default defineComponent({
       return result;
     },
     validateCode() {
-      this.validation.code = this.validationRequiredText(this.item_selected.code, 3, 10);
+      this.validation.code = this.validationRequiredText(this.item.code, 3, 10);
     },
     validateName() {
-      this.validation.name = this.validationRequiredText(this.item_selected.name, 3, 50);
+      this.validation.name = this.validationRequiredText(this.item.name, 3, 50);
     },
     validatePrice() {
-      this.validation.price = this.validationRequiredText(this.item_selected.price, 3, 15);
+      this.validation.price = this.validationRequiredText(this.item.price, 3, 15);
     },
     validateCost() {
-      this.validation.cost = this.validationRequiredText(this.item_selected.cost, 3, 15);
+      this.validation.cost = this.validationRequiredText(this.item.cost, 3, 15);
     },
     validateStock() {
-      this.validation.stock = this.validationRequiredNumber(this.item_selected.stock);
+      this.validation.stock = this.validationRequiredNumber(this.item.stock);
     },
     validateDescription() {
-      this.validation.description = this.validationNoRequiredText(this.item_selected.description, 3, 50);
+      this.validation.description = this.validationNoRequiredText(this.item.description, 3, 50);
     },
 
     inputCode() {
@@ -179,17 +186,17 @@ export default defineComponent({
       this.validateName();
     },
     inputPrice() {
-      this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, "");
-      this.item_selected.price = this.changeCurrency(this.item_selected.price);
+      this.item.price = this.item.price.replace(/[^0-9]/, "");
+      this.item.price = this.changeCurrency(this.item.price);
       this.validatePrice();
     },
     inputCost() {
-      this.item_selected.cost = this.item_selected.cost.replace(/[^0-9]/, "");
-      this.item_selected.cost = this.changeCurrency(this.item_selected.cost);
+      this.item.cost = this.item.cost.replace(/[^0-9]/, "");
+      this.item.cost = this.changeCurrency(this.item.cost);
       this.validateCost();
     },
     inputStock() {
-      this.item_selected.stock = this.item_selected.stock.replace(/[^0-9]/, "");
+      this.item.stock = this.item.stock.replace(/[^0-9]/, "");
       this.validateStock();
     },
     inputDescription() {
@@ -198,14 +205,14 @@ export default defineComponent({
 
     async saveItem() {
       if (this.validateForm()) {
-        if (this.textEmpty(this.item_selected.description, "")) this.item_selected.description = "Ninguna";
+        if (this.textEmpty(this.item.description, "")) this.item.description = "Ninguna";
         var form_data = new FormData();
-        for (var key in this.item_selected) {
+        for (var key in this.item) {
           if (this.mode == 3 && (key == "id" || key == "created_at" || key == "updated_at" || key == "product_image")) {
             console.log("key ->" + key);
             continue;
           }
-          form_data.append(key, this.item_selected[key]);
+          form_data.append(key, this.item[key]);
         }
         switch (this.mode) {
           case 1:
@@ -248,7 +255,7 @@ export default defineComponent({
     },
     editItem(data) {
       console.log(data);
-      var path = url + `products/products/` + this.item_selected.id + "/";
+      var path = url + `products/products/` + this.item.id + "/";
       axios
         .put(path, data)
         .then((response) => {
@@ -270,6 +277,7 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
+      this.item = JSON.parse(JSON.stringify(this.item_selected));
       switch (mode) {
         case 1:
           this.title = "Agregar Producto";
@@ -291,6 +299,9 @@ export default defineComponent({
     },
     editMode() {
       this.changeMode(3);
+    },
+    viewMode() {
+      this.changeMode(2);
     },
     closeModal() {
       try {
