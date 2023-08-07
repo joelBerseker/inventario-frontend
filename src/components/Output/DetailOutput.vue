@@ -189,7 +189,7 @@ class Product {
   }
 }
 export default defineComponent({
-  props: ["item_selected", "deleteItem", "showToast"],
+  props: ["item_selected", "deleteItem", "showToast", "getOutputs"],
   mixins: [ValidationFunctions],
   components: {
     MyModal,
@@ -348,14 +348,22 @@ export default defineComponent({
     },
     async saveItem() {
       if (this.validateForm()) {
-        console.log(this.factura);
-        if (this.textEmpty(this.factura.description, "")) this.factura.description = "Ninguna";
-        const formData = new FormData();
-        formData.append("id_client", this.factura.cliente.id);
-        formData.append("description", this.factura.description);
-        formData.append("order_code", this.factura.numero);
-        formData.append("total_price", this.facturaTotal.toFixed(2));
-        this.addItemC(formData);
+        if (this.factura.detalle.length > 0) {
+          console.log(this.factura);
+          if (this.textEmpty(this.factura.description, "")) this.factura.description = "Ninguna";
+          const formData = new FormData();
+          formData.append("id_client", this.factura.cliente.id);
+          formData.append("description", this.factura.description);
+          formData.append("order_code", this.factura.numero);
+          formData.append("total_price", this.facturaTotal.toFixed(2));
+          this.addItemC(formData);
+        } else {
+          this.showToast({
+            title: "Ocurrió un error",
+            message: "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
+            type: 2,
+          });
+        }
       } else {
         this.showToast({
           title: "Ocurrió un error",
@@ -376,6 +384,7 @@ export default defineComponent({
         .post(path, data, config)
         .then((response) => {
           console.log(response);
+          this.getOutputs(1);
           this.closeModal();
         })
         .catch((e) => {
@@ -446,7 +455,9 @@ export default defineComponent({
       this.changeMode(3);
     },
     closeModal() {
-      this.$refs.myModal.closeModal();
+      try {
+        this.$refs.myModal.closeModal();
+      } catch (error) {}
     },
     openModal() {
       this.validated = false;
