@@ -7,7 +7,7 @@
             <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero" required />
           </MyForm>
           <MyForm class="mb-3" name="Cliente">
-            <SelectSearch v-model="factura.cliente" link="clients/clients/"></SelectSearch>
+            <SelectSearch v-model="factura.cliente" link="providers/providers/"></SelectSearch>
           </MyForm>
           <MyForm class="mb-3" name="Fecha">
             <input type="date" v-model="factura.fecha" class="form-control form-control-sm" id="fecha" required />
@@ -307,10 +307,12 @@ export default defineComponent({
 
       this.factura.detalle.forEach((element) => {
         dataD.push({
-          id_order: index,
+          id_purchase: index,
           id_product: element.producto.id,
-          new_sale_price: element.precio,
+          purchase_price: element.precio,
+          sale_price:element.venta,
           quantity: element.cantidad,
+          
         });
       });
       this.addItemD(JSON.stringify(dataD));
@@ -318,7 +320,7 @@ export default defineComponent({
     async saveItem() {
       console.log(this.factura);
       const formData = new FormData();
-      formData.append("id_client", this.factura.cliente.id);
+      formData.append("id_provider", this.factura.cliente.id);
       formData.append("description", this.factura.description);
       formData.append("order_code", this.factura.numero);
       formData.append("total_price", this.facturaTotal.toFixed(2));
@@ -331,7 +333,7 @@ export default defineComponent({
           "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
         },
       };
-      var path = url + `order_details/order_details/`;
+      var path = url + `purchase_details/purchase_detail/`;
       axios
         .post(path, data, config)
         .then((response) => {
@@ -344,7 +346,7 @@ export default defineComponent({
 
     async addItemC(data) {
       var index = 0;
-      var path = url + `orders/orders/`;
+      var path = url + `purchase/purchase/`;
       await axios
         .post(path, data)
         .then((response) => {
