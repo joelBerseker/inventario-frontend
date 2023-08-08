@@ -99,9 +99,11 @@
 
   border-radius: 0px !important;
   box-shadow: none !important;
+  background-color: transparent !important;
 }
 .acordion-home {
   border-radius: 0px !important;
+  background-color: transparent !important;
 }
 .box {
   cursor: pointer;
@@ -114,7 +116,7 @@
 }
 
 .box:hover {
-  background-color: rgb(224, 224, 224);
+  background-color: transparent !important;
 }
 </style>
 <script>

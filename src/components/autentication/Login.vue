@@ -170,7 +170,7 @@ export default defineComponent({
 
 .login {
   overflow: hidden;
-
+  background-color: var(--my-1th-color) !important;
 }
 
 .image {

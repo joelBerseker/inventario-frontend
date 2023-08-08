@@ -1,165 +1,207 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
-    --my-1th-color: #ffffff;
-    --my-7th-color: #ffffff;
-    --my-2th-color: #0D1321;
-    --my-6th-color: #1D2D44;
-    --my-4th-color: #3c678d;
-    --my-5th-color: #748CAB;
-    --my-3th-color: #1D2D44;
-    --my-border-radius: 0.5em;
+  --my-1th-color: #ffffff;
+  --my-7th-color: #ffffff;
+  --my-2th-color: #0d1321;
+  --my-6th-color: #1d2d44;
+  --my-4th-color: #3c678d;
+  --my-5th-color: #748cab;
+  --my-3th-color: #1d2d44;
+  --my-dark-1th-color: #252525;
+  --my-dark-2th-color: #e6e6e6;
+  --my-border-radius: 0.5em;
 }
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    margin: 0;
-    font-weight: normal;
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
 }
 
 .color-1 {
-    color: var(--my-1th-color) !important;
+  color: var(--my-1th-color) !important;
 }
 
 .color-2 {
-    color: var(--my-2th-color) !important;
+  color: var(--my-2th-color) !important;
 }
 
 .color-3 {
-    color: var(--my-3th-color) !important;
+  color: var(--my-3th-color) !important;
 }
 
 .bg-color-1 {
-    background-color: var(--my-1th-color) !important;
+  background-color: var(--my-1th-color) !important;
 }
 
 .bg-color-2 {
-    background-color: var(--my-2th-color) !important;
+  background-color: var(--my-2th-color) !important;
 }
 
 .bg-color-3 {
-    background-color: var(--my-3th-color) !important;
+  background-color: var(--my-3th-color) !important;
 }
 .bg-color-4 {
-    background-color: var(--my-4th-color) !important;
+  background-color: var(--my-4th-color) !important;
 }
 .bg-color-5 {
-    background-color: var(--my-5th-color) !important;
+  background-color: var(--my-5th-color) !important;
 }
 
 body {
-    min-height: 100vh;
-    color: var(--color-text);
-    background: var(--color-background);
-    transition: color 0.5s, background-color 0.5s;
-    
-    font-size: 0.9rem !important;
-    text-rendering: optimizeLegibility !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: color 0.5s, background-color 0.5s;
+
+  font-size: 0.9rem !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
 
 .modal {
-    background: rgba(0, 0, 0, 0.5) !important;
-
-    
+  background: rgba(0, 0, 0, 0.5) !important;
 }
-.modal-content{
-    border-radius: var(--my-border-radius) !important;
-
+.modal-content {
+  border-radius: var(--my-border-radius) !important;
 }
 
 .btn {
-    font-size: 0.9rem !important;
-    border-radius: 100rem !important;
-  
+  font-size: 0.9rem !important;
+  border-radius: 100rem !important;
 }
-.input-group>:not(:first-child):not(.dropdown-toggle):not(.dropdown-menu){
-    border-top-left-radius: 0 !important;
-    border-bottom-left-radius: 0 !important;
+.input-group > :not(:first-child):not(.dropdown-toggle):not(.dropdown-menu) {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
 }
-.input-group>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu){
-    border-top-right-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+.input-group > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 }
 
 .modal-backdrop {
-    display: none !important;
+  display: none !important;
 }
 
 .title-text {
-    
-    font-size: 1.2rem !important;
-    font-weight: 500 !important;
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
 }
 
 p {
-    margin: 0 !important;
-    padding: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 table {
-    border-collapse: separate !important;
-    border-spacing: 0 !important;
-    border-radius: var(--my-border-radius) !important;
-
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: var(--my-border-radius) !important;
+  background-color: transparent !important;
 }
 
-
 tr:first-child th:first-child {
-    border-top-left-radius: var(--my-border-radius) !important;
+  border-top-left-radius: var(--my-border-radius) !important;
 }
 
 tr:first-child th:last-child {
-    border-top-right-radius: var(--my-border-radius) !important;
+  border-top-right-radius: var(--my-border-radius) !important;
 }
 
 tr:last-child td:first-child {
-    border-bottom-left-radius: var(--my-border-radius) !important;
+  border-bottom-left-radius: var(--my-border-radius) !important;
 }
 
 tr:last-child td:last-child {
-    border-bottom-right-radius: var(--my-border-radius) !important;
+  border-bottom-right-radius: var(--my-border-radius) !important;
 }
 
 .vtl-tablec,
 .vtl-thead,
 .vtl-thead-th {
- 
-    background-color: var(--my-3th-color) !important;
+  background-color: var(--my-3th-color) !important;
 }
 
-.vtl-table thead th{
-    border-bottom: 1px solid #dee2e6 !important
+.vtl-table thead th {
+}
+.vtl-card {
+  background-color: transparent !important;
 }
 
 .vtl-paging-change-div,
 .vtl-paging-info {
-    align-self: center;
+  align-self: center;
 }
 
-td, th{
-    border-color: rgba(0, 0, 0, 0.144) !important;
-    padding-top: 0.4rem !important;
-    padding-bottom: 0.4rem !important;
+td,
+th {
+  border-color: rgba(0, 0, 0, 0.144) !important;
+  padding-top: 0.4rem !important;
+  padding-bottom: 0.4rem !important;
 }
 
-.toast{
-    background-color: white !important;  
-    border-radius: var(--my-border-radius) !important;
-    overflow: hidden;
+.toast {
+  background-color: white !important;
+  border-radius: var(--my-border-radius) !important;
+  overflow: hidden;
 }
 .toast-header {
-    border-top-left-radius: 0 !important;
-    border-top-right-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }
 
 .card {
-    border-radius: var(--my-border-radius) !important;
+  border-radius: var(--my-border-radius) !important;
 }
-.form-control-sm, .input-group-text{
-    border-radius: var(--my-border-radius) !important;
+.form-control-sm,
+.input-group-text,
+.form-select {
+  border-radius: var(--my-border-radius) !important;
 }
-.vtl-tbody-tr{
-    transition: 0.3s !important;
+.vtl-tbody-tr {
+  transition: 0.3s !important;
+}
+.accordion-item{
+    background: transparent !important;
+}
+.card{
+    background-color: transparent !important;
+    
+}
+
+/*DARK MODE*/
+.dark-mode .vtl-table {
+  color: var(--my-dark-2th-color) !important;
+}
+
+.dark-mode .modal-body,
+.dark-mode .modal-footer {
+  background-color: var(--my-dark-1th-color) !important;
+}
+.dark-mode .form-control,
+.dark-mode .form-select {
+  background-color: transparent !important;
+  color: var(--my-dark-2th-color) !important;
+  border-color: rgb(172, 172, 172) !important;
+}
+.dark-mode .form-control:disabled,
+.dark-mode .form-select:disabled,
+.dark-mode .form-control-disabled {
+  background-color: rgb(68, 68, 68) !important;
+}
+
+.dark-mode {
+  background-color: var(--my-dark-1th-color) !important;
+  color: var(--my-dark-2th-color) !important;
+}
+.dark-mode .accordion-button,
+.dark-mode .accordion-body,
+.dark-mode .accordion-body a{
+    color: var(--my-dark-2th-color) !important;
+}
+
+.dark-mode .card{
+    color: white !important;
 }

@@ -139,11 +139,11 @@ export default defineComponent({
 
 .breadcrumb a {
   color: var(--my-1th-color);
-  text-decoration-line: none;
+  /*text-decoration-line: none;*/
 }
 
 .breadcrumb-item a {
-  text-decoration-line: none;
+  /*text-decoration-line: none;*/
 }
 
 .margin-breadcrumb {

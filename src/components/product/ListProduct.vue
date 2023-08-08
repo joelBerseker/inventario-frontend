@@ -236,9 +236,9 @@ export default defineComponent({
       </div>
       <div class="col">
         <div class="input-group input-group-sm">
-          <div class="dropdown">
+
             <button
-              class="btn btn-sm btn-secondary margin-dropdown"
+              class="btn dropdown-toggle btn-secondary margin-dropdown"
               type="button"
               id="dropdownMenuLink"
               data-bs-toggle="dropdown"
@@ -260,9 +260,9 @@ export default defineComponent({
                 <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
               </div>
             </div>
-          </div>
-          <input type="text" class="form-control form-control-sm" id="name" name="name" v-model="search" required />
-          <button class="btn btn-sm btn-secondary" type="button" @click="filterTable">
+
+          <input type="text" class="form-control" id="name" name="name" v-model="search" required />
+          <button class="btn btn-secondary" type="button" @click="filterTable">
             <i class="bi bi-search"></i>
           </button>
         </div>
