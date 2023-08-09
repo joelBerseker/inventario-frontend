@@ -1,9 +1,12 @@
 <template>
   <div class="dropdown">
     <MyForm :name="name" :message="validation.validationMessage">
+      <span v-if="this.$slots.pre != undefined" :class="'input-group-text ' + classDisabled">
+        <slot name="pre"></slot>
+      </span>
       <textarea
         v-if="type == 'textarea'"
-        :class="inputClass + ' form-control form-control-sm ' + validation.validationStyle"
+        :class="inputClass + ' form-control ' + validation.validationStyle"
         :id="name"
         v-model="itemLocal"
         :disabled="disabled"
@@ -14,7 +17,7 @@
         :type="type"
         v-model="itemLocal"
         :disabled="disabled"
-        :class="inputClass + ' form-control form-control-sm ' + validation.validationStyle"
+        :class="inputClass + ' form-control ' + validation.validationStyle"
         autocomplete="off"
         :id="name"
       />
@@ -51,8 +54,7 @@ export default defineComponent({
   components: {
     MyForm,
   },
-  methods: {
-  },
+  methods: {},
   computed: {
     itemLocal: {
       get: function () {
@@ -61,6 +63,15 @@ export default defineComponent({
       set: function (value) {
         this.$emit("update:modelValue", value);
       },
+    },
+    classDisabled: function () {
+      var resp = "";
+      if (this.disabled == true) {
+        resp = " form-control-disabled ";
+      } else {
+        resp = "";
+      }
+      return resp;
     },
   },
   async created() {},
@@ -81,5 +92,20 @@ export default defineComponent({
 .item-select {
   white-space: normal !important;
   cursor: pointer;
+}
+.before-input {
+  position: absolute;
+
+  padding-left: 0.5rem;
+  left: 0;
+  top: 0;
+  margin-top: auto;
+  margin-top: auto;
+}
+.container-before {
+  position: relative;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
 </style>

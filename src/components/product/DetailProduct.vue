@@ -32,7 +32,11 @@
             v-model="item.cost"
             v-on:input="inputCost()"
             :disabled="disabled"
-          />
+          >
+            <template v-slot:pre>
+              <p>S/.</p>
+            </template>
+          </MyInput>
         </div>
         <div class="col">
           <MyInput
@@ -42,7 +46,11 @@
             v-model="item.price"
             v-on:input="inputPrice()"
             :disabled="disabled"
-          />
+          >
+            <template v-slot:pre>
+              <p>S/.</p>
+            </template>
+          </MyInput>
         </div>
         <div class="col">
           <MyInput
@@ -65,12 +73,7 @@
       />
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        @click="deleteItem(item)"
-        class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="deleteItem(item)" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
@@ -79,7 +82,7 @@
         Editar
       </button>
       <button type="button" @click="viewMode" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
-        <i class="bi bi-arrow-left-circle"></i> 
+        <i class="bi bi-arrow-left-circle"></i>
         Cancelar
       </button>
       <button type="button" @click="saveItem" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
@@ -134,7 +137,7 @@ export default defineComponent({
         stock: {},
         description: {},
       },
-      item:{}
+      item: {},
     };
   },
   watch: {

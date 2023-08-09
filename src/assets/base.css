@@ -156,6 +156,7 @@ th {
   border-radius: var(--my-border-radius) !important;
 }
 .form-control-sm,
+.form-control,
 .input-group-text,
 .form-select {
   border-radius: var(--my-border-radius) !important;
@@ -163,12 +164,14 @@ th {
 .vtl-tbody-tr {
   transition: 0.3s !important;
 }
-.accordion-item{
-    background: transparent !important;
+.accordion-item {
+  background: transparent !important;
 }
-.card{
-    background-color: transparent !important;
-    
+.card {
+  background-color: transparent !important;
+}
+.input-group-text {
+  background-color: transparent !important;
 }
 
 /*DARK MODE*/
@@ -184,7 +187,7 @@ th {
 .dark-mode .form-select {
   background-color: transparent !important;
   color: var(--my-dark-2th-color) !important;
-  border-color: rgb(172, 172, 172) !important;
+  border-color: rgb(172, 172, 172);
 }
 .dark-mode .form-control:disabled,
 .dark-mode .form-select:disabled,
@@ -198,10 +201,13 @@ th {
 }
 .dark-mode .accordion-button,
 .dark-mode .accordion-body,
-.dark-mode .accordion-body a{
-    color: var(--my-dark-2th-color) !important;
+.dark-mode .accordion-body a {
+  color: var(--my-dark-2th-color) !important;
 }
 
-.dark-mode .card{
-    color: white !important;
+.dark-mode .card {
+  color: var(--my-dark-2th-color) !important;
+}
+.dark-mode .input-group-text {
+  color: var(--my-dark-2th-color) !important;
 }
