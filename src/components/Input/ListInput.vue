@@ -114,10 +114,11 @@ export default defineComponent({
                 message: "Operación exitosa",
                 type: 1,
               });
-              this.getInputs();
-              this.$refs.modal.closeModal();
+              this.getInputs("1");
+              //this.$refs.modal.closeModal();
             })
-            .catch(() => {
+            .catch((e) => {
+              console.log(e);
               this.showToast({
                 title: "Eliminar Registro",
                 message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
