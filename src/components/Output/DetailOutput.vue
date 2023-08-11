@@ -273,16 +273,15 @@ export default defineComponent({
         this.item.cliente = {
           name: this.item_selected.client_name,
         };
-      }
-
-      if (this.aditionalData == null) {
-        this.getAditionalData();
-      } else {
-        this.item.detalle = this.aditionalData.detail;
+        if (this.aditionalData == null) {
+          this.getAditionalData();
+        } else {
+          this.item.detalle = this.aditionalData.detail;
+        }
       }
     },
     getAditionalData() {
-      this.getOrderDetailById(this.item_selected.order_code);
+      this.getOrderDetailById(this.item_selected.id);
     },
     getOrderDetailById(id) {
       console.log(id);
@@ -291,11 +290,10 @@ export default defineComponent({
       axios
         .get(path)
         .then((response) => {
-          console.log(response)
+          console.log(response);
           /*response.data.results.forEach((element) => {
             this.table.rows.push(element);
           });*/
-          
         })
         .catch((e) => {
           console.log(e);
