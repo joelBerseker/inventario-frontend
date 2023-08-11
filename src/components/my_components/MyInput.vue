@@ -1,26 +1,28 @@
 <template>
   <div class="dropdown">
     <MyForm :name="name" :message="validation.validationMessage">
-      <span v-if="this.$slots.pre != undefined" :class="'input-group-text ' + classDisabled">
-        <slot name="pre"></slot>
-      </span>
-      <textarea
-        v-if="type == 'textarea'"
-        :class="inputClass + ' form-control ' + validation.validationStyle"
-        :id="name"
-        v-model="itemLocal"
-        :disabled="disabled"
-      >
-      </textarea>
-      <input
-        v-else
-        :type="type"
-        v-model="itemLocal"
-        :disabled="disabled"
-        :class="inputClass + ' form-control ' + validation.validationStyle"
-        autocomplete="off"
-        :id="name"
-      />
+      <div class="input-group input-group-sm">
+        <span v-if="this.$slots.pre != undefined" :class="'input-group-text ' + classDisabled">
+          <slot name="pre"></slot>
+        </span>
+        <textarea
+          v-if="type == 'textarea'"
+          :class="inputClass + ' form-control ' + validation.validationStyle"
+          :id="name"
+          v-model="itemLocal"
+          :disabled="disabled"
+        >
+        </textarea>
+        <input
+          v-else
+          :type="type"
+          v-model="itemLocal"
+          :disabled="disabled"
+          :class="inputClass + ' form-control ' + validation.validationStyle"
+          autocomplete="off"
+          :id="name"
+        />
+      </div>
     </MyForm>
   </div>
 </template>

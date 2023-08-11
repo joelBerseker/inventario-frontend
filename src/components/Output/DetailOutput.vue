@@ -19,8 +19,7 @@
             :validation="validation.client"
             id="cliente"
             v-on:update="inputClient()"
-          >
-          </SelectSearch>
+          />
           <MySelect
             class="mb-3"
             name="Tipo de pago"
@@ -197,7 +196,7 @@ export default defineComponent({
     MyForm,
     SelectSearch,
     MyInput,
-    MySelect
+    MySelect,
   },
   name: "Product",
   data() {

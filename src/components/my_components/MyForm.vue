@@ -1,7 +1,7 @@
 <template>
-  <div class="form-group">
-    <label for="nombre" v-if="name != null" class="text-secondary">{{ name }}:</label>
-    <div class="input-group input-group-sm">
+  <div>
+    <div class="form-group">
+      <label for="nombre" v-if="name != null" class="text-secondary">{{ name }}:</label>
       <slot></slot>
     </div>
     <div v-if="message == 'No requerido'">
