@@ -6,14 +6,14 @@
           <MyInput
             class="mb-3"
             type="text"
-            name="Numero de factura"
+            name="Numero de item"
             :validation="validation.code"
-            v-model="factura.numero"
+            v-model="item.numero"
             v-on:input="inputCode()"
           />
           <SelectSearch
             class="mb-3"
-            v-model="factura.cliente"
+            v-model="item.cliente"
             link="clients/clients/"
             name="Cliente"
             :validation="validation.client"
@@ -25,14 +25,14 @@
             name="Tipo de pago"
             :options="options"
             :validation="validation.paymentType"
-            v-model="factura.paymentType"
+            v-model="item.paymentType"
             v-on:update="inputPaymentType()"
           />
           <MyInput
             type="textarea"
             name="Descripción"
             :validation="validation.description"
-            v-model="factura.description"
+            v-model="item.description"
             v-on:input="inputDescription()"
           />
         </div>
@@ -79,7 +79,7 @@
             </div>
           </div>
 
-          <div v-for="(item, index) in factura.detalle" :key="index" class="detalle-item">
+          <div v-for="(item, index) in item.detalle" :key="index" class="detalle-item">
             <div class="row mb-3">
               <div class="form-group col-5">
                 <SelectSearch
@@ -121,23 +121,19 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary btn-sm button-margin" data-bs-dismiss="modal">
-        <i class="bi bi-x-circle"></i> Cerrar
-      </button>
-      <button
-        type="button"
-        @click="deleteItem(item_selected)"
-        class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="deleteItem(item)" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="editMode" class="btn btn-dark btn-sm button-margin" v-if="mode == 2">
+      <button type="button" @click="editMode" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
+      <button type="button" @click="viewMode" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+        <i class="bi bi-arrow-left-circle"></i>
+        Cancelar
+      </button>
+      <button type="button" @click="saveItem" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -240,7 +236,7 @@ export default defineComponent({
         { text: "Tarjeta", value: "3" },
         { text: "Otro", value: "4" },
       ],
-      factura: {
+      item: {
         description: null,
         numero: null,
         fecha: null,
@@ -249,6 +245,7 @@ export default defineComponent({
         detalle: [new Product()],
         total: null,
       },
+      aditionalData: null,
       emailOptions: [],
       isEmailSelected: false,
     };
@@ -257,13 +254,58 @@ export default defineComponent({
   computed: {
     facturaTotal: function () {
       var total = 0;
-      this.factura.detalle.forEach((element) => {
+      this.item.detalle.forEach((element) => {
         total += element.sub;
       });
       return total;
     },
   },
+  watch: {
+    item_selected() {
+      this.copyOriginalItem();
+    },
+  },
   methods: {
+    copyOriginalItem() {
+      this.item.numero = this.item_selected.order_code;
+      this.item.description = this.item_selected.description;
+      if (this.item_selected.client_name != undefined) {
+        this.item.cliente = {
+          name: this.item_selected.client_name,
+        };
+      }
+
+      if (this.aditionalData == null) {
+        this.getAditionalData();
+      } else {
+        this.item.detalle = this.aditionalData.detail;
+      }
+    },
+    getAditionalData() {
+      this.getOrderDetailById(this.item_selected.order_code);
+    },
+    getOrderDetailById(id) {
+      console.log(id);
+      this.item.detalle = [];
+      var path = url + `order_details/order_details/` + id;
+      axios
+        .get(path)
+        .then((response) => {
+          console.log(response)
+          /*response.data.results.forEach((element) => {
+            this.table.rows.push(element);
+          });*/
+          
+        })
+        .catch((e) => {
+          console.log(e);
+          this.showToast({
+            title: "Ocurrió un error",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            type: 2,
+          });
+        });
+    },
     validateForm() {
       this.validateCode();
       this.validateClient();
@@ -281,22 +323,22 @@ export default defineComponent({
     },
 
     validateCode() {
-      this.validation.code = this.validationRequiredText(this.factura.numero, 3, 50);
+      this.validation.code = this.validationRequiredText(this.item.numero, 3, 50);
     },
     validateClient() {
-      this.validation.client = this.validationRequiredSelect(this.factura.cliente);
+      this.validation.client = this.validationRequiredSelect(this.item.cliente);
     },
     validatePaymentType() {
-      this.validation.paymentType = this.validationRequiredSelect(this.factura.paymentType);
+      this.validation.paymentType = this.validationRequiredSelect(this.item.paymentType);
     },
     validateDescription() {
-      this.validation.description = this.validationNoRequiredText(this.factura.description, 3, 50);
+      this.validation.description = this.validationNoRequiredText(this.item.description, 3, 50);
     },
     validateProduct(index) {
-      this.validation.detail[index].product = this.validationRequiredSelect(this.factura.detalle[index].producto);
+      this.validation.detail[index].product = this.validationRequiredSelect(this.item.detalle[index].producto);
     },
     validateQuantity(index) {
-      this.validation.detail[index].quantity = this.validationRequiredNumber(this.factura.detalle[index].cantidad);
+      this.validation.detail[index].quantity = this.validationRequiredNumber(this.item.detalle[index].cantidad);
     },
     validateDetail() {
       var resp = true;
@@ -330,7 +372,7 @@ export default defineComponent({
     },
 
     agregarItem() {
-      this.factura.detalle.push(new Product());
+      this.item.detalle.push(new Product());
       this.validation.detail.push({
         product: {},
         quantity: {},
@@ -338,13 +380,13 @@ export default defineComponent({
     },
     eliminarItem(index) {
       console.log(index);
-      this.factura.detalle.splice(index, 1);
+      this.item.detalle.splice(index, 1);
       this.validation.detail.splice(index, 1);
     },
     dataToJson(index) {
       var dataD = [];
 
-      this.factura.detalle.forEach((element) => {
+      this.item.detalle.forEach((element) => {
         dataD.push({
           id_order: index,
           id_product: element.producto.id,
@@ -356,14 +398,14 @@ export default defineComponent({
     },
     async saveItem() {
       if (this.validateForm()) {
-        if (this.factura.detalle.length > 0) {
-          console.log(this.factura);
-          if (this.textEmpty(this.factura.description, "")) this.factura.description = "Ninguna";
+        if (this.item.detalle.length > 0) {
+          console.log(this.item);
+          if (this.textEmpty(this.item.description, "")) this.item.description = "Ninguna";
           const formData = new FormData();
-          formData.append("id_client", this.factura.cliente.id);
-          formData.append("description", this.factura.description);
-          formData.append("order_code", this.factura.numero);
-          formData.append("payment_type", this.factura.paymentType);
+          formData.append("id_client", this.item.cliente.id);
+          formData.append("description", this.item.description);
+          formData.append("order_code", this.item.numero);
+          formData.append("payment_type", this.item.paymentType);
           formData.append("total_price", this.facturaTotal.toFixed(2));
           this.addItemC(formData);
         } else {

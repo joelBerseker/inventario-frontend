@@ -142,10 +142,13 @@ export default defineComponent({
   },
   watch: {
     item_selected() {
-      this.item = JSON.parse(JSON.stringify(this.item_selected));
+      this.copyOriginalItem();
     },
   },
   methods: {
+    copyOriginalItem(){
+      this.item = JSON.parse(JSON.stringify(this.item_selected));
+    },
     validateForm() {
       this.validateCode();
       this.validateName();
@@ -280,7 +283,7 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
-      this.item = JSON.parse(JSON.stringify(this.item_selected));
+      this.copyOriginalItem();
       switch (mode) {
         case 1:
           this.title = "Agregar Producto";

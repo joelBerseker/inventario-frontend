@@ -11,8 +11,8 @@
         v-on:click="focusSearch()"
         data-bs-display="static"
       >
-        <p v-if="_itemName != ''" class="single-line">{{ _itemName }}</p>
-        <p v-else class="single-line">Seleccione una opción</p>
+        <p v-if="modelValue == null || modelValue == ''" class="single-line">Seleccione una opción</p>
+        <p v-else class="single-line">{{ modelValue.name }}</p>
       </button>
       <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
         <li class="px-2 mb-2">
@@ -75,7 +75,6 @@ export default defineComponent({
       search: "",
       update: true,
       count: 0,
-      _itemName: "",
       list: [],
     };
   },
@@ -127,7 +126,6 @@ export default defineComponent({
     },
     selectItem(_item) {
       this.itemLocal = _item;
-      this._itemName = _item.name;
 
       var dropdown = Dropdown.getInstance(document.getElementById(this.id));
       dropdown.hide();

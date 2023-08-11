@@ -31,7 +31,7 @@ export default {
     textEmpty(text, previus_message) {
       var message_ = previus_message;
       if (message_ == "") {
-        if (text == "" || text == null) {
+        if (text == "" || text == null || text == undefined) {
           message_ = "Por favor ingrese un valor";
         }
       }
