@@ -24,7 +24,7 @@ export default defineComponent({
           },
           {
             label: "Proveedor",
-            field: "id_provider",
+            field: "provider_name",
             width: "10%",
           },
           {

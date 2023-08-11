@@ -140,7 +140,7 @@ export default defineComponent({
                 message: "El registro de elimino correctamente.",
                 type: 1,
               });
-              this.getProducts();
+              this.getProductsNew(this.page);
               this.$refs.modal.closeModal();
             })
             .catch(() => {
@@ -152,31 +152,6 @@ export default defineComponent({
             });
         }
       });
-    },
-    async getProducts() {
-      this.loadingTableContent(true);
-      this.table.rows = [];
-      var path = url + `products/products/`;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
-            this.table.rows.push(element);
-          });
-          this.table.totalRecordCount = response.data.count;
-          this.numPag = Math.ceil(response.data.count / 10);
-
-          this.loadingContent(false);
-          this.loadingTableContent(false);
-        })
-        .catch((e) => {
-          console.log(e.message);
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
     },
     async getProductsNew(numPag) {
       this.loadingTableContent(true);
@@ -202,12 +177,13 @@ export default defineComponent({
         });
     },
     clickCallback(pageNum) {
+      this.page=pageNum;
       this.getProductsNew(pageNum);
     },
   },
   async created() {
     this.changeTopbar(this.topbar);
-    await this.getProducts();
+    this.getProductsNew(this.page);
   },
 });
 </script>
@@ -218,7 +194,7 @@ export default defineComponent({
       :deleteItem="deleteItem"
       :showToast="showToast"
       :item_selected="item_selected"
-      :getProducts="getProducts"
+      :getProductsNew="getProductsNew"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
