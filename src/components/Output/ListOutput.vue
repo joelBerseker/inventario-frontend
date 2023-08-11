@@ -27,6 +27,10 @@ export default defineComponent({
             label: "Cliente",
             field: "client_name",
             width: "10%",
+          },{
+            label: "Tipo Pago",
+            field: "payment_type",
+            width: "10%",
           },
           {
             label: "Descripción",

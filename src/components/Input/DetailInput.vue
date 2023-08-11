@@ -6,7 +6,7 @@
           <MyForm class="mb-3" name="Numero de factura">
             <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero" required />
           </MyForm>
-          <MyForm class="mb-3" name="Cliente">
+          <MyForm class="mb-3" name="Proveedor">
             <SelectSearch v-model="factura.cliente" link="providers/providers/"></SelectSearch>
           </MyForm>
           <MyForm class="mb-3" name="Fecha">
@@ -246,6 +246,7 @@ export default defineComponent({
   methods: {
     changeSelect(index, data) {
       console.log("-->" + data.price);
+      this.factura.detalle[index].producto=data;
       this.factura.detalle[index].venta = data.price;
       this.factura.detalle[index].antVenta = data.price;
 
@@ -314,14 +315,16 @@ export default defineComponent({
           quantity: element.cantidad,
           
         });
+        console.log(element.producto);
       });
+      
       this.addItemD(JSON.stringify(dataD));
     },
     async saveItem() {
       console.log(this.factura);
       const formData = new FormData();
       formData.append("id_provider", this.factura.cliente.id);
-      formData.append("description", this.factura.description);
+      formData.append("detail", this.factura.description);
       formData.append("order_code", this.factura.numero);
       formData.append("total_price", this.facturaTotal.toFixed(2));
       this.addItemC(formData);
@@ -334,6 +337,7 @@ export default defineComponent({
         },
       };
       var path = url + `purchase_details/purchase_detail/`;
+      console.log(data);
       axios
         .post(path, data, config)
         .then((response) => {
@@ -424,26 +428,6 @@ export default defineComponent({
         })
         .catch((e) => {
           console.log(e.message);
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
-    },
-    async getclients() {
-      var path = url + `clients/clients/`;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
-            this.clients.push(element);
-          });
-
-          this.count = response.data.count;
-          this.loadingContent(false);
-        })
-        .catch(() => {
           this.showToast({
             title: "Ocurrió un error",
             message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
