@@ -109,7 +109,7 @@ import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
-  props: ["item_selected", "deleteItem", "showToast", "getProducts"],
+  props: ["item_selected", "deleteItem", "showToast", "getProductsNew"],
   mixins: [ValidationFunctions],
   components: {
     MyModal,
@@ -270,7 +270,7 @@ export default defineComponent({
             message: "El registro se edito correctamente.",
             type: 1,
           });
-          this.getProducts();
+          this.getProductsNew("1");
           this.closeModal();
         })
         .catch(() => {
