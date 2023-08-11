@@ -6,7 +6,7 @@
           <MyForm class="mb-3" name="Numero de factura">
             <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero" required />
           </MyForm>
-          <MyForm class="mb-3" name="Cliente">
+          <MyForm class="mb-3" name="Proveedor">
             <SelectSearch v-model="factura.cliente" link="providers/providers/"></SelectSearch>
           </MyForm>
           <MyForm class="mb-3" name="Fecha">
@@ -428,26 +428,6 @@ export default defineComponent({
         })
         .catch((e) => {
           console.log(e.message);
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
-    },
-    async getclients() {
-      var path = url + `clients/clients/`;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
-            this.clients.push(element);
-          });
-
-          this.count = response.data.count;
-          this.loadingContent(false);
-        })
-        .catch(() => {
           this.showToast({
             title: "Ocurrió un error",
             message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
