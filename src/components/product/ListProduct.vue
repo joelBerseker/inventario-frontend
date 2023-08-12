@@ -16,6 +16,7 @@ export default defineComponent({
       item_selected: {},
       search: "",
       Products: [],
+      filter: "",
       table: {
         columns: [
           {
@@ -76,7 +77,7 @@ export default defineComponent({
         totalRecordCount: 0,
       },
       numPag: 4,
-      page: 1,
+      page: "1",
       loading: true,
       loadingTable: false,
       topbar: {
@@ -146,7 +147,8 @@ export default defineComponent({
             .catch(() => {
               this.showToast({
                 title: "Ocurrió un error",
-                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+                message:
+                  "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -155,7 +157,6 @@ export default defineComponent({
     },
     async getProductsNew(numPag) {
       this.loadingTableContent(true);
-      this.page = numPag;
       this.table.rows = [];
       var path = url + `products/products/?page=` + numPag;
       axios
@@ -171,17 +172,32 @@ export default defineComponent({
         .catch(() => {
           this.showToast({
             title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message:
+              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
     },
     clickCallback(pageNum) {
-      this.page=pageNum;
-      this.getProductsNew(pageNum);
+      this.page = pageNum;
+      if (this.search == "") {
+        console.log("sin filtro");
+        this.getProductsNew(pageNum);
+      } else {
+        this.filter = pageNum + "&search_query=" + this.search;
+        console.log(this.filter);
+        this.getProductsNew(this.filter);
+      }
+    },
+    filterTable() {
+      this.page = 1;
+      this.filter = this.page + "&search_query=" + this.search;
+      console.log(this.filter);
+      this.getProductsNew(this.filter);
     },
   },
   async created() {
+    this.page = 1;
     this.changeTopbar(this.topbar);
     this.getProductsNew(this.page);
   },
@@ -198,7 +214,11 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button
+          v-on:click="addMode"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
           <i class="bi bi-plus-circle"></i> Agregar Producto
         </button>
         <button
@@ -212,39 +232,74 @@ export default defineComponent({
       </div>
       <div class="col">
         <div class="input-group input-group-sm">
-
-            <button
-              class="btn dropdown-toggle btn-secondary margin-dropdown"
-              type="button"
-              id="dropdownMenuLink"
-              data-bs-toggle="dropdown"
-            >
-              <i class="bi bi-sliders"></i>
-              Filtro
-            </button>
-            <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault"> Documento </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
-              </div>
+          <button
+            class="btn dropdown-toggle btn-secondary margin-dropdown"
+            type="button"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
+          >
+            <i class="bi bi-sliders"></i>
+            Filtro
+          </button>
+          <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Nombre
+              </label>
             </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Documento
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Telefono
+              </label>
+            </div>
+          </div>
 
-          <input type="text" class="form-control" id="name" name="name" v-model="search" required />
-          <button class="btn btn-secondary" type="button" @click="filterTable">
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            v-model="search"
+            required
+          />
+          <button
+            class="btn btn-secondary"
+            type="button"
+            v-on:click="filterTable"
+          >
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
-    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+    <TableContent
+      ref="tableContent"
+      :loading="this.loadingTable"
+      :size="table.rows.length"
+    >
       <table-lite
         :is-static-mode="false"
         :is-slot-mode="true"
@@ -256,10 +311,18 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+            <button
+              v-on:click="viewMode(data.value)"
+              type="button"
+              class="btn btn-secondary btn-sm me-1"
+            >
               <i class="bi bi-journal"></i>
             </button>
-            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+            <button
+              v-on:click="deleteItem(data.value)"
+              type="button"
+              class="btn btn-danger btn-sm"
+            >
               <i class="bi bi-trash"></i>
             </button>
           </div>
