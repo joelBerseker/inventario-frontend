@@ -135,7 +135,6 @@ export default defineComponent({
           axios
             .delete(path)
             .then((response) => {
-              console.log(response);
               this.showToast({
                 title: "Operación exitosa",
                 message: "El registro de elimino correctamente.",
@@ -181,18 +180,15 @@ export default defineComponent({
     clickCallback(pageNum) {
       this.page = pageNum;
       if (this.search == "") {
-        console.log("sin filtro");
         this.getProductsNew(pageNum);
       } else {
         this.filter = pageNum + "&search_query=" + this.search;
-        console.log(this.filter);
         this.getProductsNew(this.filter);
       }
     },
     filterTable() {
       this.page = 1;
       this.filter = this.page + "&search_query=" + this.search;
-      console.log(this.filter);
       this.getProductsNew(this.filter);
     },
   },
