@@ -46,8 +46,9 @@ export default defineComponent({
                 <div v-show="!loading">
                     <RouterView :loadingApp="loadingApp" />
                 </div>
-                <div v-show="loading" class="center">
-                    <Icon size="70px" :speed="true" :mode="2" :bgMode="1"></Icon>
+                <div v-show="loading" class="center flex-column">
+                    <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
+                    <div class="secondary-text">Cargando aplicación...</div> 
                 </div>
             </div>
         </transition>

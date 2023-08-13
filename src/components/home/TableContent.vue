@@ -4,8 +4,8 @@
       <div :key="_loading">
         <div v-show="_loading">
           <div class="d-flex justify-content-center mt-3 align-items-center">
-            <div class="spinner-border spinner-border-sm color-3"></div>
-            <div class="color-3">&nbsp; Cargando...</div>
+            <div class="spinner-border spinner-border-sm secondary-text"></div>
+            <div class="secondary-text">&nbsp; Cargando...</div>
           </div>
         </div>
 

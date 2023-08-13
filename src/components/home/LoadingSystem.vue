@@ -31,7 +31,9 @@ export default defineComponent({
     <div class="modal fade " :id="id" data-bs-backdrop="static" data-bs-keyboard="false">
         <div :class="'modal-dialog modal-dialog-scrollable modal-dialog-centered '+ size ">
             <div class="modal-content loading-screen">
-                <Icon size="70px" :speed="true" :mode="2" :bgMode="1"></Icon>
+                <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
+                <div class="secondary-text">Cargando sistema...</div>
+                
             </div>
         </div>
     </div>

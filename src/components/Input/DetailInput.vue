@@ -38,7 +38,7 @@
               </button>
             </div>
             <div class="col-3">
-              <p class="text-secondary">Total:</p>
+              <p class="secondary-text">Total:</p>
               <div class="input-group input-group-sm">
                 <span class="input-group-text form-control-disabled">S/.</span>
                 <input
@@ -54,7 +54,7 @@
           </div>
           <hr class="mb-3 mt-3" />
 
-          <div class="row text-secondary">
+          <div class="row secondary-text">
             <div class="col-3">
               <label>Nombre:</label>
             </div>
@@ -91,7 +91,7 @@
                   :id="'compra_' + index"
                   required
                 />
-                <label class="text-secondary"
+                <label class="secondary-text"
                   ><i class="bi bi-arrow-return-right"></i> Antes: S/.{{ factura.detalle[index].antCompra }}</label
                 >
               </div>
@@ -103,7 +103,7 @@
                   :id="'venta_' + index"
                   required
                 />
-                <label class="text-secondary"
+                <label class="secondary-text"
                   ><i class="bi bi-arrow-return-right"></i> Antes: S/.{{ factura.detalle[index].antVenta }}</label
                 >
               </div>

@@ -2,8 +2,10 @@
   <div>
     <transition name="t-content" mode="out-in">
       <div :key="_loading">
-        <div v-show="_loading" class="center">
-          <Icon size="70px" :speed="true" :mode="2" :bgMode="1"></Icon>
+        <div v-show="_loading" class="center flex-column">
+          <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
+          
+          <div class="secondary-text">Cargando contenido...</div>
         </div>
         <div v-show="!_loading" :class="classContent">
           <slot></slot>

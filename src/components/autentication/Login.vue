@@ -127,7 +127,7 @@ export default defineComponent({
                     <Icon size="50px" :mode="2" :bg-mode="1"></Icon>
                     <p class="title-text color-3 mb-2">Gestion de Inventarios</p>
                     <hr class="m-0 mb-2" />
-                    <p class="text-secondary">Ingrese su usuario y contraseña para ingresar al sistema</p>
+                    <p class="secondary-text">Ingrese su usuario y contraseña para ingresar al sistema</p>
                   </div>
 
                   <MyForm class="mb-3" name="Usuario">

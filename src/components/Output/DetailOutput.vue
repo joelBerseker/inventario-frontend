@@ -48,7 +48,7 @@
               </button>
             </div>
             <div class="col-3">
-              <p class="text-secondary">Total:</p>
+              <p class="secondary-text">Total:</p>
               <div class="input-group input-group-sm">
                 <span class="input-group-text form-control-disabled">S/.</span>
                 <input
@@ -66,16 +66,16 @@
 
           <div class="row">
             <div class="col-5">
-              <label class="text-secondary">Nombre:</label>
+              <label class="secondary-text">Nombre:</label>
             </div>
             <div class="col-2">
-              <label class="text-secondary">Precio Venta:</label>
+              <label class="secondary-text">Precio Venta:</label>
             </div>
             <div class="col-2">
-              <label class="text-secondary">Cantidad:</label>
+              <label class="secondary-text">Cantidad:</label>
             </div>
             <div class="col-2">
-              <label class="text-secondary">Subtotal:</label>
+              <label class="secondary-text">Subtotal:</label>
             </div>
           </div>
 

@@ -3,10 +3,12 @@
   --my-1th-color: #ffffff;
   --my-7th-color: #ffffff;
   --my-2th-color: #0d1321;
-  --my-6th-color: #1d2d44;
+  --my-3th-color: #1d2d44;
   --my-4th-color: #3c678d;
   --my-5th-color: #748cab;
-  --my-3th-color: #1d2d44;
+  --my-6th-color: #8b8b8b;
+
+
   --my-dark-1th-color: #252525;
   --my-dark-2th-color: #e6e6e6;
   --my-border-radius: 0.5em;
@@ -30,6 +32,9 @@
 .color-3 {
   color: var(--my-3th-color) !important;
 }
+.color-6 {
+  color: var(--my-6th-color) !important;
+}
 
 .bg-color-1 {
   background-color: var(--my-1th-color) !important;
@@ -48,6 +53,10 @@
 .bg-color-5 {
   background-color: var(--my-5th-color) !important;
 }
+.bg-color-6 {
+  background-color: var(--my-6th-color) !important;
+}
+
 
 body {
   min-height: 100vh;

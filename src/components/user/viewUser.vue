@@ -1,6 +1,5 @@
 <template>
   <Content ref="content" :loading="loading">
-
     <div class="row">
       <div class="col-6">
         <div class="card">
@@ -12,20 +11,25 @@
                 <div class="container">
                   <div class="row justify-content-center mb-2">
                     <div class="col-6">
-
-                      <div class="profile-avatar text-center" style="margin: 0 auto;">
-
-
-                        <img v-if="previewImage != null && editing" :src="previewImage" alt="Foto de perfil"
-                          class="profile-photo">
+                      <div class="profile-avatar text-center" style="margin: 0 auto">
+                        <img
+                          v-if="previewImage != null && editing"
+                          :src="previewImage"
+                          alt="Foto de perfil"
+                          class="profile-photo"
+                        />
                         <span v-else>
-                          <img v-if="user.photo == null" src="../../assets/person-circle.svg" alt="Foto de perfil"
-                            class="profile-photo">
-                          <img v-else :src="displayUser.photo" alt="Foto de perfil" class="profile-photo">
+                          <img
+                            v-if="user.photo == null"
+                            src="../../assets/person-circle.svg"
+                            alt="Foto de perfil"
+                            class="profile-photo"
+                          />
+                          <img v-else :src="displayUser.photo" alt="Foto de perfil" class="profile-photo" />
                         </span>
                       </div>
                       <MyForm name="Imagen" v-if="editing">
-                        <input type="file" class="form-control form-control-sm mb-2" @change=uploadImage />
+                        <input type="file" class="form-control form-control-sm mb-2" @change="uploadImage" />
                       </MyForm>
                     </div>
                   </div>
@@ -52,20 +56,28 @@
                   <div class="row">
                     <div class="col-6">
                       <MyForm class="mb-3" name="Dirección">
-                        <div  v-if="!editing">
+                        <div v-if="!editing">
                           {{ displayUser.address }}
                         </div>
-                        <input type="text" class="form-control form-control-sm" v-model="editUser.address"
-                          v-if="editing" />
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          v-model="editUser.address"
+                          v-if="editing"
+                        />
                       </MyForm>
                     </div>
                     <div class="col-6">
-
                       <MyForm class="mb-3" name="Telefono">
-                        <div  v-if="!editing">
+                        <div v-if="!editing">
                           {{ displayUser.phone }}
                         </div>
-                        <input type="text" class="form-control form-control-sm" v-model="editUser.phone" v-if="editing" />
+                        <input
+                          type="text"
+                          class="form-control form-control-sm"
+                          v-model="editUser.phone"
+                          v-if="editing"
+                        />
                       </MyForm>
                     </div>
                   </div>
@@ -74,14 +86,19 @@
                   <div class="row">
                     <div class="col-6">
                       <MyForm name="Email">
-                        <div  v-if="!editing">{{ displayUser.email }}</div>
-                        <input disabled type="text" class="form-control form-control-sm" v-model="editUser.email"
-                          v-if="editing" />
+                        <div v-if="!editing">{{ displayUser.email }}</div>
+                        <input
+                          disabled
+                          type="text"
+                          class="form-control form-control-sm"
+                          v-model="editUser.email"
+                          v-if="editing"
+                        />
                       </MyForm>
                     </div>
                     <div class="col-6">
                       <MyForm name="RUC">
-                        <div  v-if="!editing">
+                        <div v-if="!editing">
                           {{ displayUser.ruc }}
                         </div>
                         <input type="text" class="form-control form-control-sm" v-model="editUser.ruc" v-if="editing" />
@@ -90,7 +107,6 @@
                   </div>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -100,9 +116,7 @@
           <div class="card-body">
             <p class="title-text mb-3">Otras configuraciones</p>
             <MyForm class="mb-3" name="IGV">
-              <div  v-if="!editing">
-                0.18%
-              </div>
+              <div v-if="!editing">0.18%</div>
               <input type="text" class="form-control form-control-sm" v-model="editUser.first_name" v-if="editing" />
             </MyForm>
           </div>
@@ -110,7 +124,6 @@
       </div>
     </div>
     <div class="profile-actions mt-3">
-
       <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn" @click="toggleEditing">
         <i class="bi bi-pen"></i> Editar
       </button>
@@ -120,17 +133,19 @@
       <button class="btn btn-sm btn-success profile-action-btn ms-1" v-if="editing" @click="saveChanges">
         <i class="bi bi-check-circle"></i> Guardar
       </button>
+      <button class="btn btn-sm btn-primary profile-action-btn ms-1" v-if="!editing" @click="switchDarkMode">
+        <i :class="darkModeButton.icon"></i> {{darkModeButton.text}}
+      </button>
       <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="signOff">
         <i class="bi bi-power"></i> Cerrar Sesión
       </button>
-
     </div>
   </Content>
 </template>
 
 <script>
 import axios from "axios";
-import Content from '@/components/home/Content.vue'
+import Content from "@/components/home/Content.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
 import AuthService from "@/services/AuthService";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -138,6 +153,11 @@ export default {
   name: "Profile",
   data() {
     return {
+      darkModeButton: {
+        icon: "bi bi-brightness-high-fill",
+        text: "Modo Claro",
+      },
+      darkMode: true,
       editing: false,
       editPhto: false,
       previewImage: null,
@@ -159,15 +179,14 @@ export default {
         breadcrumb: [
           {
             name: "Inicio",
-            link: "/home"
+            link: "/home",
           },
           {
             name: "Usuario",
-            link: ""
+            link: "",
           },
-
         ],
-      }
+      },
     };
   },
   async created() {
@@ -176,21 +195,33 @@ export default {
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   components: {
-    Content, MyForm
+    Content,
+    MyForm,
   },
   methods: {
-    signOff(){
+    switchDarkMode() {
+      if(this.darkMode){
+        this.darkModeButton.icon = "bi bi-moon-fill";
+        this.darkModeButton.text = "Modo Oscuro"
+        this.darkMode = false;
+      }else{
+        this.darkModeButton.icon = "bi bi-brightness-high-fill";
+        this.darkModeButton.text = "Modo Claro"
+        this.darkMode = true;
+      }
+    },
+    signOff() {
       this.$store.dispatch("logout");
       this.$router.push("/login");
     },
     uploadImage(e) {
       const image = e.target.files[0];
-      this.editUser.photo = image
+      this.editUser.photo = image;
       const reader = new FileReader();
       reader.readAsDataURL(image);
-      reader.onload = e => {
+      reader.onload = (e) => {
         this.previewImage = e.target.result;
-        this.editPhto=true;
+        this.editPhto = true;
       };
     },
     loadingContent(loading) {
@@ -205,14 +236,14 @@ export default {
           console.log(response.data);
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
-          this.loadingContent(false)
+          this.loadingContent(false);
         })
         .catch((e) => {
           console.log(e.message);
         });
     },
     toggleEditing() {
-      this.previewImage = null
+      this.previewImage = null;
       this.editing = !this.editing;
       if (this.editing) {
         this.editUser = { ...this.user };
@@ -226,8 +257,7 @@ export default {
       var path = url + `user/api/` + this.$store.getters.getId + "/";
       var form_data = new FormData();
       for (var key in this.editUser) {
-        if (key == "photo" && !this.editPhto)
-          continue;
+        if (key == "photo" && !this.editPhto) continue;
         form_data.append(key, this.editUser[key]);
       }
       console.log(this.editUser);
@@ -237,11 +267,11 @@ export default {
       axios
         .put(path, form_data, {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            "Content-Type": "multipart/form-data",
+          },
         })
         .then((response) => {
-          this.user=response.data;
+          this.user = response.data;
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
           AuthService.setUser(this.user);

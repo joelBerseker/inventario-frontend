@@ -77,7 +77,7 @@
                 <div class="card box" :id="item.title">
                   <div class="card-body">
                     <p class="title-text mb-1"><i :class="item.icon"></i> {{ item.title }}</p>
-                    <p class="text-secondary">{{ item.desc }}</p>
+                    <p class="secondary-text">{{ item.desc }}</p>
                   </div>
                 </div>
               </div>
