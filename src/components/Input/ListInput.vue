@@ -172,9 +172,53 @@ export default defineComponent({
       :getInputs="getInputs"
     />
 
-    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-      <i class="bi bi-plus-circle"></i> Agregar Entrada
-    </button>
+    <div class="row justify-content-md-end">
+      <div class="col-6">
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+          <i class="bi bi-plus-circle"></i> Agregar Entrada
+        </button>
+      </div>
+      <div class="col">
+        <div class="input-group input-group-sm">
+          <button
+            class="btn dropdown-toggle btn-secondary margin-dropdown"
+            type="button"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
+          >
+            <i class="bi bi-sliders"></i>
+            Filtro
+          </button>
+          <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Documento </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
+            </div>
+          </div>
+
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            v-model="search"
+            placeholder="Buscar..."
+            required
+          />
+          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
     <table-lite
       class="mb-3"
       :is-static-mode="false"

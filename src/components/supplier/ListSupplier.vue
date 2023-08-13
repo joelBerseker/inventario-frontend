@@ -202,71 +202,90 @@ export default defineComponent({
       :getSuppliers="getSuppliers"
     />
 
-    <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
-      <i class="bi bi-plus-circle"></i> Agregar Proveedor
-    </button>
-    <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
-      <i :class="iconButtonCard"></i> {{ this.textButtonCard }}
-    </button>
+    <div class="row justify-content-md-end">
+      <div class="col-6">
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+          <i class="bi bi-plus-circle"></i> Agregar Proveedor
+        </button>
+        <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
+          <i :class="iconButtonCard"></i> {{ this.textButtonCard }}
+        </button>
+      </div>
+      <div class="col">
+        <div class="input-group input-group-sm">
+          <input
+            type="text"
+            class="form-control input-search"
+            id="name"
+            name="name"
+            v-model="search"
+            placeholder="Buscar..."
+            required
+          />
+          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
     <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
       <transition name="t-card-view" mode="out-in">
         <div v-if="!cardView">
-        <table-lite
-          :is-static-mode="false"
-          :is-slot-mode="true"
-          :is-hide-paging="true"
-          :columns="table.columns"
-          :rows="table.rows"
-          :total="table.totalRecordCount"
-          class="mb-3"
-        >
-          <template v-slot:quick="data">
-            <div class="d-flex">
-              <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
-                <i class="bi bi-journal"></i>
-              </button>
-              <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
-                <i class="bi bi-trash"></i>
-              </button>
-            </div>
-          </template>
-        </table-lite>
-        
-      </div>
-      <div v-else>
-        <div class="row">
-          <div class="col-4 mb-3" v-for="item in table.rows" :key="item.id">
-            <div class="card box" :id="item.title">
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-auto">
-                    <h1><i class="bi bi-person-circle"></i></h1>
-                  </div>
-                  <div class="col">
-                    <p class="title-text">{{ item.name }}</p>
-                    <p class="card-text">{{ item.phone }}</p>
+          <table-lite
+            :is-static-mode="false"
+            :is-slot-mode="true"
+            :is-hide-paging="true"
+            :columns="table.columns"
+            :rows="table.rows"
+            :total="table.totalRecordCount"
+            class="mb-3"
+          >
+            <template v-slot:quick="data">
+              <div class="d-flex">
+                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+                  <i class="bi bi-journal"></i>
+                </button>
+                <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
+            </template>
+          </table-lite>
+        </div>
+        <div v-else>
+          <div class="row">
+            <div class="col-4 mb-3" v-for="item in table.rows" :key="item.id">
+              <div class="card box" :id="item.title">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-auto">
+                      <h1><i class="bi bi-person-circle"></i></h1>
+                    </div>
+                    <div class="col">
+                      <p class="title-text">{{ item.name }}</p>
+                      <p class="card-text">{{ item.phone }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       </transition>
-      
+
       <paginate
-          v-if="numPag > 1"
-          v-model="page"
-          :page-count="numPag"
-          :page-range="3"
-          :margin-pages="2"
-          :click-handler="clickCallback"
-          :prev-text="'Anterior'"
-          :next-text="'Siguiente'"
-          :container-class="'pagination pagination-sm'"
-          :page-class="'page-item'"
-        >
-        </paginate>
+        v-if="numPag > 1"
+        v-model="page"
+        :page-count="numPag"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'Anterior'"
+        :next-text="'Siguiente'"
+        :container-class="'pagination pagination-sm'"
+        :page-class="'page-item'"
+      >
+      </paginate>
     </TableContent>
   </Content>
 </template>

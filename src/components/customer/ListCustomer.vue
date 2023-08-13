@@ -116,7 +116,7 @@ export default defineComponent({
         this.$refs.tableContent.loadingTableContent(loading);
       } catch (error) {}
     },
-  
+
     addMode() {
       this.item_selected = {};
       this.$refs.modal.changeMode(1);
@@ -207,33 +207,8 @@ export default defineComponent({
         </button>
       </div>
       <div class="col">
-        <div class="input-group input-group-sm">
-          
-            <button
-              class="btn btn-secondary margin-dropdown dropdown-toggle"
-              type="button"
-              id="dropdownMenuLink"
-              data-bs-toggle="dropdown"
-            >
-              <i class="bi bi-sliders"></i>
-              Filtro
-            </button>
-            <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault"> Documento </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
-              </div>
-            </div>
-       
-          <input type="text" class="form-control " id="name" name="name" v-model="search" required />
+        <div class="input-group input-group-sm ">
+          <input type="text" class="form-control input-search" id="name" name="name" placeholder="Buscar..." v-model="search" required />
           <button class="btn btn-secondary" type="button" @click="filterTable">
             <i class="bi bi-search"></i>
           </button>
@@ -263,7 +238,7 @@ export default defineComponent({
         </template>
       </table-lite>
       <paginate
-        v-if="numPag>1"
+        v-if="numPag > 1"
         v-model="page"
         :page-count="numPag"
         :page-range="3"

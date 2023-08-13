@@ -180,6 +180,11 @@ td{
 .form-select {
   border-radius: var(--my-border-radius) !important;
 }
+.input-search{
+  border-top-left-radius: 100rem !important;
+  border-bottom-left-radius: 100rem !important;
+}
+
 .vtl-tbody-tr {
   transition: 0.3s !important;
 }
