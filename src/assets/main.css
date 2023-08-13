@@ -65,14 +65,22 @@
   --bs-pagination-font-size: 0.9rem !important;
   --bs-pagination-color: #212529 !important;
 
-  --bs-pagination-hover-color: var(--my-3th-color) !important;
+  --bs-pagination-hover-color: var(--my-4th-color) !important;
   /*--bs-pagination-hover-border-color: var(--my-3th-color) !important;*/
+  
+}
+.pagination {
+  --bs-pagination-disabled-color: var(--my-6th-color) !important;
+  --bs-pagination-border-color: var(--my-6th-color) !important;
+  --bs-pagination-hover-border-color: var(--my-6th-color) !important;
+  --bs-pagination-disabled-border-color: var(--my-6th-color) !important;
 }
 .active > .page-link {
   background-color: var(--my-3th-color) !important;
   border-color: var(--my-3th-color) !important;
   cursor: default;
 }
+
 .page-link {
   cursor: pointer;
   transition: 0.3s !important;

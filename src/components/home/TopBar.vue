@@ -78,7 +78,7 @@ export default defineComponent({
               ><i class="bi bi-arrow-left-circle"></i>
               <RouterLink :to="topbar.breadcrumb[topbar.breadcrumb.length - 2].link" class="color-1"> Atras</RouterLink>
             </span>
-            <span v-else class="active"><i class="bi bi-arrow-left-circle"></i> Atras</span>
+            <span v-else class="color-6"><i class="bi bi-arrow-left-circle"></i> Atras</span>
           </div>
           <div class="col">
             <transition name="slide-fade" mode="out-in">
@@ -88,7 +88,7 @@ export default defineComponent({
                     <RouterLink v-if="index <= topbar.breadcrumb.length - 2" :to="item.link" class="color-1"
                       >{{ item.name }}
                     </RouterLink>
-                    <span class="active" v-else>{{ item.name }}</span>
+                    <span class="color-6" v-else>{{ item.name }}</span>
                   </li>
                 </ol>
               </nav>

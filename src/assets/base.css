@@ -6,7 +6,7 @@
   --my-3th-color: #1d2d44;
   --my-4th-color: #3c678d;
   --my-5th-color: #748cab;
-  --my-6th-color: #8b8b8b;
+  --my-6th-color: #8f8f8f;
 
 
   --my-dark-1th-color: #252525;
@@ -111,6 +111,8 @@ table {
   background-color: transparent !important;
 }
 
+
+
 tr:first-child th:first-child {
   border-top-left-radius: var(--my-border-radius) !important;
 }
@@ -146,11 +148,19 @@ tr:last-child td:last-child {
 
 td,
 th {
-  border-color: rgba(0, 0, 0, 0.144) !important;
+  border: 1px solid var(--my-6th-color) !important;
   padding-top: 0.4rem !important;
   padding-bottom: 0.4rem !important;
+ 
 }
 
+td:not(td:first-child), th:not(th:first-child){
+  
+  border-left: none !important;
+}
+td{
+  border-top: none !important;
+}
 .toast {
   background-color: white !important;
   border-radius: var(--my-border-radius) !important;
@@ -182,8 +192,18 @@ th {
 .input-group-text {
   background-color: transparent !important;
 }
+.page-link{
+  background-color: transparent !important;
+}
 
 /*DARK MODE*/
+
+.dark-mode .pagination-sm {
+  --bs-pagination-font-size: 0.9rem !important;
+  --bs-pagination-color: var(--my-dark-2th-color) !important;
+
+  /*--bs-pagination-hover-border-color: var(--my-3th-color) !important;*/
+}
 .dark-mode .vtl-table {
   color: var(--my-dark-2th-color) !important;
 }

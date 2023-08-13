@@ -12,7 +12,7 @@
         <div v-show="!_loading">
           <div v-if="size <= 0">
             <div class="d-flex justify-content-center align-items-center">
-              <div class="color-3"> No se encontraron registros, puede agregar uno nuevo con el boton de arriba a la izquierda.</div>
+              <div class="secondary-text"> No se encontraron registros, puede agregar uno nuevo con el boton de arriba a la izquierda.</div>
             </div>
           </div>
           <div v-else>
