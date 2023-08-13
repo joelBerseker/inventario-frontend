@@ -18,7 +18,7 @@
 .btn-primary-outline {
   color: var(--my-1th-color) !important;
 
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  border-color: var(--my-6th-color) !important;
 }
 .btn-primary-outline:hover {
   border-color: var(--my-3th-color) !important;
@@ -27,7 +27,7 @@
 
 .btn-secondary-outline {
   color: var(--my-1th-color) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+  border-color: var(--my-6th-color) !important;
 }
 .btn-secondary-outline:hover {
   border-color: var(--my-4th-color) !important;
@@ -77,7 +77,7 @@
 }
 .active > .page-link {
   background-color: var(--my-3th-color) !important;
-  border-color: var(--my-3th-color) !important;
+  border-color: var(--my-6th-color) !important;
   cursor: default;
 }
 

@@ -94,7 +94,7 @@ export default defineComponent({
     <div id="sidebar">
         <SideBar></SideBar>
     </div>
-    <div id="main-content" class="dark-mod">
+    <div id="main-content" class="dark-mode">
         <TopBar :loadingApp="loadingApp" :topbar="topbar" :confirmDialogue="confirmDialogue"></TopBar>
 
         <RouterView v-slot="{ Component }">
