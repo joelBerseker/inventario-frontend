@@ -70,8 +70,8 @@ export default defineComponent({
           },
         },
         title: {
-              text: 'Entradas y Salidas'
-            },
+          text: "Entradas y Salidas",
+        },
         tooltip: {
           y: {
             formatter: function (val) {
@@ -81,7 +81,7 @@ export default defineComponent({
         },
       },
       datesCharts: [],
-      salesCharts:[],
+      salesCharts: [],
       series: [
         {
           name: "Gastos del Dia",
@@ -99,28 +99,25 @@ export default defineComponent({
       this.$refs.content.loadingContent(loading);
     },
     createDates() {
-      var dt = new Date(); //current date of week
-      var lessDays = 7;
-      var wkStart = new Date(new Date(dt).setDate(dt.getDate() - lessDays));
-      for (let index = 0; index < 8; index++) {
-        var day = new Date(
-          new Date(wkStart).setDate(wkStart.getDate() + index)
-        );
-        this.datesCharts.push(day);
-      }
-      return this.changeDates();
-    },
-    changeDates() {
-      return this.datesCharts.map((element) => {
-        const year = element.getFullYear();
-        const month = String(element.getMonth() + 1).padStart(2, "0");
-        const day = String(element.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
+      const dt = new Date(); // current date of week
+      const lessDays = 7;
+      const wkStart = new Date(dt - lessDays * 24 * 60 * 60 * 1000); // subtract days in milliseconds
+
+      this.datesCharts = Array.from({ length: 8 }, (_, index) => {
+        const day = new Date(wkStart.getTime() + index * 24 * 60 * 60 * 1000);
+        const year = day.getFullYear();
+        const month = String(day.getMonth() + 1).padStart(2, "0");
+        const dayOfMonth = String(day.getDate()).padStart(2, "0");
+        return `${year}-${month}-${dayOfMonth}`;
       });
+
+      return this.datesCharts;
     },
-    async getSale(date){
+
+    async getSale(date) {
       var sale = null;
-      var path = url + "orders/orders/orders_with_total_sum/?specific_date="+date;
+      var path =
+        url + "orders/orders/orders_with_total_sum/?specific_date=" + date;
       await axios
         .get(path)
         .then((response) => {
@@ -131,18 +128,18 @@ export default defineComponent({
         });
       return sale;
     },
-    async getSales(){
-      this.datesCharts.forEach(element => {
+    async getSales() {
+      this.datesCharts.forEach((element) => {
         const sale = null;
-        this.getSale(element).then(val =>  this.salesCharts.push(val));
+        this.getSale(element).then((val) => this.salesCharts.push(val));
       });
       console.log(this.salesCharts);
       this.series[1].data = this.salesCharts;
-    }
+    },
   },
   async created() {
     this.changeTopbar(this.topbar);
-    this.datesCharts=this.createDates();
+    this.datesCharts = this.createDates();
     await this.getSales();
   },
 });

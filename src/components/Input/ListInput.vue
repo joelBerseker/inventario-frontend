@@ -15,6 +15,7 @@ export default defineComponent({
     return {
       item_selected: {},
       Inputs: [],
+      search:"",  
       table: {
         columns: [
           {
