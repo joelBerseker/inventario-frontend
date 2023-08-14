@@ -16,6 +16,7 @@ export default defineComponent({
     return {
       item_selected: {},
       search: "",
+      filter: "",
       numPag: 2,
       page: 1,
       table: {
@@ -72,7 +73,6 @@ export default defineComponent({
         rows: [],
         totalRecordCount: 0,
       },
-
       loading: true,
       loadingTable: false,
       topbar: {
@@ -151,7 +151,8 @@ export default defineComponent({
               console.log(e);
               this.showToast({
                 title: "Ocurrió un error",
-                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+                message:
+                  "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -180,13 +181,25 @@ export default defineComponent({
           console.log(e);
           this.showToast({
             title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message:
+              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
     },
     clickCallback(pageNum) {
-      this.getCustomers(pageNum);
+      this.page = pageNum;
+      if (this.search == "") {
+        this.getCustomers(pageNum);
+      } else {
+        this.filter = pageNum + "&search_query=" + this.search;
+        this.getCustomers(this.filter);
+      }
+    },
+    filterTable() {
+      this.page = 1;
+      this.filter = this.search ? `${this.page}&search_query=${this.search}` : this.page;
+      this.getCustomers(this.filter);
     },
   },
 });
@@ -202,13 +215,25 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button
+          v-on:click="addMode"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
           <i class="bi bi-plus-circle"></i> Agregar Cliente
         </button>
       </div>
       <div class="col">
-        <div class="input-group input-group-sm ">
-          <input type="text" class="form-control input-search" id="name" name="name" placeholder="Buscar..." v-model="search" required />
+        <div class="input-group input-group-sm">
+          <input
+            type="text"
+            class="form-control input-search"
+            id="name"
+            name="name"
+            placeholder="Buscar..."
+            v-model="search"
+            required
+          />
           <button class="btn btn-secondary" type="button" @click="filterTable">
             <i class="bi bi-search"></i>
           </button>
@@ -216,7 +241,11 @@ export default defineComponent({
       </div>
     </div>
 
-    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+    <TableContent
+      ref="tableContent"
+      :loading="this.loadingTable"
+      :size="table.rows.length"
+    >
       <table-lite
         class="mb-3"
         :is-static-mode="false"
@@ -228,10 +257,18 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+            <button
+              v-on:click="viewMode(data.value)"
+              type="button"
+              class="btn btn-secondary btn-sm me-1"
+            >
               <i class="bi bi-journal"></i>
             </button>
-            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+            <button
+              v-on:click="deleteItem(data.value)"
+              type="button"
+              class="btn btn-danger btn-sm"
+            >
               <i class="bi bi-trash"></i>
             </button>
           </div>

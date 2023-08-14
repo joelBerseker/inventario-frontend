@@ -7,18 +7,18 @@ export default new class {
     async obtain_token(credentials) {
         const response = await axios
             .post(url + 'user/token/', credentials);
-        store.commit("SET_TOKEN", response.data.access);
-        store.commit("SET_REFRESH", response.data.refresh);
+        await store.commit("SET_TOKEN", response.data.access);
+        await store.commit("SET_REFRESH", response.data.refresh);
         await store.commit("SET_ID", response.data.user_id);
-        this.getUser(response.data.user_id);
+        
         return response.data;
     }
     //metodo para extender el tiempo de vida de un token
     async refresh_token (token) {
         const response = await axios
             .post(url + 'user/refresh-token/', token);
-        store.commit("SET_TOKEN", response.data.access);
-        store.commit("SET_REFRESH", response.data.refresh);
+        await store.commit("SET_TOKEN", response.data.access);
+        await store.commit("SET_REFRESH", response.data.refresh);
         return response.data;
     }
     //metodo para registrar un usuario enviando sus credenciales(correo,contraseña)
@@ -36,16 +36,15 @@ export default new class {
         return response;
     }
     //metodo para obtener todos los datos de un usuario logueado
-    async getUser(id) {
-        console.log("Entre en GetUser");
+    async getUser() {
+        const id = store.getters.getId;
         const response = await axios.get(url + 'user/api/'+id+"/");
         const user = response.data;
         await store.commit("SET_USER",user);
-        console.log("sali en GetUser");
         return user;
     }
     async setUser(data){
-        store.commit("SET_USER",data);
+        await store.commit("SET_USER",data);
     }
     prueba(){
         console.log("hola");
