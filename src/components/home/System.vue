@@ -69,6 +69,7 @@ export default defineComponent({
     },
     created() {
         this.loadingApp(false);
+        AuthService.getUser();
     },
     async updated() {
         if (!this.$store.getters.isActive) {

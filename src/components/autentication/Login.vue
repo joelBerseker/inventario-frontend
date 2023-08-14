@@ -89,7 +89,7 @@ export default defineComponent({
         const token = obtainToken.access;
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        this.loadingApp(true)
+        await this.loadingApp(true)
         this.$router.push("/home");
       } catch (e) {
         this.showToast({

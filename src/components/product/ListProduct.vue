@@ -15,7 +15,6 @@ export default defineComponent({
     return {
       item_selected: {},
       search: "",
-      Products: [],
       filter: "",
       table: {
         columns: [
