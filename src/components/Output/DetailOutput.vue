@@ -286,7 +286,7 @@ export default defineComponent({
     getOrderDetailById(id) {
       console.log(id);
       this.item.detalle = [];
-      var path = url + `order_details/order_details/` + id;
+      var path = url + `order_details/order_details/?id_order=` + id;
       axios
         .get(path)
         .then((response) => {

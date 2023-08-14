@@ -1,9 +1,10 @@
 <template>
   <MyForm :name="name" :message="validation.validationMessage">
-    <div class="dropdown">
+    <div class="dropdown" @keyup.down="nextListItem()" @keyup.up="previousListItem()" @keyup.enter="pressEnter()">
       <button
         :class="'form-select form-select-sm text-start ' + validation.validationStyle"
         type="button"
+        ref="select"
         :id="id"
         data-bs-toggle="dropdown"
         data-bs-auto-close="true"
@@ -24,17 +25,25 @@
             v-model="search"
             placeholder="Buscar..."
             autocomplete="off"
+            v-on:keydown.down.prevent="false"
+            v-on:keydown.up.prevent="false"
           />
         </li>
-        <li class="text-center" v-if="listFiltered.length <= 0">
-          <div>No se encontraron elementos</div>
-        </li>
+   
         <li v-for="(item, index) in listFiltered" :key="index">
-          <div class="dropdown-item item-select" v-on:click="selectItem(item)">
+          <div
+            :class="'dropdown-item item-select ' + isActive(index)"
+            v-on:click="selectItem(item)"
+            @mouseover="hoverItem(index)"
+          >
             <p>{{ item.name }}</p>
           </div>
         </li>
-        <li class="text-center" v-if="count >= 10">
+        <li class="text-center secondary-text" v-if="listFiltered.length <= 0">
+          <div>No se encontraron elementos</div>
+        </li>
+        
+        <li class="text-center secondary-text mt-2" v-if="listFiltered.length >= 10">
           <div>Existen mas elementos, por favor sea mas especifico</div>
         </li>
       </ul>
@@ -72,6 +81,7 @@ export default defineComponent({
   },
   data() {
     return {
+      selectedInKeyboard: -1,
       search: "",
       update: true,
       count: 0,
@@ -122,13 +132,43 @@ export default defineComponent({
         });
     },
     focusSearch() {
+      this.selectedInKeyboard = -1;
       this.$refs.search.focus();
     },
     selectItem(_item) {
       this.itemLocal = _item;
+      this.$refs.select.focus();
 
       var dropdown = Dropdown.getInstance(document.getElementById(this.id));
       dropdown.hide();
+    },
+    nextListItem() {
+      if (this.selectedInKeyboard < this.list.length - 1) {
+        this.selectedInKeyboard++;
+      } else {
+        this.selectedInKeyboard = this.list.length - 1;
+      }
+    },
+    previousListItem() {
+      if (this.selectedInKeyboard > 0) {
+        this.selectedInKeyboard--;
+      } else {
+        this.selectedInKeyboard = 0;
+      }
+    },
+    isActive(index) {
+      var resp = "";
+      if (this.selectedInKeyboard == index) {
+        resp = " active ";
+      }
+
+      return resp;
+    },
+    pressEnter() {
+      if (this.selectedInKeyboard != -1) this.selectItem(this.list[this.selectedInKeyboard]);
+    },
+    hoverItem(index) {
+      this.selectedInKeyboard = index;
     },
   },
   computed: {
@@ -149,6 +189,7 @@ export default defineComponent({
   },
   watch: {
     search(newSearch, oldSearch) {
+      this.selectedInKeyboard = -1;
       if (newSearch.length >= 2) {
         if (newSearch.length > oldSearch.length && this.update) {
           this.getDataFilter(newSearch);
@@ -159,11 +200,22 @@ export default defineComponent({
     },
   },
   async created() {
-    //await this.getData();
+    await this.getData();
   },
 });
 </script>
-<style>
+<style scoped>
+.dropdown-item.active,
+.dropdown-item:active {
+  background-color: var(--my-3th-color) !important;
+  color: var(--my-1th-color) !important;
+}
+.dropdown-item:hover {
+}
+.dropdown-menu {
+  --bs-dropdown-link-hover-bg: transparent !important;
+}
+
 .disabled-item {
   color: rgba(0, 0, 0, 0.493);
 }
