@@ -18,6 +18,7 @@ export default defineComponent({
       item_selected: {},
       numPag: 4,
       page: 1,
+      search: "",
       table: {
         columns: [
           {

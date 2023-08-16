@@ -1,6 +1,6 @@
 <script>
 import Content from "@/components/home/Content.vue";
-import { defineComponent } from "vue";
+import { defineComponent, toRaw } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -126,21 +126,27 @@ export default defineComponent({
         .catch((e) => {
           console.log(e);
         });
-      return sale;
+
+      return { date: date, sale: sale };
     },
-    async getSales() {
-      this.datesCharts.forEach((element) => {
-        const sale = null;
-        this.getSale(element).then((val) => this.salesCharts.push(val));
+    async populateSalesCharts() {
+      const promises = this.datesCharts.map(async (element) => {
+        const sale = await this.getSale(element);
+        return sale;
       });
+
+      const results = await Promise.all(promises);
+      this.salesCharts = results;
       console.log(this.salesCharts);
-      this.series[1].data = this.salesCharts;
+      this.series[1].data = this.salesCharts.map(item => item.sale);
+
     },
   },
   async created() {
     this.changeTopbar(this.topbar);
     this.datesCharts = this.createDates();
-    await this.getSales();
+    await this.populateSalesCharts();
+    //this.prueba();
   },
 });
 </script>
