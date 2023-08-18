@@ -121,11 +121,23 @@
             </MyForm>
             <hr class="m-auto mb-3 mt-0" />
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" v-model="editUser.dark_mode" :disabled="!editing" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                v-model="editUser.dark_mode"
+                :disabled="!editing"
+              />
               <label class="form-check-label">Modo Oscuro</label>
             </div>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" v-model="editUser.manage_stock" :disabled="!editing" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                role="switch"
+                v-model="editUser.manage_stock"
+                :disabled="!editing"
+              />
               <label class="form-check-label">Modo Facturación</label>
             </div>
           </div>
@@ -133,17 +145,17 @@
       </div>
     </div>
     <div class="profile-actions mt-3">
+      <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="signOff">
+        <i class="bi bi-power"></i> Cerrar Sesión
+      </button>
       <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn" @click="toggleEditing">
         <i class="bi bi-pen"></i> Editar
       </button>
       <button v-else class="btn btn-sm btn-secondary profile-action-btn" @click="cancelChanges">
         <i class="bi bi-x-circle"></i> Cancelar
       </button>
-      <button class="btn btn-sm btn-success profile-action-btn ms-1" v-if="editing" @click="saveChanges">
+      <button class="btn btn-sm btn-primary profile-action-btn ms-1" v-if="editing" @click="saveChanges">
         <i class="bi bi-check-circle"></i> Guardar
-      </button>
-      <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="signOff">
-        <i class="bi bi-power"></i> Cerrar Sesión
       </button>
     </div>
   </Content>
