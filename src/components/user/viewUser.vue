@@ -116,9 +116,18 @@
           <div class="card-body">
             <p class="title-text mb-3">Otras configuraciones</p>
             <MyForm class="mb-3" name="IGV">
-              <div v-if="!editing">0.18%</div>
-              <input type="text" class="form-control form-control-sm" v-model="editUser.first_name" v-if="editing" />
+              <div v-if="!editing">{{ displayUser.igv }}</div>
+              <input type="text" class="form-control form-control-sm" v-model="editUser.igv" v-if="editing" />
             </MyForm>
+            <hr class="m-auto mb-3 mt-0" />
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" v-model="editUser.dark_mode" :disabled="!editing" />
+              <label class="form-check-label">Modo Oscuro</label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" v-model="editUser.manage_stock" :disabled="!editing" />
+              <label class="form-check-label">Modo Facturación</label>
+            </div>
           </div>
         </div>
       </div>
@@ -132,9 +141,6 @@
       </button>
       <button class="btn btn-sm btn-success profile-action-btn ms-1" v-if="editing" @click="saveChanges">
         <i class="bi bi-check-circle"></i> Guardar
-      </button>
-      <button class="btn btn-sm btn-primary profile-action-btn ms-1" v-if="!editing" @click="switchDarkMode">
-        <i :class="darkModeButton.icon"></i> {{darkModeButton.text}}
       </button>
       <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="signOff">
         <i class="bi bi-power"></i> Cerrar Sesión
@@ -153,11 +159,6 @@ export default {
   name: "Profile",
   data() {
     return {
-      darkModeButton: {
-        icon: "bi bi-brightness-high-fill",
-        text: "Modo Claro",
-      },
-      darkMode: true,
       editing: false,
       editPhto: false,
       previewImage: null,
@@ -199,17 +200,6 @@ export default {
     MyForm,
   },
   methods: {
-    switchDarkMode() {
-      if(this.darkMode){
-        this.darkModeButton.icon = "bi bi-moon-fill";
-        this.darkModeButton.text = "Modo Oscuro"
-        this.darkMode = false;
-      }else{
-        this.darkModeButton.icon = "bi bi-brightness-high-fill";
-        this.darkModeButton.text = "Modo Claro"
-        this.darkMode = true;
-      }
-    },
     signOff() {
       this.$store.dispatch("logout");
       this.$router.push("/login");
@@ -233,7 +223,7 @@ export default {
         .get(path)
         .then((response) => {
           this.user = response.data;
-          console.log(response.data);
+          console.log(this.user);
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
           this.loadingContent(false);
