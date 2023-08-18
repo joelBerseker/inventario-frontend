@@ -145,10 +145,10 @@
       </div>
     </div>
     <div class="profile-actions mt-3">
-      <button class="btn btn-sm btn-danger profile-action-btn ms-1" v-if="!editing" @click="signOff">
+      <button class="btn btn-sm btn-danger profile-action-btn" v-if="!editing" @click="signOff">
         <i class="bi bi-power"></i> Cerrar Sesión
       </button>
-      <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn" @click="toggleEditing">
+      <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn ms-1" @click="toggleEditing">
         <i class="bi bi-pen"></i> Editar
       </button>
       <button v-else class="btn btn-sm btn-secondary profile-action-btn" @click="cancelChanges">

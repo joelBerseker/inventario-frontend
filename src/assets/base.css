@@ -5,9 +5,9 @@
   --my-3th-color: #1d2d44;
   --my-4th-color: #3c678d;
   --my-5th-color: #748cab;
-  --my-6th-color: #8b8b8b;
-  
-  --my-border-color: #8d8d8d79;
+  --my-6th-color: #949494;
+
+  --my-border-color: #81818179;
 
   --my-dark-1th-color: #252525;
   --my-dark-2th-color: #e6e6e6;
@@ -74,6 +74,16 @@ body {
 }
 .modal-content {
   border-radius: var(--my-border-radius) !important;
+}
+.modal-header{
+  border-bottom: 1px solid var(--my-border-color) !important;
+}
+.modal-footer{
+  border-top: 1px solid var(--my-border-color) !important;
+}
+
+.card{
+  border-color: var(--my-border-color) !important;
 }
 
 .btn {
@@ -202,10 +212,15 @@ td {
   border: var(--bs-border-width) solid var(--my-border-color) !important;
 }
 .form-control.is-invalid,
-.was-validated .form-control:invalid {
+.was-validated .form-control:invalid,
+.form-select.is-invalid,
+.was-validated .form-select:invalid {
   border-color: var(--bs-form-invalid-border-color) !important;
 }
-.form-control.is-valid, .was-validated .form-control:valid{
+.form-control.is-valid,
+.was-validated .form-control:valid,
+.form-select.is-valid,
+.was-validated .form-select:valid {
   border-color: var(--bs-form-valid-border-color) !important;
 }
 ::placeholder {
