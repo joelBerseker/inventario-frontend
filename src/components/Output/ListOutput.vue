@@ -80,6 +80,13 @@ export default defineComponent({
           },
         ],
       },
+      selectedInvoiceType: "boleta",
+      invoiceOptions: [
+        { value: "boleta", label: "Boleta" },
+        { value: "factura", label: "Factura" },
+        { value: "boletaA4", label: "Boleta A4" },
+        // Puedes agregar más opciones aquí si es necesario
+      ],
       loading: true,
       loadingTable: false,
     };
@@ -103,7 +110,8 @@ export default defineComponent({
       } catch (error) {}
     },
     openInNewTab(data) {
-      var link = url + "orders/orders/boleta/" + data + "/";
+
+      var link = url + "orders/orders/"+this.selectedInvoiceType+"/" + data + "/";
       window.open(link, "_blank", "noreferrer");
     },
     addMode() {
@@ -140,7 +148,8 @@ export default defineComponent({
               console.log(e);
               this.showToast({
                 title: "Ocurrió un error",
-                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+                message:
+                  "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -164,7 +173,8 @@ export default defineComponent({
           console.log(e);
           this.showToast({
             title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message:
+              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -191,7 +201,11 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button
+          v-on:click="addMode"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
           <i class="bi bi-plus-circle"></i> Agregar Salida
         </button>
       </div>
@@ -208,16 +222,37 @@ export default defineComponent({
           </button>
           <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Nombre
+              </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Documento </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Documento
+              </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Telefono
+              </label>
             </div>
           </div>
 
@@ -230,7 +265,11 @@ export default defineComponent({
             placeholder="Buscar..."
             required
           />
-          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
+          <button
+            class="btn btn-secondary"
+            type="button"
+            v-on:click="filterTable"
+          >
             <i class="bi bi-search"></i>
           </button>
         </div>
@@ -248,13 +287,34 @@ export default defineComponent({
     >
       <template v-slot:quick="data">
         <div class="d-flex">
-          <button role="link" class="btn btn-warning btn-sm me-1" @click="openInNewTab(data.value.id)">
-            <i class="bi bi-receipt"></i> Boleta
+          <select v-model="selectedInvoiceType" id="invoiceType" class="btn btn-warning btn-sm me-1">
+            <option
+              v-for="option in invoiceOptions"
+              :key="option.value"
+              :value="option.value"
+            >
+              {{ option.label }}
+            </option>
+          </select>
+          <button
+            role="link"
+            class="btn btn-warning btn-sm me-1"
+            @click="openInNewTab(data.value.id)"
+          >
+            <i class="bi bi-receipt"></i> Ver
           </button>
-          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+          <button
+            v-on:click="viewMode(data.value)"
+            type="button"
+            class="btn btn-secondary btn-sm me-1"
+          >
             <i class="bi bi-journal"></i>
           </button>
-          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+          <button
+            v-on:click="deleteItem(data.value)"
+            type="button"
+            class="btn btn-danger btn-sm"
+          >
             <i class="bi bi-trash"></i>
           </button>
         </div>
