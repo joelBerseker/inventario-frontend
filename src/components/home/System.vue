@@ -78,6 +78,7 @@ export default defineComponent({
     },
   },
   created() {
+    console.log("entre a System");
     AuthService.getUser();
     this.loadingApp(false);
     console.log("----system,");
