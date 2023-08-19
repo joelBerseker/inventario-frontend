@@ -16,9 +16,11 @@ export default defineComponent({
     return {
       cardView: false,
       item_selected: {},
-      numPag: 4,
-      page: 1,
       search: "",
+      filter: "",
+      numPag: 2,
+      page: 1,
+      update: true,
       table: {
         columns: [
           {
@@ -98,6 +100,21 @@ export default defineComponent({
         this.iconButtonCard = "bi bi-view-list";
       }
     },
+    search(newSearch, oldSearch) {
+      this.page = 1;
+      if (newSearch.length >= 2) {
+        if (newSearch.length > oldSearch.length && this.update) {
+          this.filter = `${this.page}&search_query=${this.search}`;
+          this.getSuppliers(this.filter);
+        } else {
+          this.update = true;
+        }
+      } else {
+        if (newSearch.length === 0) {
+          this.getSuppliers(this.page);
+        }
+      }
+    },
   },
 
   mixins: [UtilityFunctions],
@@ -155,7 +172,8 @@ export default defineComponent({
             .catch(() => {
               this.showToast({
                 title: "Ocurrió un error",
-                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+                message:
+                  "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -164,8 +182,6 @@ export default defineComponent({
     },
     async getSuppliers(numpg) {
       this.loadingTableContent(true);
-      this.page = numpg;
-
       this.table.rows = [];
       var path = url + `providers/providers/?page=` + numpg;
       axios
@@ -182,13 +198,28 @@ export default defineComponent({
         .catch(() => {
           this.showToast({
             title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message:
+              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
     },
-    clickCallback(pageNum) {
-      this.getSuppliers(pageNum);
+    async clickCallback(pageNum) {
+      this.page = pageNum;
+
+      if (this.search === "") {
+        await this.getSuppliers(pageNum);
+      } else {
+        this.filter = `${pageNum}&search_query=${this.search}`;
+        await this.getSuppliers(this.filter);
+      }
+    },
+    filterTable() {
+      this.page = 1;
+      this.filter = this.search
+        ? `${this.page}&search_query=${this.search}`
+        : this.page;
+      this.getSuppliers(this.filter);
     },
   },
 });
@@ -205,10 +236,18 @@ export default defineComponent({
 
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button
+          v-on:click="addMode"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
           <i class="bi bi-plus-circle"></i> Agregar Proveedor
         </button>
-        <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
+        <button
+          v-on:click="cardView = !cardView"
+          type="button"
+          class="btn btn-primary btn-sm mb-3 ms-1"
+        >
           <i :class="iconButtonCard"></i> {{ this.textButtonCard }}
         </button>
       </div>
@@ -223,13 +262,21 @@ export default defineComponent({
             placeholder="Buscar..."
             required
           />
-          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
+          <button
+            class="btn btn-secondary"
+            type="button"
+            v-on:click="filterTable"
+          >
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
-    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+    <TableContent
+      ref="tableContent"
+      :loading="this.loadingTable"
+      :size="table.rows.length"
+    >
       <transition name="t-card-view" mode="out-in">
         <div v-if="!cardView">
           <table-lite
@@ -243,10 +290,18 @@ export default defineComponent({
           >
             <template v-slot:quick="data">
               <div class="d-flex">
-                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+                <button
+                  v-on:click="viewMode(data.value)"
+                  type="button"
+                  class="btn btn-secondary btn-sm me-1"
+                >
                   <i class="bi bi-journal"></i>
                 </button>
-                <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+                <button
+                  v-on:click="deleteItem(data.value)"
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                >
                   <i class="bi bi-trash"></i>
                 </button>
               </div>
