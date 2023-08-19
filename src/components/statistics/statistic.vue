@@ -99,54 +99,43 @@ export default defineComponent({
       this.$refs.content.loadingContent(loading);
     },
     createDates() {
-      const dt = new Date(); // current date of week
-      const lessDays = 7;
-      const wkStart = new Date(dt - lessDays * 24 * 60 * 60 * 1000); // subtract days in milliseconds
+      const lessDays = 8;
+      const dates = [];
 
-      this.datesCharts = Array.from({ length: 8 }, (_, index) => {
-        const day = new Date(wkStart.getTime() + index * 24 * 60 * 60 * 1000);
+      for (let index = lessDays - 1; index >= 0; index--) {
+        const day = new Date();
+        day.setDate(day.getDate() - index);
         const year = day.getFullYear();
         const month = String(day.getMonth() + 1).padStart(2, "0");
         const dayOfMonth = String(day.getDate()).padStart(2, "0");
-        return `${year}-${month}-${dayOfMonth}`;
-      });
+        dates.push(`${year}-${month}-${dayOfMonth}`);
+      }
 
-      return this.datesCharts;
+      this.datesCharts = dates;
+      return dates;
     },
 
     async getSale(date) {
-      var sale = null;
-      var path =
-        url + "orders/orders/orders_with_total_sum/?specific_date=" + date;
-      await axios
-        .get(path)
-        .then((response) => {
-          sale = response.data.total_sum;
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-
-      return { date: date, sale: sale };
+      try {
+        const path = `${url}orders/orders/orders_with_total_sum/?specific_date=${date}`;
+        const response = await axios.get(path);
+        return { date: date, sale: response.data.total_sum };
+      } catch (error) {
+        console.log(error);
+        return { date: date, sale: null };
+      }
     },
     async populateSalesCharts() {
-      const promises = this.datesCharts.map(async (element) => {
-        const sale = await this.getSale(element);
-        return sale;
-      });
-
-      const results = await Promise.all(promises);
+      const results = await Promise.all(this.datesCharts.map(this.getSale));
       this.salesCharts = results;
       console.log(this.salesCharts);
-      this.series[1].data = this.salesCharts.map(item => item.sale);
-
+      this.series[1].data = this.salesCharts.map((item) => item.sale);
     },
   },
   async created() {
     this.changeTopbar(this.topbar);
     this.datesCharts = this.createDates();
     await this.populateSalesCharts();
-    //this.prueba();
   },
 });
 </script>
