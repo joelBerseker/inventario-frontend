@@ -12,5 +12,11 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 2000 // Cambia este valor según tus necesidades
+  },
+  define: {
+    RESET_STORE: process.env.RESET_STORE === 'true'
+  }
   
 });

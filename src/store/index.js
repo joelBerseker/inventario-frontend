@@ -43,7 +43,7 @@ export const store = createStore({
     SET_USER: (state, User) => {
       state.User = User;
     },
-    RESET: (state) => {
+    LOGOUT: (state) => {
       Object.assign(state, getDefaultState());
     },
   },
@@ -61,7 +61,7 @@ export const store = createStore({
       commit("SET_REFRESH", refresh);
     },
     logout: ({ commit }) => {
-      commit("RESET", "");
+      commit("LOGOUT", "");
     },
   },
   plugins: [createPersistedState()],

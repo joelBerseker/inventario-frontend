@@ -33,8 +33,11 @@ export default defineComponent({
             var link = window.location.href;
             var linkSlice = link.substring(link.lastIndexOf("/"), link.length)
             if(linkSlice == "/login"){
+                console.log("paso al main");
                 this.$router.push("/");
             }
+            console.log("vino de aqui -> "+link);
+            console.log("lo reenvio aqui -> "+linkSlice);
         }
     },
 })
