@@ -36,11 +36,13 @@ export default defineComponent({
       }
       return resp;
     },
+    userName: function () {
+      var user = this.$store.getters.getUser;
+      var resp = user.first_name + " " + user.last_name;
+      return resp;
+    },
   },
-  created() {
-    var user = this.$store.getters.getUser;
-    this.name = user.first_name + " " + user.last_name;
-  },
+  created() {},
   data() {
     return {
       name: "Undefined",
@@ -58,9 +60,13 @@ export default defineComponent({
       </div>
       <div class="col text-end">
         <button v-on:click="this.$router.push('/user')" type="button" class="btn btn-primary-outline btn-sm me-1">
-          <i class="bi bi-person-vcard"></i> {{ name }}
+          <i class="bi bi-person-vcard"></i> {{ userName }}
         </button>
-        <button v-on:click="this.$router.push('/notifications')" type="button" class="btn btn-primary-outline btn-sm me-1">
+        <button
+          v-on:click="this.$router.push('/notifications')"
+          type="button"
+          class="btn btn-primary-outline btn-sm me-1"
+        >
           <i class="bi bi-bell"></i>
         </button>
         <button v-on:click="logoutButton" type="button" class="btn btn-primary-outline btn-sm">

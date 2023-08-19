@@ -1,13 +1,13 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --my-1th-color: #ffffff;
-  --my-7th-color: #ffffff;
   --my-2th-color: #0d1321;
   --my-3th-color: #1d2d44;
   --my-4th-color: #3c678d;
   --my-5th-color: #748cab;
-  --my-6th-color: #8f8f8f;
+  --my-6th-color: #949494;
 
+  --my-border-color: #81818179;
 
   --my-dark-1th-color: #252525;
   --my-dark-2th-color: #e6e6e6;
@@ -57,7 +57,6 @@
   background-color: var(--my-6th-color) !important;
 }
 
-
 body {
   min-height: 100vh;
   color: var(--color-text);
@@ -75,6 +74,16 @@ body {
 }
 .modal-content {
   border-radius: var(--my-border-radius) !important;
+}
+.modal-header{
+  border-bottom: 1px solid var(--my-border-color) !important;
+}
+.modal-footer{
+  border-top: 1px solid var(--my-border-color) !important;
+}
+
+.card{
+  border-color: var(--my-border-color) !important;
 }
 
 .btn {
@@ -111,8 +120,6 @@ table {
   background-color: transparent !important;
 }
 
-
-
 tr:first-child th:first-child {
   border-top-left-radius: var(--my-border-radius) !important;
 }
@@ -148,17 +155,16 @@ tr:last-child td:last-child {
 
 td,
 th {
-  border: 1px solid var(--my-6th-color) !important;
+  border: 1px solid var(--my-border-color) !important;
   padding-top: 0.4rem !important;
   padding-bottom: 0.4rem !important;
- 
 }
 
-td:not(td:first-child), th:not(th:first-child){
-  
+td:not(td:first-child),
+th:not(th:first-child) {
   border-left: none !important;
 }
-td{
+td {
   border-top: none !important;
 }
 .toast {
@@ -180,7 +186,7 @@ td{
 .form-select {
   border-radius: var(--my-border-radius) !important;
 }
-.input-search{
+.input-search {
   border-top-left-radius: 100rem !important;
   border-bottom-left-radius: 100rem !important;
 }
@@ -197,10 +203,31 @@ td{
 .input-group-text {
   background-color: transparent !important;
 }
-.page-link{
+.page-link {
   background-color: transparent !important;
 }
-
+.form-control,
+.form-select,
+.input-group-text {
+  border: var(--bs-border-width) solid var(--my-border-color) !important;
+}
+.form-control.is-invalid,
+.was-validated .form-control:invalid,
+.form-select.is-invalid,
+.was-validated .form-select:invalid {
+  border-color: var(--bs-form-invalid-border-color) !important;
+}
+.form-control.is-valid,
+.was-validated .form-control:valid,
+.form-select.is-valid,
+.was-validated .form-select:valid {
+  border-color: var(--bs-form-valid-border-color) !important;
+}
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--my-6th-color) !important;
+  opacity: 1; /* Firefox */
+}
 /*DARK MODE*/
 
 .dark-mode .pagination-sm {
@@ -221,7 +248,6 @@ td{
 .dark-mode .form-select {
   background-color: transparent !important;
   color: var(--my-dark-2th-color) !important;
-  border-color: rgb(172, 172, 172);
 }
 .dark-mode .form-control:disabled,
 .dark-mode .form-select:disabled,
