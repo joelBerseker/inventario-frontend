@@ -6,16 +6,16 @@ import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
-
+import SupplierConection from "./SupplierConection";
 const url = import.meta.env.VITE_APP_RUTA_API;
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "Supplier",
-
+  inject: ["confirmDialogue", "showToast"],
   data() {
     return {
       cardView: false,
-      item_selected: {},
+      itemSelected: {},
       search: "",
       filter: "",
       numPag: 2,
@@ -117,7 +117,7 @@ export default defineComponent({
     },
   },
 
-  mixins: [UtilityFunctions],
+  mixins: [UtilityFunctions, SupplierConection],
   components: {
     DetailSupplier,
     TableLite,
@@ -125,74 +125,64 @@ export default defineComponent({
     paginate: Paginate,
     TableContent,
   },
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  props: ["changeTopbar"],
   async created() {
     this.changeTopbar(this.topbar);
     await this.getSuppliers(1);
   },
   methods: {
-    addMode() {
-      this.item_selected = {};
+    onAdd() {
+      this.getSuppliers(1);
+    },
+    onEdit() {
+      this.getSuppliers(this.page);
+    },
+    onDelete() {
+      this.getSuppliers(1);
+    },
+    getItemSelectedByUrl() {
+      if (this.$route.query.id != undefined) {
+        this.getSupplierRegister(this.$route.query.id).then((response) => {
+          if (response.success) {
+            this.itemSelected = response.response.data;
+            this.$refs.modal.changeMode(2);
+            this.$refs.modal.openModal();
+          }
+        });
+      }
+    },
+    buttonAdd() {
+      this.itemSelected = {};
       this.$refs.modal.changeMode(1);
       this.$refs.modal.openModal();
     },
-    viewMode(row) {
-      this.item_selected = row;
+    buttonView(row) {
+      this.itemSelected = row;
       this.$refs.modal.changeMode(2);
       this.$refs.modal.openModal();
     },
-    async deleteItem(row) {
-      await this.confirmDialogue({
-        title: "Eliminar Producto",
-        message: "¿Estas seguro que quieres eliminar el producto?",
-        okButton: "Eliminar",
-      }).then((result) => {
-        if (result) {
-          var path = url + "providers/providers/" + row.id + "/";
-          axios
-            .delete(path)
-            .then((response) => {
-              console.log(response);
-              this.showToast({
-                title: "Operación exitosa",
-                message: "El registro de elimino correctamente.",
-                type: 1,
-              });
-              this.getSuppliers(1);
-              this.$refs.modal.closeModal();
-            })
-            .catch(() => {
-              this.showToast({
-                title: "Ocurrió un error",
-                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
-                type: 2,
-              });
-            });
+    async buttonDelete(row) {
+      this.confirmDeleteSupplierRegister(row.id).then((response) => {
+        if (response.success) {
+          this.getSuppliers(1);
         }
       });
     },
-    async getSuppliers(numpg) {
+    async getSuppliers(page) {
       this.loadingContentTable = true;
       this.table.rows = [];
-      var path = url + `providers/providers/?page=` + numpg;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
+      this.getSupplierRegisters(page).then((response) => {
+        if (response.success) {
+          response.response.data.results.forEach((element) => {
             this.table.rows.push(element);
             this.table.totalRecordCount = this.table.rows.length;
-            this.numPag = Math.ceil(response.data.count / 10);
+            this.numPag = Math.ceil(response.response.data.count / 10);
           });
+          this.page = page;
           this.loadingContentSystem = false;
           this.loadingContentTable = false;
-        })
-        .catch(() => {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
+        }
+      });
     },
     async clickCallback(pageNum) {
       this.page = pageNum;
@@ -216,15 +206,16 @@ export default defineComponent({
   <SystemContent ref="content" :loading="loadingContentSystem">
     <DetailSupplier
       ref="modal"
-      :deleteItem="deleteItem"
-      :showToast="showToast"
-      :item_selected="item_selected"
-      :getSuppliers="getSuppliers"
+      :itemSelected="itemSelected"
+      v-on:item:add="onAdd"
+      v-on:item:edit="onEdit"
+      v-on:item:delete="onDelete"
+      v-on:mounted:mymodal="getItemSelectedByUrl"
     />
 
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Proveedor
         </button>
         <button v-on:click="cardView = !cardView" type="button" class="btn btn-primary btn-sm mb-3 ms-1">
@@ -262,10 +253,10 @@ export default defineComponent({
           >
             <template v-slot:quick="data">
               <div class="d-flex">
-                <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+                <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
                   <i class="bi bi-journal"></i>
                 </button>
-                <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+                <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
                   <i class="bi bi-trash"></i>
                 </button>
               </div>

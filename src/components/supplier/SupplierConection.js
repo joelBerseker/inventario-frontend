@@ -2,7 +2,7 @@ import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   methods: {
-    async getCustomerRegisters(page) {
+    async getSupplierRegisters(page) {
       var path = this.urlConection + `?page=` + page;
       return new Promise((resolve, reject) => {
         axios
@@ -20,7 +20,7 @@ export default {
           });
       });
     },
-    async addCustomerRegister(data) {
+    async addSupplierRegister(data) {
       var path = this.urlConection;
       var form_data = new FormData();
       for (var key in data) {
@@ -47,7 +47,7 @@ export default {
           });
       });
     },
-    async editCustomerRegister(data) {
+    async editSupplierRegister(data) {
       var path = this.urlConection  + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
@@ -77,7 +77,7 @@ export default {
           });
       });
     },
-    async confirmDeleteCustomerRegister(id) {
+    async confirmDeleteSupplierRegister(id) {
       return new Promise((resolve, reject) => {
         this.confirmDialogue({
           title: "Eliminar Registro",
@@ -85,7 +85,7 @@ export default {
           okButton: "Eliminar",
         }).then((result) => {
           if (result) {
-            this.deleteCustomerRegister(id)
+            this.deleteSupplierRegister(id)
               .then((response) => {
                 resolve({ success: true, response: response });
               })
@@ -98,7 +98,7 @@ export default {
         });
       });
     },
-    async deleteCustomerRegister(id) {
+    async deleteSupplierRegister(id) {
       var path = this.urlConection + id + "/";
       return new Promise((resolve, reject) => {
         axios
@@ -121,7 +121,7 @@ export default {
           });
       });
     },
-    async getCustomerRegister(id) {
+    async getSupplierRegister(id) {
       var path = this.urlConection + id + "/";
       return new Promise((resolve, reject) => {
         axios
@@ -145,7 +145,7 @@ export default {
   },
   data() {
     return {
-      urlConection: url + "clients/clients/"
+      urlConection: url + "providers/providers/"
     };
   },
 };

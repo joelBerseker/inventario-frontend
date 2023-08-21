@@ -2,13 +2,10 @@
 import CustomerDetail from "./CustomerDetail.vue";
 import SystemContent from "@/components/system/SystemContent.vue";
 import TableContent from "@/components/my_other_components/TableContent.vue";
-import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import CustomerConection from "./CustomerConection";
-
-const url = import.meta.env.VITE_APP_RUTA_API;
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "Customer",
@@ -103,11 +100,18 @@ export default defineComponent({
   props: ["changeTopbar"],
   async created() {
     this.changeTopbar(this.topbar);
-    if (this.$store.getters.isActive) {
-      await this.getCustomers(1);
-    }
+    await this.getCustomers(1);
   },
   methods: {
+    onAdd() {
+      this.getCustomers(1);
+    },
+    onEdit() {
+      this.getCustomers(this.page);
+    },
+    onDelete() {
+      this.getCustomers(1);
+    },
     getItemSelectedByUrl() {
       if (this.$route.query.id != undefined) {
         this.getCustomerRegister(this.$route.query.id).then((response) => {
@@ -165,15 +169,6 @@ export default defineComponent({
       this.page = 1;
       this.filter = this.search ? `${this.page}&search_query=${this.search}` : this.page;
       this.getCustomers(this.filter);
-    },
-    onAdd() {
-      this.getCustomers(1);
-    },
-    onEdit() {
-      this.getCustomers(this.page);
-    },
-    onDelete() {
-      this.getCustomers(1);
     },
   },
 });
