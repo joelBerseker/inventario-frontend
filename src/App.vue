@@ -26,8 +26,6 @@ export default defineComponent({
       var linkSlice = link.substring(link.lastIndexOf("/"), link.length);
       if (linkSlice == "/login") {
         this.$router.push("/");
-      } else {
-        if (linkSlice == "/index.html") this.$router.push("/");
       }
     }
   },

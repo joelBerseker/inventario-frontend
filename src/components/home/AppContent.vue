@@ -36,7 +36,7 @@ export default defineComponent({
         } else {
           setTimeout(() => {
             this.loadingLocal = this.loading;
-          }, 500);
+          }, 300);
         }
       },
     },
