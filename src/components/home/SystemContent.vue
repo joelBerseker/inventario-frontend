@@ -3,7 +3,6 @@
     <transition name="t-content" mode="out-in">
       <div v-if="loadingLocal" class="center flex-column">
         <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
-
         <div class="secondary-text">Cargando contenido...</div>
       </div>
       <div v-else :class="classContent">
