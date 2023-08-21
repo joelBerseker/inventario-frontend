@@ -5,7 +5,7 @@
         class="mb-3"
         name="Nombre"
         type="text"
-        v-model="itemEdited.name"
+        v-model="itemCopy.name"
         :validation="validation.name"
         :disabled="disabled"
         v-on:input="inputName()"
@@ -16,7 +16,7 @@
             name="Tipo de documento"
             :validation="validation.documentType"
             :options="options"
-            v-model="itemEdited.documentType"
+            v-model="itemCopy.documentType"
             :disabled="disabled"
             v-on:update="inputDocumentType()"
           />
@@ -25,7 +25,7 @@
           <MyInput
             name="Documento"
             type="text"
-            v-model="itemEdited.document"
+            v-model="itemCopy.document"
             :validation="validation.document"
             :disabled="disabled"
             v-on:input="inputDocument()"
@@ -37,7 +37,7 @@
         class="mb-3"
         name="Telefono"
         type="text"
-        v-model="itemEdited.phone"
+        v-model="itemCopy.phone"
         :validation="validation.phone"
         :disabled="disabled"
         v-on:input="inputPhone()"
@@ -46,7 +46,7 @@
         class="mb-3"
         name="Dirección"
         type="text"
-        v-model="itemEdited.address"
+        v-model="itemCopy.address"
         :validation="validation.address"
         :disabled="disabled"
         v-on:input="inputAddress()"
@@ -55,7 +55,7 @@
         class="mb-3"
         name="Correo Electronico"
         type="text"
-        v-model="itemEdited.mail"
+        v-model="itemCopy.mail"
         :validation="validation.mail"
         :disabled="disabled"
         v-on:input="inputMail()"
@@ -90,27 +90,23 @@
 }
 </style>
 <script>
-import axios from "axios";
 import { defineComponent } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
-import MyForm from "@/components/my_components/MyForm.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import MySelect from "@/components/my_components/MySelect.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import CustomerConection from "./CustomerConection";
-const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
+  name: "CustomerDetail",
   props: ["itemSelected", "getCustomers"],
   mixins: [ValidationFunctions, CustomerConection],
   inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
-    MyForm,
     MyInput,
     MySelect,
   },
-  name: "DetailCustomer",
   data() {
     return {
       disabled: false,
@@ -137,17 +133,18 @@ export default defineComponent({
         { text: "RUC", value: "2" },
         { text: "Otro", value: "3" },
       ],
-      itemOriginal: {},
-      itemEdited: {},
+      itemCopy: {},
     };
   },
   watch: {
     itemSelected() {
-      this.itemOriginal = JSON.parse(JSON.stringify(this.itemSelected));
-      this.itemEdited = JSON.parse(JSON.stringify(this.itemSelected));
+      this.resetItemCopy();
     },
   },
   methods: {
+    resetItemCopy() {
+      this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
+    },
     validateForm() {
       this.validateName();
       this.validateDocumentType();
@@ -167,22 +164,22 @@ export default defineComponent({
     },
 
     validateName() {
-      this.validation.name = this.validationRequiredText(this.itemEdited.name, 3, 50);
+      this.validation.name = this.validationRequiredText(this.itemCopy.name, 3, 50);
     },
     validateDocumentType() {
-      this.validation.documentType = this.validationRequiredSelect(this.itemEdited.documentType);
+      this.validation.documentType = this.validationRequiredSelect(this.itemCopy.documentType);
     },
     validateDocument() {
-      this.validation.document = this.validationRequiredText(this.itemEdited.document, 3, 10);
+      this.validation.document = this.validationRequiredText(this.itemCopy.document, 3, 10);
     },
     validatePhone() {
-      this.validation.phone = this.validationRequiredText(this.itemEdited.phone, 9, 9);
+      this.validation.phone = this.validationRequiredText(this.itemCopy.phone, 9, 9);
     },
     validateAddress() {
-      this.validation.address = this.validationRequiredText(this.itemEdited.address, 3, 50);
+      this.validation.address = this.validationRequiredText(this.itemCopy.address, 3, 50);
     },
     validateMail() {
-      this.validation.mail = this.validationRequiredText(this.itemEdited.mail, 3, 50);
+      this.validation.mail = this.validationRequiredText(this.itemCopy.mail, 3, 50);
     },
 
     inputName() {
@@ -195,9 +192,9 @@ export default defineComponent({
       this.validateDocument();
     },
     inputPhone() {
-      var aux = this.itemEdited.phone;
-      this.itemEdited.phone = this.inputOnlyNumber(this.itemEdited.phone);
-      if (aux == this.itemEdited.phone) {
+      var aux = this.itemCopy.phone;
+      this.itemCopy.phone = this.inputOnlyNumber(this.itemCopy.phone);
+      if (aux == this.itemCopy.phone) {
         this.validatePhone();
       }
     },
@@ -211,7 +208,7 @@ export default defineComponent({
       if (this.validateForm()) {
         switch (this.mode) {
           case 1:
-            this.addCustomerRegister(this.itemEdited).then((response) => {
+            this.addCustomerRegister(this.itemCopy).then((response) => {
               if (response.success) {
                 this.getCustomers(1);
                 this.closeModal();
@@ -219,7 +216,7 @@ export default defineComponent({
             });
             break;
           case 3:
-            this.editCustomerRegister(this.itemEdited).then((response) => {
+            this.editCustomerRegister(this.itemCopy).then((response) => {
               if (response.success) {
                 this.getCustomers(1);
                 this.closeModal();
@@ -244,7 +241,7 @@ export default defineComponent({
       this.changeMode(2);
     },
     buttonDelete() {
-      this.confirmDeleteCustomerRegister(this.itemEdited.id).then((response) => {
+      this.confirmDeleteCustomerRegister(this.itemCopy.id).then((response) => {
         if (response.success) {
           this.getCustomers(1);
           this.closeModal();
@@ -254,7 +251,7 @@ export default defineComponent({
     changeMode(mode) {
       this.mode = mode;
       this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
-      this.itemEdited = JSON.parse(JSON.stringify(this.itemOriginal));
+      this.resetItemCopy();
       switch (this.mode) {
         case 1:
           this.title = "Agregar Cliente";

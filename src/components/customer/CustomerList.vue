@@ -1,5 +1,5 @@
 <script>
-import DetailCustomer from "./DetailCustomer.vue";
+import CustomerDetail from "./CustomerDetail.vue";
 import Content from "@/components/home/Content.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
@@ -94,7 +94,7 @@ export default defineComponent({
   },
   mixins: [UtilityFunctions, CustomerConection],
   components: {
-    DetailCustomer,
+    CustomerDetail,
     TableLite,
     TableContent,
     Content,
@@ -184,10 +184,8 @@ export default defineComponent({
 </script>
 <template>
   <Content ref="content" :loading="loading">
-    <DetailCustomer
+    <CustomerDetail
       ref="modal"
-      :buttonDelete="buttonDelete"
-      :showToast="showToast"
       :itemSelected="itemSelected"
       :getCustomers="getCustomers"
     />
