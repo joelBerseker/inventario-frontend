@@ -1,19 +1,21 @@
 <script>
-import DetailProduct from "./DetailProduct.vue";
+import ProductDetail from "./ProductDetail.vue";
 import SystemContent from "@/components/system/SystemContent.vue";
 import TableContent from "@/components/my_other_components/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
+import ProductConection from "./ProductConection";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
   name: "Product",
+  inject: ["confirmDialogue", "showToast"],
   data() {
     return {
-      item_selected: {},
+      itemSelected: {},
       search: "",
       filter: "",
       table: {
@@ -95,111 +97,104 @@ export default defineComponent({
       },
     };
   },
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
-  mixins: [UtilityFunctions],
+  props: ["changeTopbar"],
+  mixins: [UtilityFunctions, ProductConection],
   components: {
-    DetailProduct,
+    ProductDetail,
     TableLite,
     SystemContent,
     paginate: Paginate,
     TableContent,
   },
   methods: {
-    addMode() {
-      this.item_selected = {};
+    onAdd() {
+      this.getProducts(1);
+    },
+    onEdit() {
+      this.getProducts(this.page);
+    },
+    onDelete() {
+      this.getProducts(1);
+    },
+    getItemSelectedByUrl() {
+      if (this.$route.query.id != undefined) {
+        this.getProductRegister(this.$route.query.id).then((response) => {
+          if (response.success) {
+            this.itemSelected = response.response.data;
+            this.$refs.modal.changeMode(2);
+            this.$refs.modal.openModal();
+          }
+        });
+      }
+    },
+    buttonAdd() {
+      this.itemSelected = {};
       this.$refs.modal.changeMode(1);
       this.$refs.modal.openModal();
     },
-    viewMode(row) {
-      this.item_selected = row;
+    buttonView(row) {
+      this.itemSelected = row;
       this.$refs.modal.changeMode(2);
       this.$refs.modal.openModal();
     },
-    async deleteItem(row) {
-      this.confirmDialogue({
-        title: "Eliminar Producto",
-        message: "¿Estas seguro que quieres eliminar el producto?",
-        okButton: "Eliminar",
-      }).then((result) => {
-        if (result) {
-          var path = url + "products/products/" + row.id + "/";
-          axios
-            .delete(path)
-            .then((response) => {
-              this.showToast({
-                title: "Operación exitosa",
-                message: "El registro de elimino correctamente.",
-                type: 1,
-              });
-              this.getProductsNew(this.page);
-              this.$refs.modal.closeModal();
-            })
-            .catch(() => {
-              this.showToast({
-                title: "Ocurrió un error",
-                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
-                type: 2,
-              });
-            });
+    async buttonDelete(row) {
+      this.confirmDeleteProductRegister(row.id).then((response) => {
+        if (response.success) {
+          this.getProducts(1);
         }
       });
     },
-    async getProductsNew(numPag) {
+    async getProducts(page) {
       this.loadingContentTable = true;
       this.table.rows = [];
-      var path = url + `products/products/?page=` + numPag;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
+      this.getProductRegisters(page).then((response) => {
+        if (response.success) {
+          response.response.data.results.forEach((element) => {
             this.table.rows.push(element);
-            this.numPag = Math.ceil(response.data.count / 10);
+            this.table.totalRecordCount = this.table.rows.length;
+            this.numPag = Math.ceil(response.response.data.count / 10);
           });
+          this.page = page;
           this.loadingContentSystem = false;
           this.loadingContentTable = false;
-        })
-        .catch(() => {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
+        }
+      });
     },
     clickCallback(pageNum) {
       this.page = pageNum;
       if (this.search == "") {
-        this.getProductsNew(pageNum);
+        this.getProducts(pageNum);
       } else {
         this.filter = pageNum + "&search_query=" + this.search;
-        this.getProductsNew(this.filter);
+        this.getProducts(this.filter);
       }
     },
     filterTable() {
       this.page = 1;
       this.filter = this.page + "&search_query=" + this.search;
-      this.getProductsNew(this.filter);
+      this.getProducts(this.filter);
     },
   },
   async created() {
     this.page = 1;
     this.changeTopbar(this.topbar);
-    this.getProductsNew(this.page);
+    this.getProducts(this.page);
   },
 });
 </script>
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
-    <DetailProduct
+    <ProductDetail
       ref="modal"
-      :deleteItem="deleteItem"
-      :showToast="showToast"
-      :item_selected="item_selected"
-      :getProductsNew="getProductsNew"
+      :itemSelected="itemSelected"
+      v-on:item:add="onAdd"
+      v-on:item:edit="onEdit"
+      v-on:item:delete="onDelete"
+      v-on:mounted:mymodal="getItemSelectedByUrl"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Producto
         </button>
         <button
@@ -240,10 +235,10 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+            <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
               <i class="bi bi-journal"></i>
             </button>
-            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+            <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>
             </button>
           </div>
