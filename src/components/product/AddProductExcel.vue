@@ -73,7 +73,6 @@ export default defineComponent({
             field: "cost",
             width: "7%",
             sortable: true,
-
           },
           {
             label: "Venta",
@@ -81,7 +80,6 @@ export default defineComponent({
             field: "price",
             width: "7%",
             sortable: true,
-
           },
           {
             label: "Cantidad",
@@ -90,7 +88,6 @@ export default defineComponent({
             width: "1%",
             sortable: true,
           },
-
         ],
         rows: [],
         totalRecordCount: 0,
@@ -114,11 +111,8 @@ export default defineComponent({
     prueba(data) {
       if (data != null) {
         this.data_to_xls = data;
-        this.table.rows = this.data_to_xls
-
+        this.table.rows = this.data_to_xls;
       }
-
-
     },
     onClick(event) {
       var json_arr = JSON.stringify(this.data_to_xls);
@@ -170,16 +164,13 @@ export default defineComponent({
           <li>price</li>
           <li>stock</li>
           <li>deleted</li>
-
         </ul>
-
       </div>
       <div class="col-8">
         <p class="title-text mb-3">Ejemplo</p>
         <div class="w-100">
-          <img src="../../assets/excel_example.png" class="w-100" alt="">
+          <img src="../../assets/excel_example.png" class="w-100" alt="" />
         </div>
-        
       </div>
       <div class="col-12">
         <hr />
@@ -190,26 +181,47 @@ export default defineComponent({
       <div class="col-12">
         <div class="row">
           <div class="col">
-            <input type="file" class="form-control form-control-sm mb-3" @change="onChange" />
+            <input
+              type="file"
+              class="form-control form-control-sm mb-3"
+              @change="onChange"
+            />
           </div>
           <div class="col">
-            <button @click="onClick" class="btn btn-sm btn-primary"><i class="bi bi-file-earmark-arrow-up"></i>
-              Subir</button>
-
+            <button @click="onClick" class="btn btn-sm btn-primary">
+              <i class="bi bi-file-earmark-arrow-up"></i> Subir
+            </button>
           </div>
         </div>
       </div>
       <div class="col-12">
-
-        <table-lite :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true" :is-loading="table.isLoading"
-          :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :sortable="table.sortable"
-          @is-finished="table.isLoading = false" :messages="table.messages" class="mb-3">
+        <table-lite
+          :is-static-mode="false"
+          :is-slot-mode="true"
+          :is-hide-paging="true"
+          :is-loading="table.isLoading"
+          :columns="table.columns"
+          :rows="table.rows"
+          :total="table.totalRecordCount"
+          :sortable="table.sortable"
+          @is-finished="table.isLoading = false"
+          :messages="table.messages"
+          class="mb-3"
+        >
           <template v-slot:quick="data">
             <div class="d-flex">
-              <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+              <button
+                v-on:click="viewMode(data.value)"
+                type="button"
+                class="btn btn-secondary btn-sm me-1"
+              >
                 <i class="bi bi-journal"></i>
               </button>
-              <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+              <button
+                v-on:click="deleteItem(data.value)"
+                type="button"
+                class="btn btn-danger btn-sm"
+              >
                 <i class="bi bi-trash"></i>
               </button>
             </div>
@@ -218,9 +230,7 @@ export default defineComponent({
       </div>
     </div>
 
-
     <div>
-
       <xlsx-read :file="file">
         <xlsx-json>
           <template #default="{ collection }">
@@ -231,7 +241,6 @@ export default defineComponent({
         </xlsx-json>
       </xlsx-read>
     </div>
-
   </Content>
 </template>
 

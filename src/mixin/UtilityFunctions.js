@@ -5,40 +5,57 @@ export default {
     },
 
     documentType(number) {
-        var text ="";
+      var text = "";
       switch (number) {
         case 1:
-            text="DNI"
+          text = "DNI";
           break;
         case 2:
-            text="RUC"
+          text = "RUC";
           break;
         case 3:
-            text="Otro"
+          text = "Otro";
           break;
         default:
-            text="Pasaporte"
+          text = "Pasaporte";
           break;
       }
       return text;
     },
     timeAgo(time) {
-      var date = new Date(time),
-        diff = (new Date().getTime() - date.getTime()) / 1000,
-        day_diff = Math.floor(diff / 86400);
-      if (isNaN(day_diff) || day_diff < 0 || day_diff >= 31) return "---";
-
-      return (
-        (day_diff == 0 &&
-          ((diff < 60 && "Hace un momento") ||
-            (diff < 120 && "Hace 1 minuto") ||
-            (diff < 3600 && "Hace " + Math.floor(diff / 60) + " minutos") ||
-            (diff < 7200 && "Hace 1 hora") ||
-            (diff < 86400 && "Hace " + Math.floor(diff / 3600) + " horas"))) ||
-        (day_diff == 1 && "Ayer") ||
-        (day_diff < 7 && "Hace " + day_diff + " dias") ||
-        (day_diff < 31 && "Hace " + Math.ceil(day_diff / 7) + " semanas")
-      );
-    },
+      const date = new Date(time);
+      const now = new Date();
+      const diffInSeconds = Math.floor((now - date) / 1000);
+      const dayDiff = Math.floor(diffInSeconds / 86400);
+    
+      if (isNaN(dayDiff) || dayDiff < 0 ) {
+        return "---";
+      }
+    
+      if (dayDiff === 0) {
+        if (diffInSeconds < 60) {
+          return "Hace un momento";
+        } else if (diffInSeconds < 120) {
+          return "Hace 1 minuto";
+        } else if (diffInSeconds < 3600) {
+          return `Hace ${Math.floor(diffInSeconds / 60)} minutos`;
+        } else if (diffInSeconds < 7200) {
+          return "Hace 1 hora";
+        } else {
+          return `Hace ${Math.floor(diffInSeconds / 3600)} horas`;
+        }
+      } else if (dayDiff === 1) {
+        return "Ayer";
+      } else if (dayDiff < 7) {
+        return `Hace ${dayDiff} días`;
+      } else if (dayDiff < 31) {
+        const weekDiff = Math.floor(dayDiff / 7);
+        return `Hace ${weekDiff} ${weekDiff > 1 ? "semanas" : "semana"} y ${dayDiff % 7} ${dayDiff % 7 > 1 ? "días" : "día"}`;
+      } else {
+        const monthDiff = Math.floor(dayDiff / 30);
+        return `Hace ${monthDiff} ${monthDiff > 1 ? "meses" : "mes"} y ${dayDiff % 30} ${dayDiff % 30 > 1 ? "días" : "día"}`;
+      }
+    }
+    
   },
 };
