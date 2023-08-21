@@ -1,20 +1,21 @@
 <script>
-import DetailCustomer from "./DetailCustomer.vue";
+import CustomerDetail from "./CustomerDetail.vue";
 import Content from "@/components/home/Content.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
+import CustomerConection from "./CustomerConection";
 
 const url = import.meta.env.VITE_APP_RUTA_API;
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "Customer",
-
+  inject: ["confirmDialogue", "showToast"],
   data() {
     return {
-      item_selected: {},
+      itemSelected: {},
       search: "",
       filter: "",
       numPag: 2,
@@ -91,23 +92,38 @@ export default defineComponent({
       },
     };
   },
-  mixins: [UtilityFunctions],
+  mixins: [UtilityFunctions, CustomerConection],
   components: {
-    DetailCustomer,
+    CustomerDetail,
     TableLite,
     TableContent,
     Content,
     paginate: Paginate,
   },
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  props: ["changeTopbar"],
   async created() {
     this.changeTopbar(this.topbar);
     if (this.$store.getters.isActive) {
       await this.getCustomers(1);
     }
   },
+  mounted() {
+    this.getItemSelectedByUrl();
+  },
   methods: {
-    filterTable() {},
+    getItemSelectedByUrl() {
+      if (this.$route.query.id != undefined) {
+        this.getCustomerRegister(this.$route.query.id).then((response) => {
+          if (response.success) {
+            setTimeout(() => {
+              this.itemSelected = response.response.data;
+              this.$refs.modal.changeMode(2);
+              this.$refs.modal.openModal();
+            }, 700);
+          }
+        });
+      }
+    },
     loadingContent(loading) {
       this.$refs.content.loadingContent(loading);
     },
@@ -116,76 +132,38 @@ export default defineComponent({
         this.$refs.tableContent.loadingTableContent(loading);
       } catch (error) {}
     },
-
-    addMode() {
-      this.item_selected = {};
+    buttonAdd() {
+      this.itemSelected = {};
       this.$refs.modal.changeMode(1);
       this.$refs.modal.openModal();
     },
-    viewMode(row) {
-      this.item_selected = row;
+    buttonView(row) {
+      this.itemSelected = row;
       this.$refs.modal.changeMode(2);
       this.$refs.modal.openModal();
     },
-    async deleteItem(row) {
-      this.confirmDialogue({
-        title: "Eliminar Producto",
-        message: "¿Estas seguro que quieres eliminar el producto?",
-        okButton: "Eliminar",
-      }).then((result) => {
-        if (result) {
-          var path = url + "clients/clients/" + row.id + "/";
-          axios
-            .delete(path)
-            .then((response) => {
-              console.log(response);
-              this.showToast({
-                title: "Operación exitosa",
-                message: "El registro de elimino correctamente.",
-                type: 1,
-              });
-              this.getCustomers(1);
-              this.$refs.modal.closeModal();
-            })
-            .catch((e) => {
-              console.log(e);
-              this.showToast({
-                title: "Ocurrió un error",
-                message:
-                  "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
-                type: 2,
-              });
-            });
+    async buttonDelete(row) {
+      this.confirmDeleteCustomerRegister(row.id).then((response) => {
+        if (response.success) {
+          this.getCustomers(1);
+          this.closeModal();
         }
       });
     },
-
-    async getCustomers(numpg) {
+    async getCustomers(page) {
       this.loadingTableContent(true);
-      this.page = numpg;
-
       this.table.rows = [];
-      var path = url + `clients/clients/?page=` + numpg;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
+      this.getCustomerRegisters(page).then((response) => {
+        if (response.success) {
+          response.response.data.results.forEach((element) => {
             this.table.rows.push(element);
             this.table.totalRecordCount = this.table.rows.length;
-            this.numPag = Math.ceil(response.data.count / 10);
+            this.numPag = Math.ceil(response.response.data.count / 10);
           });
           this.loadingContent(false);
           this.loadingTableContent(false);
-        })
-        .catch((e) => {
-          console.log(e);
-          this.showToast({
-            title: "Ocurrió un error",
-            message:
-              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
+        }
+      });
     },
     clickCallback(pageNum) {
       this.page = pageNum;
@@ -206,20 +184,14 @@ export default defineComponent({
 </script>
 <template>
   <Content ref="content" :loading="loading">
-    <DetailCustomer
+    <CustomerDetail
       ref="modal"
-      :deleteItem="deleteItem"
-      :showToast="showToast"
-      :item_selected="item_selected"
+      :itemSelected="itemSelected"
       :getCustomers="getCustomers"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button
-          v-on:click="addMode"
-          type="button"
-          class="btn btn-primary btn-sm mb-3"
-        >
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Cliente
         </button>
       </div>
@@ -241,11 +213,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <TableContent
-      ref="tableContent"
-      :loading="this.loadingTable"
-      :size="table.rows.length"
-    >
+    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
       <table-lite
         class="mb-3"
         :is-static-mode="false"
@@ -257,18 +225,10 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button
-              v-on:click="viewMode(data.value)"
-              type="button"
-              class="btn btn-secondary btn-sm me-1"
-            >
+            <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
               <i class="bi bi-journal"></i>
             </button>
-            <button
-              v-on:click="deleteItem(data.value)"
-              type="button"
-              class="btn btn-danger btn-sm"
-            >
+            <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>
             </button>
           </div>
