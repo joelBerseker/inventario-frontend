@@ -3,20 +3,20 @@ import axios from "axios";
 import AuthService from "@/services/AuthService";
 import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
-import TopBar from "@/components/home/TopBar.vue";
+import SystemTopBar from "@/components/home/SystemTopBar.vue";
 import SystemLoading from "@/components/home/SystemLoading.vue";
-import SideBar from "@/components/home/SideBar.vue";
+import SystemSideBar from "@/components/home/SystemSideBar.vue";
 import AppContent from "@/components/home/AppContent.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "System",
   components: {
-    TopBar,
+    SystemTopBar,
     ConfirmDialogue,
     MyToast,
     SystemLoading,
-    SideBar,
-    AppContent
+    SystemSideBar,
+    AppContent,
   },
   data() {
     return {
@@ -29,13 +29,6 @@ export default defineComponent({
     };
   },
   methods: {
-    loadingSystem(loading) {
-      if (loading) {
-        this.$refs.loadingSystem.openModal();
-      } else {
-        this.$refs.loadingSystem.closeModal();
-      }
-    },
     changeTopbar(topbar) {
       this.topbar.title = topbar.title;
       this.topbar.icon = topbar.icon;
@@ -61,9 +54,16 @@ export default defineComponent({
       this.$store.dispatch("logout");
       this.$router.push("/login");
     },
-    logoutButton(evt) {
-      evt.preventDefault();
-      this.logout();
+    confirmLogout() {
+      this.confirmDialogue({
+        title: "Cerrar Sesión",
+        message: "¿Esta seguro que desea cerrar sesión?",
+        okButton: "Aceptar",
+      }).then((result) => {
+        if (result) {
+          this.logout();
+        }
+      });
     },
   },
   computed: {
@@ -79,12 +79,13 @@ export default defineComponent({
     return {
       confirmDialogue: this.confirmDialogue,
       showToast: this.showToast,
+      confirmLogout: this.confirmLogout,
     };
   },
   async created() {
     console.log("created System");
     await AuthService.getUser();
-    this.loadingAppContent = false
+    this.loadingAppContent = false;
   },
   async updated() {
     if (!this.$store.getters.isActive) {
@@ -109,10 +110,10 @@ export default defineComponent({
 <template>
   <AppContent :loading="loadingAppContent">
     <div id="sidebar">
-      <SideBar></SideBar>
+      <SystemSideBar></SystemSideBar>
     </div>
     <div id="main-content" :class="darkMode">
-      <TopBar :topbar="topbar" :confirmDialogue="confirmDialogue"></TopBar>
+      <SystemTopBar :topbar="topbar" :confirmDialogue="confirmDialogue"></SystemTopBar>
       <RouterView v-slot="{ Component }">
         <transition name="t-main-content" mode="out-in">
           <component
@@ -132,7 +133,7 @@ export default defineComponent({
 <style scoped>
 .t-main-content-enter-active,
 .t-main-content-enter {
-  transition: all 0.4s ease;
+  transition: all 0.3s ease;
 }
 .t-main-content-leave-active {
 }
@@ -141,6 +142,7 @@ export default defineComponent({
   opacity: 0;
 }
 .t-main-content-enter-from {
+  transform: translateX(-10px);
   opacity: 0;
 }
 #sidebar {

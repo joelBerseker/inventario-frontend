@@ -145,7 +145,7 @@
       </div>
     </div>
     <div class="profile-actions mt-3">
-      <button class="btn btn-sm btn-danger profile-action-btn" v-if="!editing" @click="signOff">
+      <button class="btn btn-sm btn-danger profile-action-btn" v-if="!editing" @click="buttonLogout">
         <i class="bi bi-power"></i> Cerrar Sesión
       </button>
       <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn ms-1" @click="toggleEditing">
@@ -206,15 +206,15 @@ export default {
     this.changeTopbar(this.topbar);
     this.getUser();
   },
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  inject: ["confirmLogout"],
+  props: ["changeTopbar"],
   components: {
     SystemContent,
     MyForm,
   },
   methods: {
-    signOff() {
-      this.$store.dispatch("logout");
-      this.$router.push("/login");
+    buttonLogout() {
+      this.confirmLogout();
     },
     uploadImage(e) {
       const image = e.target.files[0];

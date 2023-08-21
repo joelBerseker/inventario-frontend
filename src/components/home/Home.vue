@@ -95,7 +95,7 @@
 }
 .accordion-button {
   border: none !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-top: 1px solid var(--my-border-color)!important;
 
   border-radius: 0px !important;
   box-shadow: none !important;

@@ -1,15 +1,13 @@
 <template>
   <div>
     <transition name="t-content" mode="out-in">
-      <div :key="loadingLocal">
-        <div v-show="loadingLocal" class="center flex-column">
-          <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
+      <div v-if="loadingLocal" class="center flex-column">
+        <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
 
-          <div class="secondary-text">Cargando contenido...</div>
-        </div>
-        <div v-show="!loadingLocal" :class="classContent">
-          <slot></slot>
-        </div>
+        <div class="secondary-text">Cargando contenido...</div>
+      </div>
+      <div v-else :class="classContent">
+        <slot></slot>
       </div>
     </transition>
   </div>
@@ -47,7 +45,7 @@ export default defineComponent({
               this.loadingLocal = this.loading;
             }, 50);
           }
-        }else{
+        } else {
           this.loadingLocal = this.loading;
         }
       },

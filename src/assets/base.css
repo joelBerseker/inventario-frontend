@@ -116,7 +116,7 @@ p {
 table {
   border-collapse: separate !important;
   border-spacing: 0 !important;
-  border-radius: var(--my-border-radius) !important;
+
   background-color: transparent !important;
 }
 

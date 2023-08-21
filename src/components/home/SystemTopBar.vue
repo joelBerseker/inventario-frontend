@@ -3,30 +3,15 @@ import { defineComponent, renderSlot } from "vue";
 
 export default defineComponent({
   name: "TopBar",
-  props: ["topbar", "confirmDialogue"],
+  props: ["topbar"],
+  inject: ["confirmLogout"],
   methods: {
-    confirmLogout() {
-      this.confirmDialogue({
-        title: "Cerrar Sesión",
-        message: "¿Esta seguro que desea cerrar sesión?",
-        okButton: "Aceptar",
-      }).then((result) => {
-        if (result) {
-          this.logout();
-        }
-      });
-    },
-    logoutButton(evt) {
-      evt.preventDefault();
+    buttonLogout() {
       this.confirmLogout();
-    },
-    logout() {
-      this.$store.dispatch("logout");
-      this.$router.push("/login");
     },
   },
   computed: {
-    styleBreadcrumb: function () {
+    /*styleBreadcrumb: function () {
       var resp = "";
       if (this.topbar.breadcrumb.length <= 1) {
         resp = "height: 0px";
@@ -34,7 +19,7 @@ export default defineComponent({
         resp = "height: 22px";
       }
       return resp;
-    },
+    },*/
     userName: function () {
       var user = this.$store.getters.getUser;
       var resp = user.first_name + " " + user.last_name;
@@ -68,15 +53,14 @@ export default defineComponent({
         >
           <i class="bi bi-bell"></i>
         </button>
-        <button v-on:click="logoutButton" type="button" class="btn btn-primary-outline btn-sm">
+        <button v-on:click="buttonLogout" type="button" class="btn btn-primary-outline btn-sm">
           <i class="bi bi-power"></i>
         </button>
       </div>
     </div>
 
-    <div :style="styleBreadcrumb" class="breadcrumb-content">
-      <div v-if="topbar.breadcrumb.length <= 1"></div>
-      <div v-else>
+    <div class="breadcrumb-content">
+      <div>
         <div class="row mt-2">
           <div class="col-auto breadcrumb-item">
             <span v-if="topbar.breadcrumb.length > 1"
@@ -105,27 +89,18 @@ export default defineComponent({
   </div>
 </template>
 <style scoped>
-.slide-fade-enter-active {
-  transition: all 0.3s ease;
-}
-
+.slide-fade-enter-active,
 .slide-fade-enter {
   transition: all 0.3s ease;
 }
-
 .slide-fade-leave-active {
-  /*transition: all 0.25s ease;*/
 }
-
 .slide-fade-leave-to {
-  transform: translateX(5px);
+  transform: translateX(10px);
   opacity: 0;
 }
-
-.slide-fade-enter-from
-
-/* .slide-fade-leave-active below version 2.1.8 */ {
-  transform: translateX(-5px);
+.slide-fade-enter-from{
+  transform: translateX(-10px);
   opacity: 0;
 }
 

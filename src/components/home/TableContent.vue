@@ -1,23 +1,23 @@
 <template>
   <div>
     <transition name="t-content" mode="out-in">
-      <div :key="loadingLocal">
-        <div v-show="loadingLocal">
-          <div class="d-flex justify-content-center mt-3 align-items-center">
-            <div class="spinner-border spinner-border-sm secondary-text"></div>
-            <div class="secondary-text">&nbsp; Cargando...</div>
-          </div>
+      <div v-if="loadingLocal">
+        <div class="d-flex justify-content-center mt-3 align-items-center">
+          <div class="spinner-border spinner-border-sm secondary-text"></div>
+          <div class="secondary-text">&nbsp; Cargando...</div>
         </div>
+      </div>
 
-        <div v-show="!loadingLocal">
-          <div v-if="size <= 0">
-            <div class="d-flex justify-content-center align-items-center">
-              <div class="secondary-text"> No se encontraron registros, puede agregar uno nuevo con el boton de arriba a la izquierda.</div>
+      <div v-else>
+        <div v-if="size <= 0">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="secondary-text">
+              No se encontraron registros, puede agregar uno nuevo con el boton de arriba a la izquierda.
             </div>
           </div>
-          <div v-else>
-            <slot></slot>
-          </div>
+        </div>
+        <div v-else>
+          <slot></slot>
         </div>
       </div>
     </transition>
@@ -51,7 +51,7 @@ export default defineComponent({
               this.loadingLocal = this.loading;
             }, 300);
           }
-        }else{
+        } else {
           this.loadingLocal = this.loading;
         }
       },
