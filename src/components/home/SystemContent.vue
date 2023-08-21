@@ -1,13 +1,13 @@
 <template>
   <div>
     <transition name="t-content" mode="out-in">
-      <div :key="_loading">
-        <div v-show="_loading" class="center flex-column">
+      <div :key="loadingLocal">
+        <div v-show="loadingLocal" class="center flex-column">
           <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
-          
+
           <div class="secondary-text">Cargando contenido...</div>
         </div>
-        <div v-show="!_loading" :class="classContent">
+        <div v-show="!loadingLocal" :class="classContent">
           <slot></slot>
         </div>
       </div>
@@ -22,32 +22,32 @@ export default defineComponent({
   name: "SystemContent",
   data() {
     return {
-      _loading: true,
+      loadingLocal: true,
     };
   },
-  props: ["loading"],
+  components: {
+    Icon,
+  },
   props:{
     loading:{},
     classContent:{
       default:"p-3"
     }
   },
-  components: {
-    Icon,
-  },
-  methods: {
-    loadingContent(loading) {
-      if (loading) {
-        this._loading = loading;
-      } else {
-        setTimeout(() => {
-          this._loading = loading;
-        }, 50);
-      }
+  watch: {
+    loading: {
+      immediate: true,
+      deep: true,
+      handler() {
+        if (this.loading) {
+          this.loadingLocal = this.loading;
+        } else {
+          setTimeout(() => {
+            this.loadingLocal = this.loading;
+          }, 500);
+        }
+      },
     },
-  },
-  created() {
-    this._loading = this.loading;
   },
 });
 </script>

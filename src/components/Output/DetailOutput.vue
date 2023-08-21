@@ -520,7 +520,6 @@ export default defineComponent({
           response.data.results.forEach((element) => {
             this.products.push(element);
           });
-          this.loadingContent(false);
         })
         .catch((e) => {
           console.log(e.message);

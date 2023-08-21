@@ -1,5 +1,5 @@
 <template>
-  <SystemContent ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loadingContentSystem">
     <div class="row">
       <div class="col-6">
         <div class="card">
@@ -185,7 +185,7 @@ export default {
       },
       editUser: {},
       displayUser: {},
-      loading: true,
+      loadingContentSystem: true,
       topbar: {
         title: "Usuario",
         icon: "bi bi-person-vcard",
@@ -226,9 +226,6 @@ export default {
         this.editPhto = true;
       };
     },
-    loadingContent(loading) {
-      this.$refs.content.loadingContent(loading);
-    },
     getUser() {
       var path = url + "user/api/" + this.$store.getters.getId + "/";
       axios
@@ -238,7 +235,7 @@ export default {
           console.log(this.user);
           this.editUser = { ...this.user };
           this.displayUser = { ...this.user };
-          this.loadingContent(false);
+          this.loadingContentSystem = false;
         })
         .catch((e) => {
           console.log(e.message);

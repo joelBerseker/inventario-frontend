@@ -10,7 +10,7 @@ export default defineComponent({
     },
     data() {
         return {
-            loading: false,
+            loadingContentSystem: false,
             topbar: {
                 title: "Notificaciones",
                 icon: "icon",
@@ -30,9 +30,6 @@ export default defineComponent({
 
     },
     methods: {
-        loadingContent(loading) {
-            this.$refs.content.loadingContent(loading);
-        },
     },
     async created() {
         this.changeTopbar(this.topbar);
@@ -40,7 +37,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <SystemContent ref="content" :loading="loading">
+    <SystemContent ref="content" :loading="loadingContentSystem">
         Notificaciones
     </SystemContent>
 </template>

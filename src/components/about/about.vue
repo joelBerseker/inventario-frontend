@@ -4,13 +4,13 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "About",
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  props: ["changeTopbar"],
   components: {
     SystemContent,
   },
   data() {
     return {
-      loading: false,
+      loadingContentSystem: false,
       topbar: {
         title: "Mas información",
         icon: "bi bi-info-circle",
@@ -28,9 +28,6 @@ export default defineComponent({
     };
   },
   methods: {
-    loadingContent(loading) {
-      this.$refs.content.loadingContent(loading);
-    },
     async copyTo() {
       try {
         await navigator.clipboard.writeText("https://docs.google.com/spreadsheets/d/1shM2f3sb77z6Hm93w9DS7nfRkxQ9cxRTWAmNqDJ0y_c/edit#gid=0");
@@ -46,7 +43,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <SystemContent ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loadingContentSystem">
     <a
       href="https://docs.google.com/spreadsheets/d/1shM2f3sb77z6Hm93w9DS7nfRkxQ9cxRTWAmNqDJ0y_c/edit#gid=0"
       >Drive</a

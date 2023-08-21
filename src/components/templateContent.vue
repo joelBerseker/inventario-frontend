@@ -4,13 +4,13 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     name: "templateContent",
-    props: ["changeTopbar", "showToast", "confirmDialogue"],
+    props: ["changeTopbar"],
     components: {
         SystemContent,
     },
     data() {
         return {
-            loading: false,
+            loadingContentSystem: false,
             topbar: {
                 title: "templateContent",
                 icon: "icon",
@@ -30,9 +30,6 @@ export default defineComponent({
 
     },
     methods: {
-        loadingContent(loading) {
-            this.$refs.content.loadingContent(loading);
-        },
     },
     async created() {
         this.changeTopbar(this.topbar);
@@ -40,7 +37,7 @@ export default defineComponent({
 });
 </script>
 <template>
-    <SystemContent ref="content" :loading="loading">
+    <SystemContent ref="content" :loading="loadingContentSystem">
         here information
     </SystemContent>
 </template>

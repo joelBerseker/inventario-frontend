@@ -14,7 +14,7 @@ export default defineComponent({
   },
   data() {
     return {
-      loading: false,
+      loadingContentSystem: false,
       topbar: {
         title: "Estadisticas",
         icon: "icon",
@@ -95,9 +95,6 @@ export default defineComponent({
     };
   },
   methods: {
-    loadingContent(loading) {
-      this.$refs.content.loadingContent(loading);
-    },
     createDates() {
       const lessDays = 8;
       const dates = [];
@@ -140,7 +137,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <SystemContent ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loadingContentSystem">
     <div>
       <apexchart
         width="500"

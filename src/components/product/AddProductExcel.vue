@@ -26,7 +26,7 @@ export default defineComponent({
     return {
       file: null,
       data_to_xls: [],
-      loading: false,
+      loadingContentSystem: false,
       topbar: {
         title: "Agregar por Excel",
         icon: "icon",
@@ -102,9 +102,6 @@ export default defineComponent({
     };
   },
   methods: {
-    loadingContent(loading) {
-      this.$refs.content.loadingContent(loading);
-    },
     onChange(event) {
       this.file = event.target.files ? event.target.files[0] : null;
     },
@@ -151,7 +148,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <SystemContent ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loadingContentSystem">
     <div class="row">
       <div class="col-4">
         <p class="title-text mb-3">Indicaciones</p>

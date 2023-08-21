@@ -74,7 +74,7 @@ export default defineComponent({
         rows: [],
         totalRecordCount: 0,
       },
-      loading: true,
+      loadingContentSystem: true,
       loadingTable: false,
       topbar: {
         title: "Clientes",
@@ -123,9 +123,6 @@ export default defineComponent({
         });
       }
     },
-    loadingContent(loading) {
-      this.$refs.content.loadingContent(loading);
-    },
     loadingTableContent(loading) {
       try {
         this.$refs.tableContent.loadingTableContent(loading);
@@ -160,7 +157,7 @@ export default defineComponent({
             this.numPag = Math.ceil(response.response.data.count / 10);
           });
           this.page = page;
-          this.loadingContent(false);
+          this.loadingContentSystem = false;
           this.loadingTableContent(false);
         }
       });
@@ -192,7 +189,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <SystemContent ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loadingContentSystem">
     <CustomerDetail
       ref="modal"
       :itemSelected="itemSelected"

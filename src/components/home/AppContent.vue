@@ -26,7 +26,6 @@ export default defineComponent({
     Icon,
   },
   props: ["loading"],
-
   watch: {
     loading: {
       immediate: true,
@@ -42,8 +41,6 @@ export default defineComponent({
       },
     },
   },
-  methods: {},
-  created() {},
 });
 </script>
 <style scoped>

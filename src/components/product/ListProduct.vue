@@ -77,7 +77,7 @@ export default defineComponent({
       },
       numPag: 4,
       page: "1",
-      loading: true,
+      loadingContentSystem: true,
       loadingTable: false,
       topbar: {
         title: "Productos",
@@ -105,9 +105,6 @@ export default defineComponent({
     TableContent,
   },
   methods: {
-    loadingContent(loading) {
-      this.$refs.content.loadingContent(loading);
-    },
     loadingTableContent(loading) {
       try {
         this.$refs.tableContent.loadingTableContent(loading);
@@ -145,8 +142,7 @@ export default defineComponent({
             .catch(() => {
               this.showToast({
                 title: "Ocurrió un error",
-                message:
-                  "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
                 type: 2,
               });
             });
@@ -164,14 +160,13 @@ export default defineComponent({
             this.table.rows.push(element);
             this.numPag = Math.ceil(response.data.count / 10);
           });
-          this.loadingContent(false);
+          this.loadingContentSystem = false;
           this.loadingTableContent(false);
         })
         .catch(() => {
           this.showToast({
             title: "Ocurrió un error",
-            message:
-              "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -199,7 +194,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <SystemContent ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loadingContentSystem">
     <DetailProduct
       ref="modal"
       :deleteItem="deleteItem"
@@ -209,11 +204,7 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button
-          v-on:click="addMode"
-          type="button"
-          class="btn btn-primary btn-sm mb-3"
-        >
+        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Producto
         </button>
         <button
@@ -236,21 +227,13 @@ export default defineComponent({
             placeholder="Buscar..."
             required
           />
-          <button
-            class="btn btn-secondary"
-            type="button"
-            v-on:click="filterTable"
-          >
+          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
-    <TableContent
-      ref="tableContent"
-      :loading="this.loadingTable"
-      :size="table.rows.length"
-    >
+    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
       <table-lite
         :is-static-mode="false"
         :is-slot-mode="true"
@@ -262,18 +245,10 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button
-              v-on:click="viewMode(data.value)"
-              type="button"
-              class="btn btn-secondary btn-sm me-1"
-            >
+            <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
               <i class="bi bi-journal"></i>
             </button>
-            <button
-              v-on:click="deleteItem(data.value)"
-              type="button"
-              class="btn btn-danger btn-sm"
-            >
+            <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>
             </button>
           </div>

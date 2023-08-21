@@ -66,7 +66,7 @@ export default defineComponent({
           },
         ],
       },
-      loading: true,
+      loadingContentSystem: true,
       loadingTable: false,
     };
   },
@@ -80,9 +80,6 @@ export default defineComponent({
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {
-    loadingContent(loading) {
-      this.$refs.content.loadingContent(loading);
-    },
     loadingTableContent(loading) {
       try {
         this.$refs.tableContent.loadingTableContent(loading);
@@ -140,7 +137,7 @@ export default defineComponent({
           });
           this.table.totalRecordCount = response.data.count;
           this.numPag = Math.ceil(response.data.count / 10);
-          this.loadingContent(false);
+          this.loadingContentSystem = false;
         })
         .catch((e) => {
           console.log(e);
@@ -164,7 +161,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <SystemContent ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loadingContentSystem">
     <DetailInput
       ref="modal"
       :deleteItem="deleteItem"
