@@ -67,7 +67,7 @@ export default defineComponent({
         ],
       },
       loadingContentSystem: true,
-      loadingTable: false,
+      loadingContentTable: false,
     };
   },
   mixins: [UtilityFunctions],
@@ -80,11 +80,6 @@ export default defineComponent({
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {
-    loadingTableContent(loading) {
-      try {
-        this.$refs.tableContent.loadingTableContent(loading);
-      } catch (error) {}
-    },
     addMode() {
       this.item_selected = {};
       this.$refs.modal.changeMode(1);

@@ -75,7 +75,7 @@ export default defineComponent({
         totalRecordCount: 0,
       },
       loadingContentSystem: true,
-      loadingTable: false,
+      loadingContentTable: false,
       topbar: {
         title: "Clientes",
         icon: "bi bi-people",
@@ -123,11 +123,6 @@ export default defineComponent({
         });
       }
     },
-    loadingTableContent(loading) {
-      try {
-        this.$refs.tableContent.loadingTableContent(loading);
-      } catch (error) {}
-    },
     buttonAdd() {
       this.itemSelected = {};
       this.$refs.modal.changeMode(1);
@@ -147,7 +142,7 @@ export default defineComponent({
       });
     },
     async getCustomers(page) {
-      this.loadingTableContent(true);
+      this.loadingContentTable = true;
       this.table.rows = [];
       this.getCustomerRegisters(page).then((response) => {
         if (response.success) {
@@ -158,7 +153,7 @@ export default defineComponent({
           });
           this.page = page;
           this.loadingContentSystem = false;
-          this.loadingTableContent(false);
+          this.loadingContentTable = false;
         }
       });
     },
@@ -222,7 +217,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+    <TableContent ref="tableContent" :loading="this.loadingContentTable" :size="table.rows.length">
       <table-lite
         class="mb-3"
         :is-static-mode="false"

@@ -71,7 +71,7 @@ export default defineComponent({
       },
 
       loadingContentSystem: true,
-      loadingTable: false,
+      loadingContentTable: false,
       topbar: {
         title: "Proveedores",
         icon: "bi bi-truck",
@@ -131,11 +131,6 @@ export default defineComponent({
     await this.getSuppliers(1);
   },
   methods: {
-    loadingTableContent(loading) {
-      try {
-        this.$refs.tableContent.loadingTableContent(loading);
-      } catch (error) {}
-    },
     addMode() {
       this.item_selected = {};
       this.$refs.modal.changeMode(1);
@@ -177,7 +172,7 @@ export default defineComponent({
       });
     },
     async getSuppliers(numpg) {
-      this.loadingTableContent(true);
+      this.loadingContentTable = true;
       this.table.rows = [];
       var path = url + `providers/providers/?page=` + numpg;
       axios
@@ -189,7 +184,7 @@ export default defineComponent({
             this.numPag = Math.ceil(response.data.count / 10);
           });
           this.loadingContentSystem = false;
-          this.loadingTableContent(false);
+          this.loadingContentTable = false;
         })
         .catch(() => {
           this.showToast({
@@ -253,7 +248,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+    <TableContent ref="tableContent" :loading="this.loadingContentTable" :size="table.rows.length">
       <transition name="t-card-view" mode="out-in">
         <div v-if="!cardView">
           <table-lite

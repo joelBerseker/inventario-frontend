@@ -78,7 +78,7 @@ export default defineComponent({
       numPag: 4,
       page: "1",
       loadingContentSystem: true,
-      loadingTable: false,
+      loadingContentTable: false,
       topbar: {
         title: "Productos",
         icon: "bi bi-box-seam",
@@ -105,11 +105,6 @@ export default defineComponent({
     TableContent,
   },
   methods: {
-    loadingTableContent(loading) {
-      try {
-        this.$refs.tableContent.loadingTableContent(loading);
-      } catch (error) {}
-    },
     addMode() {
       this.item_selected = {};
       this.$refs.modal.changeMode(1);
@@ -150,7 +145,7 @@ export default defineComponent({
       });
     },
     async getProductsNew(numPag) {
-      this.loadingTableContent(true);
+      this.loadingContentTable = true;
       this.table.rows = [];
       var path = url + `products/products/?page=` + numPag;
       axios
@@ -161,7 +156,7 @@ export default defineComponent({
             this.numPag = Math.ceil(response.data.count / 10);
           });
           this.loadingContentSystem = false;
-          this.loadingTableContent(false);
+          this.loadingContentTable = false;
         })
         .catch(() => {
           this.showToast({
@@ -233,7 +228,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <TableContent ref="tableContent" :loading="this.loadingTable" :size="table.rows.length">
+    <TableContent ref="tableContent" :loading="this.loadingContentTable" :size="table.rows.length">
       <table-lite
         :is-static-mode="false"
         :is-slot-mode="true"

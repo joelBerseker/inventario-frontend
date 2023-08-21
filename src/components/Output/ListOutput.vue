@@ -88,7 +88,7 @@ export default defineComponent({
         // Puedes agregar más opciones aquí si es necesario
       ],
       loadingContentSystem: true,
-      loadingTable: false,
+      loadingContentTable: false,
     };
   },
   mixins: [UtilityFunctions],
@@ -101,13 +101,7 @@ export default defineComponent({
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {
-    loadingTableContent(loading) {
-      try {
-        this.$refs.tableContent.loadingTableContent(loading);
-      } catch (error) {}
-    },
     openInNewTab(data) {
-
       var link = url + "orders/orders/"+this.selectedInvoiceType+"/" + data + "/";
       window.open(link, "_blank", "noreferrer");
     },

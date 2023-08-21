@@ -1,15 +1,15 @@
 <template>
   <div>
     <transition name="t-content" mode="out-in">
-      <div :key="_loading">
-        <div v-show="_loading">
+      <div :key="loadingLocal">
+        <div v-show="loadingLocal">
           <div class="d-flex justify-content-center mt-3 align-items-center">
             <div class="spinner-border spinner-border-sm secondary-text"></div>
             <div class="secondary-text">&nbsp; Cargando...</div>
           </div>
         </div>
 
-        <div v-show="!_loading">
+        <div v-show="!loadingLocal">
           <div v-if="size <= 0">
             <div class="d-flex justify-content-center align-items-center">
               <div class="secondary-text"> No se encontraron registros, puede agregar uno nuevo con el boton de arriba a la izquierda.</div>
@@ -31,26 +31,27 @@ export default defineComponent({
   name: "TableContent",
   data() {
     return {
-      _loading: true,
+      loadingLocal: true,
     };
   },
   props: ["loading", "listInfo", "size"],
   components: {
     Icon,
   },
-  methods: {
-    loadingTableContent(loading) {
-      if (loading) {
-        this._loading = loading;
-      } else {
-        setTimeout(() => {
-          this._loading = loading;
-        }, 200);
-      }
+  watch: {
+    loading: {
+      immediate: true,
+      deep: true,
+      handler() {
+        if (this.loading) {
+          this.loadingLocal = this.loading;
+        } else {
+          setTimeout(() => {
+            this.loadingLocal = this.loading;
+          }, 300);
+        }
+      },
     },
-  },
-  created() {
-    this._loading = this.loading;
   },
 });
 </script>
