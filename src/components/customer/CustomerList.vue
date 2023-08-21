@@ -102,6 +102,7 @@ export default defineComponent({
   },
   props: ["changeTopbar"],
   async created() {
+    console.log("create customer list");
     this.changeTopbar(this.topbar);
     if (this.$store.getters.isActive) {
       await this.getCustomers(1);

@@ -12,83 +12,57 @@ export default defineComponent({
     Icon,
   },
   methods: {
-    loadingApp(loading) {
-      if (loading) {
-        this.loading = loading;
-      } else {
-        setTimeout(() => {
-          this.loading = loading;
-        }, 300);
-      }
-    },
     logout() {
       this.$store.dispatch("logout");
       this.$router.push("/login");
     },
   },
   created() {
+    console.log("created app");
     if (!this.$store.getters.isActive || this.$store.getters.isActive == null) {
-      console.log("no paso");
       this.logout();
     } else {
-      console.log("paso xd");
       var link = window.location.href;
       var linkSlice = link.substring(link.lastIndexOf("/"), link.length);
       if (linkSlice == "/login") {
-        console.log("paso al main");
         this.$router.push("/");
       } else {
         if (linkSlice == "/index.html") this.$router.push("/");
       }
-      console.log("tiene un token-> " + this.$store.getters.isActive);
-      console.log("el token es -> " + this.$store.getters.isLoggedIn);
-      console.log("vino de aqui -> " + link);
-      console.log("lo reenvio aqui -> " + linkSlice);
     }
   },
 });
 </script>
 <template>
   <div id="app">
-    <transition name="t-app" mode="out-in">
-      <div :key="loading">
-        <div v-show="!loading">
-          <RouterView :loadingApp="loadingApp" />
-        </div>
-        <div v-show="loading" class="center flex-column">
-          <div><Icon size="55px" :speed="true" :mode="6"></Icon></div>
-          <div class="secondary-text">Cargando aplicación...</div>
-        </div>
-      </div>
-    </transition>
+    <RouterView v-slot="{ Component }">
+      <transition name="t-app" mode="out-in">
+        <component :is="Component" />
+      </transition>
+    </RouterView>
   </div>
 </template>
 <style scoped>
 #app {
   overflow-x: hidden;
 }
-
 .center {
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .t-app-enter-active,
 .t-app-enter {
   transition: all 0.25s ease;
 }
-
 .t-app-leave-active {
   transition: all 0.25s ease;
 }
-
 .t-app-leave-to {
   transform: translateX(10px);
   opacity: 0;
 }
-
 .t-app-enter-from {
   transform: translateX(-10px);
   opacity: 0;

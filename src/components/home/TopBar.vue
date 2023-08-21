@@ -3,7 +3,7 @@ import { defineComponent, renderSlot } from "vue";
 
 export default defineComponent({
   name: "TopBar",
-  props: ["topbar", "confirmDialogue", "loadingApp"],
+  props: ["topbar", "confirmDialogue"],
   methods: {
     confirmLogout() {
       this.confirmDialogue({
@@ -21,7 +21,6 @@ export default defineComponent({
       this.confirmLogout();
     },
     logout() {
-      this.loadingApp(true);
       this.$store.dispatch("logout");
       this.$router.push("/login");
     },
