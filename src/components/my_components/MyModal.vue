@@ -37,5 +37,8 @@ export default defineComponent({
       modal.show();
     },
   },
+  mounted(){
+    this.$emit("mounted:mymodal");
+  }
 });
 </script>

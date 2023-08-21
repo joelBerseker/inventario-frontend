@@ -108,18 +108,16 @@ export default defineComponent({
     }
   },
   mounted() {
-    this.getItemSelectedByUrl();
+    /*this.getItemSelectedByUrl();*/
   },
   methods: {
     getItemSelectedByUrl() {
       if (this.$route.query.id != undefined) {
         this.getCustomerRegister(this.$route.query.id).then((response) => {
           if (response.success) {
-            setTimeout(() => {
-              this.itemSelected = response.response.data;
-              this.$refs.modal.changeMode(2);
-              this.$refs.modal.openModal();
-            }, 700);
+            this.itemSelected = response.response.data;
+            this.$refs.modal.changeMode(2);
+            this.$refs.modal.openModal();
           }
         });
       }
@@ -160,6 +158,7 @@ export default defineComponent({
             this.table.totalRecordCount = this.table.rows.length;
             this.numPag = Math.ceil(response.response.data.count / 10);
           });
+          this.page = page;
           this.loadingContent(false);
           this.loadingTableContent(false);
         }
@@ -179,6 +178,15 @@ export default defineComponent({
       this.filter = this.search ? `${this.page}&search_query=${this.search}` : this.page;
       this.getCustomers(this.filter);
     },
+    onAdd() {
+      this.getCustomers(1);
+    },
+    onEdit() {
+      this.getCustomers(this.page);
+    },
+    onDelete() {
+      this.getCustomers(1);
+    },
   },
 });
 </script>
@@ -187,7 +195,10 @@ export default defineComponent({
     <CustomerDetail
       ref="modal"
       :itemSelected="itemSelected"
-      :getCustomers="getCustomers"
+      v-on:item:add="onAdd"
+      v-on:item:edit="onEdit"
+      v-on:item:delete="onDelete"
+      v-on:mounted:mymodal="getItemSelectedByUrl"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">

@@ -99,7 +99,7 @@ import CustomerConection from "./CustomerConection";
 
 export default defineComponent({
   name: "CustomerDetail",
-  props: ["itemSelected", "getCustomers"],
+  props: ["itemSelected"],
   mixins: [ValidationFunctions, CustomerConection],
   inject: ["confirmDialogue", "showToast"],
   components: {
@@ -210,7 +210,7 @@ export default defineComponent({
           case 1:
             this.addCustomerRegister(this.itemCopy).then((response) => {
               if (response.success) {
-                this.getCustomers(1);
+                this.$emit("item:add");
                 this.closeModal();
               }
             });
@@ -218,7 +218,7 @@ export default defineComponent({
           case 3:
             this.editCustomerRegister(this.itemCopy).then((response) => {
               if (response.success) {
-                this.getCustomers(1);
+                this.$emit("item:edit");
                 this.closeModal();
               }
             });
@@ -243,7 +243,7 @@ export default defineComponent({
     buttonDelete() {
       this.confirmDeleteCustomerRegister(this.itemCopy.id).then((response) => {
         if (response.success) {
-          this.getCustomers(1);
+          this.$emit("item:delete");
           this.closeModal();
         }
       });
