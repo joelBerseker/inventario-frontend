@@ -28,23 +28,27 @@ export default defineComponent({
   components: {
     Icon,
   },
-  props:{
-    loading:{},
-    classContent:{
-      default:"p-3"
-    }
+  props: {
+    loading: {},
+    classContent: {
+      default: "p-3",
+    },
   },
   watch: {
     loading: {
       immediate: true,
       deep: true,
-      handler() {
-        if (this.loading) {
-          this.loadingLocal = this.loading;
-        } else {
-          setTimeout(() => {
+      handler(newValue, oldValue) {
+        if (!(oldValue == undefined && newValue == false)) {
+          if (this.loading) {
             this.loadingLocal = this.loading;
-          }, 50);
+          } else {
+            setTimeout(() => {
+              this.loadingLocal = this.loading;
+            }, 50);
+          }
+        }else{
+          this.loadingLocal = this.loading;
         }
       },
     },

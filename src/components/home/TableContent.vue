@@ -42,13 +42,17 @@ export default defineComponent({
     loading: {
       immediate: true,
       deep: true,
-      handler() {
-        if (this.loading) {
-          this.loadingLocal = this.loading;
-        } else {
-          setTimeout(() => {
+      handler(newValue, oldValue) {
+        if (!(oldValue == undefined && newValue == false)) {
+          if (this.loading) {
             this.loadingLocal = this.loading;
-          }, 300);
+          } else {
+            setTimeout(() => {
+              this.loadingLocal = this.loading;
+            }, 300);
+          }
+        }else{
+          this.loadingLocal = this.loading;
         }
       },
     },
