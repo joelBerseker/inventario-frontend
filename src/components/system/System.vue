@@ -1,7 +1,7 @@
 <script>
 import axios from "axios";
 import AuthService from "@/services/AuthService";
-import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
+import ConfirmDialogue from "@/components/my_other_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
 import SystemTopBar from "@/components/system/SystemTopBar.vue";
 import SystemLoading from "@/components/system/SystemLoading.vue";

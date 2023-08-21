@@ -1,6 +1,6 @@
 <script>
 import { Modal } from "bootstrap";
-import Icon from '@/components/my_components/Icon.vue'
+import Icon from '@/components/my_other_components/Icon.vue'
 import { defineComponent } from "vue";
 export default defineComponent({
     name: "LoadingSystem",

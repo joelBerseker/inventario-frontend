@@ -1,7 +1,7 @@
 <script>
 import DetailProduct from "./DetailProduct.vue";
 import SystemContent from "@/components/system/SystemContent.vue";
-import TableContent from "@/components/my_components/TableContent.vue";
+import TableContent from "@/components/my_other_components/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";

@@ -4,7 +4,7 @@ import AuthService from "@/services/AuthService";
 import axios from "axios";
 import MyForm from "@/components/my_components/MyForm.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
-import Icon from "@/components/my_components/Icon.vue";
+import Icon from "@/components/my_other_components/Icon.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
 import AppContent from "@/AppContent.vue";
 export default defineComponent({

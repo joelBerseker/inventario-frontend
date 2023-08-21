@@ -25,7 +25,7 @@
 </template>
 <script>
 import { defineComponent } from "vue";
-import Icon from "@/components/my_components/Icon.vue";
+import Icon from "@/components/my_other_components/Icon.vue";
 
 export default defineComponent({
   name: "TableContent",
