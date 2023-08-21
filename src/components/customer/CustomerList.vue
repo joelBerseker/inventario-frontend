@@ -102,14 +102,10 @@ export default defineComponent({
   },
   props: ["changeTopbar"],
   async created() {
-    console.log("create customer list");
     this.changeTopbar(this.topbar);
     if (this.$store.getters.isActive) {
       await this.getCustomers(1);
     }
-  },
-  mounted() {
-    /*this.getItemSelectedByUrl();*/
   },
   methods: {
     getItemSelectedByUrl() {
@@ -137,7 +133,6 @@ export default defineComponent({
       this.confirmDeleteCustomerRegister(row.id).then((response) => {
         if (response.success) {
           this.getCustomers(1);
-          this.closeModal();
         }
       });
     },

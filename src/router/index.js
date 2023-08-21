@@ -6,7 +6,7 @@ import Notification from "../components/notification/ListNotification.vue";
 import Statistic from "../components/statistics/statistic.vue";
 import Product from "../components/product/ListProduct.vue";
 import AddProductExcel from "../components/product/AddProductExcel.vue";
-import Supplier from "../components/supplier/ListSupplier.vue";
+import Supplier from "../components/supplier/SupplierList.vue";
 import Customer from "../components/customer/CustomerList.vue";
 import Inputs from "../components/input/ListInput.vue";
 import Outputs from "../components/output/ListOutput.vue";

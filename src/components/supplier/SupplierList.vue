@@ -1,5 +1,5 @@
 <script>
-import DetailSupplier from "./DetailSupplier.vue";
+import DetailSupplier from "./SupplierDetail.vue";
 import SystemContent from "@/components/system/SystemContent.vue";
 import TableContent from "@/components/my_other_components/TableContent.vue";
 import axios from "axios";

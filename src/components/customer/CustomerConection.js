@@ -3,7 +3,7 @@ const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   methods: {
     async getCustomerRegisters(page) {
-      var path = url + `clients/clients/?page=` + page;
+      var path = this.urlConection + `?page=` + page;
       return new Promise((resolve, reject) => {
         axios
           .get(path)
@@ -21,7 +21,7 @@ export default {
       });
     },
     async addCustomerRegister(data) {
-      var path = url + `clients/clients/`;
+      var path = this.urlConection;
       var form_data = new FormData();
       for (var key in data) {
         form_data.append(key, data[key]);
@@ -48,7 +48,7 @@ export default {
       });
     },
     async editCustomerRegister(data) {
-      var path = url + `clients/clients/` + data.id + "/";
+      var path = this.urlConection  + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
         if (key == "id" || key == "created_at" || key == "updated_at" || key == "supplier_image") {
@@ -99,7 +99,7 @@ export default {
       });
     },
     async deleteCustomerRegister(id) {
-      var path = url + "clients/clients/" + id + "/";
+      var path = this.urlConection + id + "/";
       return new Promise((resolve, reject) => {
         axios
           .delete(path)
@@ -122,7 +122,7 @@ export default {
       });
     },
     async getCustomerRegister(id) {
-      var path = url + `clients/clients/` + id + "/";
+      var path = this.urlConection + id + "/";
       return new Promise((resolve, reject) => {
         axios
           .get(path)
@@ -144,6 +144,8 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      urlConection: url + "clients/clients/"
+    };
   },
 };
