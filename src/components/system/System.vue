@@ -6,7 +6,7 @@ import MyToast from "@/components/my_components/MyToast.vue";
 import SystemTopBar from "@/components/system/SystemTopBar.vue";
 import SystemLoading from "@/components/system/SystemLoading.vue";
 import SystemSideBar from "@/components/system/SystemSideBar.vue";
-import AppContent from "@/components/home/AppContent.vue";
+import AppContent from "@/AppContent.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "System",
