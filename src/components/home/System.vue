@@ -77,6 +77,12 @@ export default defineComponent({
       return resp;
     },
   },
+  provide() {
+    return {
+      confirmDialogue: this.confirmDialogue,
+      showToast: this.showToast,
+    };
+  },
   created() {
     console.log("entre a System");
     AuthService.getUser();

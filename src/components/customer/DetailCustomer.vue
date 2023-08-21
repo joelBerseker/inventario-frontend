@@ -5,7 +5,7 @@
         class="mb-3"
         name="Nombre"
         type="text"
-        v-model="item.name"
+        v-model="itemEdited.name"
         :validation="validation.name"
         :disabled="disabled"
         v-on:input="inputName()"
@@ -16,7 +16,7 @@
             name="Tipo de documento"
             :validation="validation.documentType"
             :options="options"
-            v-model="item.documentType"
+            v-model="itemEdited.documentType"
             :disabled="disabled"
             v-on:update="inputDocumentType()"
           />
@@ -25,7 +25,7 @@
           <MyInput
             name="Documento"
             type="text"
-            v-model="item.document"
+            v-model="itemEdited.document"
             :validation="validation.document"
             :disabled="disabled"
             v-on:input="inputDocument()"
@@ -37,7 +37,7 @@
         class="mb-3"
         name="Telefono"
         type="text"
-        v-model="item.phone"
+        v-model="itemEdited.phone"
         :validation="validation.phone"
         :disabled="disabled"
         v-on:input="inputPhone()"
@@ -46,7 +46,7 @@
         class="mb-3"
         name="Dirección"
         type="text"
-        v-model="item.address"
+        v-model="itemEdited.address"
         :validation="validation.address"
         :disabled="disabled"
         v-on:input="inputAddress()"
@@ -55,31 +55,26 @@
         class="mb-3"
         name="Correo Electronico"
         type="text"
-        v-model="item.mail"
+        v-model="itemEdited.mail"
         :validation="validation.mail"
         :disabled="disabled"
         v-on:input="inputMail()"
       />
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        @click="deleteItem(item)"
-        class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="editMode" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
+      <button type="button" @click="buttonEdit" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="viewMode" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
-        <i class="bi bi-arrow-left-circle"></i> 
+      <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+        <i class="bi bi-arrow-left-circle"></i>
         Cancelar
       </button>
-      <button type="button" @click="saveItem" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
+      <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -102,11 +97,13 @@ import MyForm from "@/components/my_components/MyForm.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import MySelect from "@/components/my_components/MySelect.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
+import CustomerConection from "./CustomerConection";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
-  props: ["item_selected", "deleteItem", "showToast", "getCustomers"],
-  mixins: [ValidationFunctions],
+  props: ["itemSelected", "getCustomers"],
+  mixins: [ValidationFunctions, CustomerConection],
+  inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
     MyForm,
@@ -140,18 +137,17 @@ export default defineComponent({
         { text: "RUC", value: "2" },
         { text: "Otro", value: "3" },
       ],
-      item:{}
+      itemOriginal: {},
+      itemEdited: {},
     };
   },
   watch: {
-    item_selected() {
-      this.copyOriginalItem();
+    itemSelected() {
+      this.itemOriginal = JSON.parse(JSON.stringify(this.itemSelected));
+      this.itemEdited = JSON.parse(JSON.stringify(this.itemSelected));
     },
   },
   methods: {
-    copyOriginalItem(){
-      this.item = JSON.parse(JSON.stringify(this.item_selected));
-    },
     validateForm() {
       this.validateName();
       this.validateDocumentType();
@@ -171,22 +167,22 @@ export default defineComponent({
     },
 
     validateName() {
-      this.validation.name = this.validationRequiredText(this.item.name, 3, 50);
+      this.validation.name = this.validationRequiredText(this.itemEdited.name, 3, 50);
     },
     validateDocumentType() {
-      this.validation.documentType = this.validationRequiredSelect(this.item.documentType);
+      this.validation.documentType = this.validationRequiredSelect(this.itemEdited.documentType);
     },
     validateDocument() {
-      this.validation.document = this.validationRequiredText(this.item.document, 3, 10);
+      this.validation.document = this.validationRequiredText(this.itemEdited.document, 3, 10);
     },
     validatePhone() {
-      this.validation.phone = this.validationRequiredText(this.item.phone, 9, 9);
+      this.validation.phone = this.validationRequiredText(this.itemEdited.phone, 9, 9);
     },
     validateAddress() {
-      this.validation.address = this.validationRequiredText(this.item.address, 3, 50);
+      this.validation.address = this.validationRequiredText(this.itemEdited.address, 3, 50);
     },
     validateMail() {
-      this.validation.mail = this.validationRequiredText(this.item.mail, 3, 50);
+      this.validation.mail = this.validationRequiredText(this.itemEdited.mail, 3, 50);
     },
 
     inputName() {
@@ -199,9 +195,9 @@ export default defineComponent({
       this.validateDocument();
     },
     inputPhone() {
-      var aux = this.item.phone;
-      this.item.phone = this.inputOnlyNumber(this.item.phone);
-      if (aux == this.item.phone) {
+      var aux = this.itemEdited.phone;
+      this.itemEdited.phone = this.inputOnlyNumber(this.itemEdited.phone);
+      if (aux == this.itemEdited.phone) {
         this.validatePhone();
       }
     },
@@ -211,26 +207,24 @@ export default defineComponent({
     inputMail() {
       this.validateMail();
     },
-
-    async saveItem() {
+    buttonSave() {
       if (this.validateForm()) {
-        var form_data = new FormData();
-        for (var key in this.item) {
-          if (
-            this.mode == 3 &&
-            (key == "id" || key == "created_at" || key == "updated_at" || key == "supplier_image")
-          ) {
-            console.log("key ->" + key);
-            continue;
-          }
-          form_data.append(key, this.item[key]);
-        }
         switch (this.mode) {
           case 1:
-            this.addItem(form_data);
+            this.addCustomerRegister(this.itemEdited).then((response) => {
+              if (response.success) {
+                this.getCustomers(1);
+                this.closeModal();
+              }
+            });
             break;
           case 3:
-            this.editItem(form_data);
+            this.editCustomerRegister(this.itemEdited).then((response) => {
+              if (response.success) {
+                this.getCustomers(1);
+                this.closeModal();
+              }
+            });
             break;
           default:
             break;
@@ -243,54 +237,25 @@ export default defineComponent({
         });
       }
     },
-    addItem(data) {
-      var path = url + `clients/clients/`;
-      axios
-        .post(path, data)
-        .then((response) => {
-          this.showToast({
-            title: "Operación exitosa",
-            message: "El registro se agrego correctamente.",
-            type: 1,
-          });
-          this.getCustomers(1);
-          this.closeModal();
-        })
-        .catch((error) => {
-          console.log(error);
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
+    buttonEdit() {
+      this.changeMode(3);
     },
-    editItem(data) {
-      console.log(data);
-      var path = url + `clients/clients/` + this.item.id + "/";
-      axios
-        .put(path, data)
-        .then((response) => {
-          this.showToast({
-            title: "Operación exitosa",
-            message: "El registro de edito correctamente.",
-            type: 1,
-          });
+    buttonCancel() {
+      this.changeMode(2);
+    },
+    buttonDelete() {
+      this.confirmDeleteCustomerRegister(this.itemEdited.id).then((response) => {
+        if (response.success) {
           this.getCustomers(1);
           this.closeModal();
-        })
-        .catch(() => {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
+        }
+      });
     },
     changeMode(mode) {
+      this.mode = mode;
       this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
-      this.copyOriginalItem();
-      switch (mode) {
+      this.itemEdited = JSON.parse(JSON.stringify(this.itemOriginal));
+      switch (this.mode) {
         case 1:
           this.title = "Agregar Cliente";
           this.disabled = false;
@@ -307,13 +272,6 @@ export default defineComponent({
           this.title = "Error";
           break;
       }
-      this.mode = mode;
-    },
-    editMode() {
-      this.changeMode(3);
-    },
-    viewMode() {
-      this.changeMode(2);
     },
     closeModal() {
       try {
@@ -321,7 +279,6 @@ export default defineComponent({
       } catch (error) {}
     },
     openModal() {
-      this.validated = false;
       this.$refs.myModal.openModal();
     },
   },
