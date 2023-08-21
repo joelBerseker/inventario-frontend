@@ -3,9 +3,9 @@ import axios from "axios";
 import AuthService from "@/services/AuthService";
 import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
-import SystemTopBar from "@/components/home/SystemTopBar.vue";
-import SystemLoading from "@/components/home/SystemLoading.vue";
-import SystemSideBar from "@/components/home/SystemSideBar.vue";
+import SystemTopBar from "@/components/system/SystemTopBar.vue";
+import SystemLoading from "@/components/system/SystemLoading.vue";
+import SystemSideBar from "@/components/system/SystemSideBar.vue";
 import AppContent from "@/components/home/AppContent.vue";
 import { defineComponent } from "vue";
 export default defineComponent({

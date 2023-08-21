@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../components/home/Home.vue";
 import Login from "../components/autentication/Login.vue";
-import System from "../components/home/System.vue";
+import System from "../components/system/System.vue";
 import Notification from "../components/notification/ListNotification.vue";
 import Statistic from "../components/statistics/statistic.vue";
 import Product from "../components/product/ListProduct.vue";

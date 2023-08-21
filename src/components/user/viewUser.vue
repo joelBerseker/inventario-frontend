@@ -163,7 +163,7 @@
 
 <script>
 import axios from "axios";
-import SystemContent from "@/components/home/SystemContent.vue";
+import SystemContent from "@/components/system/SystemContent.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
 import AuthService from "@/services/AuthService";
 const url = import.meta.env.VITE_APP_RUTA_API;

@@ -1,6 +1,6 @@
 <script>
 import CustomerDetail from "./CustomerDetail.vue";
-import SystemContent from "@/components/home/SystemContent.vue";
+import SystemContent from "@/components/system/SystemContent.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";

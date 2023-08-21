@@ -121,7 +121,7 @@
 </style>
 <script>
 import { defineComponent } from "vue";
-import SystemContent from "@/components/home/SystemContent.vue";
+import SystemContent from "@/components/system/SystemContent.vue";
 export default defineComponent({
   name: "Home",
   props: ["title", "icon", "changeTopbar"],

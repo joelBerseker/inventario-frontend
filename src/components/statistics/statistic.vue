@@ -1,5 +1,5 @@
 <script>
-import SystemContent from "@/components/home/SystemContent.vue";
+import SystemContent from "@/components/system/SystemContent.vue";
 import { defineComponent, toRaw } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import axios from "axios";

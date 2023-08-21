@@ -1,5 +1,5 @@
 <script>
-import SystemContent from "@/components/home/SystemContent.vue";
+import SystemContent from "@/components/system/SystemContent.vue";
 import {
   XlsxRead,
   XlsxJson,
