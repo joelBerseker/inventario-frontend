@@ -1,5 +1,5 @@
 <template>
-  <Content ref="content" :loading="loading" classContent="">
+  <SystemContent ref="content" :loading="loading" classContent="">
     <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
       <div class="accordion-item border-acordion">
         <div class="accordion-header" id="panelsStayOpen-headingOne">
@@ -86,7 +86,7 @@
         </div>
       </div>
     </div>
-  </Content>
+  </SystemContent>
 </template>
 <style scoped>
 .accordion-button:focus {
@@ -121,7 +121,7 @@
 </style>
 <script>
 import { defineComponent } from "vue";
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 export default defineComponent({
   name: "Home",
   props: ["title", "icon", "changeTopbar"],
@@ -179,7 +179,7 @@ export default defineComponent({
     };
   },
   components: {
-    Content,
+    SystemContent,
   },
   methods: {
     goTo(url) {

@@ -1,5 +1,5 @@
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <div class="row">
       <div class="col-6">
         <div class="card">
@@ -158,12 +158,12 @@
         <i class="bi bi-check-circle"></i> Guardar
       </button>
     </div>
-  </Content>
+  </SystemContent>
 </template>
 
 <script>
 import axios from "axios";
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
 import AuthService from "@/services/AuthService";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -208,7 +208,7 @@ export default {
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   components: {
-    Content,
+    SystemContent,
     MyForm,
   },
   methods: {
@@ -269,7 +269,7 @@ export default {
       axios
         .put(path, form_data, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "SystemContent-Type": "multipart/form-data",
           },
         })
         .then((response) => {

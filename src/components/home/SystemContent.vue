@@ -19,7 +19,7 @@ import { defineComponent } from "vue";
 import Icon from "@/components/my_components/Icon.vue";
 
 export default defineComponent({
-  name: "Content",
+  name: "SystemContent",
   data() {
     return {
       _loading: true,

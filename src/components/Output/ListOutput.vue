@@ -4,7 +4,7 @@ import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
@@ -96,7 +96,7 @@ export default defineComponent({
     DetailOutput,
     paginate: Paginate,
     TableLite,
-    Content,
+    SystemContent,
     TableContent,
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
@@ -191,7 +191,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <DetailOutput
       ref="modal"
       :deleteItem="deleteItem"
@@ -333,7 +333,7 @@ export default defineComponent({
       :page-class="'page-item'"
     >
     </paginate>
-  </Content>
+  </SystemContent>
 </template>
 <script></script>
 

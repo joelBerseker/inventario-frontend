@@ -1,6 +1,6 @@
 <script>
 import CustomerDetail from "./CustomerDetail.vue";
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
@@ -97,7 +97,7 @@ export default defineComponent({
     CustomerDetail,
     TableLite,
     TableContent,
-    Content,
+    SystemContent,
     paginate: Paginate,
   },
   props: ["changeTopbar"],
@@ -192,7 +192,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <CustomerDetail
       ref="modal"
       :itemSelected="itemSelected"
@@ -260,7 +260,7 @@ export default defineComponent({
       >
       </paginate>
     </TableContent>
-  </Content>
+  </SystemContent>
 </template>
 
 <style scoped></style>

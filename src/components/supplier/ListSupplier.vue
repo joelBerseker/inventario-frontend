@@ -1,6 +1,6 @@
 <script>
 import DetailSupplier from "./DetailSupplier.vue";
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
@@ -121,7 +121,7 @@ export default defineComponent({
   components: {
     DetailSupplier,
     TableLite,
-    Content,
+    SystemContent,
     paginate: Paginate,
     TableContent,
   },
@@ -225,7 +225,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <DetailSupplier
       ref="modal"
       :deleteItem="deleteItem"
@@ -343,7 +343,7 @@ export default defineComponent({
       >
       </paginate>
     </TableContent>
-  </Content>
+  </SystemContent>
 </template>
 
 <style scoped>

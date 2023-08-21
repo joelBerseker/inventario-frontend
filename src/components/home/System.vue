@@ -4,7 +4,7 @@ import AuthService from "@/services/AuthService";
 import ConfirmDialogue from "@/components/my_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
 import TopBar from "@/components/home/TopBar.vue";
-import LoadingSystem from "@/components/home/LoadingSystem.vue";
+import SystemLoading from "@/components/home/SystemLoading.vue";
 import SideBar from "@/components/home/SideBar.vue";
 import AppContent from "@/components/home/AppContent.vue";
 import { defineComponent } from "vue";
@@ -14,7 +14,7 @@ export default defineComponent({
     TopBar,
     ConfirmDialogue,
     MyToast,
-    LoadingSystem,
+    SystemLoading,
     SideBar,
     AppContent
   },
@@ -107,7 +107,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <AppContent :loading.sync="loadingAppContent">
+  <AppContent :loading="loadingAppContent">
     <div id="sidebar">
       <SideBar></SideBar>
     </div>
@@ -126,7 +126,7 @@ export default defineComponent({
     </div>
     <MyToast ref="toast"></MyToast>
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
-    <LoadingSystem ref="loadingSystem"></LoadingSystem>
+    <SystemLoading ref="loadingSystem"></SystemLoading>
   </AppContent>
 </template>
 <style scoped>

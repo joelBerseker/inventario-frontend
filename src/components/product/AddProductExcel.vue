@@ -1,5 +1,5 @@
 <script>
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import {
   XlsxRead,
   XlsxJson,
@@ -15,7 +15,7 @@ export default defineComponent({
   name: "templateContent",
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   components: {
-    Content,
+    SystemContent,
     XlsxRead,
     XlsxJson,
     XlsxTable,
@@ -121,7 +121,7 @@ export default defineComponent({
     addItem(data) {
       const config = {
         headers: {
-          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
+          "SystemContent-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
         },
       };
       var path = url + `products/products/`;
@@ -151,7 +151,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <div class="row">
       <div class="col-4">
         <p class="title-text mb-3">Indicaciones</p>
@@ -241,7 +241,7 @@ export default defineComponent({
         </xlsx-json>
       </xlsx-read>
     </div>
-  </Content>
+  </SystemContent>
 </template>
 
 <style scoped></style>

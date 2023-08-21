@@ -425,7 +425,7 @@ export default defineComponent({
       console.log(data);
       const config = {
         headers: {
-          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
+          "SystemContent-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
         },
       };
       var path = url + `order_details/order_details/`;

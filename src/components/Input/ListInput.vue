@@ -1,6 +1,6 @@
 <script>
 import DetailInput from "./DetailInput.vue";
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import TableContent from "@/components/home/TableContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
@@ -75,7 +75,7 @@ export default defineComponent({
     DetailInput,
     TableLite,
     paginate: Paginate,
-    Content,
+    SystemContent,
     TableContent,
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
@@ -164,7 +164,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <DetailInput
       ref="modal"
       :deleteItem="deleteItem"
@@ -253,7 +253,7 @@ export default defineComponent({
       :page-class="'page-item'"
     >
     </paginate>
-  </Content>
+  </SystemContent>
 </template>
 <script></script>
 

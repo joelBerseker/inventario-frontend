@@ -1,12 +1,12 @@
 <script>
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "About",
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   components: {
-    Content,
+    SystemContent,
   },
   data() {
     return {
@@ -46,7 +46,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <a
       href="https://docs.google.com/spreadsheets/d/1shM2f3sb77z6Hm93w9DS7nfRkxQ9cxRTWAmNqDJ0y_c/edit#gid=0"
       >Drive</a
@@ -58,7 +58,7 @@ export default defineComponent({
     >
       COPIAR
     </button>
-  </Content>
+  </SystemContent>
 </template>
 
 <style scoped></style>

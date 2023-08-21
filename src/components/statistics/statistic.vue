@@ -1,5 +1,5 @@
 <script>
-import Content from "@/components/home/Content.vue";
+import SystemContent from "@/components/home/SystemContent.vue";
 import { defineComponent, toRaw } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import axios from "axios";
@@ -9,7 +9,7 @@ export default defineComponent({
   name: "Statistics",
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   components: {
-    Content,
+    SystemContent,
     apexchart: VueApexCharts,
   },
   data() {
@@ -140,7 +140,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <Content ref="content" :loading="loading">
+  <SystemContent ref="content" :loading="loading">
     <div>
       <apexchart
         width="500"
@@ -149,7 +149,7 @@ export default defineComponent({
         :series="series"
       ></apexchart>
     </div>
-  </Content>
+  </SystemContent>
 </template>
 
 <style scoped></style>

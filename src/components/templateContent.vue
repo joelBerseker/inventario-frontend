@@ -1,12 +1,12 @@
 <script>
-import Content from '@/components/home/Content.vue'
+import SystemContent from '@/components/home/SystemContent.vue'
 import { defineComponent } from "vue";
 
 export default defineComponent({
     name: "templateContent",
     props: ["changeTopbar", "showToast", "confirmDialogue"],
     components: {
-        Content,
+        SystemContent,
     },
     data() {
         return {
@@ -40,9 +40,9 @@ export default defineComponent({
 });
 </script>
 <template>
-    <Content ref="content" :loading="loading">
+    <SystemContent ref="content" :loading="loading">
         here information
-    </Content>
+    </SystemContent>
 </template>
 
 <style scoped>
