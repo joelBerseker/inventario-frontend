@@ -10,7 +10,10 @@
 .vtl-paging-info {
   visibility: hidden;
 }
-
+.item-select {
+  white-space: normal !important;
+  cursor: pointer;
+}
 .btn-primary {
   background-color: var(--my-3th-color) !important;
   border-color: var(--my-3th-color) !important;

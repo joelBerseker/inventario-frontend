@@ -225,8 +225,4 @@ export default defineComponent({
   overflow: hidden;
   white-space: pre;
 }
-.item-select {
-  white-space: normal !important;
-  cursor: pointer;
-}
 </style>

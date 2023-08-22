@@ -12,7 +12,7 @@
         <div v-if="size <= 0">
           <div class="d-flex justify-content-center align-items-center">
             <div class="secondary-text">
-              No se encontraron registros, puede agregar uno nuevo con el boton de arriba a la izquierda.
+              No se encontraron registros.
             </div>
           </div>
         </div>
