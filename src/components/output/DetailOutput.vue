@@ -160,7 +160,7 @@ import MyForm from "@/components/my_components/MyForm.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import MySelect from "@/components/my_components/MySelect.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
-import SelectSearch from "@/components/my_components/SelectSearch.vue";
+import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 class Product {
   constructor() {

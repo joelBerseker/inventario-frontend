@@ -173,7 +173,7 @@ import { defineComponent } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
-import SelectSearch from "../my_components/SelectSearch.vue";
+import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 class Product {
   constructor() {
