@@ -1,7 +1,7 @@
 <script>
 import ProductDetail from "./ProductDetail.vue";
 import SystemContent from "@/components/system/SystemContent.vue";
-import TableContent from "@/components/my_other_components/TableContent.vue";
+import ListContent from "@/components/my_other_components/ListContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
@@ -80,7 +80,7 @@ export default defineComponent({
       numPag: 4,
       page: "1",
       loadingContentSystem: true,
-      loadingContentTable: false,
+      loadingContentList: false,
       topbar: {
         title: "Productos",
         icon: "bi bi-box-seam",
@@ -104,7 +104,7 @@ export default defineComponent({
     TableLite,
     SystemContent,
     paginate: Paginate,
-    TableContent,
+    ListContent,
   },
   methods: {
     onAdd() {
@@ -145,7 +145,7 @@ export default defineComponent({
       });
     },
     async getProducts(page) {
-      this.loadingContentTable = true;
+      this.loadingContentList = true;
       this.table.rows = [];
       this.getProductRegisters(page).then((response) => {
         if (response.success) {
@@ -156,7 +156,7 @@ export default defineComponent({
           });
           this.page = page;
           this.loadingContentSystem = false;
-          this.loadingContentTable = false;
+          this.loadingContentList = false;
         }
       });
     },
@@ -223,7 +223,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <TableContent ref="tableContent" :loading="this.loadingContentTable" :size="table.rows.length">
+    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
       <table-lite
         :is-static-mode="false"
         :is-slot-mode="true"
@@ -257,7 +257,7 @@ export default defineComponent({
         :page-class="'page-item'"
       >
       </paginate>
-    </TableContent>
+    </ListContent>
   </SystemContent>
 </template>
 <script></script>

@@ -1,7 +1,7 @@
 <script>
 import CustomerDetail from "./CustomerDetail.vue";
 import SystemContent from "@/components/system/SystemContent.vue";
-import TableContent from "@/components/my_other_components/TableContent.vue";
+import ListContent from "@/components/my_other_components/ListContent.vue";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -72,7 +72,7 @@ export default defineComponent({
         totalRecordCount: 0,
       },
       loadingContentSystem: true,
-      loadingContentTable: false,
+      loadingContentList: false,
       topbar: {
         title: "Clientes",
         icon: "bi bi-people",
@@ -93,7 +93,7 @@ export default defineComponent({
   components: {
     CustomerDetail,
     TableLite,
-    TableContent,
+    ListContent,
     SystemContent,
     paginate: Paginate,
   },
@@ -141,7 +141,7 @@ export default defineComponent({
       });
     },
     async getCustomers(page) {
-      this.loadingContentTable = true;
+      this.loadingContentList = true;
       this.table.rows = [];
       this.getCustomerRegisters(page).then((response) => {
         if (response.success) {
@@ -152,7 +152,7 @@ export default defineComponent({
           });
           this.page = page;
           this.loadingContentSystem = false;
-          this.loadingContentTable = false;
+          this.loadingContentList = false;
         }
       });
     },
@@ -207,7 +207,7 @@ export default defineComponent({
       </div>
     </div>
 
-    <TableContent ref="tableContent" :loading="this.loadingContentTable" :size="table.rows.length">
+    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
       <table-lite
         class="mb-3"
         :is-static-mode="false"
@@ -241,7 +241,7 @@ export default defineComponent({
         :page-class="'page-item'"
       >
       </paginate>
-    </TableContent>
+    </ListContent>
   </SystemContent>
 </template>
 

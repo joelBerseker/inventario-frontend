@@ -1,7 +1,7 @@
 <script>
 import DetailSupplier from "./SupplierDetail.vue";
 import SystemContent from "@/components/system/SystemContent.vue";
-import TableContent from "@/components/my_other_components/TableContent.vue";
+import ListContent from "@/components/my_other_components/ListContent.vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
@@ -71,7 +71,7 @@ export default defineComponent({
       },
 
       loadingContentSystem: true,
-      loadingContentTable: false,
+      loadingContentList: false,
       topbar: {
         title: "Proveedores",
         icon: "bi bi-truck",
@@ -123,7 +123,7 @@ export default defineComponent({
     TableLite,
     SystemContent,
     paginate: Paginate,
-    TableContent,
+    ListContent,
   },
   props: ["changeTopbar"],
   async created() {
@@ -169,7 +169,7 @@ export default defineComponent({
       });
     },
     async getSuppliers(page) {
-      this.loadingContentTable = true;
+      this.loadingContentList = true;
       this.table.rows = [];
       this.getSupplierRegisters(page).then((response) => {
         if (response.success) {
@@ -180,7 +180,7 @@ export default defineComponent({
           });
           this.page = page;
           this.loadingContentSystem = false;
-          this.loadingContentTable = false;
+          this.loadingContentList = false;
         }
       });
     },
@@ -239,7 +239,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <TableContent ref="tableContent" :loading="this.loadingContentTable" :size="table.rows.length">
+    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
       <transition name="t-card-view" mode="out-in">
         <div v-if="!cardView">
           <table-lite
@@ -297,7 +297,7 @@ export default defineComponent({
         :page-class="'page-item'"
       >
       </paginate>
-    </TableContent>
+    </ListContent>
   </SystemContent>
 </template>
 

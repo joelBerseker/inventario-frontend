@@ -5,7 +5,7 @@ import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import SystemContent from "@/components/system/SystemContent.vue";
-import TableContent from "@/components/my_other_components/TableContent.vue";
+import ListContent from "@/components/my_other_components/ListContent.vue";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
@@ -88,7 +88,7 @@ export default defineComponent({
         // Puedes agregar más opciones aquí si es necesario
       ],
       loadingContentSystem: true,
-      loadingContentTable: false,
+      loadingContentList: false,
     };
   },
   mixins: [UtilityFunctions],
@@ -97,7 +97,7 @@ export default defineComponent({
     paginate: Paginate,
     TableLite,
     SystemContent,
-    TableContent,
+    ListContent,
   },
   props: ["changeTopbar", "showToast", "confirmDialogue"],
   methods: {

@@ -28,13 +28,13 @@ import { defineComponent } from "vue";
 import Icon from "@/components/my_other_components/Icon.vue";
 
 export default defineComponent({
-  name: "TableContent",
+  name: "ListContent",
   data() {
     return {
       loadingLocal: true,
     };
   },
-  props: ["loading", "listInfo", "size"],
+  props: ["loading" , "size"],
   components: {
     Icon,
   },
