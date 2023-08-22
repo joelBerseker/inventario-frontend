@@ -105,10 +105,10 @@ import { defineComponent } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
-import ProductConection from "./ProductConection";
+import ConectionProduct from "@/mixin/conections/ConectionProduct";
 export default defineComponent({
   props: ["itemSelected"],
-  mixins: [ValidationFunctions, ProductConection],
+  mixins: [ValidationFunctions, ConectionProduct],
   inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,

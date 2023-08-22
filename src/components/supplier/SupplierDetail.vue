@@ -91,11 +91,11 @@ import MyModal from "@/components/my_components/MyModal.vue";
 import MySelect from "@/components/my_components/MySelect.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
-import SupplierConection from "./SupplierConection";
+import ConectionSupplier from "@/mixin/conections/ConectionSupplier";
 
 export default defineComponent({
   props: ["itemSelected"],
-  mixins: [ValidationFunctions, SupplierConection],
+  mixins: [ValidationFunctions, ConectionSupplier],
   inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,

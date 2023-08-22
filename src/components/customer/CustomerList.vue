@@ -5,7 +5,7 @@ import TableContent from "@/components/my_other_components/TableContent.vue";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
-import CustomerConection from "./CustomerConection";
+import ConectionCustomer from "@/mixin/conections/ConectionCustomer";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "Customer",
@@ -89,7 +89,7 @@ export default defineComponent({
       },
     };
   },
-  mixins: [UtilityFunctions, CustomerConection],
+  mixins: [UtilityFunctions, ConectionCustomer],
   components: {
     CustomerDetail,
     TableLite,

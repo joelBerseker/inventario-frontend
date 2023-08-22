@@ -6,7 +6,7 @@ import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
-import ProductConection from "./ProductConection";
+import ConectionProduct from "@/mixin/conections/ConectionProduct";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
@@ -98,7 +98,7 @@ export default defineComponent({
     };
   },
   props: ["changeTopbar"],
-  mixins: [UtilityFunctions, ProductConection],
+  mixins: [UtilityFunctions, ConectionProduct],
   components: {
     ProductDetail,
     TableLite,

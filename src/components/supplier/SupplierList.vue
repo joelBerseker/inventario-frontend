@@ -6,7 +6,7 @@ import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
-import SupplierConection from "./SupplierConection";
+import ConectionSupplier from "@/mixin/conections/ConectionSupplier";
 const url = import.meta.env.VITE_APP_RUTA_API;
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -117,7 +117,7 @@ export default defineComponent({
     },
   },
 
-  mixins: [UtilityFunctions, SupplierConection],
+  mixins: [UtilityFunctions, ConectionSupplier],
   components: {
     DetailSupplier,
     TableLite,
