@@ -11,7 +11,7 @@
             aria-expanded="true"
             aria-controls="panelsStayOpen-collapseOne"
           >
-          <i class="bi bi-bell"></i>&nbsp;Notificaciones
+            <i class="bi bi-bell"></i>&nbsp;Notificaciones
           </button>
         </div>
         <div
@@ -22,7 +22,9 @@
           <div class="accordion-body px-3 pt-0 pb-3">
             Content here
             <div>
-              <RouterLink to="/notifications" class="color-2"> Ver mas</RouterLink>
+              <RouterLink to="/notifications" class="color-2">
+                Ver mas</RouterLink
+              >
             </div>
           </div>
         </div>
@@ -37,7 +39,7 @@
             aria-expanded="true"
             aria-controls="panelsStayOpen-collapseTwo"
           >
-          <i class="bi bi-bar-chart-line"></i>&nbsp;Estadisticas
+            <i class="bi bi-bar-chart-line"></i>&nbsp;Estadisticas
           </button>
         </h2>
         <div
@@ -63,7 +65,7 @@
             aria-expanded="true"
             aria-controls="panelsStayOpen-collapseThree"
           >
-          <i class="bi bi-list-ul"></i>&nbsp;Navegación
+            <i class="bi bi-list-ul"></i>&nbsp;Navegación
           </button>
         </h2>
         <div
@@ -73,10 +75,17 @@
         >
           <div class="accordion-body px-3 pt-0 pb-3">
             <div class="row">
-              <div class="col-6 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
+              <div
+                class="col-6 mb-3"
+                v-for="item in list"
+                :key="item.title"
+                v-on:click="goTo(item.url)"
+              >
                 <div class="card box" :id="item.title">
                   <div class="card-body">
-                    <p class="title-text mb-1"><i :class="item.icon"></i> {{ item.title }}</p>
+                    <p class="title-text mb-1">
+                      <i :class="item.icon"></i> {{ item.title }}
+                    </p>
                     <p class="secondary-text">{{ item.desc }}</p>
                   </div>
                 </div>
@@ -95,7 +104,7 @@
 }
 .accordion-button {
   border: none !important;
-  border-top: 1px solid var(--my-border-color)!important;
+  border-top: 1px solid var(--my-border-color) !important;
 
   border-radius: 0px !important;
   box-shadow: none !important;
@@ -163,6 +172,13 @@ export default defineComponent({
           desc: "Perfil del usuario y algunos datos que son de utilidad para el sistema ",
           icon: "bi bi-person-vcard",
           url: "/user",
+        },
+
+        {
+          title: "Categorias",
+          desc: "Categorias de los productos, donde puedes agregar, editar y eliminar.",
+          icon: "bi bi-box-seam",
+          url: "/category",
         },
       ],
       topbar: {

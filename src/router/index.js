@@ -5,6 +5,7 @@ import System from "../components/system/System.vue";
 import Notification from "../components/notification/ListNotification.vue";
 import Statistic from "../components/statistics/statistic.vue";
 import Product from "../components/product/ProductList.vue";
+import Category from "../components/Category/CategoryList.vue";
 import AddProductExcel from "../components/product/ProductAddExcel.vue";
 import Supplier from "../components/supplier/SupplierList.vue";
 import Customer from "../components/customer/CustomerList.vue";
@@ -55,6 +56,11 @@ const router = createRouter({
           path: "/product",
           name: "product",
           component: Product,
+        },
+        {
+          path: "/category",
+          name: "category",
+          component: Category,
         },
         {
           path: "/supplier",
