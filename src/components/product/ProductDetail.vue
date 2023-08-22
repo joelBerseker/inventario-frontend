@@ -258,15 +258,15 @@ export default defineComponent({
       this.resetItemCopy();
       switch (this.mode) {
         case 1:
-          this.title = "Agregar Cliente";
+          this.title = "Agregar Producto";
           this.disabled = false;
           break;
         case 2:
-          this.title = "Visualizar Cliente";
+          this.title = "Visualizar Producto";
           this.disabled = true;
           break;
         case 3:
-          this.title = "Editar Cliente";
+          this.title = "Editar Producto";
           this.disabled = false;
           break;
         default:
