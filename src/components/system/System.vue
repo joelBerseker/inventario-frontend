@@ -84,9 +84,7 @@ export default defineComponent({
   },
   async created() {
     console.log("created System");
-    try {
-      await AuthService.getUser();
-    } catch {}
+    AuthService.getUser();
     this.loadingAppContent = false;
   },
   async updated() {
