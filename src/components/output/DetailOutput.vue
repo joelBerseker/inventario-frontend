@@ -263,8 +263,10 @@ export default defineComponent({
   },
   methods: {
     copyOriginalItem() {
+      console.log(this.itemSelected);
       this.item.numero = this.itemSelected.order_code;
       this.item.description = this.itemSelected.description;
+      this.item.paymentType = this.itemSelected.payment_type
       if (this.itemSelected.client_name != undefined) {
         this.item.cliente = {
           name: this.itemSelected.client_name,

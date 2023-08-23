@@ -7,10 +7,10 @@ export default {
         { value: "3", text: "Otro" },
       ],
       optionsPaymentType: [
-        { value: "1", text: "Efectivo" },
-        { value: "2", text: "YAPE" },
-        { value: "3", text: "Tarjeta" },
-        { value: "4", text: "Otro" },
+        { value: 1, text: "Efectivo" },
+        { value: 2, text: "YAPE" },
+        { value: 3, text: "Tarjeta" },
+        { value: 4, text: "Otro" },
       ],
     };
   },

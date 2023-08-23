@@ -139,6 +139,7 @@ export default defineComponent({
   },
   methods: {
     resetItemCopy() {
+      console.log(this.itemSelected);
       this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
     },
     validateForm() {

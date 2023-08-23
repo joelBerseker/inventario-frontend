@@ -67,6 +67,7 @@ export default defineComponent({
     this.loadingAppContent = false;
   },
   async updated() {
+    console.log("updated System");
     if (!this.$store.getters.isActive) {
       this.logout();
       return;
