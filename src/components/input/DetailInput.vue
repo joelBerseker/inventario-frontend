@@ -334,7 +334,7 @@ export default defineComponent({
       console.log(data);
       const config = {
         headers: {
-          "SystemContent-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
+          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
         },
       };
       var path = url + `purchase_details/purchase_detail/`;

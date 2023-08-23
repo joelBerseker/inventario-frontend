@@ -119,7 +119,7 @@ export default defineComponent({
     addItem(data) {
       const config = {
         headers: {
-          "SystemContent-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
+          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
         },
       };
       var path = url + `products/products/`;

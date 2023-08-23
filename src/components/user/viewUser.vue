@@ -266,7 +266,7 @@ export default {
       axios
         .put(path, form_data, {
           headers: {
-            "SystemContent-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data",
           },
         })
         .then((response) => {
