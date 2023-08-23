@@ -5,10 +5,10 @@ import axios from "axios";
 import MyForm from "@/components/my_components/MyForm.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import Icon from "@/components/my_other_components/Icon.vue";
-import MyToast from "@/components/my_components/MyToast.vue";
 import AppContent from "@/AppContent.vue";
 export default defineComponent({
   name: "Login",
+  inject: ["showToast"],
   data() {
     return {
       user: {
@@ -25,59 +25,15 @@ export default defineComponent({
   components: {
     MyForm,
     Icon,
-    MyToast,
     AppContent,
   },
-  computed: {
-    validateForm: function () {
-      var result = true;
-      return result;
-    },
-
-    validationUsername: function () {
-      var text = this.user.username;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 3, 50);
-
-      var resp = this.validateInput(text, validationMessage, true);
-      if (resp.validationStyle == " is-valid") resp.validationStyle = "";
-      return resp;
-    },
-    validationpPassword: function () {
-      var text = this.user.password;
-
-      var validationMessage = "";
-      validationMessage = this.textEmpty(text, validationMessage);
-      validationMessage = this.textLength(text, validationMessage, 4, 20);
-
-      var resp = this.validateInput(text, validationMessage, true);
-      if (resp.validationStyle == " is-valid") resp.validationStyle = "";
-      return resp;
-    },
-  },
   created() {
-    this.loadingAppContent = false
+    this.loadingAppContent = false;
   },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      if (this.validateForm) {
-        this.login();
-      } else {
-        this.showToast({
-          title: "Validar Ingreso",
-          message: "Ocurrió un error, revise todos si todos los campos se llenaron correctamente.",
-          type: 2,
-        });
-      }
-    },
-    showAlert(msg) {
-      console.log(msg);
-    },
-    showToast(opts = {}) {
-      this.$refs.toast.show(opts);
+      this.login();
     },
     async login() {
       this.loadingButton = true;
@@ -158,7 +114,6 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <MyToast ref="toast"></MyToast>
     </div>
   </AppContent>
 </template>

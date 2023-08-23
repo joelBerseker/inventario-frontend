@@ -4,7 +4,7 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
     name: "ListNotification",
-    props: ["changeTopbar", "showToast", "confirmDialogue"],
+    props: ["changeTopbar"],
     components: {
         SystemContent,
     },

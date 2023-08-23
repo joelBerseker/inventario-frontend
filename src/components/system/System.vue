@@ -1,8 +1,6 @@
 <script>
 import axios from "axios";
 import AuthService from "@/services/AuthService";
-import ConfirmDialogue from "@/components/my_other_components/ConfirmDialogue.vue";
-import MyToast from "@/components/my_components/MyToast.vue";
 import SystemTopBar from "@/components/system/SystemTopBar.vue";
 import SystemLoading from "@/components/system/SystemLoading.vue";
 import SystemSideBar from "@/components/system/SystemSideBar.vue";
@@ -10,10 +8,9 @@ import AppContent from "@/AppContent.vue";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "System",
+  inject: ["confirmDialogue"],
   components: {
     SystemTopBar,
-    ConfirmDialogue,
-    MyToast,
     SystemLoading,
     SystemSideBar,
     AppContent,
@@ -33,22 +30,6 @@ export default defineComponent({
       this.topbar.title = topbar.title;
       this.topbar.icon = topbar.icon;
       this.topbar.breadcrumb = topbar.breadcrumb;
-    },
-    showToast(opts = {}) {
-      this.$refs.toast.show(opts);
-    },
-    async confirmDialogue(opts = {}) {
-      var resp = false;
-      await this.$refs.confirmDialogue
-        .show({
-          title: opts.title,
-          message: opts.message,
-          okButton: opts.okButton,
-        })
-        .then((result) => {
-          resp = result;
-        });
-      return resp;
     },
     logout() {
       this.$store.dispatch("logout");
@@ -77,8 +58,6 @@ export default defineComponent({
   },
   provide() {
     return {
-      confirmDialogue: this.confirmDialogue,
-      showToast: this.showToast,
       confirmLogout: this.confirmLogout,
     };
   },
@@ -113,20 +92,16 @@ export default defineComponent({
       <SystemSideBar></SystemSideBar>
     </div>
     <div id="main-content" :class="darkMode">
-      <SystemTopBar :topbar="topbar" :confirmDialogue="confirmDialogue"></SystemTopBar>
+      <SystemTopBar :topbar="topbar"></SystemTopBar>
       <RouterView v-slot="{ Component }">
         <transition name="t-main-content" mode="out-in">
           <component
             :is="Component"
             :changeTopbar="changeTopbar"
-            :showToast="showToast"
-            :confirmDialogue="confirmDialogue"
           />
         </transition>
       </RouterView>
     </div>
-    <MyToast ref="toast"></MyToast>
-    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
     <SystemLoading ref="loadingSystem"></SystemLoading>
   </AppContent>
 </template>

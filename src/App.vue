@@ -1,21 +1,47 @@
 <script>
 import { defineComponent } from "vue";
 import Icon from "@/components/my_other_components/Icon.vue";
+import ConfirmDialogue from "@/components/my_other_components/ConfirmDialogue.vue";
+import MyToast from "@/components/my_components/MyToast.vue";
 export default defineComponent({
   name: "App",
   data() {
     return {
-      loading: true,
+      
     };
   },
   components: {
     Icon,
+    ConfirmDialogue,
+    MyToast,
   },
   methods: {
     logout() {
       this.$store.dispatch("logout");
       this.$router.push("/login");
     },
+    showToast(opts = {}) {
+      this.$refs.toast.show(opts);
+    },
+    async confirmDialogue(opts = {}) {
+      var resp = false;
+      await this.$refs.confirmDialogue
+        .show({
+          title: opts.title,
+          message: opts.message,
+          okButton: opts.okButton,
+        })
+        .then((result) => {
+          resp = result;
+        });
+      return resp;
+    },
+  },
+  provide() {
+    return {
+      confirmDialogue: this.confirmDialogue,
+      showToast: this.showToast,
+    };
   },
   created() {
     console.log("created app");
@@ -38,6 +64,8 @@ export default defineComponent({
         <component :is="Component" />
       </transition>
     </RouterView>
+    <MyToast ref="toast"></MyToast>
+    <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
   </div>
 </template>
 <style scoped>
