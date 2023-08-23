@@ -15,7 +15,7 @@ export default defineComponent({
       itemSelected: {},
       search: "",
       filter: "",
-      numPag: 2,
+      numPag: 0,
       page: 1,
       table: {
         columns: [

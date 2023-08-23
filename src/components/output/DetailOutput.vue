@@ -186,8 +186,9 @@ class Product {
   }
 }
 export default defineComponent({
-  props: ["item_selected", "deleteItem", "showToast", "getOutputs"],
+  props: ["itemSelected"],
   mixins: [ValidationFunctions, UtilityFunctions],
+  inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
     MyForm,
@@ -256,17 +257,17 @@ export default defineComponent({
     },
   },
   watch: {
-    item_selected() {
+    itemSelected() {
       this.copyOriginalItem();
     },
   },
   methods: {
     copyOriginalItem() {
-      this.item.numero = this.item_selected.order_code;
-      this.item.description = this.item_selected.description;
-      if (this.item_selected.client_name != undefined) {
+      this.item.numero = this.itemSelected.order_code;
+      this.item.description = this.itemSelected.description;
+      if (this.itemSelected.client_name != undefined) {
         this.item.cliente = {
-          name: this.item_selected.client_name,
+          name: this.itemSelected.client_name,
         };
         if (this.aditionalData == null) {
           this.getAditionalData();
@@ -276,7 +277,7 @@ export default defineComponent({
       }
     },
     getAditionalData() {
-      this.getOrderDetailById(this.item_selected.id);
+      this.getOrderDetailById(this.itemSelected.id);
     },
     getOrderDetailById(id) {
       console.log(id);
@@ -454,7 +455,7 @@ export default defineComponent({
     },
     editItem(data) {
       console.log(data);
-      var path = url + `products/products/` + this.item_selected.id + "/";
+      var path = url + `products/products/` + this.itemSelected.id + "/";
       axios
         .put(path, data)
         .then((response) => {

@@ -13,7 +13,8 @@ const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
   name: "templateContent",
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  props: ["changeTopbar"],
+  inject: ["confirmDialogue", "showToast"],
   components: {
     SystemContent,
     XlsxRead,

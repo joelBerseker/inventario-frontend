@@ -7,7 +7,7 @@ const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
   name: "Statistics",
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  props: ["changeTopbar"],
   components: {
     SystemContent,
     apexchart: VueApexCharts,

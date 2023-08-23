@@ -6,11 +6,11 @@ export default {
         { value: "2", text: "RUC" },
         { value: "3", text: "Otro" },
       ],
-      optionsPaymentType:[
-        { text: "Efectivo", value: "1" },
-        { text: "YAPE", value: "2" },
-        { text: "Tarjeta", value: "3" },
-        { text: "Otro", value: "4" },
+      optionsPaymentType: [
+        { value: "1", text: "Efectivo" },
+        { value: "2", text: "YAPE" },
+        { value: "3", text: "Tarjeta" },
+        { value: "4", text: "Otro" },
       ],
     };
   },
@@ -19,10 +19,10 @@ export default {
       return "s/ " + parseFloat(price).toFixed(2);
     },
     getDocumentType(number) {
-      return this.optionsDocumentType[number-1].text
+      return this.optionsDocumentType[number - 1].text;
     },
     getPaymentType(number) {
-      return this.optionsPaymentType[number-1].text
+      return this.optionsPaymentType[number - 1].text;
     },
     timeAgo(time) {
       const date = new Date(time);

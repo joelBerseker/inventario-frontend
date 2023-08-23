@@ -6,14 +6,16 @@ import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import SystemContent from "@/components/system/SystemContent.vue";
 import ListContent from "@/components/my_other_components/ListContent.vue";
+import ConectionOutput from "@/mixin/conections/ConectionOutput";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
   name: "Output",
+  inject: ["confirmDialogue", "showToast"],
   data() {
     return {
-      item_selected: {},
+      itemSelected: {},
       search: "",
       Outputs: [],
       table: {
@@ -67,7 +69,7 @@ export default defineComponent({
         rows: [],
         totalRecordCount: 0,
       },
-      numPag: 4,
+      numPag: 0,
       page: 1,
       topbar: {
         title: "Salidas",
@@ -94,7 +96,7 @@ export default defineComponent({
       loadingContentList: false,
     };
   },
-  mixins: [UtilityFunctions],
+  mixins: [UtilityFunctions, ConectionOutput],
   components: {
     DetailOutput,
     paginate: Paginate,
@@ -102,74 +104,64 @@ export default defineComponent({
     SystemContent,
     ListContent,
   },
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  props: ["changeTopbar"],
   methods: {
     openInNewTab(data, invoiceType) {
       var link = url + "orders/orders/" + invoiceType + "/" + data + "/";
       window.open(link, "_blank", "noreferrer");
     },
-    addMode() {
-      this.item_selected = {};
+    onAdd() {
+      this.getOutputs(1);
+    },
+    onEdit() {
+      this.getOutputs(this.page);
+    },
+    onDelete() {
+      this.getOutputs(1);
+    },
+    getItemSelectedByUrl() {
+      if (this.$route.query.id != undefined) {
+        this.getOutputRegister(this.$route.query.id).then((response) => {
+          if (response.success) {
+            this.itemSelected = response.response.data;
+            this.$refs.modal.changeMode(2);
+            this.$refs.modal.openModal();
+          }
+        });
+      }
+    },
+    buttonAdd() {
+      this.itemSelected = {};
       this.$refs.modal.changeMode(1);
       this.$refs.modal.openModal();
     },
-    viewMode(row) {
-      this.item_selected = row;
+    buttonView(row) {
+      this.itemSelected = row;
       this.$refs.modal.changeMode(2);
       this.$refs.modal.openModal();
     },
-    async deleteItem(row) {
-      this.confirmDialogue({
-        title: "Eliminar Salida",
-        message: "¿Estas seguro que quieres eliminar el producto?",
-        okButton: "Eliminar",
-      }).then((result) => {
-        if (result) {
-          var path = url + "orders/orders/" + row.id + "/";
-          axios
-            .delete(path)
-            .then((response) => {
-              console.log(response);
-              this.showToast({
-                title: "Operación exitosa",
-                message: "El registro de elimino correctamente.",
-                type: 1,
-              });
-              this.getOutputs(1);
-              this.$refs.modal.closeModal();
-            })
-            .catch((e) => {
-              console.log(e);
-              this.showToast({
-                title: "Ocurrió un error",
-                message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
-                type: 2,
-              });
-            });
+    async buttonDelete(row) {
+      this.confirmDeleteOutputRegister(row.id).then((response) => {
+        if (response.success) {
+          this.getOutputs(1);
         }
       });
     },
-    async getOutputs(num) {
+    async getOutputs(page) {
+      this.loadingContentList = true;
       this.table.rows = [];
-      var path = url + `orders/orders/?page=` + num;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
+      this.getOutputRegisters(page).then((response) => {
+        if (response.success) {
+          response.response.data.results.forEach((element) => {
             this.table.rows.push(element);
+            this.table.totalRecordCount = this.table.rows.length;
+            this.numPag = Math.ceil(response.response.data.count / 10);
           });
-          this.table.totalRecordCount = response.data.count;
-          this.numPag = Math.ceil(response.data.count / 10);
+          this.page = page;
           this.loadingContentSystem = false;
-        })
-        .catch((e) => {
-          console.log(e);
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
+          this.loadingContentList = false;
+        }
+      });
     },
     clickCallback(pageNum) {
       this.page = pageNum;
@@ -186,14 +178,11 @@ export default defineComponent({
   <SystemContent ref="content" :loading="loadingContentSystem">
     <DetailOutput
       ref="modal"
-      :deleteItem="deleteItem"
-      :showToast="showToast"
-      :item_selected="item_selected"
-      :getOutputs="getOutputs"
+      :itemSelected="itemSelected"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Salida
         </button>
       </div>
@@ -247,7 +236,7 @@ export default defineComponent({
       :columns="table.columns"
       :rows="table.rows"
       :total="table.totalRecordCount"
-      @row-clicked="viewMode"
+      @row-clicked="buttonView"
     >
       <template v-slot:quick="data">
         <div class="d-flex">
@@ -263,7 +252,7 @@ export default defineComponent({
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <li>
-              <div class="dropdown-item item-select" v-on:click.stop="viewMode(data.value)">
+              <div class="dropdown-item item-select" v-on:click.stop="buttonView(data.value)">
                 <i class="bi bi-journal"></i> Visualizar
               </div>
             </li>
@@ -273,7 +262,7 @@ export default defineComponent({
               </div>
             </li>
           </ul>
-          <button v-on:click.stop="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+          <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
             <i class="bi bi-trash"></i>
           </button>
         </div>

@@ -137,7 +137,7 @@
       </button>
       <button
         type="button"
-        @click="deleteItem(item_selected)"
+        @click="deleteItem(itemSelected)"
         class="btn btn-danger btn-sm button-margin"
         v-if="mode == 2"
       >
@@ -190,8 +190,9 @@ class Product {
   }
 }
 export default defineComponent({
-  props: ["item_selected", "deleteItem", "showToast"],
+  props: ["itemSelected"],
   mixins: [ValidationFunctions],
+  inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
     MyForm,
@@ -282,11 +283,11 @@ export default defineComponent({
       this.selectedProducts.splice(index, 1);
     },
     changeCurrency() {
-      this.item_selected.price = this.item_selected.price.replace(/[^0-9]/, "");
+      this.itemSelected.price = this.itemSelected.price.replace(/[^0-9]/, "");
       console.log("-------------");
 
-      console.log("value -> " + this.item_selected.price);
-      var text = this.item_selected.price.toString().replace(/[^0-9]/, "");
+      console.log("value -> " + this.itemSelected.price);
+      var text = this.itemSelected.price.toString().replace(/[^0-9]/, "");
       console.log("lengh -> " + text.length);
       console.log("text -> " + text);
       if (text.length >= 3) {
@@ -294,13 +295,13 @@ export default defineComponent({
         var lastPart = text.slice(text.length - 2);
         var complete = firsPart + "." + lastPart;
         console.log(complete);
-        this.item_selected.price = Number(complete).toFixed(2);
+        this.itemSelected.price = Number(complete).toFixed(2);
       }
 
-      /*if (this.item_selected.price.toString().length == 3) {
-                      this.item_selected.price = (this.item_selected.price / 100).toFixed(2)
-                  } else if (this.item_selected.price.toString().length >= 4) {
-                      this.item_selected.price = (this.item_selected.price * 1000 / 100).toFixed(2)
+      /*if (this.itemSelected.price.toString().length == 3) {
+                      this.itemSelected.price = (this.itemSelected.price / 100).toFixed(2)
+                  } else if (this.itemSelected.price.toString().length >= 4) {
+                      this.itemSelected.price = (this.itemSelected.price * 1000 / 100).toFixed(2)
                   }*/
     },
     dataToJson(index) {
@@ -366,7 +367,7 @@ export default defineComponent({
     },
     editItem(data) {
       console.log(data);
-      var path = url + `products/products/` + this.item_selected.id + "/";
+      var path = url + `products/products/` + this.itemSelected.id + "/";
       axios
         .put(path, data)
         .then((response) => {

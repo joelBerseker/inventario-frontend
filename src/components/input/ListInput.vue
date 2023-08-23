@@ -6,14 +6,16 @@ import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
+import ConectionInput from "@/mixin/conections/ConectionInput";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
   name: "Input",
+  inject: ["confirmDialogue", "showToast"],
   data() {
     return {
-      item_selected: {},
+      itemSelected: {},
       Inputs: [],
       search:"",  
       table: {
@@ -50,7 +52,7 @@ export default defineComponent({
         rows: [],
         totalRecordCount: 0,
       },
-      numPag: 4,
+      numPag: 0,
       page: 1,
       topbar: {
         title: "Entradas",
@@ -70,7 +72,7 @@ export default defineComponent({
       loadingContentList: false,
     };
   },
-  mixins: [UtilityFunctions],
+  mixins: [UtilityFunctions, ConectionInput],
   components: {
     DetailInput,
     TableLite,
@@ -78,75 +80,64 @@ export default defineComponent({
     SystemContent,
     ListContent,
   },
-  props: ["changeTopbar", "showToast", "confirmDialogue"],
+  props: ["changeTopbar"],
   methods: {
-    addMode() {
-      this.item_selected = {};
+    onAdd() {
+      this.getInputs(1);
+    },
+    onEdit() {
+      this.getInputs(this.page);
+    },
+    onDelete() {
+      this.getInputs(1);
+    },
+    getItemSelectedByUrl() {
+      if (this.$route.query.id != undefined) {
+        this.getInputRegister(this.$route.query.id).then((response) => {
+          if (response.success) {
+            this.itemSelected = response.response.data;
+            this.$refs.modal.changeMode(2);
+            this.$refs.modal.openModal();
+          }
+        });
+      }
+    },
+    buttonAdd() {
+      this.itemSelected = {};
       this.$refs.modal.changeMode(1);
       this.$refs.modal.openModal();
     },
-    viewMode(row) {
-      this.item_selected = row;
+    buttonView(row) {
+      this.itemSelected = row;
       this.$refs.modal.changeMode(2);
       this.$refs.modal.openModal();
     },
-    async deleteItem(row) {
-      this.confirmDialogue({
-        title: "Eliminar Salida",
-        message: "¿Estas seguro que quieres eliminar el producto?",
-        okButton: "Eliminar",
-      }).then((result) => {
-        if (result) {
-          var path = url + "purchase/purchase/" + row.id + "/";
-          axios
-            .delete(path)
-            .then((response) => {
-              console.log(response);
-              this.showToast({
-                title: "Eliminar Registro",
-                message: "Operación exitosa",
-                type: 1,
-              });
-              this.getInputs("1");
-              //this.$refs.modal.closeModal();
-            })
-            .catch((e) => {
-              console.log(e);
-              this.showToast({
-                title: "Eliminar Registro",
-                message: "Ocurrió un error, si continua sucediendo contacte con su proveedor",
-                type: 2,
-              });
-            });
+    async buttonDelete(row) {
+      this.confirmDeleteInputRegister(row.id).then((response) => {
+        if (response.success) {
+          this.getInputs(1);
         }
       });
     },
-    async getInputs(num) {
+    async getInputs(page) {
+      this.loadingContentList = true;
       this.table.rows = [];
-      var path = url + `purchase/purchase/?page=` + num;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
+      this.getInputRegisters(page).then((response) => {
+        if (response.success) {
+          response.response.data.results.forEach((element) => {
             this.table.rows.push(element);
+            this.table.totalRecordCount = this.table.rows.length;
+            this.numPag = Math.ceil(response.response.data.count / 10);
           });
-          this.table.totalRecordCount = response.data.count;
-          this.numPag = Math.ceil(response.data.count / 10);
+          this.page = page;
           this.loadingContentSystem = false;
-        })
-        .catch((e) => {
-          console.log(e);
-
-          this.showToast({
-            title: "Obtener Registros",
-            message: "Ocurrió un error, si continua sucediendo contacte con su proveedor x2",
-            type: 2,
-          });
-        });
+          this.loadingContentList = false;
+        }
+      });
     },
     clickCallback(pageNum) {
       this.page = pageNum;
-      this.getOutputs(pageNum);
+      this.getInputs(pageNum);
     },
   },
   async created() {
@@ -159,15 +150,12 @@ export default defineComponent({
   <SystemContent ref="content" :loading="loadingContentSystem">
     <DetailInput
       ref="modal"
-      :deleteItem="deleteItem"
-      :showToast="showToast"
-      :item_selected="item_selected"
-      :getInputs="getInputs"
+      :itemSelected="itemSelected"
     />
 
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="addMode" type="button" class="btn btn-primary btn-sm mb-3">
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-circle"></i> Agregar Entrada
         </button>
       </div>
@@ -223,10 +211,10 @@ export default defineComponent({
     >
       <template v-slot:quick="data">
         <div class="d-flex">
-          <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+          <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
             <i class="bi bi-journal"></i>
           </button>
-          <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
+          <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
             <i class="bi bi-trash"></i>
           </button>
         </div>

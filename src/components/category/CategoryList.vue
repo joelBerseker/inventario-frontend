@@ -51,7 +51,7 @@ export default defineComponent({
         rows: [],
         totalRecordCount: 0,
       },
-      numPag: 4,
+      numPag: 0,
       page: "1",
       loadingContentSystem: true,
       loadingContentList: false,
