@@ -17,7 +17,7 @@ export default defineComponent({
     return {
       itemSelected: {},
       Inputs: [],
-      search:"",  
+      search: "",
       table: {
         columns: [
           {
@@ -151,6 +151,10 @@ export default defineComponent({
     <DetailInput
       ref="modal"
       :itemSelected="itemSelected"
+      v-on:item:add="onAdd"
+      v-on:item:edit="onEdit"
+      v-on:item:delete="onDelete"
+      v-on:mounted:mymodal="getItemSelectedByUrl"
     />
 
     <div class="row justify-content-md-end">
@@ -200,39 +204,41 @@ export default defineComponent({
         </div>
       </div>
     </div>
-    <table-lite
-      class="mb-3"
-      :is-static-mode="false"
-      :is-slot-mode="true"
-      :is-hide-paging="true"
-      :columns="table.columns"
-      :rows="table.rows"
-      :total="table.totalRecordCount"
-    >
-      <template v-slot:quick="data">
-        <div class="d-flex">
-          <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
-            <i class="bi bi-journal"></i>
-          </button>
-          <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
-            <i class="bi bi-trash"></i>
-          </button>
-        </div>
-      </template>
-    </table-lite>
-    <paginate
-      v-if="numPag > 1"
-      v-model="page"
-      :page-count="numPag"
-      :page-range="3"
-      :margin-pages="2"
-      :click-handler="clickCallback"
-      :prev-text="'Anterior'"
-      :next-text="'Siguiente'"
-      :container-class="'pagination pagination-sm'"
-      :page-class="'page-item'"
-    >
-    </paginate>
+    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
+      <table-lite
+        class="mb-3"
+        :is-static-mode="false"
+        :is-slot-mode="true"
+        :is-hide-paging="true"
+        :columns="table.columns"
+        :rows="table.rows"
+        :total="table.totalRecordCount"
+      >
+        <template v-slot:quick="data">
+          <div class="d-flex">
+            <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+              <i class="bi bi-journal"></i>
+            </button>
+            <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </template>
+      </table-lite>
+      <paginate
+        v-if="numPag > 1"
+        v-model="page"
+        :page-count="numPag"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'Anterior'"
+        :next-text="'Siguiente'"
+        :container-class="'pagination pagination-sm'"
+        :page-class="'page-item'"
+      >
+      </paginate>
+    </ListContent>
   </SystemContent>
 </template>
 <script></script>

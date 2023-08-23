@@ -179,6 +179,10 @@ export default defineComponent({
     <DetailOutput
       ref="modal"
       :itemSelected="itemSelected"
+      v-on:item:add="onAdd"
+      v-on:item:edit="onEdit"
+      v-on:item:delete="onDelete"
+      v-on:mounted:mymodal="getItemSelectedByUrl"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
@@ -227,60 +231,61 @@ export default defineComponent({
         </div>
       </div>
     </div>
-
-    <table-lite
-      class="mb-3"
-      :is-static-mode="false"
-      :is-slot-mode="true"
-      :is-hide-paging="true"
-      :columns="table.columns"
-      :rows="table.rows"
-      :total="table.totalRecordCount"
-      @row-clicked="buttonView"
-    >
-      <template v-slot:quick="data">
-        <div class="d-flex">
-          <button
-            class="btn btn-secondary btn-sm me-1"
-            type="button"
-            id="dropdownMenuButton"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            v-on:click.stop
-          >
-          <i class="bi bi-list-ul"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li>
-              <div class="dropdown-item item-select" v-on:click.stop="buttonView(data.value)">
-                <i class="bi bi-journal"></i> Visualizar
-              </div>
-            </li>
-            <li v-for="option in invoiceOptions" :key="option.value">
-              <div class="dropdown-item item-select" v-on:click.stop="openInNewTab(data.value.id, option.value)">
-                <i class="bi bi-file-pdf"></i> {{ option.label }}
-              </div>
-            </li>
-          </ul>
-          <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
-            <i class="bi bi-trash"></i>
-          </button>
-        </div>
-      </template>
-    </table-lite>
-    <paginate
-      v-if="numPag > 1"
-      v-model="page"
-      :page-count="numPag"
-      :page-range="3"
-      :margin-pages="2"
-      :click-handler="clickCallback"
-      :prev-text="'Anterior'"
-      :next-text="'Siguiente'"
-      :container-class="'pagination pagination-sm'"
-      :page-class="'page-item'"
-    >
-    </paginate>
+    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
+      <table-lite
+        class="mb-3"
+        :is-static-mode="false"
+        :is-slot-mode="true"
+        :is-hide-paging="true"
+        :columns="table.columns"
+        :rows="table.rows"
+        :total="table.totalRecordCount"
+        @row-clicked="buttonView"
+      >
+        <template v-slot:quick="data">
+          <div class="d-flex">
+            <button
+              class="btn btn-secondary btn-sm me-1"
+              type="button"
+              id="dropdownMenuButton"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              v-on:click.stop
+            >
+              <i class="bi bi-list-ul"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li>
+                <div class="dropdown-item item-select" v-on:click.stop="buttonView(data.value)">
+                  <i class="bi bi-journal"></i> Visualizar
+                </div>
+              </li>
+              <li v-for="option in invoiceOptions" :key="option.value">
+                <div class="dropdown-item item-select" v-on:click.stop="openInNewTab(data.value.id, option.value)">
+                  <i class="bi bi-file-pdf"></i> {{ option.label }}
+                </div>
+              </li>
+            </ul>
+            <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </template>
+      </table-lite>
+      <paginate
+        v-if="numPag > 1"
+        v-model="page"
+        :page-count="numPag"
+        :page-range="3"
+        :margin-pages="2"
+        :click-handler="clickCallback"
+        :prev-text="'Anterior'"
+        :next-text="'Siguiente'"
+        :container-class="'pagination pagination-sm'"
+        :page-class="'page-item'"
+      >
+      </paginate>
+    </ListContent>
   </SystemContent>
 </template>
 <script></script>
