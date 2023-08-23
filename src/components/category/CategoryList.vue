@@ -57,14 +57,14 @@ export default defineComponent({
       loadingContentList: false,
       topbar: {
         title: "Categorias",
-        icon: "bi bi-box-seam",
+        icon: "bi bi-tag",
         breadcrumb: [
           {
             name: "Inicio",
             link: "/home",
           },
           {
-            name: "Categoria",
+            name: "Categorias",
             link: "",
           },
         ],

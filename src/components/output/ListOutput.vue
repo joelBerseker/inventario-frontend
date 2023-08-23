@@ -32,6 +32,9 @@ export default defineComponent({
             label: "Tipo Pago",
             field: "payment_type",
             width: "10%",
+            display: (row) => {
+              return this.getPaymentType(row.payment_type);
+            },
           },
           {
             label: "Descripción",

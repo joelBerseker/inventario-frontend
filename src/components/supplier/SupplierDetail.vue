@@ -15,7 +15,7 @@
           <MySelect
             name="Tipo de documento"
             :validation="validation.documentType"
-            :options="options"
+            :options="optionsDocumentType"
             v-model="itemCopy.documentType"
             :disabled="disabled"
             v-on:update="inputDocumentType()"
@@ -91,11 +91,12 @@ import MyModal from "@/components/my_components/MyModal.vue";
 import MySelect from "@/components/my_components/MySelect.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
+import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import ConectionSupplier from "@/mixin/conections/ConectionSupplier";
 
 export default defineComponent({
   props: ["itemSelected"],
-  mixins: [ValidationFunctions, ConectionSupplier],
+  mixins: [ValidationFunctions, UtilityFunctions, ConectionSupplier],
   inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
@@ -122,11 +123,6 @@ export default defineComponent({
         phone: {},
         address: {},
       },
-      options: [
-        { text: "DNI", value: "1" },
-        { text: "RUC", value: "2" },
-        { text: "Otro", value: "3" },
-      ],
       itemCopy: {},
     };
   },

@@ -33,7 +33,7 @@ export default defineComponent({
             field: "documentType",
             width: "1%",
             display: (row) => {
-              return this.documentType(row.documentType);
+              return this.getDocumentType(row.documentType);
             },
           },
           {

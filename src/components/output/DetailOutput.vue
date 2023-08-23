@@ -23,7 +23,7 @@
           <MySelect
             class="mb-3"
             name="Tipo de pago"
-            :options="options"
+            :options="optionsPaymentType"
             :validation="validation.paymentType"
             v-model="item.paymentType"
             v-on:update="inputPaymentType()"
@@ -160,6 +160,7 @@ import MyForm from "@/components/my_components/MyForm.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import MySelect from "@/components/my_components/MySelect.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
+import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 class Product {
@@ -186,7 +187,7 @@ class Product {
 }
 export default defineComponent({
   props: ["item_selected", "deleteItem", "showToast", "getOutputs"],
-  mixins: [ValidationFunctions],
+  mixins: [ValidationFunctions, UtilityFunctions],
   components: {
     MyModal,
     MyForm,
@@ -230,12 +231,6 @@ export default defineComponent({
           },
         ],
       },
-      options: [
-        { text: "Efectivo", value: "1" },
-        { text: "YAPE", value: "2" },
-        { text: "Tarjeta", value: "3" },
-        { text: "Otro", value: "4" },
-      ],
       item: {
         description: null,
         numero: null,

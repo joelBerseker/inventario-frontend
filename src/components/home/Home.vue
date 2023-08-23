@@ -177,7 +177,7 @@ export default defineComponent({
         {
           title: "Categorias",
           desc: "Categorias de los productos, donde puedes agregar, editar y eliminar.",
-          icon: "bi bi-box-seam",
+          icon: "bi bi-tag",
           url: "/category",
         },
       ],

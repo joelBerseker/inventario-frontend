@@ -32,7 +32,7 @@ export default defineComponent({
                 {
                     title: "Productos",
                     desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-list-task",
+                    icon: "bi bi-box-seam",
                     url: "/product"
                 },
                 {
@@ -50,7 +50,7 @@ export default defineComponent({
                 {
                     title: "Categorias",
                     desc: "With supporting text below as a natural lead-in to additional content.",
-                    icon: "bi bi-box-seam",
+                    icon: "bi bi-tag",
                     url: "/category"
                 },
             ]

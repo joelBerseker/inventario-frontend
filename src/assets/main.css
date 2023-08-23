@@ -10,6 +10,10 @@
 .vtl-paging-info {
   visibility: hidden;
 }
+.vtl-asc{
+  /*fix for id arrows in table*/
+  background-image: none !important;
+}
 .item-select {
   white-space: normal !important;
   cursor: pointer;
