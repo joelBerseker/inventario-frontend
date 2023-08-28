@@ -111,7 +111,7 @@
                     ><template v-slot:pre> S/. </template>
                   </MyInput>
                 </td>
-                <td >
+                <td>
                   <MyInput
                     type="number"
                     inputClass="text-end"
@@ -123,39 +123,41 @@
                   </MyInput>
                 </td>
 
-                <td v-if="!disabled" class="form-group col d-flex text-end">
-                  <button
-                    v-if="disabledItemList[index] && mode != 1"
-                    type="button"
-                    class="btn btn-sm btn-primary me-1"
-                    @click="buttonListEdit(index)"
-                  >
-                    <i class="bi bi-pen"></i>
-                  </button>
-                  <button
-                    v-if="!disabledItemList[index]"
-                    type="button"
-                    class="btn btn-sm btn-secondary me-1"
-                    @click="buttonListCancel(index)"
-                  >
-                    <i class="bi bi-arrow-left"></i>
-                  </button>
-                  <button
-                    v-if="!disabledItemList[index]"
-                    type="button"
-                    class="btn btn-sm btn-primary me-1"
-                    @click="buttonListSave(index)"
-                  >
-                    <i class="bi bi-check"></i>
-                  </button>
-                  <button
-                    v-if="disabledItemList[index]"
-                    type="button"
-                    class="btn btn-sm btn-danger"
-                    @click="buttonListDelete(index)"
-                  >
-                    <i class="bi bi-trash"></i>
-                  </button>
+                <td v-if="!disabled">
+                  <div class="d-flex">
+                    <button
+                      v-if="disabledItemList[index] && mode != 1"
+                      type="button"
+                      class="btn btn-sm btn-primary me-1"
+                      @click="buttonListEdit(index)"
+                    >
+                      <i class="bi bi-pen"></i>
+                    </button>
+                    <button
+                      v-if="!disabledItemList[index]"
+                      type="button"
+                      class="btn btn-sm btn-secondary me-1"
+                      @click="buttonListCancel(index)"
+                    >
+                      <i class="bi bi-arrow-left"></i>
+                    </button>
+                    <button
+                      v-if="!disabledItemList[index]"
+                      type="button"
+                      class="btn btn-sm btn-primary me-1"
+                      @click="buttonListSave(index)"
+                    >
+                      <i class="bi bi-check"></i>
+                    </button>
+                    <button
+                      v-if="disabledItemList[index]"
+                      type="button"
+                      class="btn btn-sm btn-danger"
+                      @click="buttonListDelete(index)"
+                    >
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -584,15 +586,15 @@ export default defineComponent({
       this.resetValidation();
       switch (this.mode) {
         case 1:
-          this.title = "Agregar Proveedor";
+          this.title = "Agregar Salida";
           this.disabled = false;
           break;
         case 2:
-          this.title = "Visualizar Proveedor";
+          this.title = "Visualizar Salida";
           this.disabled = true;
           break;
         case 3:
-          this.title = "Editar Proveedor";
+          this.title = "Editar Salida";
           this.disabled = false;
           break;
         default:

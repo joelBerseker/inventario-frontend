@@ -176,6 +176,12 @@ th:not(th:first-child) {
 td {
   border-top: none !important;
 }
+
+/*td:not(td:last-child),
+th:not(th:last-child) {
+  border-right: none !important;
+}*/
+
 .toast {
   background-color: white !important;
   border-radius: var(--my-border-radius) !important;
