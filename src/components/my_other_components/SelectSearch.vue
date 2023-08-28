@@ -1,6 +1,15 @@
 <template>
   <MyForm :name="name" :message="validation.validationMessage">
-    <div class="dropdown" @keyup.down="nextListItem()" @keyup.up="previousListItem()" @keyup.enter="pressEnter()">
+    <div v-if="viewMode && disabled" class="d-flex">
+      {{ modelValue.name }}
+    </div>
+    <div
+      v-else
+      class="dropdown"
+      @keyup.down="nextListItem()"
+      @keyup.up="previousListItem()"
+      @keyup.enter="pressEnter()"
+    >
       <button
         :class="'form-select form-select-sm text-start ' + validation.validationStyle"
         type="button"
@@ -11,6 +20,7 @@
         aria-expanded="false"
         v-on:click="focusSearch()"
         data-bs-display="static"
+        :disabled="disabled"
       >
         <p v-if="modelValue == null || modelValue == ''" class="single-line">Seleccione una opción</p>
         <p v-else class="single-line">{{ modelValue.name }}</p>
@@ -29,7 +39,7 @@
             v-on:keydown.up.prevent="false"
           />
         </li>
-   
+
         <li v-for="(item, index) in listFiltered" :key="index">
           <div
             :class="'dropdown-item item-select ' + isActive(index)"
@@ -42,7 +52,7 @@
         <li class="text-center secondary-text" v-if="listFiltered.length <= 0">
           <div>No se encontraron elementos</div>
         </li>
-        
+
         <li class="text-center secondary-text mt-2" v-if="listFiltered.length >= 10">
           <div>Existen mas elementos, por favor sea mas especifico</div>
         </li>
@@ -75,8 +85,14 @@ export default defineComponent({
         validationStyle: "",
       },
     },
+    viewMode: {
+      default: true,
+    },
     name: {
       default: null,
+    },
+    disabled: {
+      default: false,
     },
   },
   data() {

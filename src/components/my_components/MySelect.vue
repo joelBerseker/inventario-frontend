@@ -1,6 +1,10 @@
 <template>
   <div class="dropdown">
     <MyForm :name="name" :message="validation.validationMessage">
+      <div v-if="viewMode && disabled" class="d-flex">
+        {{ options[itemLocal-1].text }}
+      </div>
+      <div v-else>
       <select
         :class="'form-select form-select-sm ' + validation.validationStyle"
         :id="name"
@@ -13,6 +17,7 @@
           {{ option.text }}
         </option>
       </select>
+    </div>
     </MyForm>
   </div>
 </template>
@@ -35,6 +40,9 @@ export default defineComponent({
         validationMessage: "",
         validationStyle: "",
       },
+    },
+    viewMode: {
+      default: true,
     },
     options: {},
     disabled: {},

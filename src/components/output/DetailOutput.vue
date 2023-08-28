@@ -7,32 +7,36 @@
             class="mb-3"
             type="text"
             name="Numero de item"
-            :validation="validation.code"
-            v-model="item.numero"
+            :validation="validation.header.order_code"
+            v-model="itemCopy.header.order_code"
+            :disabled="disabled"
             v-on:input="inputCode()"
           />
           <SelectSearch
             class="mb-3"
-            v-model="item.cliente"
+            v-model="itemCopy.header.client"
             link="clients/clients/"
             name="Cliente"
-            :validation="validation.client"
+            :validation="validation.header.client"
             id="cliente"
+            :disabled="disabled"
             v-on:update="inputClient()"
           />
           <MySelect
             class="mb-3"
             name="Tipo de pago"
             :options="optionsPaymentType"
-            :validation="validation.paymentType"
-            v-model="item.paymentType"
+            :validation="validation.header.payment_type"
+            v-model="itemCopy.header.payment_type"
+            :disabled="disabled"
             v-on:update="inputPaymentType()"
           />
           <MyInput
             type="textarea"
             name="Descripción"
-            :validation="validation.description"
-            v-model="item.description"
+            :validation="validation.header.description"
+            v-model="itemCopy.header.description"
+            :disabled="disabled"
             v-on:input="inputDescription()"
           />
         </div>
@@ -42,98 +46,135 @@
             <div class="col">
               <p class="title-text">Lista de Productos</p>
             </div>
-            <div class="col text-end">
-              <button type="button" class="btn btn-sm btn-primary" @click="agregarItem">
+            <div v-if="mode != 2" class="col text-end">
+              <button type="button" class="btn btn-sm btn-primary" @click="listItemAdd()">
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
               </button>
             </div>
             <div class="col-3">
-              <p class="secondary-text">Total:</p>
-              <div class="input-group input-group-sm">
-                <span class="input-group-text form-control-disabled">S/.</span>
-                <input
-                  type="text"
-                  class="form-control form-control-sm text-end"
-                  id="nombre"
-                  name="nombre"
-                  v-model="facturaTotal"
-                  disabled
-                />
-              </div>
-            </div>
-          </div>
-          <hr class="mb-3 mt-3" />
-
-          <div class="row">
-            <div class="col-5">
-              <label class="secondary-text">Nombre:</label>
-            </div>
-            <div class="col-2">
-              <label class="secondary-text">Precio Venta:</label>
-            </div>
-            <div class="col-2">
-              <label class="secondary-text">Cantidad:</label>
-            </div>
-            <div class="col-2">
-              <label class="secondary-text">Subtotal:</label>
+              <MyInput
+                name="Total"
+                type="number"
+                inputClass="text-end"
+                v-model="itemCopy.header.total_price"
+                :disabled="true"
+                ><template v-slot:pre>
+                  <p>S/.</p>
+                </template>
+              </MyInput>
             </div>
           </div>
 
-          <div v-for="(item, index) in item.detalle" :key="index" class="detalle-item">
-            <div class="row mb-3">
-              <div class="form-group col-5">
-                <SelectSearch
-                  v-model="item.producto"
-                  link="products/products/"
-                  :validation="validation.detail[index].product"
-                  v-on:update:modelValue="inputProduct(index)"
-                  :id="index + 'product'"
-                >
-                </SelectSearch>
-              </div>
-              <div class="form-group col-2">
-                <label class="form-control form-control-sm form-control-disabled text-end">{{
-                  item.setPrecio(item.producto)
-                }}</label>
-              </div>
-              <div class="form-group col-2">
-                <MyInput
-                  type="number"
-                  inputClass="text-end"
-                  :validation="validation.detail[index].quantity"
-                  v-model="item.cantidad"
-                  v-on:input="inputQuantity(index)"
-                />
-              </div>
-              <div class="form-group col-2">
-                <label class="form-control form-control-sm form-control-disabled text-end">{{
-                  item.getGanancia()
-                }}</label>
-              </div>
-              <div class="form-group col-1">
-                <button type="button" class="btn btn-sm btn-danger" @click="eliminarItem(index)">
-                  <i class="bi bi-trash"></i>
-                </button>
+          <ListContent ref="tableContent" :loading="this.loadingContentList" :size="itemCopy.detail.length">
+            <div v-for="(item, index) in itemCopy.detail" :key="index" class="detalle-item">
+              <div class="card mb-3" :id="index">
+                <div class="card-body p-3">
+                  <div class="row mb-1">
+                    <div class="form-group col-6">
+                      <SelectSearch
+                        name="Nombre"
+                        v-model="selectedProducts[index]"
+                        link="products/products/"
+                        :validation="validation.detail[index].product"
+                        v-on:update:modelValue="inputProduct(index)"
+                        :id="index + 'product'"
+                        :disabled="disabledItemList[index]"
+                      >
+                      </SelectSearch>
+                    </div>
+
+                    <div class="form-group col-3">
+                      <MyInput
+                        name="Cantidad"
+                        type="number"
+                        inputClass="text-end"
+                        :validation="validation.detail[index].quantity"
+                        v-model="item.stock"
+                        v-on:input="inputQuantity(index)"
+                        :disabled="disabledItemList[index]"
+                      />
+                    </div>
+                    <div class="form-group col-3">
+                      <MyInput
+                        name="Subtotal"
+                        type="number"
+                        inputClass="text-end"
+                        v-model="item.subtotal"
+                        :disabled="true"
+                      />
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-3">
+                      <MyInput
+                        name="Precio de venta"
+                        type="number"
+                        inputClass="text-end"
+                        v-model="item.price"
+                        :disabled="true"
+                      />
+                    </div>
+                    <div v-if="!disabled" class="form-group col d-flex flex-column text-end">
+                      <div>
+                        <label class="secondary-text transparent"> Eliminar</label>
+                      </div>
+                      <div>
+                        <button
+                          v-if="disabledItemList[index]"
+                          type="button"
+                          class="btn btn-sm btn-primary me-1"
+                          @click="buttonListEdit(index)"
+                        >
+                          <i class="bi bi-pen"></i>
+                        </button>
+                        <button
+                          v-if="!disabledItemList[index]"
+                          type="button"
+                          class="btn btn-sm btn-secondary me-1"
+                          @click="buttonListCancel(index)"
+                        >
+                          <i class="bi bi-arrow-left"></i>
+                        </button>
+                        <button
+                          v-if="!disabledItemList[index]"
+                          type="button"
+                          class="btn btn-sm btn-primary me-1"
+                          @click="buttonListSave(index)"
+                        >
+                          <i class="bi bi-check"></i>
+                        </button>
+                        <button
+                          v-if="disabledItemList[index]"
+                          type="button"
+                          class="btn btn-sm btn-danger"
+                          @click="buttonListDelete(index)"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </ListContent>
         </div>
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" @click="deleteItem(item)" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
+      <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="editMode" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
+      <button type="button" @click="buttonEdit" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="viewMode" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+      <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
         <i class="bi bi-arrow-left-circle"></i>
         Cancelar
       </button>
-      <button type="button" @click="saveItem" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
+      <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-circle"></i>
         Guardar
       </button>
@@ -147,13 +188,14 @@
   margin-top: 0;
   margin-bottom: 0;
 }
-
+.transparent {
+  color: transparent !important;
+}
 .head {
   border-right: 1px solid rgba(0, 0, 0, 0.171);
 }
 </style>
 <script>
-import axios from "axios";
 import { defineComponent } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
@@ -162,32 +204,12 @@ import MySelect from "@/components/my_components/MySelect.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
-const url = import.meta.env.VITE_APP_RUTA_API;
-class Product {
-  constructor() {
-    this.producto = "";
-    this.cantidad = 1;
-    this.precio = 0;
-    /*this.sub = 0;*/
-    this.sub = function () {
-      return this.precio + this.cantidad;
-    };
-  }
-  getGanancia() {
-    this.sub = this.cantidad * this.precio;
-    return this.sub.toFixed(2);
-  }
-  getProduct() {
-    return this.producto.id;
-  }
-  setPrecio(data) {
-    if (typeof data != "string") this.precio = data.price;
-    return this.precio;
-  }
-}
+import ConectionOutput from "@/mixin/conections/ConectionOutput";
+import ConectionOutputDetail from "@/mixin/conections/ConectionOutputDetail";
+import ListContent from "@/components/my_other_components/ListContent.vue";
 export default defineComponent({
   props: ["itemSelected"],
-  mixins: [ValidationFunctions, UtilityFunctions],
+  mixins: [ValidationFunctions, UtilityFunctions, ConectionOutput, ConectionOutputDetail],
   inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
@@ -195,112 +217,95 @@ export default defineComponent({
     SelectSearch,
     MyInput,
     MySelect,
+    ListContent,
   },
-  name: "Product",
+  name: "DetailOutput",
   data() {
     return {
-      clients: [],
-      products: [],
-      count: 0,
-
       disabled: false,
       mode: 0,
       title: "",
-      errorMessage: {},
-      validated: false,
       validation: {
-        code: {},
-        client: {},
-        paymentType: {},
-        description: {},
-        detail: [
-          {
-            product: {},
-            quantity: {},
-          },
-        ],
+        header: {
+          order_code: {},
+          client: {},
+          payment_type: {},
+          description: {},
+        },
+        detail: [],
       },
-      validationEmpty: {
-        code: {},
-        client: {},
-        paymentType: {},
-        description: {},
-        detail: [
-          {
-            product: {},
-            quantity: {},
-          },
-        ],
+      itemCopy: {
+        header: {
+          description: null,
+          order_code: null,
+          payment_type: undefined,
+          client: null,
+          total_price: null,
+        },
+        detail: [],
       },
-      item: {
-        description: null,
-        numero: null,
-        fecha: null,
-        paymentType: undefined,
-        cliente: null,
-        detalle: [new Product()],
-        total: null,
-      },
-      aditionalData: null,
-      emailOptions: [],
-      isEmailSelected: false,
+      selectedProducts: [],
+      disabledItemList: [],
+      backupList: [],
+      loadingContentList: false,
     };
-  },
-
-  computed: {
-    facturaTotal: function () {
-      var total = 0;
-      this.item.detalle.forEach((element) => {
-        total += element.sub;
-      });
-      return total;
-    },
   },
   watch: {
     itemSelected() {
-      this.copyOriginalItem();
+      this.resetItemCopy();
+    },
+    "itemCopy.detail": {
+      handler: function () {
+        var total = 0;
+        this.itemCopy.detail.forEach((element) => {
+          total += element.subtotal * 1;
+        });
+        if (typeof total == "number") {
+          this.itemCopy.header.total_price = total.toFixed(2);
+        }
+      },
+      deep: true,
     },
   },
   methods: {
-    copyOriginalItem() {
-      console.log(this.itemSelected);
-      this.item.numero = this.itemSelected.order_code;
-      this.item.description = this.itemSelected.description;
-      this.item.paymentType = this.itemSelected.payment_type
-      if (this.itemSelected.client_name != undefined) {
-        this.item.cliente = {
+    resetItemCopy() {
+      this.itemCopy.header = JSON.parse(JSON.stringify(this.itemSelected));
+
+      if (this.mode != 1) {
+        this.itemCopy.header.client = {
           name: this.itemSelected.client_name,
         };
-        if (this.aditionalData == null) {
-          this.getAditionalData();
-        } else {
-          this.item.detalle = this.aditionalData.detail;
-        }
+        this.getAditionalData(this.itemSelected.id);
+      } else {
+        this.listReset();
+        this.listItemAdd();
       }
     },
-    getAditionalData() {
-      this.getOrderDetailById(this.itemSelected.id);
-    },
-    getOrderDetailById(id) {
-      console.log(id);
-      this.item.detalle = [];
-      var path = url + `order_details/order_details/?id_order=` + id;
-      axios
-        .get(path)
-        .then((response) => {
-          console.log(response);
-          /*response.data.results.forEach((element) => {
-            this.table.rows.push(element);
-          });*/
-        })
-        .catch((e) => {
-          console.log(e);
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
+    getAditionalData(id) {
+      this.loadingContentList = true;
+      this.listReset();
+      this.getOutputDetailRegisters(id).then((response) => {
+        if (response.success) {
+          response.response.data.results.forEach((element) => {
+            this.listItemAdd(element);
           });
-        });
+          this.loadingContentList = false;
+        }
+      });
+    },
+    resetValidation() {
+      this.validation.header = {
+        order_code: {},
+        client: {},
+        payment_type: {},
+        description: {},
+      };
+      for (let i = 0; i < this.validation.detail.length; i++) {
+        this.validation.detail[i] = {
+          product: {},
+          quantity: {},
+        };
+      }
     },
     validateForm() {
       this.validateCode();
@@ -310,31 +315,31 @@ export default defineComponent({
       var _validateDetail = this.validateDetail();
 
       var result =
-        this.validation.code.isValid &&
-        this.validation.client.isValid &&
-        this.validation.paymentType.isValid &&
-        this.validation.description.isValid &&
+        this.validation.header.order_code.isValid &&
+        this.validation.header.client.isValid &&
+        this.validation.header.payment_type.isValid &&
+        this.validation.header.description.isValid &&
         _validateDetail;
       return result;
     },
 
     validateCode() {
-      this.validation.code = this.validationRequiredText(this.item.numero, 3, 50);
+      this.validation.header.order_code = this.validationRequiredText(this.itemCopy.header.order_code, 3, 50);
     },
     validateClient() {
-      this.validation.client = this.validationRequiredSelect(this.item.cliente);
+      this.validation.header.client = this.validationRequiredSelect(this.itemCopy.header.client);
     },
     validatePaymentType() {
-      this.validation.paymentType = this.validationRequiredSelect(this.item.paymentType);
+      this.validation.header.payment_type = this.validationRequiredSelect(this.itemCopy.header.payment_type);
     },
     validateDescription() {
-      this.validation.description = this.validationNoRequiredText(this.item.description, 3, 50);
+      this.validation.header.description = this.validationNoRequiredText(this.itemCopy.header.description, 3, 50);
     },
     validateProduct(index) {
-      this.validation.detail[index].product = this.validationRequiredSelect(this.item.detalle[index].producto);
+      this.validation.detail[index].product = this.validationRequiredSelect(this.itemCopy.detail[index].id);
     },
     validateQuantity(index) {
-      this.validation.detail[index].quantity = this.validationRequiredNumber(this.item.detalle[index].cantidad);
+      this.validation.detail[index].quantity = this.validationRequiredNumber(this.itemCopy.detail[index].stock);
     },
     validateDetail() {
       var resp = true;
@@ -361,49 +366,155 @@ export default defineComponent({
       this.validateDescription();
     },
     inputProduct(index) {
+      console.log(this.selectedProducts[index]);
+      this.listItemChangeFromSelect(index, this.selectedProducts[index]);
+      this.calculateQuatity(index);
       this.validateProduct(index);
     },
     inputQuantity(index) {
       this.validateQuantity(index);
+      this.calculateQuatity(index);
     },
-
-    agregarItem() {
-      this.item.detalle.push(new Product());
+    calculateQuatity(index) {
+      this.itemCopy.detail[index].subtotal = (
+        this.itemCopy.detail[index].price * this.itemCopy.detail[index].stock
+      ).toFixed(2);
+    },
+    listItemAdd(item = null) {
+      if (item == null) {
+        this.selectedProducts.push(null);
+        this.itemCopy.detail.push({
+          id: undefined,
+          stock: 1,
+          price: 0,
+          subtotal: 0,
+        });
+        this.backupList.push({
+          id: undefined,
+          stock: 1,
+          price: 0,
+          subtotal: 0,
+          product: null,
+        });
+      } else {
+        this.selectedProducts.push({ name: item.product_name });
+        this.itemCopy.detail.push({
+          id: item.id_product,
+          price: item.new_sale_price,
+          stock: item.quantity,
+          subtotal: (item.new_sale_price * item.quantity).toFixed(2),
+        });
+        this.backupList.push(item);
+      }
       this.validation.detail.push({
         product: {},
         quantity: {},
       });
+      this.disabledItemList.push(true);
     },
-    eliminarItem(index) {
-      console.log(index);
-      this.item.detalle.splice(index, 1);
-      this.validation.detail.splice(index, 1);
-    },
-    dataToJson(index) {
-      var dataD = [];
-
-      this.item.detalle.forEach((element) => {
-        dataD.push({
-          id_order: index,
-          id_product: element.producto.id,
-          new_sale_price: element.precio,
-          quantity: element.cantidad,
+    buttonListDelete(index) {
+      if (this.mode == 1) {
+        console.log(index);
+        this.itemCopy.detail.splice(index, 1);
+        this.validation.detail.splice(index, 1);
+        this.selectedProducts.splice(index, 1);
+        this.disabledItemList.splice(index, 1);
+        this.backupList.splice(index, 1);
+      } else {
+        this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
+          if (response.success) {
+            this.getAditionalData(this.itemSelected.id);
+          }
         });
-      });
-      this.addItemD(JSON.stringify(dataD));
+      }
     },
-    async saveItem() {
+    buttonListSave(index) {
+      var item = {
+        id: this.backupList[index].id,
+        id_order: this.itemSelected.id,
+        id_product: this.itemCopy.detail[index].id,
+        new_sale_price: this.itemCopy.detail[index].price,
+        quantity: this.itemCopy.detail[index].stock,
+      };
+      if (this.backupList[index].id == undefined) {
+        //agregado recientemente
+        console.log("agregado");
+        console.log(item);
+        this.addOutputDetailRegister(item).then((response) => {
+          if (response.success) {
+            this.getAditionalData(this.itemSelected.id);
+          }
+        });
+      } else {
+        //editado
+        console.log("editado");
+        this.editOutputDetailRegister(item).then((response) => {
+          if (response.success) {
+            this.getAditionalData(this.itemSelected.id);
+          }
+        });
+      }
+    },
+    buttonListEdit(index) {
+      this.disabledItemList[index] = false;
+    },
+    buttonListCancel(index) {
+      this.disabledItemList[index] = true;
+      this.validation.detail[index] = {
+        product: {},
+        quantity: {},
+      };
+      var item = this.backupList[index];
+      this.selectedProducts[index] = { name: item.product_name };
+      this.itemCopy.detail[index] = {
+        id: item.id_product,
+        price: item.new_sale_price,
+        stock: item.quantity,
+        subtotal: (item.new_sale_price * item.quantity).toFixed(2),
+      };
+    },
+    listReset() {
+      this.itemCopy.detail = [];
+      this.validation.detail = [];
+      this.selectedProducts = [];
+      this.disabledItemList = [];
+      this.backupList = [];
+    },
+    listItemChangeFromSelect(index, data) {
+      this.itemCopy.detail[index].id = data.id;
+      this.itemCopy.detail[index].price = data.price;
+    },
+    async buttonSave() {
       if (this.validateForm()) {
-        if (this.item.detalle.length > 0) {
-          console.log(this.item);
-          if (this.textEmpty(this.item.description, "")) this.item.description = "Ninguna";
-          const formData = new FormData();
-          formData.append("id_client", this.item.cliente.id);
-          formData.append("description", this.item.description);
-          formData.append("order_code", this.item.numero);
-          formData.append("payment_type", this.item.paymentType);
-          formData.append("total_price", this.facturaTotal.toFixed(2));
-          this.addItemC(formData);
+        if (this.itemCopy.detail.length > 0) {
+          switch (this.mode) {
+            case 1:
+              this.addOutputRegister(this.itemCopy.header).then((response) => {
+                var id_order = 0;
+                if (response.success) {
+                  id_order = response.response.data.id;
+                  this.addOutputDetailRegisters(id_order, this.itemCopy.detail).then((response) => {
+                    if (response.success) {
+                      this.$emit("item:add");
+                      this.closeModal();
+                    }
+                  });
+                } else {
+                  id_order = -1;
+                }
+              });
+              break;
+            case 3:
+              this.editOutputRegister(this.itemCopy.header).then((response) => {
+                if (response.success) {
+                  this.$emit("item:edit");
+                  this.closeModal();
+                }
+              });
+              break;
+            default:
+              break;
+          }
         } else {
           this.showToast({
             title: "Ocurrió un error",
@@ -419,87 +530,41 @@ export default defineComponent({
         });
       }
     },
-    async addItemD(data) {
-      console.log(data);
-      const config = {
-        headers: {
-          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
-        },
-      };
-      var path = url + `order_details/order_details/`;
-      axios
-        .post(path, data, config)
-        .then((response) => {
-          console.log(response);
-          this.getOutputs(1);
-          this.closeModal();
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+    buttonEdit() {
+      this.changeMode(3);
     },
-
-    async addItemC(data) {
-      var index = 0;
-      var path = url + `orders/orders/`;
-      await axios
-        .post(path, data)
-        .then((response) => {
-          index = response.data.id;
-          console.log(index);
-          this.dataToJson(index);
-        })
-        .catch((e) => {
-          console.log(e);
-          index = -1;
-        });
-      return index;
+    buttonCancel() {
+      this.resetItemCopy();
+      this.changeMode(2);
     },
-    editItem(data) {
-      console.log(data);
-      var path = url + `products/products/` + this.itemSelected.id + "/";
-      axios
-        .put(path, data)
-        .then((response) => {
-          this.showToast({
-            title: "Operación exitosa",
-            message: "El registro se edito correctamente.",
-            type: 1,
-          });
-          this.getProducts();
+    buttonDelete() {
+      this.confirmDeleteOutputRegister(this.itemCopy.header.id).then((response) => {
+        if (response.success) {
+          this.$emit("item:delete");
           this.closeModal();
-        })
-        .catch(() => {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
+        }
+      });
     },
     changeMode(mode) {
-      this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
-      switch (mode) {
+      this.mode = mode;
+      this.resetValidation();
+      switch (this.mode) {
         case 1:
-          this.title = "Agregar Salida";
+          this.title = "Agregar Proveedor";
           this.disabled = false;
           break;
         case 2:
-          this.title = "Visualizar Salida";
+          this.title = "Visualizar Proveedor";
           this.disabled = true;
           break;
         case 3:
-          this.title = "Editar Salida";
+          this.title = "Editar Proveedor";
           this.disabled = false;
           break;
         default:
           this.title = "Error";
           break;
       }
-      this.mode = mode;
-    },
-    editMode() {
-      this.changeMode(3);
     },
     closeModal() {
       try {
@@ -507,31 +572,9 @@ export default defineComponent({
       } catch (error) {}
     },
     openModal() {
-      this.validated = false;
       this.$refs.myModal.openModal();
     },
-    async getProducts() {
-      var path = url + `products/products/`;
-      axios
-        .get(path)
-        .then((response) => {
-          response.data.results.forEach((element) => {
-            this.products.push(element);
-          });
-        })
-        .catch((e) => {
-          console.log(e.message);
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
-            type: 2,
-          });
-        });
-    },
   },
-  async created() {
-    //await this.getclients();
-    //await this.getProducts();
-  },
+  async created() {},
 });
 </script>

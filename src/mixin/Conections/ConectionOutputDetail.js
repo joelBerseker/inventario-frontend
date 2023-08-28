@@ -2,8 +2,8 @@ import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   methods: {
-    async getOutputRegisters(page) {
-      var path = this.urlConectionOutput + `?page=` + page;
+    async getOutputDetailRegisters(id) {
+      var path = this.urlConectionOutputDetail + `?id_order=` + id;
       return new Promise((resolve, reject) => {
         axios
           .get(path)
@@ -20,17 +20,15 @@ export default {
           });
       });
     },
-    async addOutputRegister(data) {
-      var path = this.urlConectionOutput;
+    async addOutputDetailRegister(data) {
+      var path = this.urlConectionOutputDetail;
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "client") {
-          console.log("entre 2222")
+        if (key == "id" || key == "created_at" || key == "updated_at") {
           continue;
         }
         form_data.append(key, data[key]);
       }
-      form_data.append("id_client", data.client.id);
       return new Promise((resolve, reject) => {
         axios
           .post(path, form_data)
@@ -52,16 +50,56 @@ export default {
           });
       });
     },
-    async editOutputRegister(data) {
-      var path = this.urlConectionOutput  + data.id + "/";
+    arrayOutputDetailToJson(id_order, array) {
+      var resp = [];
+      array.forEach((element) => {
+        resp.push({
+          id_order: id_order,
+          id_product: element.id,
+          new_sale_price: element.price,
+          quantity: element.stock,
+        });
+      });
+      return JSON.stringify(resp)
+    },
+    async addOutputDetailRegisters(id, data) {
+      var path = this.urlConectionOutputDetail;
+      var list_data = this.arrayOutputDetailToJson(id, data)
+      const config = {
+        headers: {
+          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
+        },
+      };
+      return new Promise((resolve, reject) => {
+        axios
+          .post(path, list_data, config)
+          .then((response) => {
+            this.showMessage({
+              title: "Operación exitosa",
+              message: "El registro se agrego correctamente.",
+              type: 1,
+            });
+            resolve({ success: true, response: response });
+          })
+          .catch((error) => {
+            this.showMessage({
+              title: "Ocurrió un error",
+              message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+              type: 2,
+            });
+            resolve({ success: false, response: error });
+          });
+      });
+    },
+    async editOutputDetailRegister(data) {
+      var path = this.urlConectionOutputDetail  + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "id" || key == "created_at" || key == "updated_at" || key == "client") {
+        if (key == "id" || key == "created_at" || key == "updated_at" || key == "supplier_image") {
           continue;
         }
         form_data.append(key, data[key]);
       }
-      form_data.append("id_client", data.client.id);
       return new Promise((resolve, reject) => {
         axios
           .put(path, form_data)
@@ -83,7 +121,7 @@ export default {
           });
       });
     },
-    async confirmDeleteOutputRegister(id) {
+    async confirmDeleteOutputDetailRegister(id) {
       return new Promise((resolve, reject) => {
         this.confirmDialogue({
           title: "Eliminar Registro",
@@ -91,7 +129,7 @@ export default {
           okButton: "Eliminar",
         }).then((result) => {
           if (result) {
-            this.deleteOutputRegister(id)
+            this.deleteOutputDetailRegister(id)
               .then((response) => {
                 resolve({ success: true, response: response });
               })
@@ -104,8 +142,8 @@ export default {
         });
       });
     },
-    async deleteOutputRegister(id) {
-      var path = this.urlConectionOutput + id + "/";
+    async deleteOutputDetailRegister(id) {
+      var path = this.urlConectionOutputDetail + id + "/";
       return new Promise((resolve, reject) => {
         axios
           .delete(path)
@@ -127,8 +165,8 @@ export default {
           });
       });
     },
-    async getOutputRegister(id) {
-      var path = this.urlConectionOutput + id + "/";
+    async getOutputDetailRegister(id) {
+      var path = this.urlConectionOutputDetail + id + "/";
       return new Promise((resolve, reject) => {
         axios
           .get(path)
@@ -151,7 +189,7 @@ export default {
   },
   data() {
     return {
-      urlConectionOutput: url + "orders/orders/"
+      urlConectionOutputDetail: url + "order_details/order_details/"
     };
   },
 };
