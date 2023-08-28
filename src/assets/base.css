@@ -160,6 +160,15 @@ th {
   padding-bottom: 0.4rem !important;
 }
 
+.my-table td, .my-table th{
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.my-table th{
+  background-color: var(--my-3th-color);
+  color: var(--my-1th-color);
+}
+
 td:not(td:first-child),
 th:not(th:first-child) {
   border-left: none !important;

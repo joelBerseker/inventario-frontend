@@ -1,10 +1,8 @@
 <template>
   <div class="dropdown">
     <MyForm :name="name" :message="validation.validationMessage">
-      <div v-if="viewMode && disabled" class="d-flex">
-        <div v-if="this.$slots.pre != undefined" class="me-1">
-          <slot name="pre"></slot>
-        </div>
+      <div v-if="viewMode && disabled" :class="viewClass">
+        <slot v-if="this.$slots.pre != undefined" name="pre"></slot>
         {{ itemLocal }}
       </div>
       <div v-else class="input-group input-group-sm">
@@ -57,6 +55,7 @@ export default defineComponent({
     },
     type: {},
     inputClass: {},
+    viewClass: {},
     disabled: {},
   },
   data() {

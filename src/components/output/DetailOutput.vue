@@ -2,7 +2,7 @@
   <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl">
     <div class="modal-body">
       <div class="row">
-        <div class="col-4 head pe-3">
+        <div class="col-3 head pe-3">
           <MyInput
             class="mb-3"
             type="text"
@@ -41,7 +41,7 @@
           />
         </div>
 
-        <div class="col-8 ps-3">
+        <div class="col-9 ps-3">
           <div class="row mb-3 d-flex align-items-end">
             <div class="col">
               <p class="title-text">Lista de Productos</p>
@@ -51,112 +51,114 @@
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
               </button>
             </div>
-            <div class="col-3">
+            <div class="col-2">
               <MyInput
                 name="Total"
                 type="number"
                 inputClass="text-end"
                 v-model="itemCopy.header.total_price"
                 :disabled="true"
-                ><template v-slot:pre>
-                  <p>S/.</p>
-                </template>
+                :viewMode="disabled"
+                ><template v-slot:pre> S/. </template>
               </MyInput>
             </div>
           </div>
 
           <ListContent ref="tableContent" :loading="this.loadingContentList" :size="itemCopy.detail.length">
-            <div v-for="(item, index) in itemCopy.detail" :key="index" class="detalle-item">
-              <div class="card mb-3" :id="index">
-                <div class="card-body p-3">
-                  <div class="row mb-1">
-                    <div class="form-group col-6">
-                      <SelectSearch
-                        name="Nombre"
-                        v-model="selectedProducts[index]"
-                        link="products/products/"
-                        :validation="validation.detail[index].product"
-                        v-on:update:modelValue="inputProduct(index)"
-                        :id="index + 'product'"
-                        :disabled="disabledItemList[index]"
-                      >
-                      </SelectSearch>
-                    </div>
+            <table class="my-table w-100">
+              <tr>
+                <th>Nombre</th>
+                <th>Cantidad</th>
+                <th>Precio de venta</th>
+                <th>Subtotal</th>
+                <th v-if="mode != 2"></th>
+              </tr>
 
-                    <div class="form-group col-3">
-                      <MyInput
-                        name="Cantidad"
-                        type="number"
-                        inputClass="text-end"
-                        :validation="validation.detail[index].quantity"
-                        v-model="item.stock"
-                        v-on:input="inputQuantity(index)"
-                        :disabled="disabledItemList[index]"
-                      />
-                    </div>
-                    <div class="form-group col-3">
-                      <MyInput
-                        name="Subtotal"
-                        type="number"
-                        inputClass="text-end"
-                        v-model="item.subtotal"
-                        :disabled="true"
-                      />
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="form-group col-3">
-                      <MyInput
-                        name="Precio de venta"
-                        type="number"
-                        inputClass="text-end"
-                        v-model="item.price"
-                        :disabled="true"
-                      />
-                    </div>
-                    <div v-if="!disabled" class="form-group col d-flex flex-column text-end">
-                      <div>
-                        <label class="secondary-text transparent"> Eliminar</label>
-                      </div>
-                      <div>
-                        <button
-                          v-if="disabledItemList[index]"
-                          type="button"
-                          class="btn btn-sm btn-primary me-1"
-                          @click="buttonListEdit(index)"
-                        >
-                          <i class="bi bi-pen"></i>
-                        </button>
-                        <button
-                          v-if="!disabledItemList[index]"
-                          type="button"
-                          class="btn btn-sm btn-secondary me-1"
-                          @click="buttonListCancel(index)"
-                        >
-                          <i class="bi bi-arrow-left"></i>
-                        </button>
-                        <button
-                          v-if="!disabledItemList[index]"
-                          type="button"
-                          class="btn btn-sm btn-primary me-1"
-                          @click="buttonListSave(index)"
-                        >
-                          <i class="bi bi-check"></i>
-                        </button>
-                        <button
-                          v-if="disabledItemList[index]"
-                          type="button"
-                          class="btn btn-sm btn-danger"
-                          @click="buttonListDelete(index)"
-                        >
-                          <i class="bi bi-trash"></i>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <tr v-for="(item, index) in itemCopy.detail" :key="index" class="detalle-item">
+                <td>
+                  <SelectSearch
+                    v-model="selectedProducts[index]"
+                    link="products/products/"
+                    :validation="validation.detail[index].product"
+                    v-on:update:modelValue="inputProduct(index)"
+                    :id="index + 'product'"
+                    :disabled="disabledItemList[index] && mode != 1"
+                    :viewMode="disabled"
+                  >
+                  </SelectSearch>
+                </td>
+
+                <td>
+                  <MyInput
+                    type="number"
+                    inputClass="text-end"
+                    viewClass="text-end"
+                    :validation="validation.detail[index].quantity"
+                    v-model="item.stock"
+                    v-on:input="inputQuantity(index)"
+                    :disabled="disabledItemList[index] && mode != 1"
+                    :viewMode="disabled"
+                  />
+                </td>
+                <td>
+                  <MyInput
+                    type="number"
+                    inputClass="text-end"
+                    viewClass="text-end"
+                    v-model="item.price"
+                    :disabled="true"
+                    :viewMode="disabled"
+                    ><template v-slot:pre> S/. </template>
+                  </MyInput>
+                </td>
+                <td >
+                  <MyInput
+                    type="number"
+                    inputClass="text-end"
+                    viewClass="text-end"
+                    v-model="item.subtotal"
+                    :disabled="true"
+                    :viewMode="disabled"
+                    ><template v-slot:pre> S/. </template>
+                  </MyInput>
+                </td>
+
+                <td v-if="!disabled" class="form-group col d-flex text-end">
+                  <button
+                    v-if="disabledItemList[index] && mode != 1"
+                    type="button"
+                    class="btn btn-sm btn-primary me-1"
+                    @click="buttonListEdit(index)"
+                  >
+                    <i class="bi bi-pen"></i>
+                  </button>
+                  <button
+                    v-if="!disabledItemList[index]"
+                    type="button"
+                    class="btn btn-sm btn-secondary me-1"
+                    @click="buttonListCancel(index)"
+                  >
+                    <i class="bi bi-arrow-left"></i>
+                  </button>
+                  <button
+                    v-if="!disabledItemList[index]"
+                    type="button"
+                    class="btn btn-sm btn-primary me-1"
+                    @click="buttonListSave(index)"
+                  >
+                    <i class="bi bi-check"></i>
+                  </button>
+                  <button
+                    v-if="disabledItemList[index]"
+                    type="button"
+                    class="btn btn-sm btn-danger"
+                    @click="buttonListDelete(index)"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </table>
           </ListContent>
         </div>
       </div>
@@ -248,6 +250,38 @@ export default defineComponent({
       disabledItemList: [],
       backupList: [],
       loadingContentList: false,
+
+      table: {
+        columns: [
+          {
+            label: "Nombre",
+            field: "name",
+            width: "5%",
+          },
+          {
+            label: "Cantidad",
+            field: "amount",
+            width: "10%",
+          },
+          {
+            label: "Precio de venta",
+            field: "price",
+            width: "10%",
+          },
+          {
+            label: "Subtotal",
+            field: "subtotal",
+            width: "20%",
+          },
+          {
+            label: "",
+            field: "quick",
+            width: "1%",
+          },
+        ],
+        rows: [],
+        totalRecordCount: 0,
+      },
     };
   },
   watch: {
@@ -382,14 +416,14 @@ export default defineComponent({
     },
     listItemAdd(item = null) {
       if (item == null) {
-        this.selectedProducts.push(null);
-        this.itemCopy.detail.push({
+        this.selectedProducts.unshift(null);
+        this.itemCopy.detail.unshift({
           id: undefined,
           stock: 1,
           price: 0,
           subtotal: 0,
         });
-        this.backupList.push({
+        this.backupList.unshift({
           id: undefined,
           stock: 1,
           price: 0,
@@ -397,16 +431,16 @@ export default defineComponent({
           product: null,
         });
       } else {
-        this.selectedProducts.push({ name: item.product_name });
-        this.itemCopy.detail.push({
+        this.selectedProducts.unshift({ name: item.product_name });
+        this.itemCopy.detail.unshift({
           id: item.id_product,
           price: item.new_sale_price,
           stock: item.quantity,
           subtotal: (item.new_sale_price * item.quantity).toFixed(2),
         });
-        this.backupList.push(item);
+        this.backupList.unshift(item);
       }
-      this.validation.detail.push({
+      this.validation.detail.unshift({
         product: {},
         quantity: {},
       });

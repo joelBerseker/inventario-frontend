@@ -2,7 +2,7 @@
   <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl">
     <div class="modal-body">
       <div class="row">
-        <div class="col-4 head pe-3">
+        <div class="col-3 head pe-3">
           <MyForm class="mb-3" name="Numero de factura">
             <input type="text" v-model="factura.numero" class="form-control form-control-sm" id="numero" required />
           </MyForm>
@@ -24,7 +24,7 @@
           </MyForm>
         </div>
 
-        <div class="col-8 ps-3">
+        <div class="col-9 ps-3">
           <div class="row mb-3 d-flex align-items-end">
             <div class="col">
               <p class="title-text">Lista de Productos</p>
