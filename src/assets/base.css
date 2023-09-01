@@ -95,7 +95,7 @@ body {
   border-radius: 100rem !important;
   border: none !important;
 
-  text-transform:uppercase ;
+
   
 }
 .input-group > :not(:first-child):not(.dropdown-toggle):not(.dropdown-menu) {
