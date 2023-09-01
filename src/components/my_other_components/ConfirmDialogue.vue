@@ -9,7 +9,7 @@
                 Cancelar
             </button>
             <button v-on:click="_confirm" type="button" class="btn btn-primary btn-sm button-margin">
-                <i class="bi bi-check-circle"></i>
+                <i class="bi bi-check-lg"></i>
                 {{ okButton }}
             </button>
         </div>

@@ -67,11 +67,11 @@
         Editar
       </button>
       <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
-        <i class="bi bi-arrow-left-circle"></i> 
+        <i class="bi bi-arrow-left"></i> 
         Cancelar
       </button>
       <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
-        <i class="bi bi-check-circle"></i>
+        <i class="bi bi-check-lg"></i>
         Guardar
       </button>
     </div>

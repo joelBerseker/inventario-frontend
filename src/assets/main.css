@@ -24,7 +24,6 @@
 }
 .btn-primary-outline {
   color: var(--my-1th-color) !important;
-
   border-color: var(--my-border-color) !important;
 }
 .btn-primary-outline:hover {
@@ -50,11 +49,11 @@
   opacity: 1;
 }
 .form-control-sm {
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
 }
 
 .dropdown-menu {
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
 }
 
 .modal.modal-static .modal-dialog {
@@ -69,7 +68,7 @@
 }
 
 .pagination-sm {
-  --bs-pagination-font-size: 0.9rem !important;
+  --bs-pagination-font-size: 1rem !important;
   --bs-pagination-color: #212529 !important;
 
   --bs-pagination-hover-color: var(--my-4th-color) !important;
@@ -105,7 +104,7 @@ input[type="number"] {
 }
 
 .secondary-text {
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   color: var(--my-6th-color) !important;
 }
 .margin-dropdown {

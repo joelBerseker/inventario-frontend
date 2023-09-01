@@ -213,7 +213,7 @@ export default defineComponent({
                 type="button"
                 class="btn btn-secondary btn-sm me-1"
               >
-                <i class="bi bi-journal"></i>
+                <i class="bi bi-journal-text"></i>
               </button>
               <button
                 v-on:click="deleteItem(data.value)"

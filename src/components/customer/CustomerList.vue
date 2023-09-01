@@ -186,7 +186,7 @@ export default defineComponent({
     <div class="row justify-content-md-end">
       <div class="col-6">
         <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
-          <i class="bi bi-plus-circle"></i> Agregar Cliente
+          <i class="bi bi-plus-lg"></i> Agregar Cliente
         </button>
       </div>
       <div class="col">
@@ -220,7 +220,7 @@ export default defineComponent({
         <template v-slot:quick="data">
           <div class="d-flex">
             <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
-              <i class="bi bi-journal"></i>
+              <i class="bi bi-journal-text"></i>
             </button>
             <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>

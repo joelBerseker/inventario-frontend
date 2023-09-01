@@ -63,11 +63,12 @@ export default defineComponent({
       <div>
         <div class="row mt-2">
           <div class="col-auto breadcrumb-item">
-            <span v-if="topbar.breadcrumb.length > 1"
-              ><i class="bi bi-arrow-left-circle"></i>
-              <RouterLink :to="topbar.breadcrumb[topbar.breadcrumb.length - 2].link" class="color-1"> Atras</RouterLink>
+            <span v-if="topbar.breadcrumb.length > 1">
+              <RouterLink :to="topbar.breadcrumb[topbar.breadcrumb.length - 2].link" class="color-1">
+                <i class="bi bi-arrow-left"></i> Atras
+              </RouterLink>
             </span>
-            <span v-else class="color-6"><i class="bi bi-arrow-left-circle"></i> Atras</span>
+            <span v-else class="color-6"><i class="bi bi-arrow-left"></i> Atras</span>
           </div>
           <div class="col">
             <transition name="slide-fade" mode="out-in">
@@ -99,7 +100,7 @@ export default defineComponent({
   transform: translateX(10px);
   opacity: 0;
 }
-.slide-fade-enter-from{
+.slide-fade-enter-from {
   transform: translateX(-10px);
   opacity: 0;
 }
@@ -119,11 +120,11 @@ export default defineComponent({
 
 .breadcrumb a {
   color: var(--my-1th-color);
-  /*text-decoration-line: none;*/
+  text-decoration-line: none;
 }
 
 .breadcrumb-item a {
-  /*text-decoration-line: none;*/
+  text-decoration-line: none;
 }
 
 .margin-breadcrumb {

@@ -5,7 +5,7 @@
         <div class="modal-header">
           <p class="title-text">{{ this.title }}</p>
           <button v-if="closeButton" tabindex="-1" type="button" class="btn btn-secondary-outline btn-sm" data-bs-dismiss="modal" aria-label="Close">
-            <i class="bi bi-x-circle"></i> Cerrar
+            <i class="bi bi-x-lg"></i>
           </button>
         </div>
         <slot></slot>

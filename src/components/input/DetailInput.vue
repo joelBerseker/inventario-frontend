@@ -31,7 +31,7 @@
             </div>
             <div class="col-6 text-end">
               <button type="button" class="btn btn-primary btn-sm me-1">
-                <i class="bi bi-plus-circle"></i> Agregar Producto
+                <i class="bi bi-plus-lg"></i> Agregar Producto
               </button>
               <button type="button" class="btn btn-sm btn-primary" @click="agregarItem">
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
@@ -149,7 +149,7 @@
         Editar
       </button>
       <button type="button" @click="saveItem" class="btn btn-success btn-sm button-margin" v-if="mode != 2">
-        <i class="bi bi-check-circle"></i>
+        <i class="bi bi-check-lg"></i>
         Guardar
       </button>
     </div>

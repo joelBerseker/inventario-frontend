@@ -155,7 +155,7 @@
         <i class="bi bi-x-circle"></i> Cancelar
       </button>
       <button class="btn btn-sm btn-primary profile-action-btn ms-1" v-if="editing" @click="saveChanges">
-        <i class="bi bi-check-circle"></i> Guardar
+        <i class="bi bi-check-lg"></i> Guardar
       </button>
     </div>
   </SystemContent>

@@ -187,7 +187,7 @@ export default defineComponent({
     <div class="row justify-content-md-end">
       <div class="col-6">
         <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
-          <i class="bi bi-plus-circle"></i> Agregar Salida
+          <i class="bi bi-plus-lg"></i> Agregar Salida
         </button>
       </div>
       <div class="col">
@@ -257,7 +257,7 @@ export default defineComponent({
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
                 <div class="dropdown-item item-select" v-on:click.stop="buttonView(data.value)">
-                  <i class="bi bi-journal"></i> Visualizar
+                  <i class="bi bi-journal-text"></i> Visualizar
                 </div>
               </li>
               <li v-for="option in invoiceOptions" :key="option.value">

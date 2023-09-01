@@ -5,7 +5,7 @@
         <strong class="me-auto"><i :class="'bi-hover-bold ' + icon"></i> {{ title }}</strong>
 
         <button type="button" class="btn btn-toast" data-bs-dismiss="toast" aria-label="Close">
-          <i class="bi bi-x"></i>
+          <i class="bi bi-x-lg"></i>
         </button>
       </div>
       <div class="toast-body">
@@ -63,7 +63,7 @@ export default defineComponent({
       var resp = "";
       switch (key) {
         case 1:
-          resp = "bi bi-check-circle";
+          resp = "bi bi-check-lg";
           break;
         case 2:
           resp = "bi bi-exclamation-circle";

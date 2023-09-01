@@ -63,7 +63,7 @@ body {
   background: var(--color-background);
   transition: color 0.5s, background-color 0.5s;
 
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
   text-rendering: optimizeLegibility !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
@@ -87,8 +87,9 @@ body {
 }
 
 .btn {
-  font-size: 0.9rem !important;
+  font-size: 1rem !important;
   border-radius: 100rem !important;
+  border: none !important;
 }
 .input-group > :not(:first-child):not(.dropdown-toggle):not(.dropdown-menu) {
   border-top-left-radius: 0 !important;
@@ -246,7 +247,7 @@ th:not(th:last-child) {
 /*DARK MODE*/
 
 .dark-mode .pagination-sm {
-  --bs-pagination-font-size: 0.9rem !important;
+  --bs-pagination-font-size: 1rem !important;
   --bs-pagination-color: var(--my-dark-2th-color) !important;
 
   /*--bs-pagination-hover-border-color: var(--my-3th-color) !important;*/
