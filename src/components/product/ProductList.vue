@@ -195,12 +195,12 @@ export default defineComponent({
     <div class="row justify-content-md-end">
       <div class="col-6">
         <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
-          <i class="bi bi-plus-lg"></i> Agregar Producto
+          <p><i class="bi bi-plus-lg"></i> Agregar Producto</p>
         </button>
         <button
           v-on:click="this.$router.push('/product/add-product-excel')"
           type="button"
-          class="btn btn-primary btn-sm mb-3 ms-1"
+          class="btn btn-primary-text btn-sm mb-3 ms-1"
         >
           <i class="bi bi-file-earmark-spreadsheet"></i>
           Agregar por Excel

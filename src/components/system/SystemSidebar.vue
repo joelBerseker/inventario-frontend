@@ -53,6 +53,12 @@ export default defineComponent({
                     icon: "bi bi-tag",
                     url: "/category"
                 },
+                {
+                    title: "Mas información",
+                    desc: "With supporting text below as a natural lead-in to additional content.",
+                    icon: "bi bi-info-circle",
+                    url: "/about"
+                },
             ]
         };
 
@@ -107,7 +113,7 @@ export default defineComponent({
         </div>
         <div v-for="item in list" :key="item.title" class="my-1 px-2 d-flex w-100">
             <RouterLink :to="item.url" class="w-100 item-menu m-0">
-                <div class="py-2 px-3">
+                <div class="content-item-menu">
                     <i :class="item.icon"></i>
                     <transition name="t-sidebar-item" mode="out-in">
                         <span v-show="showSidebar">&nbsp;{{ item.title }}</span>
@@ -116,19 +122,7 @@ export default defineComponent({
                 </div>
             </RouterLink>
         </div>
-        <div class="d-flex w-100 color-1 px-3">
-            <hr class="w-100 my-2" />
-        </div>
-        <div class="my-1 px-2 d-flex w-100 ">
-            <RouterLink to="/about" class="w-100 item-menu m-0 ">
-                <div class="py-2 px-3">
-                    <i class="bi bi-info-circle "></i>
-                    <transition name="t-sidebar-item" mode="out-in">
-                        <span v-show="showSidebar">&nbsp;Mas información</span>
-                    </transition>
-                </div>
-            </RouterLink>
-        </div>
+      
         <transition name="t-sidebar-item" mode="out-in">
         <div v-show="showSidebar" class="color-1 footer-text">
             Desarrollado por Gleaming Glow Team
@@ -167,11 +161,10 @@ export default defineComponent({
     color: var(--my-1th-color);
     border-radius: var(--my-border-radius) !important;
     margin: 0.25rem;
-
     transform: translateX(0px);
 }
 
-.item-menu::before {
+/*.item-menu::before {
     content: '';
     display: inline-block;
     position: absolute;
@@ -179,21 +172,32 @@ export default defineComponent({
     height: 100%;
     border-radius: var(--my-border-radius) !important;
     z-index: -3;
-    /*transform: translateX(-10px); */
+    /*transform: translateX(-10px); 
     transition: 0.5s;
 }
-
-.main-text {
-    color: var(--my-1th-color);
-    height: 88px;
-}
-
 .item-menu:hover::before,
 .router-link-exact-active::before {
     background-color: var(--my-3th-color);
     transform: translateX(0px);
 }
+*/
+.main-text {
+    color: var(--my-1th-color);
+    height: 88px;
+}
 
+
+.content-item-menu {
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: var(--my-border-radius);
+}
+.content-item-menu:hover,
+.router-link-exact-active .content-item-menu {
+  background-color: var(--my-3th-color);
+}
 .btn-sidebar {
     position: absolute;
     margin-top: 1rem;

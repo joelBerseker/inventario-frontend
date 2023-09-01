@@ -42,18 +42,14 @@ export default defineComponent({
           <p :key="topbar.title" class="title-text"><i :class="topbar.icon"></i> {{ topbar.title }}</p>
         </transition>
       </div>
-      <div class="col text-end">
-        <button v-on:click="this.$router.push('/user')" type="button" class="btn btn-primary-outline btn-sm me-1">
-          <i class="bi bi-person-vcard"></i> {{ userName }}
-        </button>
-        <button
-          v-on:click="this.$router.push('/notifications')"
-          type="button"
-          class="btn btn-primary-outline btn-sm me-1"
-        >
-          <i class="bi bi-bell"></i>
-        </button>
-        <button v-on:click="buttonLogout" type="button" class="btn btn-primary-outline btn-sm">
+      <div class="col d-flex justify-content-end">
+        <RouterLink to="/user" class="item-menu">
+          <div class="content-item-menu"><i class="bi bi-person-vcard"></i> {{ userName }}</div>
+        </RouterLink>
+        <RouterLink to="/notifications" class="item-menu ms-1">
+          <div class="content-item-menu"><i class="bi bi-bell"></i></div>
+        </RouterLink>
+        <button v-on:click="buttonLogout" type="button" class="btn btn-primary-outline btn-sm ms-1">
           <i class="bi bi-power"></i>
         </button>
       </div>
@@ -90,6 +86,23 @@ export default defineComponent({
   </div>
 </template>
 <style scoped>
+.item-menu {
+  text-decoration-line: none;
+  color: var(--my-1th-color);
+  border-radius: var(--my-border-radius) !important;
+  display: inline-block;
+}
+.content-item-menu {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  border-radius: 100rem;
+}
+.content-item-menu:hover,
+.router-link-exact-active .content-item-menu {
+  background-color: var(--my-3th-color);
+}
 .slide-fade-enter-active,
 .slide-fade-enter {
   transition: all 0.3s ease;

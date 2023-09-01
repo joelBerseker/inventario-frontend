@@ -22,13 +22,18 @@
   background-color: var(--my-3th-color) !important;
   border-color: var(--my-3th-color) !important;
 }
+.btn-primary-text {
+  color: var(--my-3th-color) !important;
+  
+}
 .btn-primary-outline {
   color: var(--my-1th-color) !important;
   border-color: var(--my-border-color) !important;
 }
-.btn-primary-outline:hover {
+.btn-primary-outline:hover, .btn-primary-text:hover {
   border-color: var(--my-3th-color) !important;
   background-color: var(--my-3th-color) !important;
+  color: var(--my-1th-color) !important;
 }
 
 .btn-secondary-outline {
