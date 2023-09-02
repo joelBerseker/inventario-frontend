@@ -29,6 +29,7 @@ export default {
         }
         form_data.append(key, data[key]);
       }
+      form_data.append("manage_stock", false);
       return new Promise((resolve, reject) => {
         axios
           .post(path, form_data)
