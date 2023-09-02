@@ -452,12 +452,7 @@ export default defineComponent({
     },
     buttonListDelete(index) {
       if (this.mode == 1) {
-        console.log(index);
-        this.itemCopy.detail.splice(index, 1);
-        this.validation.detail.splice(index, 1);
-        this.selectedProducts.splice(index, 1);
-        this.disabledItemList.splice(index, 1);
-        this.backupList.splice(index, 1);
+        this.listDelete(index);
       } else {
         this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
           if (response.success) {
@@ -465,6 +460,13 @@ export default defineComponent({
           }
         });
       }
+    },
+    listDelete(index) {
+      this.itemCopy.detail.splice(index, 1);
+      this.validation.detail.splice(index, 1);
+      this.selectedProducts.splice(index, 1);
+      this.disabledItemList.splice(index, 1);
+      this.backupList.splice(index, 1);
     },
     buttonListSave(index) {
       var item = {
@@ -517,6 +519,13 @@ export default defineComponent({
       this.selectedProducts = [];
       this.disabledItemList = [];
       this.backupList = [];
+    },
+    listDeleteNull() {
+      for (let i = this.backupList.length-1; i >=0; i--) {
+        if (this.backupList[i].id == undefined) {
+          this.listDelete(i);
+        }
+      }
     },
     listItemChangeFromSelect(index, data) {
       this.itemCopy.detail[index].id = data.id;
@@ -605,6 +614,7 @@ export default defineComponent({
       }
     },
     closeModal() {
+      this.listDeleteNull();
       try {
         this.$refs.myModal.closeModal();
       } catch (error) {}
