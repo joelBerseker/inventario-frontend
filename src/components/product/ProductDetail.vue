@@ -1,8 +1,8 @@
 <template>
-  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title">
+  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" v-on:mymodal:close="closeModal">
     <div class="modal-body">
       <div class="row mb-3">
-        <div class="col-4">
+        <div class="col-6">
           <MyInput
             type="text"
             name="Código"
@@ -12,7 +12,7 @@
             v-on:input="inputCode()"
           />
         </div>
-        <div class="col">
+        <div class="col-6">
           <MyInput
             type="text"
             name="Nombre"
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <div class="col">
+        <div class="col-6">
           <MyInput
             type="text"
             name="Precio de Compra"
@@ -33,12 +33,10 @@
             v-on:input="inputCost()"
             :disabled="disabled"
           >
-            <template v-slot:pre>
-              <p>S/.</p>
-            </template>
+            <template v-slot:pre> S/. </template>
           </MyInput>
         </div>
-        <div class="col">
+        <div class="col-6">
           <MyInput
             type="text"
             name="Precio de Venta"
@@ -47,12 +45,21 @@
             v-on:input="inputPrice()"
             :disabled="disabled"
           >
-            <template v-slot:pre>
-              <p>S/.</p>
-            </template>
+            <template v-slot:pre> S/. </template>
           </MyInput>
         </div>
-        <div class="col">
+      </div>
+      <div class="row mb-3">
+        <div class="col-6">
+          <MyInput
+            type="text"
+            name="Medida"
+            v-model="itemCopy.measure"
+            :disabled="disabled"
+            v-on:input="inputStock()"
+          />
+        </div>
+        <div class="col-6">
           <MyInput
             type="text"
             name="Cantidad en Inventario"

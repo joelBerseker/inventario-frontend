@@ -1,5 +1,5 @@
 <template>
-  <MyModal ref="myModal" :id="'supplierDetailModal'" :title="this.title">
+  <MyModal ref="myModal" :id="'supplierDetailModal'" :title="this.title" v-on:mymodal:close="closeModal">
     <div class="modal-body">
       <MyInput
         class="mb-3"
@@ -11,7 +11,7 @@
         v-on:input="inputName()"
       />
       <div class="row mb-3">
-        <div class="col-4">
+        <div class="col-6">
           <MySelect
             name="Tipo de documento"
             :validation="validation.documentType"
@@ -21,7 +21,7 @@
             v-on:update="inputDocumentType()"
           />
         </div>
-        <div class="col">
+        <div class="col-6">
           <MyInput
             name="Documento"
             type="text"
@@ -32,33 +32,31 @@
           />
         </div>
       </div>
-      <MyInput
-        class="mb-3"
-        name="Telefono"
-        type="text"
-        v-model="itemCopy.phone"
-        :validation="validation.phone"
-        :disabled="disabled"
-        v-on:input="inputPhone()"
-      />
-      <MyInput
-        class="mb-3"
-        name="Dirección"
-        type="text"
-        v-model="itemCopy.address"
-        :validation="validation.address"
-        :disabled="disabled"
-        v-on:input="inputAddress()"
-      />
+      <div class="row">
+        <div class="col-6">
+          <MyInput
+            name="Telefono"
+            type="text"
+            v-model="itemCopy.phone"
+            :validation="validation.phone"
+            :disabled="disabled"
+            v-on:input="inputPhone()"
+          />
+        </div>
+        <div class="col-6">
+          <MyInput
+            name="Dirección"
+            type="text"
+            v-model="itemCopy.address"
+            :validation="validation.address"
+            :disabled="disabled"
+            v-on:input="inputAddress()"
+          />
+        </div>
+      </div>
     </div>
     <div class="modal-footer">
-   
-      <button
-        type="button"
-        @click="buttonDelete"
-        class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
@@ -67,7 +65,7 @@
         Editar
       </button>
       <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
-        <i class="bi bi-arrow-left"></i> 
+        <i class="bi bi-arrow-left"></i>
         Cancelar
       </button>
       <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
@@ -132,7 +130,7 @@ export default defineComponent({
     },
   },
   methods: {
-    resetItemCopy(){
+    resetItemCopy() {
       this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
     },
     validateForm() {

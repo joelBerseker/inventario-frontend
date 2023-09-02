@@ -1,5 +1,5 @@
 <template>
-  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl">
+  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl" v-on:mymodal:close="closeModal">
     <div class="modal-body">
       <div class="row">
         <div class="col-3 head pe-3">
@@ -69,10 +69,10 @@
           <ListContent ref="tableContent" :loading="this.loadingContentList" :size="itemCopy.detail.length">
             <table class="my-table w-100">
               <tr>
-                <th style="width:40%">Nombre</th>
-                <th class="text-end" style="width:20%">Cantidad</th>
-                <th class="text-end" style="width:20%">Precio de venta</th>
-                <th class="text-end" style="width:20%">Subtotal</th>
+                <th style="width: 40%">Nombre</th>
+                <th class="text-end" style="width: 20%">Cantidad</th>
+                <th class="text-end" style="width: 20%">Precio de venta</th>
+                <th class="text-end" style="width: 20%">Subtotal</th>
                 <th v-if="mode != 2"></th>
               </tr>
 

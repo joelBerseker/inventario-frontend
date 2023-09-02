@@ -1,5 +1,5 @@
 <template>
-  <MyModal ref="myModal" :id="'categoryDetailModal'" :title="this.title">
+  <MyModal ref="myModal" :id="'categoryDetailModal'" :title="this.title" v-on:mymodal:close="closeModal"> 
     <div class="modal-body">
       <div class="row mb-3">
         <div class="col">

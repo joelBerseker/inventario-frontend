@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <p class="title-text">{{ this.title }}</p>
-          <button v-if="closeButton" tabindex="-1" type="button" class="btn btn-secondary-outline btn-sm" data-bs-dismiss="modal" aria-label="Close">
+          <button v-if="closeButton" tabindex="-1" type="button" class="btn btn-secondary-outline btn-sm" v-on:click="closeButtonAction">
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -36,6 +36,9 @@ export default defineComponent({
       var modal = new Modal(document.getElementById(this.id), {});
       modal.show();
     },
+    closeButtonAction(){
+      this.$emit("mymodal:close");
+    }
   },
   mounted(){
     this.$emit("mounted:mymodal");
