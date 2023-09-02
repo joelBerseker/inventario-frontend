@@ -22,7 +22,7 @@ export default defineComponent({
           {
             label: "Nombre",
             field: "name",
-            width: "15%",
+            width: "42%",
           },
           {
             label: "Tipo",
@@ -35,28 +35,18 @@ export default defineComponent({
           {
             label: "Document",
             field: "document",
-            width: "10%",
+            width: "20%",
           },
 
           {
             label: "Telefono",
             field: "phone",
-            width: "10%",
-          },
-          {
-            label: "Dirección",
-            field: "address",
-            width: "10%",
-          },
-          {
-            label: "Correo",
-            field: "mail",
-            width: "10%",
+            width: "20%",
           },
           {
             label: "Actualizado",
             field: "updated_at",
-            width: "1%",
+            width: "15%",
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },

@@ -188,8 +188,8 @@ export default defineComponent({
 
 
 .content-item-menu {
-  padding-top: 0.3rem;
-  padding-bottom: 0.3rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
   padding-left: 1rem;
   padding-right: 1rem;
   border-radius: var(--my-br);

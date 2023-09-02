@@ -23,12 +23,12 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "order_code",
-            width: "5%",
+            width: "1%",
           },
           {
             label: "Cliente",
             field: "client_name",
-            width: "10%",
+            width: "63%",
           },
           {
             label: "Tipo Pago",
@@ -39,13 +39,9 @@ export default defineComponent({
             },
           },
           {
-            label: "Descripción",
-            field: "description",
-            width: "20%",
-          },
-          {
             label: "Compra",
             columnClasses: ["text-end"],
+            headerClasses: ["text-end"],
             field: "total_price",
             width: "10%",
             display: (row) => {
@@ -55,7 +51,7 @@ export default defineComponent({
           {
             label: "Fecha",
             field: "date",
-            width: "10%",
+            width: "15%",
             display: (row) => {
               return this.timeAgo(row.date);
             },

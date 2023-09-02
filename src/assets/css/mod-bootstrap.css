@@ -70,9 +70,11 @@
 }
 .modal-content {
   border-radius: var(--my-br) !important;
+  border: none !important;
 }
 .modal-header {
   border-bottom: 1px solid var(--my-bc) !important;
+  border: none !important;
 }
 .modal-footer {
   border-top: 1px solid var(--my-bc) !important;
@@ -104,15 +106,22 @@
   background-color: transparent !important;
   color: var(--my-dc2) !important;
 }
+.dark-mode .form-control:disabled,
+.dark-mode .form-select:disabled,
+.dark-mode .form-control-disabled {
+  background-color: rgb(68, 68, 68) !important;
+}
 .form-control-disabled {
   background-color: var(--bs-secondary-bg) !important;
   opacity: 1;
 }
-.form-control-sm {
+.form-control,
+.form-select {
   font-size: 1rem !important;
 }
 .input-group-text {
   background-color: transparent !important;
+  font-size: 1rem !important;
 }
 .form-control-sm,
 .form-control,
@@ -120,7 +129,17 @@
 .form-select {
   border-radius: var(--my-br) !important;
 }
-
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25) inset !important;
+  border-color: var(--my-c5) !important;
+}
+.form-control.is-invalid:focus,
+.was-validated .form-control:invalid:focus, 
+.form-select.is-invalid:focus ,
+.was-validated .form-select:invalid:focus  {
+    box-shadow: 0 0 0 2px rgba(var(--bs-danger-rgb),.25) inset !important;
+}
 .form-control,
 .form-select,
 .input-group-text {
@@ -138,14 +157,21 @@
 .was-validated .form-select:valid {
   border-color: var(--bs-form-valid-border-color) !important;
 }
-.dark-mode .form-control:disabled,
-.dark-mode .form-select:disabled,
-.dark-mode .form-control-disabled {
-  background-color: rgb(68, 68, 68) !important;
+.form-control.is-valid:focus,
+.was-validated .form-control:valid:focus,
+.form-select.is-valid:focus,
+.was-validated .form-select:valid:focus {
+    box-shadow: 0 0 0 2px rgba(var(--bs-success-rgb),.25) inset !important;
 }
+
 /*DROPDOWN*/
 .dropdown-menu {
   font-size: 1rem !important;
+  border: none !important;
+  box-shadow: 0px 0px 100px -25px rgba(0, 0, 0, 1) !important;
+  -webkit-box-shadow: 0px 0px 100px -25px rgba(0, 0, 0, 1) !important;
+  -moz-box-shadow: 0px 0px 100px -25px rgba(0, 0, 0, 1) !important;
+  border-radius: var(--my-br) !important;
 }
 /*INPUT*/
 .input-group > :not(:first-child):not(.dropdown-toggle):not(.dropdown-menu) {
@@ -156,7 +182,11 @@
   border-top-right-radius: 0 !important;
   border-bottom-right-radius: 0 !important;
 }
+
 /*CARD*/
+.dark-mode .card {
+  color: var(--my-dc2) !important;
+}
 .card {
   border-color: var(--my-bc) !important;
 }
@@ -166,18 +196,20 @@
 .card {
   background-color: transparent !important;
 }
-.dark-mode .card {
-  color: var(--my-dc2) !important;
-}
 /*TOAST*/
 .toast {
   background-color: white !important;
   border-radius: var(--my-br) !important;
   overflow: hidden;
+  border: none !important;
+  box-shadow: 0px 0px 100px -15px rgba(0, 0, 0, 1) !important;
+  -webkit-box-shadow: 0px 0px 100px -15px rgba(0, 0, 0, 1) !important;
+  -moz-box-shadow: 0px 0px 100px -15px rgba(0, 0, 0, 1) !important;
 }
 .toast-header {
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
+  border: none !important;
 }
 /*ACORDION*/
 .accordion-item {

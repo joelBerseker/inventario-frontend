@@ -1,6 +1,6 @@
 <template>
   <div class="dropdown">
-    <MyForm :name="name" :message="validation.validationMessage">
+    <MyForm :name="name" :message="validation.validationMessage" :labelClass="labelClass">
       <div v-if="viewMode && disabled" :class="viewClass">
         <slot v-if="this.$slots.pre != undefined" name="pre"></slot>
         {{ itemLocal }}
@@ -56,6 +56,7 @@ export default defineComponent({
     type: {},
     inputClass: {},
     viewClass: {},
+    labelClass: {},
     disabled: {},
   },
   data() {

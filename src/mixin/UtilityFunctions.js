@@ -16,7 +16,7 @@ export default {
   },
   methods: {
     priceCorrect(price) {
-      return "s/ " + parseFloat(price).toFixed(2);
+      return "S/. " + parseFloat(price).toFixed(2);
     },
     getDocumentType(number) {
       return this.optionsDocumentType[number - 1].text;

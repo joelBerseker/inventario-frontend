@@ -110,6 +110,7 @@ th {
   border: 1px solid var(--my-bc) !important;
   padding-top: 0.4rem !important;
   padding-bottom: 0.4rem !important;
+  vertical-align: top !important;
 }
 th {
   border: none !important;

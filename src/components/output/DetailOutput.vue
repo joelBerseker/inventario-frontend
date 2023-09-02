@@ -55,7 +55,9 @@
               <MyInput
                 name="Total"
                 type="number"
+                viewClass="text-end"
                 inputClass="text-end"
+                labelClass="text-end"
                 v-model="itemCopy.header.total_price"
                 :disabled="true"
                 :viewMode="disabled"
@@ -67,10 +69,10 @@
           <ListContent ref="tableContent" :loading="this.loadingContentList" :size="itemCopy.detail.length">
             <table class="my-table w-100">
               <tr>
-                <th>Nombre</th>
-                <th>Cantidad</th>
-                <th>Precio de venta</th>
-                <th>Subtotal</th>
+                <th style="width:40%">Nombre</th>
+                <th class="text-end" style="width:20%">Cantidad</th>
+                <th class="text-end" style="width:20%">Precio de venta</th>
+                <th class="text-end" style="width:20%">Subtotal</th>
                 <th v-if="mode != 2"></th>
               </tr>
 

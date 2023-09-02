@@ -1,6 +1,7 @@
-import "./assets/css/main.css";
+import "./assets/css/base.css";
 import "./assets/css/mod-bootstrap.css";
 import "./assets/css/mod-other.css";
+import "./assets/css/main.css";
 
 import { createApp } from "vue";
 import App from "./App.vue";

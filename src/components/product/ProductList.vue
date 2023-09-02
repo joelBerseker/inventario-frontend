@@ -23,39 +23,36 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "code",
-            width: "3%",
+            width: "1%",
           },
           {
             label: "Nombre",
             field: "name",
-            width: "20%",
+            width: "62%",
           },
-          {
-            label: "Descripción",
-            field: "description",
-            width: "20%",
-          },
-
           {
             label: "Compra",
+            headerClasses: ["text-end"],
             columnClasses: ["text-end"],
             field: "cost",
-            width: "7%",
+            width: "10%",
             display: (row) => {
               return this.priceCorrect(row.cost);
             },
           },
           {
             label: "Venta",
+            headerClasses: ["text-end"],
             columnClasses: ["text-end"],
             field: "price",
-            width: "7%",
+            width: "10%",
             display: (row) => {
               return this.priceCorrect(row.price);
             },
           },
           {
             label: "Cantidad",
+            headerClasses: ["text-end"],
             columnClasses: ["text-end"],
             field: "stock",
             width: "1%",
@@ -63,7 +60,7 @@ export default defineComponent({
           {
             label: "Actualizado",
             field: "updated_at",
-            width: "1%",
+            width: "15%",
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },

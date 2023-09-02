@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="form-group">
-      <label for="nombre" v-if="name != null" class="secondary-text">{{ name }}:</label>
+      <div :class="labelClass">
+        <label for="nombre" v-if="name != null" class="secondary-text">{{ name }}:</label>
+      </div>
+
       <slot></slot>
     </div>
     <div v-if="message == 'No requerido'">
@@ -24,7 +27,7 @@
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "MyForm",
-  props: ["name", "message"],
+  props: ["name", "message", "labelClass"],
   methods: {},
 });
 </script>
