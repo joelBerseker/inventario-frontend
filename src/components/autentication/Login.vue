@@ -64,7 +64,7 @@ export default defineComponent({
 
 <template>
   <AppContent :loading.sync="loadingAppContent">
-    <div class="mx-auto center justify-content-center bg-color-2">
+    <div class="mx-auto center justify-content-center my-bg2">
       <div class="container">
         <div class="row justify-content-md-center" align-h="center">
           <div class="col-6 mb-3">
@@ -77,7 +77,7 @@ export default defineComponent({
                   <div class="card-body">
                     <div class="text-center mb-1">
                       <Icon size="50px" :mode="2" :bg-mode="1"></Icon>
-                      <p class="title-text color-3 mb-2">Gestion de Inventarios</p>
+                      <p class="title-text my-c3 mb-2">Gestion de Inventarios</p>
                       <hr class="m-0 mb-2" />
                       <p class="secondary-text">Ingrese su usuario y contraseña para ingresar al sistema</p>
                     </div>

@@ -35,7 +35,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <div class="bg-color-2 py-3 px-3 color-1 content">
+  <div class="my-bg2 py-3 px-3 my-c1 content">
     <div class="row">
       <div class="col">
         <transition name="slide-fade" mode="out-in">
@@ -60,21 +60,21 @@ export default defineComponent({
         <div class="row mt-2">
           <div class="col-auto breadcrumb-item">
             <span v-if="topbar.breadcrumb.length > 1">
-              <RouterLink :to="topbar.breadcrumb[topbar.breadcrumb.length - 2].link" class="color-1">
+              <RouterLink :to="topbar.breadcrumb[topbar.breadcrumb.length - 2].link" class="my-c1">
                 <i class="bi bi-arrow-left"></i> Atras
               </RouterLink>
             </span>
-            <span v-else class="color-6"><i class="bi bi-arrow-left"></i> Atras</span>
+            <span v-else class="my-c6"><i class="bi bi-arrow-left"></i> Atras</span>
           </div>
           <div class="col">
             <transition name="slide-fade" mode="out-in">
-              <nav :key="topbar.title" aria-label="breadcrumb" class="color-1 margin-breadcrumb">
+              <nav :key="topbar.title" aria-label="breadcrumb" class="my-c1 margin-breadcrumb">
                 <ol class="breadcrumb mb-0 breadcrumb-ol">
                   <li v-for="(item, index) in topbar.breadcrumb" :key="item.name" class="breadcrumb-item">
-                    <RouterLink v-if="index <= topbar.breadcrumb.length - 2" :to="item.link" class="color-1"
+                    <RouterLink v-if="index <= topbar.breadcrumb.length - 2" :to="item.link" class="my-c1"
                       >{{ item.name }}
                     </RouterLink>
-                    <span class="color-6" v-else>{{ item.name }}</span>
+                    <span class="my-c6" v-else>{{ item.name }}</span>
                   </li>
                 </ol>
               </nav>

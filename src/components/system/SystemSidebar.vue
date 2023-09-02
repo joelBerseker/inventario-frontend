@@ -108,7 +108,7 @@ export default defineComponent({
             <i class="bi bi-list"></i>
         </button>
 
-        <div class="d-flex w-100 color-1 px-3 my-0 py-0">
+        <div class="d-flex w-100 my-c1 px-3 my-0 py-0">
             <hr class="w-100 my-2" />
         </div>
         <div v-for="item in list" :key="item.title" class="my-1 px-2 d-flex w-100">
@@ -124,7 +124,7 @@ export default defineComponent({
         </div>
       
         <transition name="t-sidebar-item" mode="out-in">
-        <div v-show="showSidebar" class="color-1 footer-text">
+        <div v-show="showSidebar" class="my-c1 footer-text">
             Desarrollado por Gleaming Glow Team
         </div>
     </transition>

@@ -31,19 +31,19 @@ export default defineComponent({
       var resp = "";
       switch (this.mode) {
         case 1:
-          resp = " bg-color-1 ";
+          resp = " my-bg1 ";
           break;
         case 2:
-          resp = " bg-color-2 ";
+          resp = " my-bg2 ";
           break;
         case 3:
-          resp = " bg-color-3 ";
+          resp = " my-bg3 ";
           break;
         case 6:
-          resp = " bg-color-6 ";
+          resp = " my-bg6 ";
           break;
         default:
-          resp = " bg-color-1 ";
+          resp = " my-bg1 ";
           break;
       }
       return resp;

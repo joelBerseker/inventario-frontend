@@ -1,0 +1,141 @@
+/* color palette from <https://github.com/vuejs/theme> */
+@font-face {
+  font-family: "MyWebFont";
+  src: url("@/assets/fonts/RobotoCondensed-Regular.ttf") format("truetype");
+}
+:root {
+  --my-tw: #ffffff;
+  --my-tb: #212529;
+
+  --my-c1: #ffffff;
+  --my-c2: #0d1321;
+  --my-c3: #1d2d44;
+  --my-c4: #3c678d;
+  --my-c5: #748cab;
+  --my-c6: #949494;
+
+  --my-dc1: #252525;
+  --my-dc2: #e6e6e6;
+
+  --my-bc: #81818179;
+  --my-br: 0rem;
+}
+.my-c1 {
+  color: var(--my-c1) !important;
+}
+.my-c2 {
+  color: var(--my-c2) !important;
+}
+.my-c3 {
+  color: var(--my-c3) !important;
+}
+.my-c6 {
+  color: var(--my-c6) !important;
+}
+.my-bg1 {
+  background-color: var(--my-c1) !important;
+}
+.my-bg2 {
+  background-color: var(--my-c2) !important;
+}
+.my-bg3 {
+  background-color: var(--my-c3) !important;
+}
+.my-bg4 {
+  background-color: var(--my-c4) !important;
+}
+.my-bg5 {
+  background-color: var(--my-c5) !important;
+}
+.my-bg6 {
+  background-color: var(--my-c6) !important;
+}
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+body {
+  min-height: 100vh;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: color 0.5s, background-color 0.5s;
+  font-family: MyWebFont !important;
+  font-size: 1rem !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  background-color: transparent !important;
+}
+
+/*tr:first-child th:first-child {
+  border-top-left-radius: var(--my-br) !important;
+}
+
+tr:first-child th:last-child {
+  border-top-right-radius: var(--my-br) !important;
+}
+
+tr:last-child td:first-child {
+  border-bottom-left-radius: var(--my-br) !important;
+}
+
+tr:last-child td:last-child {
+  border-bottom-right-radius: var(--my-br) !important;
+}*/
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+td,
+th {
+  border: 1px solid var(--my-bc) !important;
+  padding-top: 0.4rem !important;
+  padding-bottom: 0.4rem !important;
+}
+th {
+  border: none !important;
+}
+
+td:not(td:first-child),
+th:not(th:first-child) {
+  border-left: none !important;
+}
+td {
+  border-top: none !important;
+}
+td,
+th {
+  border-right: none !important;
+  border-left: none !important;
+}
+
+/*td:not(td:last-child),
+th:not(th:last-child) {
+  border-right: none !important;
+}*/
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--my-c6) !important;
+  opacity: 1; /* Firefox */
+}
+/*DARK MODE*/

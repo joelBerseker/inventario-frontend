@@ -1,0 +1,30 @@
+/*TABLE LITE*/
+.dark-mode .vtl-table {
+  color: var(--my-dc2) !important;
+}
+.vtl-tablec,
+.vtl-thead,
+.vtl-thead-th {
+  background-color: var(--my-c3) !important;
+}
+.vtl-card {
+  background-color: transparent !important;
+}
+.vtl-paging-change-div,
+.vtl-paging-info {
+  align-self: center;
+}
+.vtl-table {
+  margin-bottom: 0rem !important;
+}
+.vtl-paging-change-div,
+.vtl-paging-info {
+  visibility: hidden;
+}
+.vtl-asc {
+  /*fix for id arrows in table*/
+  background-image: none !important;
+}
+.vtl-tbody-tr {
+  transition: 0.3s !important;
+}

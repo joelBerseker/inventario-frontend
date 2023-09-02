@@ -1,0 +1,38 @@
+@import "./base.css";
+
+#app {
+  height: 100vh;
+}
+.item-select {
+  white-space: normal !important;
+  cursor: pointer;
+}
+.secondary-text {
+  font-size: 0.9rem;
+  color: var(--my-c6) !important;
+}
+.title-text {
+  font-size: 1.2rem !important;
+  font-weight: 500 !important;
+}
+.margin-dropdown {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+.input-search {
+  border-top-left-radius: 100rem !important;
+  border-bottom-left-radius: 100rem !important;
+}
+.my-table td,
+.my-table th {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+.my-table th {
+  background-color: var(--my-c3);
+  color: var(--my-c1);
+}
+.dark-mode {
+  background-color: var(--my-dc1) !important;
+  color: var(--my-dc2) !important;
+}

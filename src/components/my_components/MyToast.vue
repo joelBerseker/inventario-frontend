@@ -1,7 +1,7 @@
 <template>
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 5000">
     <div id="myToastEl" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
-      <div :class="'toast-header color-1 ' + styleHeader">
+      <div :class="'toast-header my-c1 ' + styleHeader">
         <strong class="me-auto"><i :class="'bi-hover-bold ' + icon"></i> {{ title }}</strong>
 
         <button type="button" class="btn btn-toast" data-bs-dismiss="toast" aria-label="Close">

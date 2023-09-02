@@ -4,7 +4,7 @@
       <div class="accordion-item border-acordion">
         <div class="accordion-header" id="panelsStayOpen-headingOne">
           <button
-            class="accordion-button p-3 bg-color-1 color-2 title-text"
+            class="accordion-button p-3 my-bg1 my-c2 title-text"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#panelsStayOpen-collapseOne"
@@ -22,7 +22,7 @@
           <div class="accordion-body px-3 pt-0 pb-3">
             Content here
             <div>
-              <RouterLink to="/notifications" class="color-2">
+              <RouterLink to="/notifications" class="my-c2">
                 Ver mas</RouterLink
               >
             </div>
@@ -32,7 +32,7 @@
       <div class="accordion-item border-acordion">
         <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
           <button
-            class="accordion-button title-text p-3 bg-color-1 color-2"
+            class="accordion-button title-text p-3 my-bg1 my-c2"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#panelsStayOpen-collapseTwo"
@@ -50,7 +50,7 @@
           <div class="accordion-body px-3 pt-0 pb-3">
             Content here
             <div>
-              <RouterLink to="/statistics" class="color-2"> Ver mas</RouterLink>
+              <RouterLink to="/statistics" class="my-c2"> Ver mas</RouterLink>
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@
       <div class="accordion-item border-acordion">
         <h2 class="accordion-header" id="panelsStayOpen-headingThree">
           <button
-            class="accordion-button title-text p-3 bg-color-1 color-2"
+            class="accordion-button title-text p-3 my-bg1 my-c2"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#panelsStayOpen-collapseThree"
