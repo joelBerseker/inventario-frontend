@@ -158,8 +158,8 @@ export default defineComponent({
 
 .item-menu {
     text-decoration-line: none;
-    color: var(--my-1th-color);
-    border-radius: var(--my-border-radius) !important;
+    color: var(--my-c1);
+    border-radius: var(--my-br) !important;
     margin: 0.25rem;
     transform: translateX(0px);
 }
@@ -170,19 +170,19 @@ export default defineComponent({
     position: absolute;
     width: 100%;
     height: 100%;
-    border-radius: var(--my-border-radius) !important;
+    border-radius: var(--my-br) !important;
     z-index: -3;
     /*transform: translateX(-10px); 
     transition: 0.5s;
 }
 .item-menu:hover::before,
 .router-link-exact-active::before {
-    background-color: var(--my-3th-color);
+    background-color: var(--my-c3);
     transform: translateX(0px);
 }
 */
 .main-text {
-    color: var(--my-1th-color);
+    color: var(--my-c1);
     height: 88px;
 }
 
@@ -192,11 +192,11 @@ export default defineComponent({
   padding-bottom: 0.3rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  border-radius: var(--my-border-radius);
+  border-radius: var(--my-br);
 }
 .content-item-menu:hover,
 .router-link-exact-active .content-item-menu {
-  background-color: var(--my-3th-color);
+  background-color: var(--my-c3);
 }
 .btn-sidebar {
     position: absolute;

@@ -120,7 +120,7 @@ export default defineComponent({
 <style scoped>
 .login {
   overflow: hidden;
-  background-color: var(--my-1th-color) !important;
+  background-color: var(--my-c1) !important;
 }
 .image {
   background-image: url("https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=876&q=80");

@@ -104,7 +104,7 @@
 }
 .accordion-button {
   border: none !important;
-  border-top: 1px solid var(--my-border-color) !important;
+  border-top: 1px solid var(--my-bc) !important;
 
   border-radius: 0px !important;
   box-shadow: none !important;

@@ -129,7 +129,7 @@ export default defineComponent({
   z-index: 100;
   top: 0;
   left: 0;
-  background-color: var(--my-2th-color);
+  background-color: var(--my-c2);
   border-right: 1px solid rgba(255, 255, 255, 0.164);
   transition: width 0.3s;
 }

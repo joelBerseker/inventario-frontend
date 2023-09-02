@@ -21,7 +21,7 @@
   padding-left: 0.25rem;
   padding-right: 0.25rem;
   border-color: rgba(255, 255, 255, 0.4) !important;
-  color: var(--my-1th-color) !important;
+  color: var(--my-c1) !important;
 }
 .bi-hover-bold {
   -webkit-text-stroke: 0.03rem;

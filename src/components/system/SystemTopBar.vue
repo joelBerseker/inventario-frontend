@@ -88,8 +88,8 @@ export default defineComponent({
 <style scoped>
 .item-menu {
   text-decoration-line: none;
-  color: var(--my-1th-color);
-  border-radius: var(--my-border-radius) !important;
+  color: var(--my-c1);
+  border-radius: var(--my-br) !important;
   display: inline-block;
 }
 .content-item-menu {
@@ -101,7 +101,7 @@ export default defineComponent({
 }
 .content-item-menu:hover,
 .router-link-exact-active .content-item-menu {
-  background-color: var(--my-3th-color);
+  background-color: var(--my-c3);
 }
 .slide-fade-enter-active,
 .slide-fade-enter {
@@ -123,7 +123,7 @@ export default defineComponent({
 }
 
 .breadcrumb-ol {
-  --bs-breadcrumb-divider-color: var(--my-1th-color);
+  --bs-breadcrumb-divider-color: var(--my-c1);
 }
 
 .content {
@@ -132,7 +132,7 @@ export default defineComponent({
 }
 
 .breadcrumb a {
-  color: var(--my-1th-color);
+  color: var(--my-c1);
   text-decoration-line: none;
 }
 

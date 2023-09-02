@@ -4,18 +4,21 @@
   src: url('@/assets/fonts/RobotoCondensed-Regular.ttf') format('truetype');
 }
 :root {
-  --my-1th-color: #ffffff;
-  --my-2th-color: #0d1321;
-  --my-3th-color: #1d2d44;
-  --my-4th-color: #3c678d;
-  --my-5th-color: #748cab;
-  --my-6th-color: #949494;
+  --my-tw: #ffffff;
+  --my-tb: #212529;
 
-  --my-border-color: #81818179;
+  --my-c1: #ffffff;
+  --my-c2: #0d1321;
+  --my-c3: #1d2d44;
+  --my-c4: #3c678d;
+  --my-c5: #748cab;
+  --my-c6: #949494;
 
-  --my-dark-1th-color: #252525;
-  --my-dark-2th-color: #e6e6e6;
-  --my-border-radius: 0.5em;
+  --my-dc1: #252525;
+  --my-dc2: #e6e6e6;
+
+  --my-bc: #81818179;
+  --my-br: 0rem;
 }
 *,
 *::before,
@@ -26,39 +29,39 @@
 }
 
 .color-1 {
-  color: var(--my-1th-color) !important;
+  color: var(--my-c1) !important;
 }
 
 .color-2 {
-  color: var(--my-2th-color) !important;
+  color: var(--my-c2) !important;
 }
 
 .color-3 {
-  color: var(--my-3th-color) !important;
+  color: var(--my-c3) !important;
 }
 .color-6 {
-  color: var(--my-6th-color) !important;
+  color: var(--my-c6) !important;
 }
 
 .bg-color-1 {
-  background-color: var(--my-1th-color) !important;
+  background-color: var(--my-c1) !important;
 }
 
 .bg-color-2 {
-  background-color: var(--my-2th-color) !important;
+  background-color: var(--my-c2) !important;
 }
 
 .bg-color-3 {
-  background-color: var(--my-3th-color) !important;
+  background-color: var(--my-c3) !important;
 }
 .bg-color-4 {
-  background-color: var(--my-4th-color) !important;
+  background-color: var(--my-c4) !important;
 }
 .bg-color-5 {
-  background-color: var(--my-5th-color) !important;
+  background-color: var(--my-c5) !important;
 }
 .bg-color-6 {
-  background-color: var(--my-6th-color) !important;
+  background-color: var(--my-c6) !important;
 }
 
 body {
@@ -77,17 +80,17 @@ body {
   background: rgba(0, 0, 0, 0.5) !important;
 }
 .modal-content {
-  border-radius: var(--my-border-radius) !important;
+  border-radius: var(--my-br) !important;
 }
 .modal-header{
-  border-bottom: 1px solid var(--my-border-color) !important;
+  border-bottom: 1px solid var(--my-bc) !important;
 }
 .modal-footer{
-  border-top: 1px solid var(--my-border-color) !important;
+  border-top: 1px solid var(--my-bc) !important;
 }
 
 .card{
-  border-color: var(--my-border-color) !important;
+  border-color: var(--my-bc) !important;
 }
 
 .btn {
@@ -128,26 +131,26 @@ table {
   background-color: transparent !important;
 }
 
-tr:first-child th:first-child {
-  border-top-left-radius: var(--my-border-radius) !important;
+/*tr:first-child th:first-child {
+  border-top-left-radius: var(--my-br) !important;
 }
 
 tr:first-child th:last-child {
-  border-top-right-radius: var(--my-border-radius) !important;
+  border-top-right-radius: var(--my-br) !important;
 }
 
-/*tr:last-child td:first-child {
-  border-bottom-left-radius: var(--my-border-radius) !important;
+tr:last-child td:first-child {
+  border-bottom-left-radius: var(--my-br) !important;
 }
 
 tr:last-child td:last-child {
-  border-bottom-right-radius: var(--my-border-radius) !important;
+  border-bottom-right-radius: var(--my-br) !important;
 }*/
 
 .vtl-tablec,
 .vtl-thead,
 .vtl-thead-th {
-  background-color: var(--my-3th-color) !important;
+  background-color: var(--my-c3) !important;
  
 }
 
@@ -164,7 +167,7 @@ tr:last-child td:last-child {
 
 td,
 th {
-  border: 1px solid var(--my-border-color) !important;
+  border: 1px solid var(--my-bc) !important;
   padding-top: 0.4rem !important;
   padding-bottom: 0.4rem !important;
 }
@@ -178,8 +181,8 @@ th{
   padding-right: 0.75rem;
 }
 .my-table th{
-  background-color: var(--my-3th-color);
-  color: var(--my-1th-color);
+  background-color: var(--my-c3);
+  color: var(--my-c1);
 }
 
 td:not(td:first-child),
@@ -203,7 +206,7 @@ th:not(th:last-child) {
 
 .toast {
   background-color: white !important;
-  border-radius: var(--my-border-radius) !important;
+  border-radius: var(--my-br) !important;
   overflow: hidden;
 }
 .toast-header {
@@ -212,13 +215,13 @@ th:not(th:last-child) {
 }
 
 .card {
-  border-radius: var(--my-border-radius) !important;
+  border-radius: var(--my-br) !important;
 }
 .form-control-sm,
 .form-control,
 .input-group-text,
 .form-select {
-  border-radius: var(--my-border-radius) !important;
+  border-radius: var(--my-br) !important;
 }
 .input-search {
   border-top-left-radius: 100rem !important;
@@ -243,7 +246,7 @@ th:not(th:last-child) {
 .form-control,
 .form-select,
 .input-group-text {
-  border: var(--bs-border-width) solid var(--my-border-color) !important;
+  border: var(--bs-border-width) solid var(--my-bc) !important;
 }
 .form-control.is-invalid,
 .was-validated .form-control:invalid,
@@ -259,29 +262,29 @@ th:not(th:last-child) {
 }
 ::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: var(--my-6th-color) !important;
+  color: var(--my-c6) !important;
   opacity: 1; /* Firefox */
 }
 /*DARK MODE*/
 
 .dark-mode .pagination-sm {
   --bs-pagination-font-size: 1rem !important;
-  --bs-pagination-color: var(--my-dark-2th-color) !important;
+  --bs-pagination-color: var(--my-dc2) !important;
 
-  /*--bs-pagination-hover-border-color: var(--my-3th-color) !important;*/
+  /*--bs-pagination-hover-border-color: var(--my-c3) !important;*/
 }
 .dark-mode .vtl-table {
-  color: var(--my-dark-2th-color) !important;
+  color: var(--my-dc2) !important;
 }
 
 .dark-mode .modal-body,
 .dark-mode .modal-footer {
-  background-color: var(--my-dark-1th-color) !important;
+  background-color: var(--my-dc1) !important;
 }
 .dark-mode .form-control,
 .dark-mode .form-select {
   background-color: transparent !important;
-  color: var(--my-dark-2th-color) !important;
+  color: var(--my-dc2) !important;
 }
 .dark-mode .form-control:disabled,
 .dark-mode .form-select:disabled,
@@ -290,18 +293,18 @@ th:not(th:last-child) {
 }
 
 .dark-mode {
-  background-color: var(--my-dark-1th-color) !important;
-  color: var(--my-dark-2th-color) !important;
+  background-color: var(--my-dc1) !important;
+  color: var(--my-dc2) !important;
 }
 .dark-mode .accordion-button,
 .dark-mode .accordion-body,
 .dark-mode .accordion-body a {
-  color: var(--my-dark-2th-color) !important;
+  color: var(--my-dc2) !important;
 }
 
 .dark-mode .card {
-  color: var(--my-dark-2th-color) !important;
+  color: var(--my-dc2) !important;
 }
 .dark-mode .input-group-text {
-  color: var(--my-dark-2th-color) !important;
+  color: var(--my-dc2) !important;
 }

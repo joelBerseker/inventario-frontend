@@ -223,8 +223,8 @@ export default defineComponent({
 <style scoped>
 .dropdown-item.active,
 .dropdown-item:active {
-  background-color: var(--my-3th-color) !important;
-  color: var(--my-1th-color) !important;
+  background-color: var(--my-c3) !important;
+  color: var(--my-c1) !important;
 }
 .dropdown-item:hover {
 }
