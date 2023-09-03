@@ -148,17 +148,18 @@ export default defineComponent({
         });
     },
     focusSearch() {
-      this.selectedInKeyboard = -1;
+      
       this.$refs.search.focus();
     },
     selectItem(_item) {
       this.itemLocal = _item;
       this.$refs.select.focus();
-
+      this.selectedInKeyboard = -1;
       var dropdown = Dropdown.getInstance(document.getElementById(this.id));
       dropdown.hide();
     },
     nextListItem() {
+      console.log(this.selectedInKeyboard);
       if (this.selectedInKeyboard < this.list.length - 1) {
         this.selectedInKeyboard++;
       } else {
@@ -166,6 +167,7 @@ export default defineComponent({
       }
     },
     previousListItem() {
+      console.log(this.selectedInKeyboard);
       if (this.selectedInKeyboard > 0) {
         this.selectedInKeyboard--;
       } else {
@@ -181,6 +183,7 @@ export default defineComponent({
       return resp;
     },
     pressEnter() {
+      console.log(this.selectedInKeyboard);
       if (this.selectedInKeyboard != -1) this.selectItem(this.list[this.selectedInKeyboard]);
     },
     hoverItem(index) {
