@@ -25,6 +25,7 @@
           <MySelect
             class="mb-3"
             name="Tipo de pago"
+            id="Tipo de pago"
             :options="optionsPaymentType"
             :validation="validation.header.payment_type"
             v-model="itemCopy.header.payment_type"

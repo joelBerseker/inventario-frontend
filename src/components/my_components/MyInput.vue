@@ -22,7 +22,6 @@
           v-model="itemLocal"
           :disabled="disabled"
           :class="inputClass + ' form-control ' + validation.validationStyle"
-          :style="inputStyle"
           autocomplete="off"
           :id="name"
           ref="input"
@@ -64,10 +63,7 @@ export default defineComponent({
     disabled: {},
   },
   data() {
-    return {
-      //inputStyle: "",
-      preWidth: 0,
-    };
+    return {};
   },
   components: {
     MyForm,
