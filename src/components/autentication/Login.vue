@@ -3,6 +3,7 @@ import { defineComponent } from "vue";
 import AuthService from "@/services/AuthService";
 import axios from "axios";
 import MyForm from "@/components/my_components/MyForm.vue";
+import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import Icon from "@/components/my_other_components/Icon.vue";
 import AppContent from "@/AppContent.vue";
@@ -26,6 +27,7 @@ export default defineComponent({
     MyForm,
     Icon,
     AppContent,
+    MyInput,
   },
   created() {
     this.loadingAppContent = false;
@@ -81,19 +83,12 @@ export default defineComponent({
                       <hr class="m-0 mb-2" />
                       <p class="secondary-text">Ingrese su usuario y contraseña para ingresar al sistema</p>
                     </div>
-
-                    <MyForm class="mb-3" name="Usuario">
-                      <div class="input-group input-group-sm">
-                        <span class="input-group-text"><i class="bi bi-person"></i></span>
-                        <input type="email" class="form-control form-control-sm" v-model="user.username" />
-                      </div>
-                    </MyForm>
-                    <MyForm class="mb-3" name="Contraseña">
-                      <div class="input-group input-group-sm">
-                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                        <input type="password" v-model="user.password" class="form-control form-control-sm" />
-                      </div>
-                    </MyForm>
+                    <MyInput name="Usuario" type="email" v-model="user.username" class="mb-3"
+                      ><template v-slot:pre><i class="bi bi-person"></i></template>
+                    </MyInput>
+                    <MyInput name="Contraseña" type="password" v-model="user.password" class="mb-3"
+                      ><template v-slot:pre><i class="bi bi-lock"></i></template>
+                    </MyInput>
 
                     <div class="text-end">
                       <button

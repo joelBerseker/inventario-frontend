@@ -1,17 +1,16 @@
 <template>
   <div class="dropdown">
     <MyForm :name="name" :message="validation.validationMessage" :labelClass="labelClass">
-      <div v-if="viewMode && disabled" :class="viewClass">
-        <slot v-if="this.$slots.pre != undefined" name="pre"></slot>
-        {{ itemLocal }}
+      <div v-if="viewMode && disabled" :class="viewClass + ' '">
+        <span v-if="this.$slots.pre != undefined"><slot name="pre"></slot>&nbsp;</span>{{ itemLocal }}
       </div>
-      <div v-else class="input-group input-group-sm">
-        <span v-if="this.$slots.pre != undefined" :class="'input-group-text ' + classDisabled">
+      <div v-else class="input-content">
+        <div v-if="this.$slots.pre != undefined" ref="preContent" class="pre-content" style="">
           <slot name="pre"></slot>
-        </span>
+        </div>
         <textarea
           v-if="type == 'textarea'"
-          :class="inputClass + ' form-control ' + validation.validationStyle"
+          :class="inputClass + ' form-control form-control-sm  ' + validation.validationStyle"
           :id="name"
           v-model="itemLocal"
           :disabled="disabled"
@@ -22,9 +21,14 @@
           :type="type"
           v-model="itemLocal"
           :disabled="disabled"
-          :class="inputClass + ' form-control ' + validation.validationStyle"
+          :class="inputClass + ' form-control form-control-sm ' + validation.validationStyle"
+          :style="inputStyle"
           autocomplete="off"
           :id="name"
+          ref="input"
+          @focus="onFocus()"
+          @blur="onBlur()"
+          @input="onInput()"
         />
       </div>
     </MyForm>
@@ -60,12 +64,19 @@ export default defineComponent({
     disabled: {},
   },
   data() {
-    return {};
+    return {
+      //inputStyle: "",
+      preWidth: 0,
+    };
   },
   components: {
     MyForm,
   },
-  methods: {},
+  methods: {
+    onFocus() {},
+    onBlur() {},
+    onInput() {},
+  },
   computed: {
     itemLocal: {
       get: function () {
@@ -84,11 +95,38 @@ export default defineComponent({
       }
       return resp;
     },
+    inputStyle: function () {
+      var resp = "";
+      if (this.preWidth > 0) {
+        resp = "padding-left: " + this.preWidth + "px;";
+      }
+      return resp;
+    },
+  },
+  updated() {
+    if (this.$refs.preContent != undefined) {
+      this.preWidth = this.$refs.preContent.offsetWidth;
+    }
+  },
+  mounted() {
+    if (this.$refs.preContent != undefined) {
+      this.preWidth = this.$refs.preContent.offsetWidth;
+    }
   },
   async created() {},
 });
 </script>
 <style>
+.input-content {
+  position: relative !important;
+}
+.pre-content {
+  position: absolute;
+  height: 100%;
+  padding-top: 0.31rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
 .disabled-item {
   color: rgba(0, 0, 0, 0.493);
 }

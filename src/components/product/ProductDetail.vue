@@ -33,7 +33,7 @@
             v-on:input="inputCost()"
             :disabled="disabled"
           >
-            <template v-slot:pre> S/. </template>
+            <template v-slot:pre>S/.</template>
           </MyInput>
         </div>
         <div class="col-6">
@@ -45,7 +45,7 @@
             v-on:input="inputPrice()"
             :disabled="disabled"
           >
-            <template v-slot:pre> S/. </template>
+            <template v-slot:pre>S/.</template>
           </MyInput>
         </div>
       </div>

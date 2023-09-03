@@ -61,7 +61,7 @@
                 v-model="itemCopy.header.total_price"
                 :disabled="true"
                 :viewMode="disabled"
-                ><template v-slot:pre> S/. </template>
+                ><template v-slot:pre>S/.</template>
               </MyInput>
             </div>
           </div>
@@ -110,7 +110,7 @@
                     v-model="item.price"
                     :disabled="true"
                     :viewMode="disabled"
-                    ><template v-slot:pre> S/. </template>
+                    ><template v-slot:pre>S/.</template>
                   </MyInput>
                 </td>
                 <td>
@@ -121,7 +121,7 @@
                     v-model="item.subtotal"
                     :disabled="true"
                     :viewMode="disabled"
-                    ><template v-slot:pre> S/. </template>
+                    ><template v-slot:pre>S/.</template>
                   </MyInput>
                 </td>
 
@@ -418,22 +418,46 @@ export default defineComponent({
         this.itemCopy.detail[index].price * this.itemCopy.detail[index].stock
       ).toFixed(2);
     },
+    listItemIsEditing() {
+      var resp = false;
+      for (let i = 0; i < this.disabledItemList.length; i++) {
+        if (this.disabledItemList[i] == false) {
+          resp = true;
+          break;
+        }
+      }
+      return resp;
+    },
     listItemAdd(item = null) {
       if (item == null) {
-        this.selectedProducts.unshift(null);
-        this.itemCopy.detail.unshift({
-          id: undefined,
-          stock: 1,
-          price: 0,
-          subtotal: 0,
-        });
-        this.backupList.unshift({
-          id: undefined,
-          stock: 1,
-          price: 0,
-          subtotal: 0,
-          product: null,
-        });
+        if (this.backupList.length > 0 && this.backupList[0].id == undefined) {
+          this.showToast({
+            title: "Ocurrió un error",
+            message: "No se pudo agregar la fila, revise si se guardo el anterior producto agregado.",
+            type: 2,
+          });
+        } else if (this.listItemIsEditing()) {
+          this.showToast({
+            title: "Ocurrió un error",
+            message: "No se pudo agregar la fila, revise si existen productos en edición.",
+            type: 2,
+          });
+        } else {
+          this.selectedProducts.unshift(null);
+          this.itemCopy.detail.unshift({
+            id: undefined,
+            stock: 1,
+            price: 0,
+            subtotal: 0,
+          });
+          this.backupList.unshift({
+            id: undefined,
+            stock: 1,
+            price: 0,
+            subtotal: 0,
+            product: null,
+          });
+        }
       } else {
         this.selectedProducts.unshift({ name: item.product_name });
         this.itemCopy.detail.unshift({
@@ -451,14 +475,28 @@ export default defineComponent({
       this.disabledItemList.push(true);
     },
     buttonListDelete(index) {
-      if (this.mode == 1) {
+      if (this.mode == 1 || this.backupList[index].id == undefined) {
         this.listDelete(index);
       } else {
-        this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
-          if (response.success) {
-            this.getAditionalData(this.itemSelected.id);
-          }
-        });
+        if (this.backupList.length > 0 && this.backupList[0].id == undefined) {
+          this.showToast({
+            title: "Ocurrió un error",
+            message: "No se pudo eliminar la fila, revise si se guardo el anterior producto agregado.",
+            type: 2,
+          });
+        } else if (this.listItemIsEditing()) {
+          this.showToast({
+            title: "Ocurrió un error",
+            message: "No se pudo eliminar la fila, revise si existen productos en edición.",
+            type: 2,
+          });
+        } else {
+          this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
+            if (response.success) {
+              this.getAditionalData(this.itemSelected.id);
+            }
+          });
+        }
       }
     },
     listDelete(index) {
@@ -521,7 +559,7 @@ export default defineComponent({
       this.backupList = [];
     },
     listDeleteNull() {
-      for (let i = this.backupList.length-1; i >=0; i--) {
+      for (let i = this.backupList.length - 1; i >= 0; i--) {
         if (this.backupList[i].id == undefined) {
           this.listDelete(i);
         }
