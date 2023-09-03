@@ -135,10 +135,10 @@
   border-color: var(--my-c5) !important;
 }
 .form-control.is-invalid:focus,
-.was-validated .form-control:invalid:focus, 
-.form-select.is-invalid:focus ,
-.was-validated .form-select:invalid:focus  {
-    box-shadow: 0 0 0 2px rgba(var(--bs-danger-rgb),.25) inset !important;
+.was-validated .form-control:invalid:focus,
+.form-select.is-invalid:focus,
+.was-validated .form-select:invalid:focus {
+  box-shadow: 0 0 0 2px rgba(var(--bs-danger-rgb), 0.25) inset !important;
 }
 .form-control,
 .form-select,
@@ -161,7 +161,7 @@
 .was-validated .form-control:valid:focus,
 .form-select.is-valid:focus,
 .was-validated .form-select:valid:focus {
-    box-shadow: 0 0 0 2px rgba(var(--bs-success-rgb),.25) inset !important;
+  box-shadow: 0 0 0 2px rgba(var(--bs-success-rgb), 0.25) inset !important;
 }
 
 /*DROPDOWN*/
@@ -210,6 +210,11 @@
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
   border: none !important;
+  font-size: 1rem !important;
+  font-weight: 300 !important;
+}
+.toast-body {
+  font-size: 0.9rem !important;
 }
 /*ACORDION*/
 .accordion-item {

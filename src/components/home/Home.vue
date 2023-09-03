@@ -76,7 +76,7 @@
           <div class="accordion-body px-3 pt-0 pb-3">
             <div class="row">
               <div
-                class="col-6 mb-3"
+                class="col-4 mb-3"
                 v-for="item in list"
                 :key="item.title"
                 v-on:click="goTo(item.url)"

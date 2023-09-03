@@ -128,7 +128,6 @@ export default defineComponent({
 
 .content {
   transition: 0.5s;
-  border-left: 1px solid rgba(255, 255, 255, 0.041);
 }
 
 .breadcrumb a {
