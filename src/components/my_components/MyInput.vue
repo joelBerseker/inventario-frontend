@@ -4,13 +4,13 @@
       <div v-if="viewMode && disabled" :class="viewClass + ' '">
         <span v-if="this.$slots.pre != undefined"><slot name="pre"></slot>&nbsp;</span>{{ itemLocal }}
       </div>
-      <div v-else class="input-content">
-        <div v-if="this.$slots.pre != undefined" ref="preContent" class="pre-content" style="">
+      <div v-else class="input-group input-group-sm">
+        <div v-if="this.$slots.pre != undefined" :class="'input-group-text ' + classDisabled">
           <slot name="pre"></slot>
         </div>
         <textarea
           v-if="type == 'textarea'"
-          :class="inputClass + ' form-control form-control-sm  ' + validation.validationStyle"
+          :class="inputClass + ' form-control  ' + validation.validationStyle"
           :id="name"
           v-model="itemLocal"
           :disabled="disabled"
@@ -21,7 +21,7 @@
           :type="type"
           v-model="itemLocal"
           :disabled="disabled"
-          :class="inputClass + ' form-control form-control-sm ' + validation.validationStyle"
+          :class="inputClass + ' form-control ' + validation.validationStyle"
           :style="inputStyle"
           autocomplete="off"
           :id="name"
@@ -95,24 +95,8 @@ export default defineComponent({
       }
       return resp;
     },
-    inputStyle: function () {
-      var resp = "";
-      if (this.preWidth > 0) {
-        resp = "padding-left: " + this.preWidth + "px;";
-      }
-      return resp;
-    },
   },
-  updated() {
-    if (this.$refs.preContent != undefined) {
-      this.preWidth = this.$refs.preContent.offsetWidth;
-    }
-  },
-  mounted() {
-    if (this.$refs.preContent != undefined) {
-      this.preWidth = this.$refs.preContent.offsetWidth;
-    }
-  },
+
   async created() {},
 });
 </script>

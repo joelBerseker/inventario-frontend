@@ -111,10 +111,7 @@
 .dark-mode .form-control-disabled {
   background-color: rgb(68, 68, 68) !important;
 }
-.form-control-disabled {
-  background-color: var(--bs-secondary-bg) !important;
-  opacity: 1;
-}
+
 .form-control,
 .form-select {
   font-size: 1rem !important;
@@ -122,6 +119,10 @@
 .input-group-text {
   background-color: transparent !important;
   font-size: 1rem !important;
+}
+.form-control-disabled {
+  background-color: var(--bs-secondary-bg) !important;
+  opacity: 1;
 }
 .form-control-sm,
 .form-control,

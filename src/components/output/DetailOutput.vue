@@ -47,7 +47,15 @@
               <p class="title-text">Lista de Productos</p>
             </div>
             <div v-if="mode != 2" class="col text-end">
-              <button type="button" class="btn btn-sm btn-primary" @click="listItemAdd()">
+              <button
+                :disabled="
+                  disabledAllButtonList ||
+                  (mode != 1 && this.backupList.length > 0 && this.backupList[0].id == undefined)
+                "
+                type="button"
+                class="btn btn-sm btn-primary"
+                @click="listItemAdd()"
+              >
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
               </button>
             </div>
@@ -129,6 +137,7 @@
                   <div class="d-flex">
                     <button
                       v-if="disabledItemList[index] && mode != 1"
+                      :disabled="disabledAllButtonList"
                       type="button"
                       class="btn btn-sm btn-primary me-1"
                       @click="buttonListEdit(index)"
@@ -153,6 +162,7 @@
                     </button>
                     <button
                       v-if="disabledItemList[index]"
+                      :disabled="disabledAllButtonList"
                       type="button"
                       class="btn btn-sm btn-danger"
                       @click="buttonListDelete(index)"
@@ -254,7 +264,7 @@ export default defineComponent({
       disabledItemList: [],
       backupList: [],
       loadingContentList: false,
-
+      disabledAllButtonList: false,
       table: {
         columns: [
           {
@@ -308,18 +318,18 @@ export default defineComponent({
   methods: {
     resetItemCopy() {
       this.itemCopy.header = JSON.parse(JSON.stringify(this.itemSelected));
-
       if (this.mode != 1) {
         this.itemCopy.header.client = {
           name: this.itemSelected.client_name,
+          id: this.itemSelected.id_client,
         };
-        this.getAditionalData(this.itemSelected.id);
+        this.getOutputDetails(this.itemSelected.id);
       } else {
         this.listReset();
         this.listItemAdd();
       }
     },
-    getAditionalData(id) {
+    getOutputDetails(id) {
       this.loadingContentList = true;
       this.listReset();
       this.getOutputDetailRegisters(id).then((response) => {
@@ -382,13 +392,17 @@ export default defineComponent({
     validateDetail() {
       var resp = true;
       for (var i = 0; i < this.validation.detail.length; i++) {
-        this.validateProduct(i);
-        this.validateQuantity(i);
-        if (this.validation.detail[i].product.isValid == false || this.validation.detail[i].quantity.isValid == false) {
+        if (!this.validateDetailRow(i)) {
           resp = false;
         }
       }
       return resp;
+    },
+    validateDetailRow(index) {
+      this.validateProduct(index);
+      this.validateQuantity(index);
+      var result = this.validation.detail[index].product.isValid && this.validation.detail[index].quantity.isValid;
+      return result;
     },
 
     inputCode() {
@@ -430,34 +444,20 @@ export default defineComponent({
     },
     listItemAdd(item = null) {
       if (item == null) {
-        if (this.backupList.length > 0 && this.backupList[0].id == undefined) {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo agregar la fila, revise si se guardo el anterior producto agregado.",
-            type: 2,
-          });
-        } else if (this.listItemIsEditing()) {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo agregar la fila, revise si existen productos en edición.",
-            type: 2,
-          });
-        } else {
-          this.selectedProducts.unshift(null);
-          this.itemCopy.detail.unshift({
-            id: undefined,
-            stock: 1,
-            price: 0,
-            subtotal: 0,
-          });
-          this.backupList.unshift({
-            id: undefined,
-            stock: 1,
-            price: 0,
-            subtotal: 0,
-            product: null,
-          });
-        }
+        this.selectedProducts.unshift(null);
+        this.itemCopy.detail.unshift({
+          id: undefined,
+          stock: 1,
+          price: 0,
+          subtotal: 0,
+        });
+        this.backupList.unshift({
+          id: undefined,
+          stock: 1,
+          price: 0,
+          subtotal: 0,
+          product: null,
+        });
       } else {
         this.selectedProducts.unshift({ name: item.product_name });
         this.itemCopy.detail.unshift({
@@ -472,31 +472,17 @@ export default defineComponent({
         product: {},
         quantity: {},
       });
-      this.disabledItemList.push(true);
+      this.disabledItemList.unshift(true);
     },
     buttonListDelete(index) {
       if (this.mode == 1 || this.backupList[index].id == undefined) {
         this.listDelete(index);
       } else {
-        if (this.backupList.length > 0 && this.backupList[0].id == undefined) {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo eliminar la fila, revise si se guardo el anterior producto agregado.",
-            type: 2,
-          });
-        } else if (this.listItemIsEditing()) {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se pudo eliminar la fila, revise si existen productos en edición.",
-            type: 2,
-          });
-        } else {
-          this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
-            if (response.success) {
-              this.getAditionalData(this.itemSelected.id);
-            }
-          });
-        }
+        this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
+          if (response.success) {
+            this.getOutputDetails(this.itemSelected.id);
+          }
+        });
       }
     },
     listDelete(index) {
@@ -507,36 +493,48 @@ export default defineComponent({
       this.backupList.splice(index, 1);
     },
     buttonListSave(index) {
-      var item = {
-        id: this.backupList[index].id,
-        id_order: this.itemSelected.id,
-        id_product: this.itemCopy.detail[index].id,
-        new_sale_price: this.itemCopy.detail[index].price,
-        quantity: this.itemCopy.detail[index].stock,
-      };
-      if (this.backupList[index].id == undefined) {
-        //agregado recientemente
-        console.log("agregado");
-        console.log(item);
-        this.addOutputDetailRegister(item).then((response) => {
-          if (response.success) {
-            this.getAditionalData(this.itemSelected.id);
-          }
-        });
+      if (this.validateDetailRow(index)) {
+        var item = {
+          id: this.backupList[index].id,
+          id_order: this.itemSelected.id,
+          id_product: this.itemCopy.detail[index].id,
+          new_sale_price: this.itemCopy.detail[index].price,
+          quantity: this.itemCopy.detail[index].stock,
+        };
+        if (this.backupList[index].id == undefined) {
+          //agregado recientemente
+          console.log("agregado");
+          console.log(item);
+          this.addOutputDetailRegister(item).then((response) => {
+            if (response.success) {
+              this.disabledAllButtonList = false;
+              this.getOutputDetails(this.itemSelected.id);
+            }
+          });
+        } else {
+          //editado
+          console.log("editado");
+          this.editOutputDetailRegister(item).then((response) => {
+            if (response.success) {
+              this.disabledAllButtonList = false;
+              this.getOutputDetails(this.itemSelected.id);
+            }
+          });
+        }
       } else {
-        //editado
-        console.log("editado");
-        this.editOutputDetailRegister(item).then((response) => {
-          if (response.success) {
-            this.getAditionalData(this.itemSelected.id);
-          }
+        this.showToast({
+          title: "Ocurrió un error",
+          message: "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
+          type: 2,
         });
       }
     },
     buttonListEdit(index) {
+      this.disabledAllButtonList = true;
       this.disabledItemList[index] = false;
     },
     buttonListCancel(index) {
+      this.disabledAllButtonList = false;
       this.disabledItemList[index] = true;
       this.validation.detail[index] = {
         product: {},
@@ -632,6 +630,7 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.mode = mode;
+      this.disabledAllButtonList = false;
       this.resetValidation();
       switch (this.mode) {
         case 1:

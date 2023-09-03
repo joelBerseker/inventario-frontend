@@ -26,6 +26,9 @@ export default {
       for (var key in data) {
         form_data.append(key, data[key]);
       }
+      if (data.description == null || data.description == "" || data.description == undefined) {
+        form_data.append("description", "Ninguna");
+      }
       return new Promise((resolve, reject) => {
         axios
           .post(path, form_data)
@@ -55,6 +58,9 @@ export default {
           continue;
         }
         form_data.append(key, data[key]);
+      }
+      if (data.description == null || data.description == "" || data.description == undefined) {
+        form_data.append("description", "Ninguna");
       }
       return new Promise((resolve, reject) => {
         axios
