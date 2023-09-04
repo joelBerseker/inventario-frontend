@@ -79,6 +79,11 @@ export default {
       }
       return data;
     },
+    validationRequired(text) {
+      var validationMessage = "";
+      validationMessage = this.textEmpty(text, validationMessage);
+      return this.validateInput(text, validationMessage, true);
+    },
     validationRequiredText(text, min, max) {
       var validationMessage = "";
       validationMessage = this.textEmpty(text, validationMessage);

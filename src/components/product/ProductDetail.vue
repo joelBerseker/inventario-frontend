@@ -51,14 +51,18 @@
       </div>
       <div class="row mb-3">
         <div class="col-6">
-          <MyInput
-            type="text"
-            name="Medida"
-            v-model="itemCopy.measure"
+          <SelectSearch
+            name="Categoria"
+            :validation="validation.category"
+            v-model="itemCopy.category"
+            link="categories/categories/"
+            v-on:update:modelValue="inputCategory(index)"
+            id="Categoria"
             :disabled="disabled"
-            v-on:input="inputStock()"
-          />
+          >
+          </SelectSearch>
         </div>
+
         <div class="col-6">
           <MyInput
             type="text"
@@ -111,6 +115,7 @@
 import { defineComponent } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
+import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import ConectionProduct from "@/mixin/conections/ConectionProduct";
 export default defineComponent({
@@ -120,6 +125,7 @@ export default defineComponent({
   components: {
     MyModal,
     MyInput,
+    SelectSearch,
   },
   name: "Product",
   data() {
@@ -134,6 +140,7 @@ export default defineComponent({
         price: {},
         stock: {},
         description: {},
+        category: {},
       },
       validationEmpty: {
         code: {},
@@ -142,6 +149,7 @@ export default defineComponent({
         price: {},
         stock: {},
         description: {},
+        category: {},
       },
       itemCopy: {},
     };
@@ -154,6 +162,10 @@ export default defineComponent({
   methods: {
     resetItemCopy() {
       this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
+      this.itemCopy.category = {
+        id: this.itemSelected.id_category,
+        name: "back no lo manda xdxdxdd",
+      };
     },
     validateForm() {
       this.validateCode();
@@ -162,6 +174,7 @@ export default defineComponent({
       this.validateCost();
       this.validateStock();
       this.validateDescription();
+      this.validateCategory();
 
       var result =
         this.validation.code.isValid &&
@@ -169,7 +182,8 @@ export default defineComponent({
         this.validation.price.isValid &&
         this.validation.cost.isValid &&
         this.validation.stock.isValid &&
-        this.validation.description.isValid;
+        this.validation.description.isValid &&
+        this.validation.category.isValid;
       return result;
     },
     validateCode() {
@@ -189,6 +203,9 @@ export default defineComponent({
     },
     validateDescription() {
       this.validation.description = this.validationNoRequiredText(this.itemCopy.description, 3, 50);
+    },
+    validateCategory() {
+      this.validation.category = this.validationRequired(this.itemCopy.category);
     },
 
     inputCode() {
@@ -213,6 +230,9 @@ export default defineComponent({
     },
     inputDescription() {
       this.validateDescription();
+    },
+    inputCategory() {
+      this.validateCategory();
     },
 
     buttonSave() {

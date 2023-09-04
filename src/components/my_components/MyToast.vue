@@ -5,7 +5,7 @@
         <strong class="me-auto"><i :class="icon"></i> {{ title }}</strong>
 
         <button type="button" class="btn btn-toast" data-bs-dismiss="toast" aria-label="Close">
-          <i class="bi bi-x-lg"></i>
+          <i class="bi bi-x"></i>
         </button>
       </div>
       <div class="toast-body">
