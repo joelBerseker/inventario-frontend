@@ -2,8 +2,8 @@ import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   methods: {
-    async getInputRegisters(page) {
-      var path = this.urlConection + `?page=` + page;
+    async getInputDetailRegisters(id) {
+      var path = this.urlConectionInputDetail + `?id_purchase=` + id;
       return new Promise((resolve, reject) => {
         axios
           .get(path)
@@ -20,19 +20,16 @@ export default {
           });
       });
     },
-    async addInputRegister(data) {
-      var path = this.urlConection;
+    async addInputDetailRegister(data) {
+      var path = this.urlConectionInputDetail;
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "provider") {
+        if (key == "id" || key == "created_at" || key == "updated_at") {
           continue;
         }
         form_data.append(key, data[key]);
       }
-      form_data.append("id_provider", data.provider.id);
-      if (data.description == null || data.description == "" || data.description == undefined) {
-        form_data.append("description", "Ninguna");
-      }
+      form_data.append("manage_stock", false);
       return new Promise((resolve, reject) => {
         axios
           .post(path, form_data)
@@ -54,18 +51,56 @@ export default {
           });
       });
     },
-    async editInputRegister(data) {
-      var path = this.urlConection  + data.id + "/";
+    arrayInputDetailToJson(id_order, array) {
+      var resp = [];
+      array.forEach((element) => {
+        resp.push({
+          id_purchase: id_order,
+          id_product: element.id,
+          sale_price: element.sale_price,
+          purchase_price: element.purchase_price,
+          quantity: element.stock,
+        });
+      });
+      return JSON.stringify(resp)
+    },
+    async addInputDetailRegisters(id, data) {
+      var path = this.urlConectionInputDetail;
+      var list_data = this.arrayInputDetailToJson(id, data)
+      const config = {
+        headers: {
+          "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
+        },
+      };
+      return new Promise((resolve, reject) => {
+        axios
+          .post(path, list_data, config)
+          .then((response) => {
+            this.showMessage({
+              title: "Operación exitosa",
+              message: "El registro se agrego correctamente.",
+              type: 1,
+            });
+            resolve({ success: true, response: response });
+          })
+          .catch((error) => {
+            this.showMessage({
+              title: "Ocurrió un error",
+              message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+              type: 2,
+            });
+            resolve({ success: false, response: error });
+          });
+      });
+    },
+    async editInputDetailRegister(data) {
+      var path = this.urlConectionInputDetail  + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "id" || key == "created_at" || key == "updated_at" || key == "provider") {
+        if (key == "id" || key == "created_at" || key == "updated_at" || key == "supplier_image") {
           continue;
         }
         form_data.append(key, data[key]);
-      }
-      form_data.append("id_provider", data.provider.id);
-      if (data.detail == null || data.detail == "" || data.detail == undefined) {
-        form_data.append("detail", "Ninguna");
       }
       return new Promise((resolve, reject) => {
         axios
@@ -88,7 +123,7 @@ export default {
           });
       });
     },
-    async confirmDeleteInputRegister(id) {
+    async confirmDeleteInputDetailRegister(id) {
       return new Promise((resolve, reject) => {
         this.confirmDialogue({
           title: "Eliminar Registro",
@@ -96,7 +131,7 @@ export default {
           okButton: "Eliminar",
         }).then((result) => {
           if (result) {
-            this.deleteInputRegister(id)
+            this.deleteInputDetailRegister(id)
               .then((response) => {
                 resolve({ success: true, response: response });
               })
@@ -109,8 +144,8 @@ export default {
         });
       });
     },
-    async deleteInputRegister(id) {
-      var path = this.urlConection + id + "/";
+    async deleteInputDetailRegister(id) {
+      var path = this.urlConectionInputDetail + id + "/";
       return new Promise((resolve, reject) => {
         axios
           .delete(path)
@@ -132,8 +167,8 @@ export default {
           });
       });
     },
-    async getInputRegister(id) {
-      var path = this.urlConection + id + "/";
+    async getInputDetailRegister(id) {
+      var path = this.urlConectionInputDetail + id + "/";
       return new Promise((resolve, reject) => {
         axios
           .get(path)
@@ -156,7 +191,7 @@ export default {
   },
   data() {
     return {
-      urlConection: url + "purchase/purchase/"
+      urlConectionInputDetail: url + "purchase_details/purchase_detail/"
     };
   },
 };

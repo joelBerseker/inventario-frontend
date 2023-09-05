@@ -266,37 +266,6 @@ export default defineComponent({
       backupList: [],
       loadingContentList: false,
       disabledAllButtonList: false,
-      table: {
-        columns: [
-          {
-            label: "Nombre",
-            field: "name",
-            width: "5%",
-          },
-          {
-            label: "Cantidad",
-            field: "amount",
-            width: "10%",
-          },
-          {
-            label: "Precio de venta",
-            field: "price",
-            width: "10%",
-          },
-          {
-            label: "Subtotal",
-            field: "subtotal",
-            width: "20%",
-          },
-          {
-            label: "",
-            field: "quick",
-            width: "1%",
-          },
-        ],
-        rows: [],
-        totalRecordCount: 0,
-      },
     };
   },
   watch: {
@@ -419,7 +388,6 @@ export default defineComponent({
       this.validateDescription();
     },
     inputProduct(index) {
-      console.log(this.selectedProducts[index]);
       this.listItemChangeFromSelect(index, this.selectedProducts[index]);
       this.calculateQuatity(index);
       this.validateProduct(index);
@@ -504,8 +472,6 @@ export default defineComponent({
         };
         if (this.backupList[index].id == undefined) {
           //agregado recientemente
-          console.log("agregado");
-          console.log(item);
           this.addOutputDetailRegister(item).then((response) => {
             if (response.success) {
               this.disabledAllButtonList = false;
@@ -514,7 +480,6 @@ export default defineComponent({
           });
         } else {
           //editado
-          console.log("editado");
           this.editOutputDetailRegister(item).then((response) => {
             if (response.success) {
               this.disabledAllButtonList = false;
