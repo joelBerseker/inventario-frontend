@@ -102,7 +102,7 @@ export default defineComponent({
     onDelete() {
       this.getCustomers(1);
     },
-    getItemSelectedByUrl() {
+    getIdUrl() {
       if (this.$route.query.id != undefined) {
         this.getCustomerRegister(this.$route.query.id).then((response) => {
           if (response.success) {
@@ -171,7 +171,7 @@ export default defineComponent({
       v-on:item:add="onAdd"
       v-on:item:edit="onEdit"
       v-on:item:delete="onDelete"
-      v-on:mounted:mymodal="getItemSelectedByUrl"
+      v-on:mounted:mymodal="getIdUrl"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
