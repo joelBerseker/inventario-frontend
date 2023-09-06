@@ -1,23 +1,20 @@
 <template>
-  <MyModal ref="myModal" :id="'categoryDetailModal'" :title="this.title" v-on:mymodal:close="closeModal"> 
-    <div class="modal-body">
-      <div class="row mb-3">
-        <div class="col">
-          <MyInput
-            type="text"
-            name="Nombre"
-            :validation="validation.name"
-            v-model="itemCopy.name"
-            :disabled="disabled"
-            v-on:input="inputName()"
-          />
-        </div>
-      </div>
+  <MyModal ref="myModal" :id="'categoryDetailModal'" :title="this.title" v-on:mymodal:close="closeModal">
+    <div class="modal-body" :key="item.id.value">
+      <MyInput
+        class="mb-3"
+        type="text"
+        name="Nombre"
+        :validation="item.name.validation"
+        v-model="item.name.value"
+        :disabled="disabled"
+        v-on:input="inputName()"
+      />
       <MyInput
         type="textarea"
         name="Descripción"
-        :validation="validation.description"
-        v-model="itemCopy.description"
+        :validation="item.description.validation"
+        v-model="item.description.value"
         :disabled="disabled"
         v-on:input="inputDescription()"
       />
@@ -56,8 +53,8 @@ import MyModal from "@/components/my_components/MyModal.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import ConectionCategory from "@/mixin/conections/ConectionCategory";
+import { ModelCategory } from "@/mixin/models/ModelCategory";
 export default defineComponent({
-  props: ["itemSelected"],
   mixins: [ValidationFunctions, ConectionCategory],
   inject: ["confirmDialogue", "showToast"],
   components: {
@@ -70,55 +67,22 @@ export default defineComponent({
       disabled: false,
       mode: 0,
       title: "",
-      validation: {
-        name: {},
-        description: {},
-      },
-      validationEmpty: {
-        name: {},
-        description: {},
-      },
-      itemCopy: {},
+      item: new ModelCategory(),
+      itemBackup: {},
     };
   },
-  watch: {
-    itemSelected() {
-      this.resetItemCopy();
-    },
-  },
   methods: {
-    resetItemCopy() {
-      this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
-    },
-    validateForm() {
-      this.validateName();
-      this.validateDescription();
-
-      var result =
-        this.validation.name.isValid &&
-        this.validation.description.isValid;
-      return result;
-    },
-    validateName() {
-      this.validation.name = this.validationRequiredText(this.itemCopy.name, 3, 50);
-    },
-    validateDescription() {
-      this.validation.description = this.validationNoRequiredText(this.itemCopy.description, 3, 250);
-    },
-
-   
     inputName() {
-      this.validateName();
+      this.item.validateName();
     },
     inputDescription() {
-      this.validateDescription();
+      this.item.validateDescription();
     },
-
     buttonSave() {
-      if (this.validateForm()) {
+      if (this.item.validateForm()) {
         switch (this.mode) {
           case 1:
-            this.addCategoryRegister(this.itemCopy).then((response) => {
+            this.addCategoryRegister(this.item.getToAdd()).then((response) => {
               if (response.success) {
                 this.$emit("item:add");
                 this.closeModal();
@@ -126,7 +90,7 @@ export default defineComponent({
             });
             break;
           case 3:
-            this.editCategoryRegister(this.itemCopy).then((response) => {
+            this.editCategoryRegister(this.item.getToEdit()).then((response) => {
               if (response.success) {
                 this.$emit("item:edit");
                 this.closeModal();
@@ -151,7 +115,7 @@ export default defineComponent({
       this.changeMode(2);
     },
     buttonDelete() {
-      this.confirmDeleteCategoryRegister(this.itemCopy.id).then((response) => {
+      this.confirmDeleteCategoryRegister(this.item.id).then((response) => {
         if (response.success) {
           this.$emit("item:delete");
           this.closeModal();
@@ -160,14 +124,14 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.mode = mode;
-      this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
-      this.resetItemCopy();
+      this.item.resetValidation();
       switch (this.mode) {
         case 1:
           this.title = "Agregar Categoria";
           this.disabled = false;
           break;
         case 2:
+          this.item.setFromData(this.itemBackup);
           this.title = "Visualizar Categoria";
           this.disabled = true;
           break;
@@ -180,14 +144,35 @@ export default defineComponent({
           break;
       }
     },
+    openInAdd() {
+      this.changeMode(1);
+      this.openModal();
+      this.itemBackup = {};
+      this.item.setFromData({});
+    },
+    openInView(data) {
+      this.changeMode(2);
+      this.openModal();
+      this.itemBackup = JSON.parse(JSON.stringify(data));
+      this.item.setFromData(data);
+    },
+    openInViewId(id) {
+      this.getCategoryRegister(id).then((response) => {
+        if (response.success) {
+          this.changeMode(2);
+          this.openModal();
+          this.itemBackup = JSON.parse(JSON.stringify(response.response.data));
+          this.item.setFromData(response.response.data);
+        }
+      });
+    },
     closeModal() {
-      try {
-        this.$refs.myModal.closeModal();
-      } catch (error) {}
+      this.$refs.myModal.closeModal();
     },
     openModal() {
       this.$refs.myModal.openModal();
     },
   },
+  created() {},
 });
 </script>

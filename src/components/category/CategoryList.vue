@@ -89,7 +89,7 @@ export default defineComponent({
     onDelete() {
       this.getCategories(1);
     },
-    getItemUrl() {
+    getIdUrl() {
       if (this.$route.query.id != undefined) {
         this.$refs.modal.openInViewId(this.$route.query.id);
       }
@@ -152,7 +152,7 @@ export default defineComponent({
       v-on:item:add="onAdd"
       v-on:item:edit="onEdit"
       v-on:item:delete="onDelete"
-      v-on:mounted:mymodal="getItemUrl"
+      v-on:mounted:mymodal="getIdUrl"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
