@@ -1,5 +1,10 @@
 <template>
-  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" v-on:mymodal:close="closeModal">
+  <MyModal
+    ref="myModal"
+    :id="'productDetailModal'"
+    :title="this.title"
+    v-on:mymodal:close="closeModal"
+  >
     <div class="modal-body">
       <div class="row mb-3">
         <div class="col-6">
@@ -84,19 +89,39 @@
       />
     </div>
     <div class="modal-footer">
-      <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
+      <button
+        type="button"
+        @click="buttonDelete"
+        class="btn btn-danger btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="buttonEdit" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
+      <button
+        type="button"
+        @click="buttonEdit"
+        class="btn btn-primary btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+      <button
+        type="button"
+        @click="buttonCancel"
+        class="btn btn-secondary btn-sm button-margin"
+        v-if="mode == 3"
+      >
         <i class="bi bi-arrow-left"></i>
         Cancelar
       </button>
-      <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
+      <button
+        type="button"
+        @click="buttonSave"
+        class="btn btn-primary btn-sm button-margin"
+        v-if="mode != 2"
+      >
         <i class="bi bi-check-lg"></i>
         Guardar
       </button>
@@ -164,7 +189,7 @@ export default defineComponent({
       this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
       this.itemCopy.category = {
         id: this.itemSelected.id_category,
-        name: "back no lo manda xdxdxdd",
+        name: this.itemSelected.category_name,
       };
     },
     validateForm() {
@@ -187,25 +212,49 @@ export default defineComponent({
       return result;
     },
     validateCode() {
-      this.validation.code = this.validationRequiredText(this.itemCopy.code, 3, 10);
+      this.validation.code = this.validationRequiredText(
+        this.itemCopy.code,
+        3,
+        10
+      );
     },
     validateName() {
-      this.validation.name = this.validationRequiredText(this.itemCopy.name, 3, 50);
+      this.validation.name = this.validationRequiredText(
+        this.itemCopy.name,
+        3,
+        50
+      );
     },
     validatePrice() {
-      this.validation.price = this.validationRequiredText(this.itemCopy.price, 3, 15);
+      this.validation.price = this.validationRequiredText(
+        this.itemCopy.price,
+        3,
+        15
+      );
     },
     validateCost() {
-      this.validation.cost = this.validationRequiredText(this.itemCopy.cost, 3, 15);
+      this.validation.cost = this.validationRequiredText(
+        this.itemCopy.cost,
+        3,
+        15
+      );
     },
     validateStock() {
-      this.validation.stock = this.validationRequiredNumber(this.itemCopy.stock);
+      this.validation.stock = this.validationRequiredNumber(
+        this.itemCopy.stock
+      );
     },
     validateDescription() {
-      this.validation.description = this.validationNoRequiredText(this.itemCopy.description, 3, 50);
+      this.validation.description = this.validationNoRequiredText(
+        this.itemCopy.description,
+        3,
+        50
+      );
     },
     validateCategory() {
-      this.validation.category = this.validationRequired(this.itemCopy.category);
+      this.validation.category = this.validationRequired(
+        this.itemCopy.category
+      );
     },
 
     inputCode() {
@@ -260,7 +309,8 @@ export default defineComponent({
       } else {
         this.showToast({
           title: "Ocurrió un error",
-          message: "Datos no válidos, revise si todos los campos se llenaron correctamente.",
+          message:
+            "Datos no válidos, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }
