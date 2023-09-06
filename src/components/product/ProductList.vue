@@ -15,7 +15,6 @@ export default defineComponent({
   inject: ["confirmDialogue", "showToast"],
   data() {
     return {
-      itemSelected: {},
       search: "",
       filter: "",
       table: {
@@ -121,24 +120,14 @@ export default defineComponent({
     },
     getIdUrl() {
       if (this.$route.query.id != undefined) {
-        this.getProductRegister(this.$route.query.id).then((response) => {
-          if (response.success) {
-            this.itemSelected = response.response.data;
-            this.$refs.modal.changeMode(2);
-            this.$refs.modal.openModal();
-          }
-        });
+        this.$refs.modal.openViewId(this.$route.query.id);
       }
     },
     buttonAdd() {
-      this.itemSelected = {};
-      this.$refs.modal.changeMode(1);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openAdd();
     },
     buttonView(row) {
-      this.itemSelected = row;
-      this.$refs.modal.changeMode(2);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openView(row);
     },
     async buttonDelete(row) {
       this.confirmDeleteProductRegister(row.id).then((response) => {
@@ -189,7 +178,6 @@ export default defineComponent({
   <SystemContent ref="content" :loading="loadingContentSystem">
     <ProductDetail
       ref="modal"
-      :itemSelected="itemSelected"
       v-on:item:add="onAdd"
       v-on:item:edit="onEdit"
       v-on:item:delete="onDelete"

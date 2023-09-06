@@ -11,8 +11,8 @@
           <MyInput
             type="text"
             name="Código"
-            :validation="validation.code"
-            v-model="itemCopy.code"
+            :validation="item.code.validation"
+            v-model="item.code.value"
             :disabled="disabled"
             v-on:input="inputCode()"
           />
@@ -21,8 +21,8 @@
           <MyInput
             type="text"
             name="Nombre"
-            :validation="validation.name"
-            v-model="itemCopy.name"
+            :validation="item.name.validation"
+            v-model="item.name.value"
             :disabled="disabled"
             v-on:input="inputName()"
           />
@@ -33,8 +33,8 @@
           <MyInput
             type="text"
             name="Precio de Compra"
-            :validation="validation.cost"
-            v-model="itemCopy.cost"
+            :validation="item.cost.validation"
+            v-model="item.cost.value"
             v-on:input="inputCost()"
             :disabled="disabled"
           >
@@ -45,8 +45,8 @@
           <MyInput
             type="text"
             name="Precio de Venta"
-            :validation="validation.price"
-            v-model="itemCopy.price"
+            :validation="item.price.validation"
+            v-model="item.price.value"
             v-on:input="inputPrice()"
             :disabled="disabled"
           >
@@ -58,8 +58,8 @@
         <div class="col-6">
           <SelectSearch
             name="Categoria"
-            :validation="validation.category"
-            v-model="itemCopy.category"
+            :validation="item.category.validation"
+            v-model="item.category.value"
             link="categories/categories/"
             v-on:update:modelValue="inputCategory(index)"
             id="Categoria"
@@ -72,8 +72,8 @@
           <MyInput
             type="text"
             name="Cantidad en Inventario"
-            :validation="validation.stock"
-            v-model="itemCopy.stock"
+            :validation="item.stock.validation"
+            v-model="item.stock.value"
             :disabled="disabled"
             v-on:input="inputStock()"
           />
@@ -82,8 +82,8 @@
       <MyInput
         type="textarea"
         name="Descripción"
-        :validation="validation.description"
-        v-model="itemCopy.description"
+        :validation="item.description.validation"
+        v-model="item.description.value"
         :disabled="disabled"
         v-on:input="inputDescription()"
       />
@@ -143,8 +143,8 @@ import MyInput from "@/components/my_components/MyInput.vue";
 import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import ConectionProduct from "@/mixin/conections/ConectionProduct";
+import { ModelProduct } from "@/mixin/models/ModelProduct";
 export default defineComponent({
-  props: ["itemSelected"],
   mixins: [ValidationFunctions, ConectionProduct],
   inject: ["confirmDialogue", "showToast"],
   components: {
@@ -158,137 +158,44 @@ export default defineComponent({
       disabled: false,
       mode: 0,
       title: "",
-      validation: {
-        code: {},
-        name: {},
-        cost: {},
-        price: {},
-        stock: {},
-        description: {},
-        category: {},
-      },
-      validationEmpty: {
-        code: {},
-        name: {},
-        cost: {},
-        price: {},
-        stock: {},
-        description: {},
-        category: {},
-      },
-      itemCopy: {},
+      item: new ModelProduct(),
+      itemBackup: {},
     };
   },
-  watch: {
-    itemSelected() {
-      this.resetItemCopy();
-    },
-  },
+
   methods: {
-    resetItemCopy() {
-      this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
-      this.itemCopy.category = {
-        id: this.itemSelected.id_category,
-        name: this.itemSelected.category_name,
-      };
-    },
-    validateForm() {
-      this.validateCode();
-      this.validateName();
-      this.validatePrice();
-      this.validateCost();
-      this.validateStock();
-      this.validateDescription();
-      this.validateCategory();
-
-      var result =
-        this.validation.code.isValid &&
-        this.validation.name.isValid &&
-        this.validation.price.isValid &&
-        this.validation.cost.isValid &&
-        this.validation.stock.isValid &&
-        this.validation.description.isValid &&
-        this.validation.category.isValid;
-      return result;
-    },
-    validateCode() {
-      this.validation.code = this.validationRequiredText(
-        this.itemCopy.code,
-        3,
-        10
-      );
-    },
-    validateName() {
-      this.validation.name = this.validationRequiredText(
-        this.itemCopy.name,
-        3,
-        50
-      );
-    },
-    validatePrice() {
-      this.validation.price = this.validationRequiredText(
-        this.itemCopy.price,
-        3,
-        15
-      );
-    },
-    validateCost() {
-      this.validation.cost = this.validationRequiredText(
-        this.itemCopy.cost,
-        3,
-        15
-      );
-    },
-    validateStock() {
-      this.validation.stock = this.validationRequiredNumber(
-        this.itemCopy.stock
-      );
-    },
-    validateDescription() {
-      this.validation.description = this.validationNoRequiredText(
-        this.itemCopy.description,
-        3,
-        50
-      );
-    },
-    validateCategory() {
-      this.validation.category = this.validationRequired(
-        this.itemCopy.category
-      );
-    },
-
     inputCode() {
-      this.validateCode();
+      this.item.validateCode();
     },
     inputName() {
-      this.validateName();
+      this.item.validateName();
     },
     inputPrice() {
-      this.itemCopy.price = this.itemCopy.price.replace(/[^0-9]/, "");
-      this.itemCopy.price = this.changeCurrency(this.itemCopy.price);
-      this.validatePrice();
+      //this.item.price = this.item.price.replace(/[^0-9]/, "");
+      //this.item.price = this.changeCurrency(this.item.price);
+      this.item.validatePrice();
     },
     inputCost() {
-      this.itemCopy.cost = this.itemCopy.cost.replace(/[^0-9]/, "");
-      this.itemCopy.cost = this.changeCurrency(this.itemCopy.cost);
-      this.validateCost();
+      //this.item.cost = this.item.cost.replace(/[^0-9]/, "");
+      //this.item.cost = this.changeCurrency(this.item.cost);
+      this.item.validateCost();
     },
     inputStock() {
-      this.itemCopy.stock = this.itemCopy.stock.replace(/[^0-9]/, "");
-      this.validateStock();
+      //this.item.stock = this.item.stock.replace(/[^0-9]/, "");
+      this.item.validateStock();
     },
     inputDescription() {
-      this.validateDescription();
+      this.item.validateDescription();
     },
     inputCategory() {
-      this.validateCategory();
+      this.item.validateCategory();
     },
 
     buttonSave() {
-      if (this.validateForm()) {
+      if (this.item.validateForm()) {
         switch (this.mode) {
           case 1:
-            this.addProductRegister(this.itemCopy).then((response) => {
+            this.addProductRegister(this.item.getToAdd()).then((response) => {
               if (response.success) {
                 this.$emit("item:add");
                 this.closeModal();
@@ -296,7 +203,7 @@ export default defineComponent({
             });
             break;
           case 3:
-            this.editProductRegister(this.itemCopy).then((response) => {
+            this.editProductRegister(this.item.getToEdit()).then((response) => {
               if (response.success) {
                 this.$emit("item:edit");
                 this.closeModal();
@@ -309,8 +216,7 @@ export default defineComponent({
       } else {
         this.showToast({
           title: "Ocurrió un error",
-          message:
-            "Datos no válidos, revise si todos los campos se llenaron correctamente.",
+          message: "Datos no válidos, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }
@@ -322,7 +228,7 @@ export default defineComponent({
       this.changeMode(2);
     },
     buttonDelete() {
-      this.confirmDeleteProductRegister(this.itemCopy.id).then((response) => {
+      this.confirmDeleteProductRegister(this.item.id.value).then((response) => {
         if (response.success) {
           this.$emit("item:delete");
           this.closeModal();
@@ -331,19 +237,19 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.mode = mode;
-      this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
-      this.resetItemCopy();
+      this.item.resetValidation();
       switch (this.mode) {
         case 1:
-          this.title = "Agregar Producto";
+          this.title = "Agregar Categoria";
           this.disabled = false;
           break;
         case 2:
-          this.title = "Visualizar Producto";
+          this.item.setFromData(this.itemBackup);
+          this.title = "Visualizar Categoria";
           this.disabled = true;
           break;
         case 3:
-          this.title = "Editar Producto";
+          this.title = "Editar Categoria";
           this.disabled = false;
           break;
         default:
@@ -351,10 +257,31 @@ export default defineComponent({
           break;
       }
     },
+    openAdd() {
+      this.changeMode(1);
+      this.openModal();
+      this.itemBackup = {};
+      this.item.setFromData({});
+      
+    },
+    openView(data) {
+      this.changeMode(2);
+      this.openModal();
+      this.itemBackup = JSON.parse(JSON.stringify(data));
+      this.item.setFromData(data);
+    },
+    openViewId(id) {
+      this.getProductRegister(id).then((response) => {
+        if (response.success) {
+          this.changeMode(2);
+          this.openModal();
+          this.itemBackup = JSON.parse(JSON.stringify(response.response.data));
+          this.item.setFromData(response.response.data);
+        }
+      });
+    },
     closeModal() {
-      try {
-        this.$refs.myModal.closeModal();
-      } catch (error) {}
+      this.$refs.myModal.closeModal();
     },
     openModal() {
       this.$refs.myModal.openModal();
