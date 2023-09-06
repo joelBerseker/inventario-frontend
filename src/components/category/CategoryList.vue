@@ -91,14 +91,14 @@ export default defineComponent({
     },
     getIdUrl() {
       if (this.$route.query.id != undefined) {
-        this.$refs.modal.openInViewId(this.$route.query.id);
+        this.$refs.modal.openViewId(this.$route.query.id);
       }
     },
     buttonAdd() {
-      this.$refs.modal.openInAdd();
+      this.$refs.modal.openAdd();
     },
     buttonView(row) {
-      this.$refs.modal.openInView(row);
+      this.$refs.modal.openView(row);
     },
     async buttonDelete(row) {
       this.confirmDeleteCategoryRegister(row.id).then((response) => {

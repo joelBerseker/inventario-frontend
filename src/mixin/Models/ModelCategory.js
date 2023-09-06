@@ -11,11 +11,6 @@ export class ModelCategory {
     value: undefined,
     validation: {},
   };
-  constructor(id, name, description) {
-    this.id.value = id;
-    this.name.value = name;
-    this.description.value = description;
-  }
   validateName() {
     this.name.validation = Validation.requiredText(this.name.value, 3, 50);
   }

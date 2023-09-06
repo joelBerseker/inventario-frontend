@@ -75,12 +75,21 @@ export const Validation = {
   },
   /*INPUT REPLACE */
   inputOnlyNumberPlus(text) {
+    if (text == "" || text == null || text == undefined) {
+      return text
+    }
     return text.toString().replace(/[^0-9+]/, "");
   },
   inputOnlyNumber(text) {
+    if (text == "" || text == null || text == undefined) {
+      return text
+    }
     return text.toString().replace(/[^0-9]/, "");
   },
   changeCurrency(data) {
+    if (data == "" || data == null || data == undefined) {
+      return data
+    }
     var text = data.toString().replace(/[^0-9]/, "");
     if (text.length >= 3) {
       var firsPart = text.slice(0, -2);

@@ -136,26 +136,16 @@ export default defineComponent({
     onDelete() {
       this.getSuppliers(1);
     },
-    getItemSelectedByUrl() {
+    getIdUrl() {
       if (this.$route.query.id != undefined) {
-        this.getSupplierRegister(this.$route.query.id).then((response) => {
-          if (response.success) {
-            this.itemSelected = response.response.data;
-            this.$refs.modal.changeMode(2);
-            this.$refs.modal.openModal();
-          }
-        });
+        this.$refs.modal.openViewId(this.$route.query.id);
       }
     },
     buttonAdd() {
-      this.itemSelected = {};
-      this.$refs.modal.changeMode(1);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openAdd();
     },
     buttonView(row) {
-      this.itemSelected = row;
-      this.$refs.modal.changeMode(2);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openView(row);
     },
     async buttonDelete(row) {
       this.confirmDeleteSupplierRegister(row.id).then((response) => {
@@ -202,11 +192,10 @@ export default defineComponent({
   <SystemContent ref="content" :loading="loadingContentSystem">
     <DetailSupplier
       ref="modal"
-      :itemSelected="itemSelected"
       v-on:item:add="onAdd"
       v-on:item:edit="onEdit"
       v-on:item:delete="onDelete"
-      v-on:mounted:mymodal="getItemSelectedByUrl"
+      v-on:mounted:mymodal="getIdUrl"
     />
 
     <div class="row justify-content-md-end">

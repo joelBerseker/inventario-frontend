@@ -115,7 +115,7 @@ export default defineComponent({
       this.changeMode(2);
     },
     buttonDelete() {
-      this.confirmDeleteCategoryRegister(this.item.id).then((response) => {
+      this.confirmDeleteCategoryRegister(this.item.id.value).then((response) => {
         if (response.success) {
           this.$emit("item:delete");
           this.closeModal();
@@ -144,19 +144,19 @@ export default defineComponent({
           break;
       }
     },
-    openInAdd() {
+    openAdd() {
       this.changeMode(1);
       this.openModal();
       this.itemBackup = {};
       this.item.setFromData({});
     },
-    openInView(data) {
+    openView(data) {
       this.changeMode(2);
       this.openModal();
       this.itemBackup = JSON.parse(JSON.stringify(data));
       this.item.setFromData(data);
     },
-    openInViewId(id) {
+    openViewId(id) {
       this.getCategoryRegister(id).then((response) => {
         if (response.success) {
           this.changeMode(2);
