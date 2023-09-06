@@ -213,6 +213,7 @@ export default defineComponent({
         :columns="table.columns"
         :rows="table.rows"
         :total="table.totalRecordCount"
+        @row-clicked="buttonView"
       >
         <template v-slot:quick="data">
           <div class="d-flex">

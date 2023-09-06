@@ -247,6 +247,7 @@ export default defineComponent({
         :rows="table.rows"
         :total="table.totalRecordCount"
         class="mb-3"
+        @row-clicked="buttonView"
       >
         <template v-slot:quick="data">
           <div class="d-flex">

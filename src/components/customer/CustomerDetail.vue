@@ -5,8 +5,8 @@
         class="mb-3"
         name="Nombre"
         type="text"
-        v-model="itemCopy.name"
-        :validation="validation.name"
+        v-model="item.name.value"
+        :validation="item.name.validation"
         :disabled="disabled"
         v-on:input="inputName()"
       />
@@ -14,9 +14,9 @@
         <div class="col-6">
           <MySelect
             name="Tipo de documento"
-            :validation="validation.documentType"
+            :validation="item.documentType.validation"
             :options="optionsDocumentType"
-            v-model="itemCopy.documentType"
+            v-model="item.documentType.value"
             :disabled="disabled"
             v-on:update="inputDocumentType()"
           />
@@ -25,8 +25,8 @@
           <MyInput
             name="Documento"
             type="text"
-            v-model="itemCopy.document"
-            :validation="validation.document"
+            v-model="item.document.value"
+            :validation="item.document.validation"
             :disabled="disabled"
             v-on:input="inputDocument()"
           />
@@ -37,8 +37,8 @@
           <MyInput
             name="Telefono"
             type="text"
-            v-model="itemCopy.phone"
-            :validation="validation.phone"
+            v-model="item.phone.value"
+            :validation="item.phone.validation"
             :disabled="disabled"
             v-on:input="inputPhone()"
           />
@@ -47,8 +47,8 @@
           <MyInput
             name="Dirección"
             type="text"
-            v-model="itemCopy.address"
-            :validation="validation.address"
+            v-model="item.address.value"
+            :validation="item.address.validation"
             :disabled="disabled"
             v-on:input="inputAddress()"
           />
@@ -59,8 +59,8 @@
           <MyInput
             name="Correo Electronico"
             type="text"
-            v-model="itemCopy.mail"
-            :validation="validation.mail"
+            v-model="item.mail.value"
+            :validation="item.mail.validation"
             :disabled="disabled"
             v-on:input="inputMail()"
           />
@@ -103,10 +103,9 @@ import MySelect from "@/components/my_components/MySelect.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
 import ConectionCustomer from "@/mixin/conections/ConectionCustomer";
-
+import { ModelCustomer } from "@/mixin/models/ModelCustomer";
 export default defineComponent({
   name: "CustomerDetail",
-  props: ["itemSelected"],
   mixins: [ValidationFunctions, UtilityFunctions, ConectionCustomer],
   inject: ["confirmDialogue", "showToast"],
   components: {
@@ -119,99 +118,34 @@ export default defineComponent({
       disabled: false,
       mode: 0,
       title: "",
-      validation: {
-        name: {},
-        documentType: {},
-        document: {},
-        phone: {},
-        address: {},
-        mail: {},
-      },
-      validationEmpty: {
-        name: {},
-        documentType: {},
-        document: {},
-        phone: {},
-        address: {},
-        mail: {},
-      },
-      itemCopy: {},
+      item: new ModelCustomer(),
+      itemBackup: {},
     };
   },
-  watch: {
-    itemSelected() {
-      this.resetItemCopy();
-    },
-  },
   methods: {
-    resetItemCopy() {
-      console.log(this.itemSelected);
-      this.itemCopy = JSON.parse(JSON.stringify(this.itemSelected));
-    },
-    validateForm() {
-      this.validateName();
-      this.validateDocumentType();
-      this.validateDocument();
-      this.validatePhone();
-      this.validateAddress();
-      this.validateMail();
-
-      var result =
-        this.validation.name.isValid &&
-        this.validation.documentType.isValid &&
-        this.validation.document.isValid &&
-        this.validation.phone.isValid &&
-        this.validation.address.isValid &&
-        this.validation.mail.isValid;
-      return result;
-    },
-
-    validateName() {
-      this.validation.name = this.validationRequiredText(this.itemCopy.name, 3, 50);
-    },
-    validateDocumentType() {
-      this.validation.documentType = this.validationRequiredSelect(this.itemCopy.documentType);
-    },
-    validateDocument() {
-      this.validation.document = this.validationRequiredText(this.itemCopy.document, 3, 10);
-    },
-    validatePhone() {
-      this.validation.phone = this.validationRequiredText(this.itemCopy.phone, 9, 9);
-    },
-    validateAddress() {
-      this.validation.address = this.validationRequiredText(this.itemCopy.address, 3, 50);
-    },
-    validateMail() {
-      this.validation.mail = this.validationRequiredText(this.itemCopy.mail, 3, 50);
-    },
-
     inputName() {
-      this.validateName();
+      this.item.validateName();
     },
     inputDocumentType() {
-      this.validateDocumentType();
+      this.item.validateDocumentType();
     },
     inputDocument() {
-      this.validateDocument();
+      this.item.validateDocument();
     },
     inputPhone() {
-      var aux = this.itemCopy.phone;
-      this.itemCopy.phone = this.inputOnlyNumber(this.itemCopy.phone);
-      if (aux == this.itemCopy.phone) {
-        this.validatePhone();
-      }
+      this.item.validatePhone();
     },
     inputAddress() {
-      this.validateAddress();
+      this.item.validateAddress();
     },
     inputMail() {
-      this.validateMail();
+      this.item.validateMail();
     },
     buttonSave() {
-      if (this.validateForm()) {
+      if (this.item.validateForm()) {
         switch (this.mode) {
           case 1:
-            this.addCustomerRegister(this.itemCopy).then((response) => {
+            this.addCustomerRegister(this.item.getToAdd()).then((response) => {
               if (response.success) {
                 this.$emit("item:add");
                 this.closeModal();
@@ -219,7 +153,7 @@ export default defineComponent({
             });
             break;
           case 3:
-            this.editCustomerRegister(this.itemCopy).then((response) => {
+            this.editCustomerRegister(this.item.getToEdit()).then((response) => {
               if (response.success) {
                 this.$emit("item:edit");
                 this.closeModal();
@@ -244,7 +178,7 @@ export default defineComponent({
       this.changeMode(2);
     },
     buttonDelete() {
-      this.confirmDeleteCustomerRegister(this.itemCopy.id).then((response) => {
+      this.confirmDeleteCustomerRegister(this.item.id.value).then((response) => {
         if (response.success) {
           this.$emit("item:delete");
           this.closeModal();
@@ -253,19 +187,19 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.mode = mode;
-      this.validation = JSON.parse(JSON.stringify(this.validationEmpty));
-      this.resetItemCopy();
+      this.item.resetValidation();
       switch (this.mode) {
         case 1:
-          this.title = "Agregar Cliente";
+          this.title = "Agregar Categoria";
           this.disabled = false;
           break;
         case 2:
-          this.title = "Visualizar Cliente";
+          this.item.setFromData(this.itemBackup);
+          this.title = "Visualizar Categoria";
           this.disabled = true;
           break;
         case 3:
-          this.title = "Editar Cliente";
+          this.title = "Editar Categoria";
           this.disabled = false;
           break;
         default:
@@ -273,10 +207,30 @@ export default defineComponent({
           break;
       }
     },
+    openAdd() {
+      this.changeMode(1);
+      this.openModal();
+      this.itemBackup = {};
+      this.item.setFromData({});
+    },
+    openView(data) {
+      this.changeMode(2);
+      this.openModal();
+      this.itemBackup = JSON.parse(JSON.stringify(data));
+      this.item.setFromData(data);
+    },
+    openViewId(id) {
+      this.getCustomerRegister(id).then((response) => {
+        if (response.success) {
+          this.changeMode(2);
+          this.openModal();
+          this.itemBackup = JSON.parse(JSON.stringify(response.response.data));
+          this.item.setFromData(response.response.data);
+        }
+      });
+    },
     closeModal() {
-      try {
-        this.$refs.myModal.closeModal();
-      } catch (error) {}
+      this.$refs.myModal.closeModal();
     },
     openModal() {
       this.$refs.myModal.openModal();
