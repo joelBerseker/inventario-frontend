@@ -30,6 +30,12 @@ export default defineComponent({
             field: "name",
             width: "62%",
           },
+
+          {
+            label: "Categoria",
+            field: "category_name",
+            width: "62%",
+          },
           {
             label: "Compra",
             headerClasses: ["text-end"],
@@ -191,7 +197,11 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
+        <button
+          v-on:click="buttonAdd"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
           <p><i class="bi bi-plus-lg"></i> Agregar Producto</p>
         </button>
         <button
@@ -214,13 +224,21 @@ export default defineComponent({
             placeholder="Buscar..."
             required
           />
-          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
+          <button
+            class="btn btn-secondary"
+            type="button"
+            v-on:click="filterTable"
+          >
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
-    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
+    <ListContent
+      ref="tableContent"
+      :loading="this.loadingContentList"
+      :size="table.rows.length"
+    >
       <table-lite
         :is-static-mode="false"
         :is-slot-mode="true"
@@ -232,10 +250,18 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+            <button
+              v-on:click="buttonView(data.value)"
+              type="button"
+              class="btn btn-secondary btn-sm me-1"
+            >
               <i class="bi bi-journal-text"></i>
             </button>
-            <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
+            <button
+              v-on:click="buttonDelete(data.value)"
+              type="button"
+              class="btn btn-danger btn-sm"
+            >
               <i class="bi bi-trash"></i>
             </button>
           </div>
