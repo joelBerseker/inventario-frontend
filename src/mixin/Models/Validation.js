@@ -1,4 +1,4 @@
-export const Validations = {
+export const Validation = {
   validateInput(text, validationMessage, required) {
     var validationStyle = "";
     var isValid = true;
@@ -55,67 +55,40 @@ export const Validations = {
     }
     return message_;
   },
-  optionSelect(text) {
-    var valid_ = text == 0 || text == null;
-    var message_ = "Por favor seleccione un valor";
-    return { valid: !valid_, message: message_ };
-  },
-  fileUploaded(text) {
-    var valid_ = text == null;
-    var message_ = "Por favor suba un archivo";
-    return { valid: !valid_, message: message_ };
-  },
-  changeCurrency(data) {
-    var text = data.toString().replace(/[^0-9]/, "");
-    console.log("lengh -> " + text.length);
-    console.log("text -> " + text);
-    if (text.length >= 3) {
-      var firsPart = text.slice(0, -2);
-      var lastPart = text.slice(text.length - 2);
-      var complete = firsPart + "." + lastPart;
-      console.log(complete);
-      return Number(complete).toFixed(2);
-    }
-    return data;
-  },
-  validationRequired(text) {
+  /*VALIDATIONS*/
+  required(text) {
     var validationMessage = "";
     validationMessage = this.textEmpty(text, validationMessage);
     return this.validateInput(text, validationMessage, true);
   },
-  validationRequiredText(text, min, max) {
+  requiredText(text, min, max) {
     var validationMessage = "";
     validationMessage = this.textEmpty(text, validationMessage);
     validationMessage = this.textLength(text, validationMessage, min, max);
     return this.validateInput(text, validationMessage, true);
   },
-  validationNoRequiredText(text, min, max) {
+  noRequiredText(text, min, max) {
     var validationMessage = "";
     validationMessage = this.textEmpty(text, validationMessage);
     validationMessage = this.textLength(text, validationMessage, min, max);
     return this.validateInput(text, validationMessage, false);
   },
-  validationRequiredSelect(text) {
-    var validationMessage = "";
-    validationMessage = this.textEmpty(text, validationMessage);
-    return this.validateInput(text, validationMessage, true);
-  },
-  validationRequiredNumber(text) {
-    var validationMessage = "";
-    validationMessage = this.textEmpty(text, validationMessage);
-    return this.validateInput(text, validationMessage, true);
-  },
-  validationRequiredDate(text) {
-    var validationMessage = "";
-    validationMessage = this.textEmpty(text, validationMessage);
-    return this.validateInput(text, validationMessage, true);
-  },
-
+  /*INPUT REPLACE */
   inputOnlyNumberPlus(text) {
     return text.toString().replace(/[^0-9+]/, "");
   },
   inputOnlyNumber(text) {
     return text.toString().replace(/[^0-9]/, "");
+  },
+  changeCurrency(data) {
+    var text = data.toString().replace(/[^0-9]/, "");
+    if (text.length >= 3) {
+      var firsPart = text.slice(0, -2);
+      var lastPart = text.slice(text.length - 2);
+      var complete = firsPart + "." + lastPart;
+      return Number(complete).toFixed(2);
+    }
+    return data;
   },
   regular_expressions: {
     onlyNumber: /^[0-9].*$/,

@@ -1,4 +1,4 @@
-import { Validations } from "@/mixin/models/Validations";
+import { Validation } from "@/mixin/models/Validation";
 export class ModelCategory {
   id = {
     value: undefined,
@@ -17,10 +17,10 @@ export class ModelCategory {
     this.description.value = description;
   }
   validateName() {
-    this.name.validation = Validations.validationRequiredText(this.name.value, 3, 50);
+    this.name.validation = Validation.requiredText(this.name.value, 3, 50);
   }
   validateDescription() {
-    this.description.validation = Validations.validationNoRequiredText(this.description.value, 3, 250);
+    this.description.validation = Validation.noRequiredText(this.description.value, 3, 250);
   }
   validateForm() {
     this.validateName();
@@ -44,7 +44,6 @@ export class ModelCategory {
     };
   }
   setFromData(data) {
-    console.log(data);
     this.id.value = data.id;
     this.name.value = data.name;
     this.description.value = data.description;

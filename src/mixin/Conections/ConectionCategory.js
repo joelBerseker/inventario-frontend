@@ -51,9 +51,6 @@ export default {
       var path = this.urlConection  + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "id" || key == "created_at" || key == "updated_at" || key == "product_image") {
-          continue;
-        }
         form_data.append(key, data[key]);
       }
       return new Promise((resolve, reject) => {

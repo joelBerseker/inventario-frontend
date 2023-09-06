@@ -21,22 +21,22 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "id",
-            width: "3%",
+            width: "4%",
           },
           {
             label: "Nombre",
             field: "name",
-            width: "20%",
+            width: "30%",
           },
           {
             label: "Descripción",
             field: "description",
-            width: "20%",
+            width: "30%",
           },
           {
             label: "Actualizado",
             field: "updated_at",
-            width: "1%",
+            width: "35%",
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },
@@ -186,6 +186,7 @@ export default defineComponent({
         :rows="table.rows"
         :total="table.totalRecordCount"
         class="mb-3"
+        @row-clicked="buttonView"
       >
         <template v-slot:quick="data">
           <div class="d-flex">
