@@ -14,7 +14,6 @@ export default defineComponent({
   inject: ["confirmDialogue", "showToast"],
   data() {
     return {
-      itemSelected: {},
       search: "",
       filter: "",
       table: {
@@ -22,22 +21,22 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "id",
-            width: "3%",
+            width: "4%",
           },
           {
             label: "Nombre",
             field: "name",
-            width: "20%",
+            width: "30%",
           },
           {
             label: "Descripción",
             field: "description",
-            width: "20%",
+            width: "30%",
           },
           {
             label: "Actualizado",
             field: "updated_at",
-            width: "1%",
+            width: "35%",
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },
@@ -90,26 +89,16 @@ export default defineComponent({
     onDelete() {
       this.getCategories(1);
     },
-    getItemSelectedByUrl() {
+    getIdUrl() {
       if (this.$route.query.id != undefined) {
-        this.getCategoryRegister(this.$route.query.id).then((response) => {
-          if (response.success) {
-            this.itemSelected = response.response.data;
-            this.$refs.modal.changeMode(2);
-            this.$refs.modal.openModal();
-          }
-        });
+        this.$refs.modal.openInViewId(this.$route.query.id);
       }
     },
     buttonAdd() {
-      this.itemSelected = {};
-      this.$refs.modal.changeMode(1);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openInAdd();
     },
     buttonView(row) {
-      this.itemSelected = row;
-      this.$refs.modal.changeMode(2);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openInView(row);
     },
     async buttonDelete(row) {
       this.confirmDeleteCategoryRegister(row.id).then((response) => {
@@ -160,11 +149,10 @@ export default defineComponent({
   <SystemContent ref="content" :loading="loadingContentSystem">
     <CategoryDetail
       ref="modal"
-      :itemSelected="itemSelected"
       v-on:item:add="onAdd"
       v-on:item:edit="onEdit"
       v-on:item:delete="onDelete"
-      v-on:mounted:mymodal="getItemSelectedByUrl"
+      v-on:mounted:mymodal="getIdUrl"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
@@ -198,6 +186,7 @@ export default defineComponent({
         :rows="table.rows"
         :total="table.totalRecordCount"
         class="mb-3"
+        @row-clicked="buttonView"
       >
         <template v-slot:quick="data">
           <div class="d-flex">

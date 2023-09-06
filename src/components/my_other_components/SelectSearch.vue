@@ -159,7 +159,6 @@ export default defineComponent({
       dropdown.hide();
     },
     nextListItem() {
-      console.log(this.selectedInKeyboard);
       if (this.selectedInKeyboard < this.list.length - 1) {
         this.selectedInKeyboard++;
       } else {
@@ -167,7 +166,6 @@ export default defineComponent({
       }
     },
     previousListItem() {
-      console.log(this.selectedInKeyboard);
       if (this.selectedInKeyboard > 0) {
         this.selectedInKeyboard--;
       } else {
@@ -183,7 +181,6 @@ export default defineComponent({
       return resp;
     },
     pressEnter() {
-      console.log(this.selectedInKeyboard);
       if (this.selectedInKeyboard != -1) this.selectItem(this.list[this.selectedInKeyboard]);
     },
     hoverItem(index) {
