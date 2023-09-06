@@ -198,10 +198,10 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button v-on:click="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+            <button v-on:click.stop="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
               <i class="bi bi-journal-text"></i>
             </button>
-            <button v-on:click="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
+            <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>
             </button>
           </div>
