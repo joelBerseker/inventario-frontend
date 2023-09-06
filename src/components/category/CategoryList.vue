@@ -14,7 +14,6 @@ export default defineComponent({
   inject: ["confirmDialogue", "showToast"],
   data() {
     return {
-      itemSelected: {},
       search: "",
       filter: "",
       table: {
@@ -90,26 +89,16 @@ export default defineComponent({
     onDelete() {
       this.getCategories(1);
     },
-    getItemSelectedByUrl() {
+    getItemUrl() {
       if (this.$route.query.id != undefined) {
-        this.getCategoryRegister(this.$route.query.id).then((response) => {
-          if (response.success) {
-            this.itemSelected = response.response.data;
-            this.$refs.modal.changeMode(2);
-            this.$refs.modal.openModal();
-          }
-        });
+        this.$refs.modal.openInViewId(this.$route.query.id);
       }
     },
     buttonAdd() {
-      this.itemSelected = {};
-      this.$refs.modal.changeMode(1);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openInAdd();
     },
     buttonView(row) {
-      this.itemSelected = row;
-      this.$refs.modal.changeMode(2);
-      this.$refs.modal.openModal();
+      this.$refs.modal.openInView(row);
     },
     async buttonDelete(row) {
       this.confirmDeleteCategoryRegister(row.id).then((response) => {
@@ -160,11 +149,10 @@ export default defineComponent({
   <SystemContent ref="content" :loading="loadingContentSystem">
     <CategoryDetail
       ref="modal"
-      :itemSelected="itemSelected"
       v-on:item:add="onAdd"
       v-on:item:edit="onEdit"
       v-on:item:delete="onDelete"
-      v-on:mounted:mymodal="getItemSelectedByUrl"
+      v-on:mounted:mymodal="getItemUrl"
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
