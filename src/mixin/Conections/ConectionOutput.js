@@ -24,15 +24,7 @@ export default {
       var path = this.urlConectionOutput;
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "client") {
-          console.log("entre 2222");
-          continue;
-        }
         form_data.append(key, data[key]);
-      }
-      form_data.append("id_client", data.client.id);
-      if (data.description == null || data.description == "" || data.description == undefined) {
-        form_data.append("description", "Ninguna");
       }
       return new Promise((resolve, reject) => {
         axios
@@ -59,16 +51,8 @@ export default {
       var path = this.urlConectionOutput + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "id" || key == "created_at" || key == "updated_at" || key == "client") {
-          continue;
-        }
         form_data.append(key, data[key]);
       }
-      form_data.append("id_client", data.client.id);
-      if (data.description == null || data.description == "" || data.description == undefined) {
-        form_data.append("description", "Ninguna");
-      }
-      console.log(data.client.id);
       return new Promise((resolve, reject) => {
         axios
           .put(path, form_data)

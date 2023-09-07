@@ -7,17 +7,17 @@
             class="mb-3"
             type="text"
             name="Numero de item"
-            :validation="validation.header.order_code"
-            v-model="itemCopy.header.order_code"
+            :validation="item.header.order_code.validation"
+            v-model="item.header.order_code.value"
             :disabled="disabled"
             v-on:input="inputCode()"
           />
           <SelectSearch
             class="mb-3"
-            v-model="itemCopy.header.client"
+            v-model="item.header.client.value"
             link="clients/clients/"
             name="Cliente"
-            :validation="validation.header.client"
+            :validation="item.header.client.validation"
             id="cliente"
             :disabled="disabled"
             v-on:update="inputClient()"
@@ -27,16 +27,16 @@
             name="Tipo de pago"
             id="Tipo de pago"
             :options="optionsPaymentType"
-            :validation="validation.header.payment_type"
-            v-model="itemCopy.header.payment_type"
+            :validation="item.header.payment_type.validation"
+            v-model="item.header.payment_type.value"
             :disabled="disabled"
             v-on:update="inputPaymentType()"
           />
           <MyInput
             type="textarea"
             name="Descripción"
-            :validation="validation.header.description"
-            v-model="itemCopy.header.description"
+            :validation="item.header.description.validation"
+            v-model="item.header.description.value"
             :disabled="disabled"
             v-on:input="inputDescription()"
           />
@@ -55,7 +55,7 @@
                 "
                 type="button"
                 class="btn btn-sm btn-primary"
-                @click="listItemAdd()"
+                @click="listAdd()"
               >
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
               </button>
@@ -67,7 +67,7 @@
                 viewClass="text-end"
                 inputClass="text-end"
                 labelClass="text-end"
-                v-model="itemCopy.header.total_price"
+                v-model="item.header.total_price.value"
                 :disabled="true"
                 :viewMode="disabled"
                 ><template v-slot:pre>S/.</template>
@@ -75,7 +75,7 @@
             </div>
           </div>
 
-          <ListContent ref="tableContent" :loading="this.loadingContentList" :size="itemCopy.detail.length">
+          <ListContent ref="tableContent" :loading="this.loadingContentList" :size="item.detail.length">
             <table class="my-table w-100">
               <tr>
                 <th style="width: 40%">Nombre</th>
@@ -85,12 +85,12 @@
                 <th v-if="mode != 2"></th>
               </tr>
 
-              <tr v-for="(item, index) in itemCopy.detail" :key="index" class="detalle-item">
+              <tr v-for="(row, index) in item.detail" :key="index" class="detalle-item">
                 <td>
                   <SelectSearch
-                    v-model="selectedProducts[index]"
+                    v-model="row.product.value"
                     link="products/products/"
-                    :validation="validation.detail[index].product"
+                    :validation="row.product.validation"
                     v-on:update:modelValue="inputProduct(index)"
                     :id="index + 'product'"
                     :disabled="disabledItemList[index] && mode != 1"
@@ -104,8 +104,8 @@
                     type="number"
                     inputClass="text-end"
                     viewClass="text-end"
-                    :validation="validation.detail[index].quantity"
-                    v-model="item.stock"
+                    :validation="row.quantity.validation"
+                    v-model="row.quantity.value"
                     v-on:input="inputQuantity(index)"
                     :disabled="disabledItemList[index] && mode != 1"
                     :viewMode="disabled"
@@ -116,7 +116,7 @@
                     type="number"
                     inputClass="text-end"
                     viewClass="text-end"
-                    v-model="item.price"
+                    v-model="row.new_sale_price.value"
                     :disabled="true"
                     :viewMode="disabled"
                     ><template v-slot:pre>S/.</template>
@@ -127,7 +127,7 @@
                     type="number"
                     inputClass="text-end"
                     viewClass="text-end"
-                    v-model="item.subtotal"
+                    v-model="row.subtotal.value"
                     :disabled="true"
                     :viewMode="disabled"
                     ><template v-slot:pre>S/.</template>
@@ -224,8 +224,8 @@ import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
 import ConectionOutput from "@/mixin/conections/ConectionOutput";
 import ConectionOutputDetail from "@/mixin/conections/ConectionOutputDetail";
 import ListContent from "@/components/my_other_components/ListContent.vue";
+import { ModelOutput } from "@/mixin/models/ModelOutput";
 export default defineComponent({
-  props: ["itemSelected"],
   mixins: [ValidationFunctions, UtilityFunctions, ConectionOutput, ConectionOutputDetail],
   inject: ["confirmDialogue", "showToast"],
   components: {
@@ -242,25 +242,8 @@ export default defineComponent({
       disabled: false,
       mode: 0,
       title: "",
-      validation: {
-        header: {
-          order_code: {},
-          client: {},
-          payment_type: {},
-          description: {},
-        },
-        detail: [],
-      },
-      itemCopy: {
-        header: {
-          description: null,
-          order_code: null,
-          payment_type: undefined,
-          client: null,
-          total_price: null,
-        },
-        detail: [],
-      },
+      item: new ModelOutput(),
+      itemBackup: {},
       selectedProducts: [],
       disabledItemList: [],
       backupList: [],
@@ -269,221 +252,91 @@ export default defineComponent({
     };
   },
   watch: {
-    itemSelected() {
-      this.resetItemCopy();
-    },
-    "itemCopy.detail": {
+    "item.detail": {
       handler: function () {
         var total = 0;
-        this.itemCopy.detail.forEach((element) => {
-          total += element.subtotal * 1;
+        this.item.detail.forEach((element) => {
+          total += element.subtotal.value * 1;
         });
         if (typeof total == "number") {
-          this.itemCopy.header.total_price = total.toFixed(2);
+          this.item.header.total_price.value = total.toFixed(2);
         }
       },
       deep: true,
     },
   },
   methods: {
-    resetItemCopy() {
-      this.itemCopy.header = JSON.parse(JSON.stringify(this.itemSelected));
-      if (this.mode != 1) {
-        this.itemCopy.header.client = {
-          name: this.itemSelected.client_name,
-          id: this.itemSelected.id_client,
-        };
-        this.getOutputDetails(this.itemSelected.id);
-      } else {
-        this.listReset();
-        this.listItemAdd();
-      }
-    },
     getOutputDetails(id) {
       this.loadingContentList = true;
       this.listReset();
       this.getOutputDetailRegisters(id).then((response) => {
         if (response.success) {
           response.response.data.results.forEach((element) => {
-            this.listItemAdd(element);
+            this.listAdd(element);
           });
           this.loadingContentList = false;
         }
       });
     },
-    resetValidation() {
-      this.validation.header = {
-        order_code: {},
-        client: {},
-        payment_type: {},
-        description: {},
-      };
-      for (let i = 0; i < this.validation.detail.length; i++) {
-        this.validation.detail[i] = {
-          product: {},
-          quantity: {},
-        };
-      }
-    },
-    validateForm() {
-      this.validateCode();
-      this.validateClient();
-      this.validatePaymentType();
-      this.validateDescription();
-      var _validateDetail = this.validateDetail();
-
-      var result =
-        this.validation.header.order_code.isValid &&
-        this.validation.header.client.isValid &&
-        this.validation.header.payment_type.isValid &&
-        this.validation.header.description.isValid &&
-        _validateDetail;
-      return result;
-    },
-
-    validateCode() {
-      this.validation.header.order_code = this.validationRequiredText(this.itemCopy.header.order_code, 3, 50);
-    },
-    validateClient() {
-      this.validation.header.client = this.validationRequiredSelect(this.itemCopy.header.client);
-    },
-    validatePaymentType() {
-      this.validation.header.payment_type = this.validationRequiredSelect(this.itemCopy.header.payment_type);
-    },
-    validateDescription() {
-      this.validation.header.description = this.validationNoRequiredText(this.itemCopy.header.description, 3, 50);
-    },
-    validateProduct(index) {
-      this.validation.detail[index].product = this.validationRequiredSelect(this.itemCopy.detail[index].id);
-    },
-    validateQuantity(index) {
-      this.validation.detail[index].quantity = this.validationRequiredNumber(this.itemCopy.detail[index].stock);
-    },
-    validateDetail() {
-      var resp = true;
-      for (var i = 0; i < this.validation.detail.length; i++) {
-        if (!this.validateDetailRow(i)) {
-          resp = false;
-        }
-      }
-      return resp;
-    },
-    validateDetailRow(index) {
-      this.validateProduct(index);
-      this.validateQuantity(index);
-      var result = this.validation.detail[index].product.isValid && this.validation.detail[index].quantity.isValid;
-      return result;
-    },
-
     inputCode() {
-      this.validateCode();
+      this.item.header.validateCode();
     },
     inputClient() {
-      this.validateClient();
+      this.item.header.validateClient();
     },
     inputPaymentType() {
-      this.validatePaymentType();
+      this.item.header.validatePaymentType();
     },
     inputDescription() {
-      this.validateDescription();
+      this.item.header.validateDescription();
     },
     inputProduct(index) {
-      this.listItemChangeFromSelect(index, this.selectedProducts[index]);
-      this.calculateQuatity(index);
-      this.validateProduct(index);
+      this.item.detail[index].copyFromProduct();
+      this.item.detail[index].calculateSubtotal();
+      this.item.detail[index].validateProduct(index);
     },
     inputQuantity(index) {
-      this.validateQuantity(index);
-      this.calculateQuatity(index);
+      this.item.detail[index].calculateSubtotal();
+      this.item.detail[index].validateQuantity();
     },
-    calculateQuatity(index) {
-      this.itemCopy.detail[index].subtotal = (
-        this.itemCopy.detail[index].price * this.itemCopy.detail[index].stock
-      ).toFixed(2);
-    },
-    listItemIsEditing() {
-      var resp = false;
-      for (let i = 0; i < this.disabledItemList.length; i++) {
-        if (this.disabledItemList[i] == false) {
-          resp = true;
-          break;
-        }
-      }
-      return resp;
-    },
-    listItemAdd(item = null) {
+    listAdd(item = null) {
       if (item == null) {
-        this.selectedProducts.unshift(null);
-        this.itemCopy.detail.unshift({
-          id: undefined,
-          stock: 1,
-          price: 0,
-          subtotal: 0,
-        });
-        this.backupList.unshift({
-          id: undefined,
-          stock: 1,
-          price: 0,
-          subtotal: 0,
-          product: null,
-        });
+        this.item.detailAdd({});
+        this.backupList.unshift({});
       } else {
-        this.selectedProducts.unshift({ name: item.product_name });
-        this.itemCopy.detail.unshift({
-          id: item.id_product,
-          price: item.new_sale_price,
-          stock: item.quantity,
-          subtotal: (item.new_sale_price * item.quantity).toFixed(2),
-        });
+        this.item.detailAdd(item);
         this.backupList.unshift(item);
       }
-      this.validation.detail.unshift({
-        product: {},
-        quantity: {},
-      });
       this.disabledItemList.unshift(true);
     },
-    buttonListDelete(index) {
-      if (this.mode == 1 || this.backupList[index].id == undefined) {
-        this.listDelete(index);
-      } else {
-        this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
-          if (response.success) {
-            this.getOutputDetails(this.itemSelected.id);
-          }
-        });
-      }
-    },
     listDelete(index) {
-      this.itemCopy.detail.splice(index, 1);
-      this.validation.detail.splice(index, 1);
-      this.selectedProducts.splice(index, 1);
+      this.item.detailDelete(index);
       this.disabledItemList.splice(index, 1);
       this.backupList.splice(index, 1);
     },
+    listReset() {
+      this.item.detail = [];
+      this.disabledItemList = [];
+      this.backupList = [];
+    },
     buttonListSave(index) {
-      if (this.validateDetailRow(index)) {
-        var item = {
-          id: this.backupList[index].id,
-          id_order: this.itemSelected.id,
-          id_product: this.itemCopy.detail[index].id,
-          new_sale_price: this.itemCopy.detail[index].price,
-          quantity: this.itemCopy.detail[index].stock,
-        };
+      if (this.item.detail[index].validateForm()) {
         if (this.backupList[index].id == undefined) {
           //agregado recientemente
-          this.addOutputDetailRegister(item).then((response) => {
-            if (response.success) {
-              this.disabledAllButtonList = false;
-              this.getOutputDetails(this.itemSelected.id);
+          this.addOutputDetailRegister(this.item.detail[index].getToAddId(this.item.header.id.value)).then(
+            (response) => {
+              if (response.success) {
+                this.disabledAllButtonList = false;
+                this.getOutputDetails(this.item.header.id.value);
+              }
             }
-          });
+          );
         } else {
           //editado
-          this.editOutputDetailRegister(item).then((response) => {
+          this.editOutputDetailRegister(this.item.detail[index].getToEdit()).then((response) => {
             if (response.success) {
               this.disabledAllButtonList = false;
-              this.getOutputDetails(this.itemSelected.id);
+              this.getOutputDetails(this.item.header.id.value);
             }
           });
         }
@@ -502,47 +355,31 @@ export default defineComponent({
     buttonListCancel(index) {
       this.disabledAllButtonList = false;
       this.disabledItemList[index] = true;
-      this.validation.detail[index] = {
-        product: {},
-        quantity: {},
-      };
-      var item = this.backupList[index];
-      this.selectedProducts[index] = { name: item.product_name };
-      this.itemCopy.detail[index] = {
-        id: item.id_product,
-        price: item.new_sale_price,
-        stock: item.quantity,
-        subtotal: (item.new_sale_price * item.quantity).toFixed(2),
-      };
+      this.item.detail[index].setFromData(this.backupList[index]);
+      this.item.detail[index].resetValidation();
     },
-    listReset() {
-      this.itemCopy.detail = [];
-      this.validation.detail = [];
-      this.selectedProducts = [];
-      this.disabledItemList = [];
-      this.backupList = [];
-    },
-    listDeleteNull() {
-      for (let i = this.backupList.length - 1; i >= 0; i--) {
-        if (this.backupList[i].id == undefined) {
-          this.listDelete(i);
-        }
+    buttonListDelete(index) {
+      if (this.mode == 1 || this.backupList[index].id == undefined) {
+        this.listDelete(index);
+      } else {
+        console.log(this.backupList[index].id);
+        this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
+          if (response.success) {
+            this.getOutputDetails(this.item.header.id.value);
+          }
+        });
       }
     },
-    listItemChangeFromSelect(index, data) {
-      this.itemCopy.detail[index].id = data.id;
-      this.itemCopy.detail[index].price = data.price;
-    },
     async buttonSave() {
-      if (this.validateForm()) {
-        if (this.itemCopy.detail.length > 0) {
+      if (this.item.validateForm()) {
+        if (this.item.detail.length > 0) {
           switch (this.mode) {
             case 1:
-              this.addOutputRegister(this.itemCopy.header).then((response) => {
+              this.addOutputRegister(this.item.header.getToAdd()).then((response) => {
                 var id_order = 0;
                 if (response.success) {
                   id_order = response.response.data.id;
-                  this.addOutputDetailRegisters(id_order, this.itemCopy.detail).then((response) => {
+                  this.addOutputDetailRegisters(this.item.getDetailToJSON(id_order)).then((response) => {
                     if (response.success) {
                       this.$emit("item:add");
                       this.closeModal();
@@ -554,7 +391,7 @@ export default defineComponent({
               });
               break;
             case 3:
-              this.editOutputRegister(this.itemCopy.header).then((response) => {
+              this.editOutputRegister(this.item.header.getToEdit()).then((response) => {
                 if (response.success) {
                   this.$emit("item:edit");
                   this.closeModal();
@@ -583,11 +420,12 @@ export default defineComponent({
       this.changeMode(3);
     },
     buttonCancel() {
-      this.resetItemCopy();
+      this.item.header.setFromData(this.itemBackup);
+      this.getOutputDetails(this.item.header.id.value);
       this.changeMode(2);
     },
     buttonDelete() {
-      this.confirmDeleteOutputRegister(this.itemCopy.header.id).then((response) => {
+      this.confirmDeleteOutputRegister(this.item.header.id.value).then((response) => {
         if (response.success) {
           this.$emit("item:delete");
           this.closeModal();
@@ -597,13 +435,14 @@ export default defineComponent({
     changeMode(mode) {
       this.mode = mode;
       this.disabledAllButtonList = false;
-      this.resetValidation();
+      this.item.resetValidation();
       switch (this.mode) {
         case 1:
           this.title = "Agregar Salida";
           this.disabled = false;
           break;
         case 2:
+          //this.item.setFromData(this.itemBackup);
           this.title = "Visualizar Salida";
           this.disabled = true;
           break;
@@ -616,11 +455,34 @@ export default defineComponent({
           break;
       }
     },
+    openAdd() {
+      this.changeMode(1);
+      this.openModal();
+      this.itemBackup = {};
+      this.item.header.setFromData({});
+      this.listReset();
+      this.listAdd({});
+    },
+    openView(data) {
+      this.changeMode(2);
+      this.openModal();
+      this.itemBackup = JSON.parse(JSON.stringify(data));
+      this.item.header.setFromData(data);
+      this.getOutputDetails(this.item.header.id.value);
+    },
+    openViewId(id) {
+      this.getOutputRegister(id).then((response) => {
+        if (response.success) {
+          this.changeMode(2);
+          this.openModal();
+          this.itemBackup = JSON.parse(JSON.stringify(response.response.data));
+          this.item.header.setFromData(response.response.data);
+          this.getOutputDetails(this.item.header.id.value);
+        }
+      });
+    },
     closeModal() {
-      this.listDeleteNull();
-      try {
-        this.$refs.myModal.closeModal();
-      } catch (error) {}
+      this.$refs.myModal.closeModal();
     },
     openModal() {
       this.$refs.myModal.openModal();
