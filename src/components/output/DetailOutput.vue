@@ -50,7 +50,8 @@
             <div v-if="mode != 2" class="col text-end">
               <button
                 :disabled="
-                  disabledListButtons || (mode != 1 && this.listBackup.length > 0 && this.listBackup[0].id == undefined)
+                  disabledListButtons ||
+                  (mode != 1 && this.listBackup.length > 0 && this.item.detail[0].id.value == undefined)
                 "
                 type="button"
                 class="btn btn-sm btn-primary"
@@ -268,8 +269,8 @@ export default defineComponent({
       this.loadingContentList = true;
       this.getOutputDetailRegisters(id).then((response) => {
         if (response.success) {
-          this.listBackup = response.response.data.results
-          this.item.detailFill(response.response.data.results)
+          this.listBackup = response.response.data.results;
+          this.item.detailFill(response.response.data.results);
           this.loadingContentList = false;
         }
       });
@@ -287,32 +288,17 @@ export default defineComponent({
       this.item.header.validateDescription();
     },
     inputProduct(index) {
-      this.item.detail[index].copyFromProduct();
-      this.item.detail[index].calculateSubtotal();
-      this.item.detail[index].validateProduct(index);
+      this.item.detail[index].onChangeProduct();
     },
     inputQuantity(index) {
-      this.item.detail[index].calculateSubtotal();
-      this.item.detail[index].validateQuantity();
-    },
-    listAdd(item) {
-      this.item.detailAdd(item);
-      this.listBackup.unshift(item);
-    },
-    listDelete(index) {
-      this.item.detailDelete(index);
-      this.listBackup.splice(index, 1);
-    },
-    listReset() {
-      this.item.detail = [];
-      this.listBackup = [];
+      this.item.detail[index].onChangeQuantity();
     },
     buttonAddRow() {
-      this.listAdd({});
+      this.item.detailAdd({});
     },
     buttonListSave(index) {
       if (this.item.detail[index].validateForm()) {
-        if (this.listBackup[index].id == undefined) {
+        if (this.item.detail[index].id.value == undefined) {
           //agregado recientemente
           this.addOutputDetailRegister(this.item.detail[index].getToAddId(this.item.header.id.value)).then(
             (response) => {
@@ -350,11 +336,10 @@ export default defineComponent({
       this.item.detail[index].resetValidation();
     },
     buttonListDelete(index) {
-      if (this.mode == 1 || this.listBackup[index].id == undefined) {
-        this.listDelete(index);
+      if (this.mode == 1 || this.item.detail[index].id.value == undefined) {
+        this.item.detailDelete(index);
       } else {
-        console.log(this.listBackup[index].id);
-        this.confirmDeleteOutputDetailRegister(this.listBackup[index].id).then((response) => {
+        this.confirmDeleteOutputDetailRegister(this.item.detail[index].id.value).then((response) => {
           if (response.success) {
             this.getOutputDetails(this.item.header.id.value);
           }
@@ -412,7 +397,7 @@ export default defineComponent({
     },
     buttonCancel() {
       this.item.header.setFromData(this.itemBackup);
-      this.getOutputDetails(this.item.header.id.value);
+      this.item.detailFill(this.listBackup);
       this.changeMode(2);
     },
     buttonDelete() {
@@ -450,24 +435,27 @@ export default defineComponent({
       this.openModal();
       this.itemBackup = {};
       this.item.header.setFromData({});
-      this.listReset();
-      this.listAdd({});
+      this.listBackup = [];
+      this.item.detail = [];
+      this.item.detailAdd({});
     },
     openView(data) {
+      var lastId = this.itemBackup.id;
+      var newId = data.id;
       this.changeMode(2);
       this.openModal();
       this.itemBackup = JSON.parse(JSON.stringify(data));
       this.item.header.setFromData(data);
-      this.getOutputDetails(this.item.header.id.value);
+      if (lastId == newId) {
+        this.item.detailFill(this.listBackup);
+      } else {
+        this.getOutputDetails(this.item.header.id.value);
+      }
     },
     openViewId(id) {
       this.getOutputRegister(id).then((response) => {
         if (response.success) {
-          this.changeMode(2);
-          this.openModal();
-          this.itemBackup = JSON.parse(JSON.stringify(response.response.data));
-          this.item.header.setFromData(response.response.data);
-          this.getOutputDetails(this.item.header.id.value);
+          this.openView(response.response.data);
         }
       });
     },

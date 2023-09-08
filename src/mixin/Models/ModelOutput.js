@@ -18,7 +18,7 @@ export class ModelOutput {
     return resp;
   }
   detailFill(list) {
-    this.detail = []
+    this.detail = [];
     list.forEach((element) => {
       this.detail.push(new ModelOutputDetail(element));
     });
@@ -29,11 +29,11 @@ export class ModelOutput {
   detailDelete(index) {
     this.detail.splice(index, 1);
   }
-  
+
   getDetailToJSON(id) {
     var resp = [];
     this.detail.forEach((element) => {
-      resp.push(element.getToAddId(id));
+      resp.unshift(element.getToAddId(id));
     });
     return JSON.stringify(resp);
   }
@@ -165,6 +165,15 @@ class ModelOutputDetail {
   disabled = true;
   constructor(data) {
     this.setFromData(data);
+  }
+  onChangeProduct() {
+    this.copyFromProduct();
+    this.calculateSubtotal();
+    this.validateProduct();
+  }
+  onChangeQuantity() {
+    this.calculateSubtotal();
+    this.validateQuantity();
   }
   validateProduct() {
     this.product.validation = Validation.required(this.product.value);

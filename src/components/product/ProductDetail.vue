@@ -247,10 +247,7 @@ export default defineComponent({
     openViewId(id) {
       this.getProductRegister(id).then((response) => {
         if (response.success) {
-          this.changeMode(2);
-          this.openModal();
-          this.itemBackup = JSON.parse(JSON.stringify(response.response.data));
-          this.item.setFromData(response.response.data);
+          this.openView(response.response.data);
         }
       });
     },
