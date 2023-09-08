@@ -24,12 +24,8 @@ export default {
       var path = this.urlConectionInputDetail;
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "id" || key == "created_at" || key == "updated_at") {
-          continue;
-        }
         form_data.append(key, data[key]);
       }
-      form_data.append("manage_stock", false);
       return new Promise((resolve, reject) => {
         axios
           .post(path, form_data)
@@ -51,22 +47,8 @@ export default {
           });
       });
     },
-    arrayInputDetailToJson(id_order, array) {
-      var resp = [];
-      array.forEach((element) => {
-        resp.push({
-          id_purchase: id_order,
-          id_product: element.id,
-          sale_price: element.sale_price,
-          purchase_price: element.purchase_price,
-          quantity: element.stock,
-        });
-      });
-      return JSON.stringify(resp)
-    },
-    async addInputDetailRegisters(id, data) {
+    async addInputDetailRegisters(data) {
       var path = this.urlConectionInputDetail;
-      var list_data = this.arrayInputDetailToJson(id, data)
       const config = {
         headers: {
           "Content-Type": "application/json", // Indica que el cuerpo de la solicitud es un JSON
@@ -74,7 +56,7 @@ export default {
       };
       return new Promise((resolve, reject) => {
         axios
-          .post(path, list_data, config)
+          .post(path, data, config)
           .then((response) => {
             this.showMessage({
               title: "Operación exitosa",
@@ -97,9 +79,6 @@ export default {
       var path = this.urlConectionInputDetail  + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
-        if (key == "id" || key == "created_at" || key == "updated_at" || key == "supplier_image") {
-          continue;
-        }
         form_data.append(key, data[key]);
       }
       return new Promise((resolve, reject) => {

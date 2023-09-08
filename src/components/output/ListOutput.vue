@@ -16,7 +16,6 @@ export default defineComponent({
   data() {
     return {
       search: "",
-      Outputs: [],
       table: {
         columns: [
           {

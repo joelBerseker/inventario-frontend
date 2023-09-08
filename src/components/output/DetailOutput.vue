@@ -241,7 +241,6 @@ export default defineComponent({
     return {
       disabled: false,
       disabledListButtons: false,
-      disabledListRows: [],
       mode: 0,
       title: "",
       item: new ModelOutput(),
