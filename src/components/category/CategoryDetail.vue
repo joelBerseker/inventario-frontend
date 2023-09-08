@@ -112,6 +112,7 @@ export default defineComponent({
       this.changeMode(3);
     },
     buttonCancel() {
+      this.item.setFromData(this.itemBackup);
       this.changeMode(2);
     },
     buttonDelete() {
@@ -131,7 +132,6 @@ export default defineComponent({
           this.disabled = false;
           break;
         case 2:
-          this.item.setFromData(this.itemBackup);
           this.title = "Visualizar Categoria";
           this.disabled = true;
           break;

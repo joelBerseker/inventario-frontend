@@ -1,10 +1,5 @@
 <template>
-  <MyModal
-    ref="myModal"
-    :id="'productDetailModal'"
-    :title="this.title"
-    v-on:mymodal:close="closeModal"
-  >
+  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" v-on:mymodal:close="closeModal">
     <div class="modal-body">
       <div class="row mb-3">
         <div class="col-6">
@@ -89,39 +84,19 @@
       />
     </div>
     <div class="modal-footer">
-      <button
-        type="button"
-        @click="buttonDelete"
-        class="btn btn-danger btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button
-        type="button"
-        @click="buttonEdit"
-        class="btn btn-primary btn-sm button-margin"
-        v-if="mode == 2"
-      >
+      <button type="button" @click="buttonEdit" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button
-        type="button"
-        @click="buttonCancel"
-        class="btn btn-secondary btn-sm button-margin"
-        v-if="mode == 3"
-      >
+      <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
         <i class="bi bi-arrow-left"></i>
         Cancelar
       </button>
-      <button
-        type="button"
-        @click="buttonSave"
-        class="btn btn-primary btn-sm button-margin"
-        v-if="mode != 2"
-      >
+      <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
         <i class="bi bi-check-lg"></i>
         Guardar
       </button>
@@ -225,6 +200,7 @@ export default defineComponent({
       this.changeMode(3);
     },
     buttonCancel() {
+      this.item.setFromData(this.itemBackup);
       this.changeMode(2);
     },
     buttonDelete() {
@@ -244,7 +220,6 @@ export default defineComponent({
           this.disabled = false;
           break;
         case 2:
-          this.item.setFromData(this.itemBackup);
           this.title = "Visualizar Categoria";
           this.disabled = true;
           break;
@@ -262,7 +237,6 @@ export default defineComponent({
       this.openModal();
       this.itemBackup = {};
       this.item.setFromData({});
-      
     },
     openView(data) {
       this.changeMode(2);

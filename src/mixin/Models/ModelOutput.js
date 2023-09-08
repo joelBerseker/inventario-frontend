@@ -17,12 +17,19 @@ export class ModelOutput {
     }
     return resp;
   }
+  detailFill(list) {
+    this.detail = []
+    list.forEach((element) => {
+      this.detail.push(new ModelOutputDetail(element));
+    });
+  }
   detailAdd(data) {
     this.detail.unshift(new ModelOutputDetail(data));
   }
   detailDelete(index) {
     this.detail.splice(index, 1);
   }
+  
   getDetailToJSON(id) {
     var resp = [];
     this.detail.forEach((element) => {
@@ -155,6 +162,7 @@ class ModelOutputDetail {
   subtotal = {
     value: undefined,
   };
+  disabled = true;
   constructor(data) {
     this.setFromData(data);
   }

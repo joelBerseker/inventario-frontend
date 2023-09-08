@@ -50,12 +50,11 @@
             <div v-if="mode != 2" class="col text-end">
               <button
                 :disabled="
-                  disabledAllButtonList ||
-                  (mode != 1 && this.backupList.length > 0 && this.backupList[0].id == undefined)
+                  disabledListButtons || (mode != 1 && this.listBackup.length > 0 && this.listBackup[0].id == undefined)
                 "
                 type="button"
                 class="btn btn-sm btn-primary"
-                @click="listAdd()"
+                @click="buttonAddRow()"
               >
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
               </button>
@@ -93,7 +92,7 @@
                     :validation="row.product.validation"
                     v-on:update:modelValue="inputProduct(index)"
                     :id="index + 'product'"
-                    :disabled="disabledItemList[index] && mode != 1"
+                    :disabled="row.disabled && mode != 1"
                     :viewMode="disabled"
                   >
                   </SelectSearch>
@@ -107,7 +106,7 @@
                     :validation="row.quantity.validation"
                     v-model="row.quantity.value"
                     v-on:input="inputQuantity(index)"
-                    :disabled="disabledItemList[index] && mode != 1"
+                    :disabled="row.disabled && mode != 1"
                     :viewMode="disabled"
                   />
                 </td>
@@ -137,8 +136,8 @@
                 <td v-if="!disabled">
                   <div class="d-flex">
                     <button
-                      v-if="disabledItemList[index] && mode != 1"
-                      :disabled="disabledAllButtonList"
+                      v-if="row.disabled && mode != 1"
+                      :disabled="disabledListButtons"
                       type="button"
                       class="btn btn-sm btn-primary me-1"
                       @click="buttonListEdit(index)"
@@ -146,7 +145,7 @@
                       <i class="bi bi-pen"></i>
                     </button>
                     <button
-                      v-if="!disabledItemList[index]"
+                      v-if="!row.disabled"
                       type="button"
                       class="btn btn-sm btn-secondary me-1"
                       @click="buttonListCancel(index)"
@@ -154,7 +153,7 @@
                       <i class="bi bi-arrow-left"></i>
                     </button>
                     <button
-                      v-if="!disabledItemList[index]"
+                      v-if="!row.disabled"
                       type="button"
                       class="btn btn-sm btn-primary me-1"
                       @click="buttonListSave(index)"
@@ -162,8 +161,8 @@
                       <i class="bi bi-check-lg"></i>
                     </button>
                     <button
-                      v-if="disabledItemList[index]"
-                      :disabled="disabledAllButtonList"
+                      v-if="row.disabled"
+                      :disabled="disabledListButtons"
                       type="button"
                       class="btn btn-sm btn-danger"
                       @click="buttonListDelete(index)"
@@ -240,15 +239,14 @@ export default defineComponent({
   data() {
     return {
       disabled: false,
+      disabledListButtons: false,
+      disabledListRows: [],
       mode: 0,
       title: "",
       item: new ModelOutput(),
       itemBackup: {},
-      selectedProducts: [],
-      disabledItemList: [],
-      backupList: [],
+      listBackup: [],
       loadingContentList: false,
-      disabledAllButtonList: false,
     };
   },
   watch: {
@@ -268,12 +266,10 @@ export default defineComponent({
   methods: {
     getOutputDetails(id) {
       this.loadingContentList = true;
-      this.listReset();
       this.getOutputDetailRegisters(id).then((response) => {
         if (response.success) {
-          response.response.data.results.forEach((element) => {
-            this.listAdd(element);
-          });
+          this.listBackup = response.response.data.results
+          this.item.detailFill(response.response.data.results)
           this.loadingContentList = false;
         }
       });
@@ -299,34 +295,29 @@ export default defineComponent({
       this.item.detail[index].calculateSubtotal();
       this.item.detail[index].validateQuantity();
     },
-    listAdd(item = null) {
-      if (item == null) {
-        this.item.detailAdd({});
-        this.backupList.unshift({});
-      } else {
-        this.item.detailAdd(item);
-        this.backupList.unshift(item);
-      }
-      this.disabledItemList.unshift(true);
+    listAdd(item) {
+      this.item.detailAdd(item);
+      this.listBackup.unshift(item);
     },
     listDelete(index) {
       this.item.detailDelete(index);
-      this.disabledItemList.splice(index, 1);
-      this.backupList.splice(index, 1);
+      this.listBackup.splice(index, 1);
     },
     listReset() {
       this.item.detail = [];
-      this.disabledItemList = [];
-      this.backupList = [];
+      this.listBackup = [];
+    },
+    buttonAddRow() {
+      this.listAdd({});
     },
     buttonListSave(index) {
       if (this.item.detail[index].validateForm()) {
-        if (this.backupList[index].id == undefined) {
+        if (this.listBackup[index].id == undefined) {
           //agregado recientemente
           this.addOutputDetailRegister(this.item.detail[index].getToAddId(this.item.header.id.value)).then(
             (response) => {
               if (response.success) {
-                this.disabledAllButtonList = false;
+                this.disabledListButtons = false;
                 this.getOutputDetails(this.item.header.id.value);
               }
             }
@@ -335,7 +326,7 @@ export default defineComponent({
           //editado
           this.editOutputDetailRegister(this.item.detail[index].getToEdit()).then((response) => {
             if (response.success) {
-              this.disabledAllButtonList = false;
+              this.disabledListButtons = false;
               this.getOutputDetails(this.item.header.id.value);
             }
           });
@@ -349,21 +340,21 @@ export default defineComponent({
       }
     },
     buttonListEdit(index) {
-      this.disabledAllButtonList = true;
-      this.disabledItemList[index] = false;
+      this.disabledListButtons = true;
+      this.item.detail[index].disabled = false;
     },
     buttonListCancel(index) {
-      this.disabledAllButtonList = false;
-      this.disabledItemList[index] = true;
-      this.item.detail[index].setFromData(this.backupList[index]);
+      this.disabledListButtons = false;
+      this.item.detail[index].disabled = true;
+      this.item.detail[index].setFromData(this.listBackup[index]);
       this.item.detail[index].resetValidation();
     },
     buttonListDelete(index) {
-      if (this.mode == 1 || this.backupList[index].id == undefined) {
+      if (this.mode == 1 || this.listBackup[index].id == undefined) {
         this.listDelete(index);
       } else {
-        console.log(this.backupList[index].id);
-        this.confirmDeleteOutputDetailRegister(this.backupList[index].id).then((response) => {
+        console.log(this.listBackup[index].id);
+        this.confirmDeleteOutputDetailRegister(this.listBackup[index].id).then((response) => {
           if (response.success) {
             this.getOutputDetails(this.item.header.id.value);
           }
@@ -434,7 +425,7 @@ export default defineComponent({
     },
     changeMode(mode) {
       this.mode = mode;
-      this.disabledAllButtonList = false;
+      this.disabledListButtons = false;
       this.item.resetValidation();
       switch (this.mode) {
         case 1:
@@ -442,7 +433,6 @@ export default defineComponent({
           this.disabled = false;
           break;
         case 2:
-          //this.item.setFromData(this.itemBackup);
           this.title = "Visualizar Salida";
           this.disabled = true;
           break;
