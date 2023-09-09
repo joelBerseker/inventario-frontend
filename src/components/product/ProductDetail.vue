@@ -140,30 +140,25 @@ export default defineComponent({
 
   methods: {
     inputCode() {
-      this.item.validateCode();
+      this.item.onChangeCode();
     },
     inputName() {
-      this.item.validateName();
+      this.item.onChangeName();
     },
     inputPrice() {
-      //this.item.price = this.item.price.replace(/[^0-9]/, "");
-      //this.item.price = this.changeCurrency(this.item.price);
-      this.item.validatePrice();
+      this.item.onChangePrice();
     },
     inputCost() {
-      //this.item.cost = this.item.cost.replace(/[^0-9]/, "");
-      //this.item.cost = this.changeCurrency(this.item.cost);
-      this.item.validateCost();
+      this.item.onChangeCost();
     },
     inputStock() {
-      //this.item.stock = this.item.stock.replace(/[^0-9]/, "");
-      this.item.validateStock();
+      this.item.onChangeStock();
     },
     inputDescription() {
-      this.item.validateDescription();
+      this.item.onChangeDescription();
     },
     inputCategory() {
-      this.item.validateCategory();
+      this.item.onChangeCategory();
     },
 
     buttonSave() {

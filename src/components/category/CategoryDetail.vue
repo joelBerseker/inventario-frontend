@@ -73,10 +73,10 @@ export default defineComponent({
   },
   methods: {
     inputName() {
-      this.item.validateName();
+      this.item.onChangeName();
     },
     inputDescription() {
-      this.item.validateDescription();
+      this.item.onChangeDescription();
     },
     buttonSave() {
       if (this.item.validateForm()) {

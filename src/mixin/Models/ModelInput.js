@@ -66,6 +66,18 @@ class ModelInputHeader {
   total_price = {
     value: undefined,
   };
+  onChangeCode() {
+    this.validateCode();
+  }
+  onChangeProvider() {
+    this.validateProvider();
+  }
+  onChangeEvidence() {
+    this.validateEvidence();
+  }
+  onChangeDescription() {
+    this.validateDescription();
+  }
   validateCode() {
     this.order_code.validation = Validation.requiredText(this.order_code.value, 3, 50);
   }
@@ -85,9 +97,7 @@ class ModelInputHeader {
     this.validateDescription();
 
     var result =
-      this.order_code.validation.isValid &&
-      this.provider.validation.isValid &&
-      this.description.validation.isValid;
+      this.order_code.validation.isValid && this.provider.validation.isValid && this.description.validation.isValid;
     return result;
   }
   getToAdd() {
@@ -178,6 +188,9 @@ class ModelInputDetail {
     this.calculateSubtotal();
     this.validatePurchasePrice();
   }
+  onChangeSalePrice() {
+    this.validateSalePrice();
+  }
   validateProduct() {
     this.product.validation = Validation.required(this.product.value);
   }
@@ -193,6 +206,8 @@ class ModelInputDetail {
   validateForm() {
     this.validateProduct();
     this.validateQuantity();
+    this.validatePurchasePrice();
+    this.validateSalePrice();
     var result = this.product.validation.isValid && this.quantity.validation.isValid;
     return result;
   }
@@ -204,7 +219,6 @@ class ModelInputDetail {
     this.sale_price.value = this.product.value.price;
     this.last_purchase_price.value = this.product.value.cost;
     this.last_sale_price.value = this.product.value.price;
-    
   }
   getToAdd() {
     return {

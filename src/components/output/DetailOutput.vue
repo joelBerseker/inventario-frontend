@@ -275,16 +275,16 @@ export default defineComponent({
       });
     },
     inputCode() {
-      this.item.header.validateCode();
+      this.item.header.onChangeCode();
     },
     inputClient() {
-      this.item.header.validateClient();
+      this.item.header.onChangeClient();
     },
     inputPaymentType() {
-      this.item.header.validatePaymentType();
+      this.item.header.onChangePaymentType();
     },
     inputDescription() {
-      this.item.header.validateDescription();
+      this.item.header.onChangeDescription();
     },
     inputProduct(index) {
       this.item.detail[index].onChangeProduct();

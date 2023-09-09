@@ -31,6 +31,40 @@ export class ModelProduct {
     value: undefined,
     validation: {},
   };
+  onChangeCode() {
+    this.validateCode();
+  }
+  onChangeName() {
+    this.validateName();
+  }
+  onChangePrice() {
+    if (this.price.value != "" && this.price.value != null && this.price.value != undefined) {
+      this.price.value = this.price.value.replace(/[^0-9]/, "");
+      this.price.value = Validation.changeCurrency(this.price.value);
+    }
+    this.validatePrice();
+  }
+  onChangeCost() {
+    if (this.cost.value != "" && this.cost.value != null && this.cost.value != undefined) {
+      this.cost.value = this.cost.value.replace(/[^0-9]/, "");
+      this.cost.value = Validation.changeCurrency(this.cost.value);
+    }
+    this.validateCost();
+  }
+  onChangeStock() {
+    if (this.stock.value != "" && this.stock.value != null && this.stock.value != undefined) {
+      if (typeof this.stock.value == "string") {
+        this.stock.value = this.stock.value.replace(/[^0-9]/, "");
+      }
+    }
+    this.validateStock();
+  }
+  onChangeDescription() {
+    this.validateDescription();
+  }
+  onChangeCategory() {
+    this.validateCategory();
+  }
   validateCode() {
     this.code.validation = Validation.requiredText(this.code.value, 3, 10);
   }
@@ -38,26 +72,12 @@ export class ModelProduct {
     this.name.validation = Validation.requiredText(this.name.value, 3, 50);
   }
   validatePrice() {
-    if (this.price.value != "" && this.price.value != null && this.price.value != undefined) {
-      this.price.value = this.price.value.replace(/[^0-9]/, "");
-      this.price.value = Validation.changeCurrency(this.price.value);
-    }
-
     this.price.validation = Validation.requiredText(this.price.value, 3, 15);
   }
   validateCost() {
-    if (this.cost.value != "" && this.cost.value != null && this.cost.value != undefined) {
-      this.cost.value = this.cost.value.replace(/[^0-9]/, "");
-      this.cost.value = Validation.changeCurrency(this.cost.value);
-    }
     this.cost.validation = Validation.requiredText(this.cost.value, 3, 15);
   }
   validateStock() {
-    if (this.stock.value != "" && this.stock.value != null && this.stock.value != undefined) {
-      if (typeof this.stock.value == "string") {
-        this.stock.value = this.stock.value.replace(/[^0-9]/, "");
-      }
-    }
     this.stock.validation = Validation.required(this.stock.value);
   }
   validateDescription() {

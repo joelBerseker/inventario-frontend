@@ -11,6 +11,12 @@ export class ModelCategory {
     value: undefined,
     validation: {},
   };
+  onChangeName() {
+    this.validateName();
+  }
+  onChangeDescription() {
+    this.validateDescription();
+  }
   validateName() {
     this.name.validation = Validation.requiredText(this.name.value, 3, 50);
   }

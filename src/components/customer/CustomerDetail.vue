@@ -124,22 +124,22 @@ export default defineComponent({
   },
   methods: {
     inputName() {
-      this.item.validateName();
+      this.item.onChangeName();
     },
     inputDocumentType() {
-      this.item.validateDocumentType();
+      this.item.onChangeDocumentType();
     },
     inputDocument() {
-      this.item.validateDocument();
+      this.item.onChangeDocument();
     },
     inputPhone() {
-      this.item.validatePhone();
+      this.item.onChangePhone();
     },
     inputAddress() {
-      this.item.validateAddress();
+      this.item.onChangeAddress();
     },
     inputMail() {
-      this.item.validateMail();
+      this.item.onChangeMail();
     },
     buttonSave() {
       if (this.item.validateForm()) {

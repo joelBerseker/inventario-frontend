@@ -112,7 +112,7 @@
                     viewClass="text-end"
                     :validation="row.purchase_price.validation"
                     v-model="row.purchase_price.value"
-                    v-on:input="inputPurchacePrice(index)"
+                    v-on:input="inputPurchasePrice(index)"
                     :disabled="row.disabled && mode != 1"
                     :viewMode="disabled"
                     ><template v-slot:pre>S/.</template>
@@ -292,13 +292,13 @@ export default defineComponent({
       });
     },
     inputCode() {
-      this.item.header.validateCode();
+      this.item.header.onChangeCode();
     },
     inputProvider() {
-      this.item.header.validateProvider();
+      this.item.header.onChangeProvider();
     },
     inputDescription() {
-      this.item.header.validateDescription();
+      this.item.header.onChangeDescription();
     },
     inputProduct(index) {
       this.item.detail[index].onChangeProduct();
@@ -306,11 +306,11 @@ export default defineComponent({
     inputQuantity(index) {
       this.item.detail[index].onChangeQuantity();
     },
-    inputPurchacePrice(index) {
-      this.item.detail[index].onChangePurchacePrice();
+    inputPurchasePrice(index) {
+      this.item.detail[index].onChangePurchasePrice();
     },
     inputSalePrice(index) {
-      this.detail[index].validateSalePrice();
+      this.item.detail[index].onChangeSalePrice();
     },
     buttonAddRow() {
       this.item.detailAdd({});

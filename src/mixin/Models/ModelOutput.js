@@ -72,6 +72,18 @@ class ModelOutputHeader {
   total_price = {
     value: undefined,
   };
+  onChangeCode() {
+    this.validateCode();
+  }
+  onChangeClient() {
+    this.validateClient();
+  }
+  onChangePaymentType() {
+    this.validatePaymentType();
+  }
+  onChangeDescription() {
+    this.validateDescription();
+  }
   validateCode() {
     this.order_code.validation = Validation.requiredText(this.order_code.value, 3, 50);
   }

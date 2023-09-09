@@ -23,6 +23,25 @@ export class ModelSupplier {
     value: undefined,
     validation: {},
   };
+  onChangeName() {
+    this.validateName();
+  }
+  onChangeDocumentType() {
+    this.validateDocumentType();
+  }
+  onChangeDocument() {
+    this.validateDocument();
+  }
+  onChangePhone() {
+    var aux = this.phone.value;
+    this.phone.value = Validation.inputOnlyNumber(this.phone.value);
+    if (aux == this.phone.value) {
+      this.validatePhone();
+    }
+  }
+  onChangeAddress() {
+    this.validateAddress();
+  }
   validateName() {
     this.name.validation = Validation.requiredText(this.name.value, 3, 50);
   }
