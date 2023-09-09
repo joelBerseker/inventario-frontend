@@ -1,5 +1,5 @@
 <template>
-  <MyForm :name="name" :message="validation.validationMessage">
+  <MyForm :name="name" :message="validation.message">
     <div v-if="viewMode && disabled" class="d-flex">
       {{ options[modelValue - 1].text }}
     </div>
@@ -11,7 +11,7 @@
       @keyup.enter="pressEnter()"
     >
       <button
-        :class="'form-select form-select-sm text-start ' + validation.validationStyle"
+        :class="'form-select form-select-sm text-start ' + classValidation"
         type="button"
         ref="select"
         :id="id"
@@ -59,8 +59,8 @@ export default defineComponent({
     name: {},
     validation: {
       default: {
-        validationMessage: "",
-        validationStyle: "",
+        message: "",
+        isValid: undefined,
       },
     },
     viewMode: {
@@ -144,6 +144,19 @@ export default defineComponent({
         this.$emit("update:modelValue", value);
         this.$emit("update", value);
       },
+    },
+    classValidation: function () {
+      var resp = "";
+      if (this.validation.isValid != undefined) {
+        if (this.validation.isValid) {
+          if (this.validation.message != "No requerido") {
+            resp = " is-valid ";
+          }
+        } else {
+          resp = " is-invalid ";
+        }
+      }
+      return resp;
     },
   },
 });

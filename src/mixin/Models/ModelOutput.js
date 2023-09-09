@@ -110,24 +110,22 @@ class ModelOutputHeader {
     return result;
   }
   getToAdd() {
-    var descriptionEmpty = !(this.description.validation.validationMessage == "");
     console.log(this.client);
     return {
       order_code: this.order_code.value,
       id_client: this.client.value.id,
       payment_type: this.payment_type.value,
-      description: descriptionEmpty ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
       total_price: this.total_price.value,
     };
   }
   getToEdit() {
-    var descriptionEmpty = !(this.description.validation.validationMessage == "");
     return {
       id: this.id.value,
       order_code: this.order_code.value,
       id_client: this.client.value.id,
       payment_type: this.payment_type.value,
-      description: descriptionEmpty ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
       total_price: this.total_price.value,
     };
   }

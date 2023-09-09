@@ -1,16 +1,16 @@
 <template>
   <div class="dropdown">
-    <MyForm :name="name" :message="validation.validationMessage" :labelClass="labelClass">
-      <div v-if="viewMode && disabled" :class="viewClass + ' '">
+    <MyForm :name="name" :message="validation.message" :labelClass="labelClass">
+      <div v-if="viewMode && disabled" :class="viewClass">
         <span v-if="this.$slots.pre != undefined"><slot name="pre"></slot>&nbsp;</span>{{ itemLocal }}
       </div>
       <div v-else class="input-group input-group-sm">
-        <div v-if="this.$slots.pre != undefined" :class="'input-group-text ' + classDisabled">
+        <div v-if="this.$slots.pre != undefined" :class="'input-group-text' + classDisabled">
           <slot name="pre"></slot>
         </div>
         <textarea
           v-if="type == 'textarea'"
-          :class="inputClass + ' form-control  ' + validation.validationStyle"
+          :class="inputClass + ' form-control  ' + classValidation"
           :id="name"
           v-model="itemLocal"
           :disabled="disabled"
@@ -21,7 +21,7 @@
           :type="type"
           v-model="itemLocal"
           :disabled="disabled"
-          :class="inputClass + ' form-control ' + validation.validationStyle"
+          :class="inputClass + ' form-control ' + classValidation"
           autocomplete="off"
           :id="name"
           ref="input"
@@ -49,8 +49,8 @@ export default defineComponent({
     name: {},
     validation: {
       default: {
-        validationMessage: "",
-        validationStyle: "",
+        message: "",
+        isValid: undefined,
       },
     },
     viewMode: {
@@ -88,6 +88,19 @@ export default defineComponent({
         resp = " form-control-disabled ";
       } else {
         resp = "";
+      }
+      return resp;
+    },
+    classValidation: function () {
+      var resp = "";
+      if (this.validation.isValid != undefined) {
+        if (this.validation.isValid) {
+          if (this.validation.message != "No requerido") {
+            resp = " is-valid ";
+          }
+        } else {
+          resp = " is-invalid ";
+        }
       }
       return resp;
     },

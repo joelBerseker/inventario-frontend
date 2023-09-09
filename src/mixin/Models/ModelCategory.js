@@ -30,18 +30,16 @@ export class ModelCategory {
     return result;
   }
   getToAdd() {
-    var descriptionEmpty = !(this.description.validation.validationMessage == "");
     return {
       name: this.name.value,
-      description: descriptionEmpty ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
     };
   }
   getToEdit() {
-    var descriptionEmpty = !(this.description.validation.validationMessage == "");
     return {
       id: this.id.value,
       name: this.name.value,
-      description: descriptionEmpty ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
     };
   }
   setFromData(data) {

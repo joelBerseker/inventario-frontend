@@ -106,19 +106,17 @@ export class ModelProduct {
     return result;
   }
   getToAdd() {
-    var descriptionEmpty = !(this.description.validation.validationMessage == "");
     return {
       code: this.code.value,
       name: this.name.value,
       price: this.price.value,
       cost: this.cost.value,
       stock: this.stock.value,
-      description: descriptionEmpty ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
       id_category: this.category.value.id,
     };
   }
   getToEdit() {
-    var descriptionEmpty = !(this.description.validation.validationMessage == "");
     return {
       id: this.id.value,
       code: this.code.value,
@@ -126,7 +124,7 @@ export class ModelProduct {
       price: this.price.value,
       cost: this.cost.value,
       stock: this.stock.value,
-      description: descriptionEmpty ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
       id_category: this.category.value.id,
     };
   }

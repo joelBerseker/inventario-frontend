@@ -1,94 +1,109 @@
 export const Validation = {
-  validateInput(text, validationMessage, required) {
-    var validationStyle = "";
-    var isValid = true;
-
-    if (this.textEmpty(text, "") && !required) {
-      validationMessage = "No requerido";
-    } else {
-      validationStyle = validationMessage != "" ? " is-invalid" : " is-valid";
-      isValid = validationMessage != "" ? false : true;
-    }
-
+  validateInput(data) {
     var response = {
-      validationMessage: validationMessage,
-      validationStyle: validationStyle,
-      isValid: isValid,
+      message: data.message,
+      validationStyle: data.isValid ? " is-valid " : " is-invalid ",
+      isValid: data.isValid,
     };
     return response;
   },
+  isEmpty(text) {
+    var resp = false;
+    if (text == "" || text == null || text == undefined) {
+      resp = true;
+    }
+    return resp;
+  },
+  validateOnlyText(text) {
+    var resp = {
+      isValid: true,
+      message: "",
+    };
+    if (!this.regular_expressions.onlyText.test(text)) {
+      resp.message = "Solo se permite texto";
+      resp.isValid = false;
+    }
 
-  onlyText(text, previus_message) {
-    var message_ = previus_message;
-    if (message_ == "") {
-      if (!this.regular_expressions.onlyText.test(text)) {
-        message_ = "Solo se permite texto";
-      }
-    }
-    return message_;
+    return resp;
   },
-  textEmpty(text, previus_message) {
-    var message_ = previus_message;
-    if (message_ == "") {
-      if (text == "" || text == null || text == undefined) {
-        message_ = "Por favor ingrese un valor";
-      }
+  validateTextEmpty(text) {
+    var resp = {
+      isValid: true,
+      message: "",
+    };
+    if (this.isEmpty(text)) {
+      resp.message = "Por favor ingrese un valor";
+      resp.isValid = false;
     }
-    return message_;
+    return resp;
   },
-  textLength(text, previus_message, min, max) {
-    var message_ = previus_message;
-    if (message_ == "") {
-      if (text == null) {
-        if (0 < min) {
-          message_ = "Debe contener al menos " + min + " caracteres";
-        } else if (0 > max) {
-          message_ = "Debe contener como maximo " + max + " caracteres";
-        }
-      } else {
-        if (text.length < min) {
-          message_ = "Debe contener al menos " + min + " caracteres";
-        } else if (text.length > max) {
-          message_ = "Debe contener como maximo " + max + " caracteres";
-        }
-      }
+  validateNoRequired(text) {
+    var resp = {
+      isValid: false,
+      message: "",
+      class: this.classInvalid,
+    };
+    if (this.isEmpty(text)) {
+      resp.message = "No requerido";
+      resp.isValid = true;
     }
-    return message_;
+    return resp;
+  },
+  validateTextLength(text, min, max) {
+    var resp = {
+      isValid: true,
+      message: "",
+      class: this.classValid,
+    };
+    var textLength = 0;
+    if (!this.isEmpty(text)) {
+      textLength = text.length;
+    }
+    if (textLength < min) {
+      resp.message = "Debe contener al menos " + min + " caracteres";
+      resp.isValid = false;
+    } else if (textLength > max) {
+      resp.message = "Debe contener como maximo " + max + " caracteres";
+      resp.isValid = false;
+    }
+    return resp;
   },
   /*VALIDATIONS*/
   required(text) {
-    var validationMessage = "";
-    validationMessage = this.textEmpty(text, validationMessage);
-    return this.validateInput(text, validationMessage, true);
+    var resp = this.validateTextEmpty(text);
+    return resp;
   },
   requiredText(text, min, max) {
-    var validationMessage = "";
-    validationMessage = this.textEmpty(text, validationMessage);
-    validationMessage = this.textLength(text, validationMessage, min, max);
-    return this.validateInput(text, validationMessage, true);
+    var resp = this.validateTextEmpty(text);
+    if (resp.isValid) resp = this.validateTextLength(text, min, max);
+    return resp;
   },
   noRequiredText(text, min, max) {
-    var validationMessage = "";
-    validationMessage = this.textEmpty(text, validationMessage);
-    validationMessage = this.textLength(text, validationMessage, min, max);
-    return this.validateInput(text, validationMessage, false);
+    var resp = undefined;
+    if (this.isEmpty(text)) {
+      resp = this.validateNoRequired(text);
+    } else {
+      //here anoter validations
+      resp = this.validateTextLength(text, min, max);
+    }
+    return resp;
   },
   /*INPUT REPLACE */
   inputOnlyNumberPlus(text) {
     if (text == "" || text == null || text == undefined) {
-      return text
+      return text;
     }
     return text.toString().replace(/[^0-9+]/, "");
   },
   inputOnlyNumber(text) {
     if (text == "" || text == null || text == undefined) {
-      return text
+      return text;
     }
     return text.toString().replace(/[^0-9]/, "");
   },
   changeCurrency(data) {
     if (data == "" || data == null || data == undefined) {
-      return data
+      return data;
     }
     var text = data.toString().replace(/[^0-9]/, "");
     if (text.length >= 3) {
