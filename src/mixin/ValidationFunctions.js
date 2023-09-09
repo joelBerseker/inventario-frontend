@@ -66,7 +66,7 @@ export default {
       var message_ = "Por favor suba un archivo";
       return { valid: !valid_, message: message_ };
     },
-    changeCurrency(data) {
+    replaceCurrency(data) {
       var text = data.toString().replace(/[^0-9]/, "");
       console.log("lengh -> " + text.length);
       console.log("text -> " + text);
@@ -112,10 +112,10 @@ export default {
       return this.validateInput(text, validationMessage, true);
     },
 
-    inputOnlyNumberPlus(text){
+    replaceOnlyNumberPlus(text){
         return text.toString().replace(/[^0-9+]/, "");
     },
-    inputOnlyNumber(text){
+    replaceOnlyNumber(text){
         return text.toString().replace(/[^0-9]/, "");
     }
   },

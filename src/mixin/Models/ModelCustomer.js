@@ -38,7 +38,7 @@ export class ModelCustomer {
   }
   onChangePhone() {
     var aux = this.phone.value;
-    this.phone.value = Validation.inputOnlyNumber(this.phone.value);
+    this.phone.value = Validation.replaceOnlyNumber(this.phone.value);
     if (aux == this.phone.value) {
       this.validatePhone();
     }
@@ -60,7 +60,7 @@ export class ModelCustomer {
   }
   validatePhone() {
     var aux = this.phone.value;
-    this.phone.value = Validation.inputOnlyNumber(this.phone.value);
+    this.phone.value = Validation.replaceOnlyNumber(this.phone.value);
     if (aux == this.phone.value) {
       this.phone.validation = Validation.requiredText(this.phone.value, 9, 9);
     }

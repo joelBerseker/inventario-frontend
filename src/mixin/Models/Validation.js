@@ -89,20 +89,20 @@ export const Validation = {
     return resp;
   },
   /*INPUT REPLACE */
-  inputOnlyNumberPlus(text) {
-    if (text == "" || text == null || text == undefined) {
+  replaceOnlyNumberPlus(text) {
+    if (this.isEmpty(text)) {
       return text;
     }
     return text.toString().replace(/[^0-9+]/, "");
   },
-  inputOnlyNumber(text) {
-    if (text == "" || text == null || text == undefined) {
+  replaceOnlyNumber(text) {
+    if (this.isEmpty(text)) {
       return text;
     }
     return text.toString().replace(/[^0-9]/, "");
   },
-  changeCurrency(data) {
-    if (data == "" || data == null || data == undefined) {
+  replaceCurrency(data) {
+    if (this.isEmpty(data)) {
       return data;
     }
     var text = data.toString().replace(/[^0-9]/, "");

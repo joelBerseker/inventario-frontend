@@ -40,14 +40,14 @@ export class ModelProduct {
   onChangePrice() {
     if (this.price.value != "" && this.price.value != null && this.price.value != undefined) {
       this.price.value = this.price.value.replace(/[^0-9]/, "");
-      this.price.value = Validation.changeCurrency(this.price.value);
+      this.price.value = Validation.replaceCurrency(this.price.value);
     }
     this.validatePrice();
   }
   onChangeCost() {
     if (this.cost.value != "" && this.cost.value != null && this.cost.value != undefined) {
       this.cost.value = this.cost.value.replace(/[^0-9]/, "");
-      this.cost.value = Validation.changeCurrency(this.cost.value);
+      this.cost.value = Validation.replaceCurrency(this.cost.value);
     }
     this.validateCost();
   }

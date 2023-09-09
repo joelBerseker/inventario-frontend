@@ -282,7 +282,7 @@ export default defineComponent({
       this.factura.detalle.splice(index, 1);
       this.selectedProducts.splice(index, 1);
     },
-    changeCurrency() {
+    replaceCurrency() {
       this.itemSelected.price = this.itemSelected.price.replace(/[^0-9]/, "");
       console.log("-------------");
 
