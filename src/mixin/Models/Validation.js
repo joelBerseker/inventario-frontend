@@ -102,17 +102,14 @@ export const Validation = {
     return text.toString().replace(/[^0-9]/, "");
   },
   replaceCurrency(data) {
-    if (this.isEmpty(data)) {
-      return data;
-    }
-    var text = data.toString().replace(/[^0-9]/, "");
+    var text = this.replaceOnlyNumber(data);
     if (text.length >= 3) {
       var firsPart = text.slice(0, -2);
       var lastPart = text.slice(text.length - 2);
       var complete = firsPart + "." + lastPart;
       return Number(complete).toFixed(2);
     }
-    return data;
+    return text;
   },
   regular_expressions: {
     onlyNumber: /^[0-9].*$/,

@@ -38,25 +38,24 @@ export class ModelProduct {
     this.validateName();
   }
   onChangePrice() {
-    if (this.price.value != "" && this.price.value != null && this.price.value != undefined) {
-      this.price.value = this.price.value.replace(/[^0-9]/, "");
-      this.price.value = Validation.replaceCurrency(this.price.value);
+    var aux = this.price.value;
+    this.price.value = Validation.replaceOnlyNumber(this.price.value);
+    this.price.value = Validation.replaceCurrency(this.price.value);
+    if (aux == this.price.value) {
+      this.validatePrice();
     }
-    this.validatePrice();
   }
   onChangeCost() {
-    if (this.cost.value != "" && this.cost.value != null && this.cost.value != undefined) {
-      this.cost.value = this.cost.value.replace(/[^0-9]/, "");
-      this.cost.value = Validation.replaceCurrency(this.cost.value);
+    var aux = this.cost.value;
+    this.cost.value = Validation.replaceOnlyNumber(this.cost.value);
+    this.cost.value = Validation.replaceCurrency(this.cost.value);
+    if (aux == this.cost.value) {
+      this.validateCost();
     }
-    this.validateCost();
+    
   }
   onChangeStock() {
-    if (this.stock.value != "" && this.stock.value != null && this.stock.value != undefined) {
-      if (typeof this.stock.value == "string") {
-        this.stock.value = this.stock.value.replace(/[^0-9]/, "");
-      }
-    }
+    this.stock.value = Validation.replaceOnlyNumber(this.stock.value);
     this.validateStock();
   }
   onChangeDescription() {
