@@ -78,6 +78,24 @@ export default defineComponent({
       },
     };
   },
+
+  watch: {
+    search(newSearch, oldSearch) {
+      this.page = 1;
+      if (newSearch.length >= 2) {
+        if (newSearch.length > oldSearch.length && this.update) {
+          this.filter = `${this.page}&search_query=${this.search}`;
+          this.getCustomers(this.filter);
+        } else {
+          this.update = true;
+        }
+      } else {
+        if (newSearch.length === 0) {
+          this.getCustomers(this.page);
+        }
+      }
+    },
+  },
   mixins: [UtilityFunctions, ConectionCustomer],
   components: {
     CustomerDetail,
@@ -146,7 +164,9 @@ export default defineComponent({
     },
     filterTable() {
       this.page = 1;
-      this.filter = this.search ? `${this.page}&search_query=${this.search}` : this.page;
+      this.filter = this.search
+        ? `${this.page}&search_query=${this.search}`
+        : this.page;
       this.getCustomers(this.filter);
     },
   },
@@ -163,7 +183,11 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
+        <button
+          v-on:click="buttonAdd"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
           <i class="bi bi-plus-lg"></i> Agregar Cliente
         </button>
       </div>
@@ -185,7 +209,11 @@ export default defineComponent({
       </div>
     </div>
 
-    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
+    <ListContent
+      ref="tableContent"
+      :loading="this.loadingContentList"
+      :size="table.rows.length"
+    >
       <table-lite
         class="mb-3"
         :is-static-mode="false"
@@ -198,10 +226,18 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button v-on:click.stop="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
+            <button
+              v-on:click.stop="buttonView(data.value)"
+              type="button"
+              class="btn btn-secondary btn-sm me-1"
+            >
               <i class="bi bi-journal-text"></i>
             </button>
-            <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
+            <button
+              v-on:click.stop="buttonDelete(data.value)"
+              type="button"
+              class="btn btn-danger btn-sm"
+            >
               <i class="bi bi-trash"></i>
             </button>
           </div>
