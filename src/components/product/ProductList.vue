@@ -108,6 +108,24 @@ export default defineComponent({
     paginate: Paginate,
     ListContent,
   },
+
+  watch: {
+    search(newSearch, oldSearch) {
+      this.page = 1;
+      if (newSearch.length >= 2) {
+        if (newSearch.length > oldSearch.length && this.update) {
+          this.filter = `${this.page}&search_query=${this.search}`;
+          this.getProducts(this.filter);
+        } else {
+          this.update = true;
+        }
+      } else {
+        if (newSearch.length === 0) {
+          this.getProducts(this.page);
+        }
+      }
+    },
+  },
   methods: {
     onAdd() {
       this.getProducts(1);
