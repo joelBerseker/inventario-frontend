@@ -114,6 +114,7 @@ export default defineComponent({
     },
     onClick(event) {
       var json_arr = JSON.stringify(this.data_to_xls);
+      console.log(json_arr);
       this.addItem(json_arr);
     },
     addItem(data) {
@@ -155,13 +156,13 @@ export default defineComponent({
         <p class="title-text mb-3">Indicaciones</p>
         <p>El archivo debe contener las siguientes filas:</p>
         <ul>
-          <li>code</li>
-          <li>name</li>
-          <li>description</li>
-          <li>cost</li>
-          <li>price</li>
-          <li>stock</li>
-          <li>deleted</li>
+          <li>code (Codigo)</li>
+          <li>name (Nombre del producto)</li>
+          <li>description (Descripción)</li>
+          <li>cost (Precio de compra)</li>
+          <li>price (Precio de venta)</li>
+          <li>id_category (Categoria, previamente creada)</li>
+          <li>stock (Cantidad en almacen del producto)</li>
         </ul>
       </div>
       <div class="col-8">
