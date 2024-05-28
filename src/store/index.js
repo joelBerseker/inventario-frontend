@@ -1,11 +1,11 @@
 import { createStore } from "vuex";
-import createPersistedState from 'vuex-persistedstate';
+import createPersistedState from "vuex-persistedstate";
 
 const getDefaultState = () => {
   return {
     User: "",
     token: "",
-    refresh:"",
+    refresh: "",
     id: "",
   };
 };
@@ -26,9 +26,12 @@ export const store = createStore({
     getUser(state) {
       return state.User;
     },
-    isActive(state){
+    isActive(state) {
       return state.token != "";
-    }
+    },
+    isModeFacturate(state) {
+      return state.User.manage_stock;
+    },
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -65,5 +68,4 @@ export const store = createStore({
     },
   },
   plugins: [createPersistedState()],
-
 });

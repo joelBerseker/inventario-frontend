@@ -102,7 +102,25 @@ export default defineComponent({
   methods: {
     openInNewTab(data, invoiceType) {
       var link = url + "orders/orders/" + invoiceType + "/" + data + "/";
-      window.open(link, "_blank", "noreferrer");
+      //window.open(link, "_blank", "noreferrer");
+      /// prueba
+      axios({
+        url: link,
+        method: "GET",
+        responseType: "blob",
+      }).then((response) => {
+        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
+        var fileLink = document.createElement("a");
+
+        fileLink.href = fileURL;
+        fileLink.setAttribute(
+          "download",
+          "file" + invoiceType + "-" + data + ".pdf"
+        );
+        document.body.appendChild(fileLink);
+
+        fileLink.click();
+      });
     },
     onAdd() {
       this.getOutputs(1);
@@ -169,7 +187,11 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
+        <button
+          v-on:click="buttonAdd"
+          type="button"
+          class="btn btn-primary btn-sm mb-3"
+        >
           <i class="bi bi-plus-lg"></i> Agregar Salida
         </button>
       </div>
@@ -186,16 +208,37 @@ export default defineComponent({
           </button>
           <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Nombre
+              </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Documento </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Documento
+              </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                id="flexCheckDefault"
+              />
+              <label class="form-check-label" for="flexCheckDefault">
+                Telefono
+              </label>
             </div>
           </div>
 
@@ -208,13 +251,21 @@ export default defineComponent({
             placeholder="Buscar..."
             required
           />
-          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
+          <button
+            class="btn btn-secondary"
+            type="button"
+            v-on:click="filterTable"
+          >
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
-    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
+    <ListContent
+      ref="tableContent"
+      :loading="this.loadingContentList"
+      :size="table.rows.length"
+    >
       <table-lite
         class="mb-3"
         :is-static-mode="false"
@@ -239,17 +290,27 @@ export default defineComponent({
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <div class="dropdown-item item-select" v-on:click.stop="buttonView(data.value)">
+                <div
+                  class="dropdown-item item-select"
+                  v-on:click.stop="buttonView(data.value)"
+                >
                   <i class="bi bi-journal-text"></i> Visualizar
                 </div>
               </li>
               <li v-for="option in invoiceOptions" :key="option.value">
-                <div class="dropdown-item item-select" v-on:click.stop="openInNewTab(data.value.id, option.value)">
+                <div
+                  class="dropdown-item item-select"
+                  v-on:click.stop="openInNewTab(data.value.id, option.value)"
+                >
                   <i class="bi bi-file-pdf"></i> {{ option.label }}
                 </div>
               </li>
             </ul>
-            <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
+            <button
+              v-on:click.stop="buttonDelete(data.value)"
+              type="button"
+              class="btn btn-danger btn-sm"
+            >
               <i class="bi bi-trash"></i>
             </button>
           </div>
