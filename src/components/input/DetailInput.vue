@@ -1,5 +1,13 @@
 <template>
-  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl" v-on:mymodal:close="closeModal">
+  <MyModal
+    ref="myModal"
+    :id="'productDetailModal1'"
+    :title="this.title"
+    size="modal-xl"
+    v-on:mymodal:close="closeModal"
+  >
+    <ProductDetail ref="modalProduct" v-on:item:add="onAddProduct" />
+
     <div class="modal-body">
       <div class="row">
         <div class="col-3 head pe-3">
@@ -38,7 +46,7 @@
               <p class="title-text">Lista de Productos</p>
             </div>
             <div v-if="mode != 2" class="col text-end">
-              <button type="button" class="btn btn-primary btn-sm me-1">
+              <button type="button" class="btn btn-primary btn-sm me-1" @click="addProduct()">
                 <i class="bi bi-plus-lg"></i> Agregar Producto
               </button>
               <button
@@ -82,6 +90,7 @@
               <tr v-for="(row, index) in item.detail" :key="index" class="detalle-item">
                 <td>
                   <SelectSearch
+                    ref="selectProduct"
                     v-model="row.product.value"
                     link="products/products/"
                     :validation="row.product.validation"
@@ -239,6 +248,8 @@ import SelectSearch from "@/components/my_other_components/SelectSearch.vue";
 import ConectionInput from "@/mixin/conections/ConectionInput";
 import ConectionInputDetail from "@/mixin/conections/ConectionInputDetail";
 import ListContent from "@/components/my_other_components/ListContent.vue";
+import ProductDetail from "@/components/product/ProductDetail.vue";
+
 import { ModelInput } from "@/mixin/models/ModelInput";
 export default defineComponent({
   props: ["itemSelected"],
@@ -251,6 +262,7 @@ export default defineComponent({
     MyInput,
     MySelect,
     ListContent,
+    ProductDetail,
   },
   name: "DetailInput",
   data() {
@@ -280,6 +292,14 @@ export default defineComponent({
     },
   },
   methods: {
+    onAddProduct() {
+      this.$refs.selectProduct.forEach((element) => {
+        element.refresh();
+      });
+    },
+    addProduct() {
+      this.$refs.modalProduct.openAdd();
+    },
     getInputDetails(id) {
       this.loadingContentList = true;
       this.getInputDetailRegisters(id).then((response) => {
@@ -433,15 +453,15 @@ export default defineComponent({
       this.item.resetValidation();
       switch (this.mode) {
         case 1:
-          this.title = "Agregar Salida";
+          this.title = "Agregar Entrada";
           this.disabled = false;
           break;
         case 2:
-          this.title = "Visualizar Salida";
+          this.title = "Visualizar Entrada";
           this.disabled = true;
           break;
         case 3:
-          this.title = "Editar Salida";
+          this.title = "Editar Entrada";
           this.disabled = false;
           break;
         default:

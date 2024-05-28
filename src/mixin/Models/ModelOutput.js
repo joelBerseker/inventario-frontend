@@ -18,6 +18,7 @@ export class ModelOutput {
     }
     return resp;
   }
+
   detailFill(list) {
     this.detail = [];
     list.forEach((element) => {
@@ -73,6 +74,10 @@ class ModelOutputHeader {
   total_price = {
     value: undefined,
   };
+  onChangeTotalPrice() {
+    this.total_price.value = Validation.replaceOnlyNumber(this.total_price.value);
+    this.total_price.value = Validation.replaceCurrency(this.total_price.value);
+  }
   onChangeCode() {
     this.validateCode();
   }

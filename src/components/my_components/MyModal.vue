@@ -4,7 +4,13 @@
       <div class="modal-content">
         <div class="modal-header">
           <p class="title-text">{{ this.title }}</p>
-          <button v-if="closeButton" tabindex="-1" type="button" class="btn btn-secondary-outline btn-sm" v-on:click="closeButtonAction">
+          <button
+            v-if="closeButton"
+            tabindex="-1"
+            type="button"
+            class="btn btn-secondary-outline btn-sm"
+            v-on:click="closeButtonAction"
+          >
             <i class="bi bi-x-lg"></i>
           </button>
         </div>
@@ -19,12 +25,12 @@ import { Modal } from "bootstrap";
 import { defineComponent } from "vue";
 export default defineComponent({
   name: "MyModal",
-  props:{
-    id:{},
-    title:{},
-    size:{},
-    closeButton:{
-      default: true
+  props: {
+    id: {},
+    title: {},
+    size: {},
+    closeButton: {
+      default: true,
     },
   },
   methods: {
@@ -36,12 +42,12 @@ export default defineComponent({
       var modal = new Modal(document.getElementById(this.id), {});
       modal.show();
     },
-    closeButtonAction(){
+    closeButtonAction() {
       this.$emit("mymodal:close");
-    }
+    },
   },
-  mounted(){
+  mounted() {
     this.$emit("mounted:mymodal");
-  }
+  },
 });
 </script>

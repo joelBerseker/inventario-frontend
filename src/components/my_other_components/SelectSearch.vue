@@ -118,6 +118,7 @@ export default defineComponent({
           if (response.count == 0) {
             this.update = false;
           } else {
+            this.list = [];
             response.data.results.forEach((element) => {
               this.list.push(element);
             });
@@ -148,7 +149,6 @@ export default defineComponent({
         });
     },
     focusSearch() {
-      
       this.$refs.search.focus();
     },
     selectItem(_item) {
@@ -185,6 +185,10 @@ export default defineComponent({
     },
     hoverItem(index) {
       this.selectedInKeyboard = index;
+    },
+    refresh() {
+      console.log("refresh");
+      this.getData();
     },
   },
   computed: {

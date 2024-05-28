@@ -68,8 +68,8 @@
                 inputClass="text-end"
                 labelClass="text-end"
                 v-model="item.header.total_price.value"
-                :disabled="true"
-                :viewMode="disabled"
+                :disabled="disabled"
+                v-on:input="inputTotalPrice()"
                 ><template v-slot:pre>S/.</template>
               </MyInput>
             </div>
@@ -273,6 +273,9 @@ export default defineComponent({
           this.loadingContentList = false;
         }
       });
+    },
+    inputTotalPrice() {
+      this.item.header.onChangeTotalPrice();
     },
     inputCode() {
       this.item.header.onChangeCode();
