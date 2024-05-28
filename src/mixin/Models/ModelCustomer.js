@@ -56,20 +56,26 @@ export class ModelCustomer {
     this.documentType.validation = Validation.required(this.documentType.value);
   }
   validateDocument() {
-    this.document.validation = Validation.requiredText(this.document.value, 3, 10);
+    //this.document.validation = Validation.requiredText(this.document.value, 3, 10);
+
+    var aux = this.document.value;
+    this.document.value = Validation.replaceOnlyNumber(this.document.value);
+    if (aux == this.document.value) {
+      this.document.validation = Validation.requiredText(this.document.value, 3, 10);
+    }
   }
   validatePhone() {
     var aux = this.phone.value;
     this.phone.value = Validation.replaceOnlyNumber(this.phone.value);
     if (aux == this.phone.value) {
-      this.phone.validation = Validation.requiredText(this.phone.value, 9, 9);
+      this.phone.validation = Validation.noRequiredText(this.phone.value, 9, 9);
     }
   }
   validateAddress() {
-    this.address.validation = Validation.requiredText(this.address.value, 3, 50);
+    this.address.validation = Validation.noRequiredText(this.address.value, 3, 50);
   }
   validateMail() {
-    this.mail.validation = Validation.requiredText(this.mail.value, 3, 50);
+    this.mail.validation = Validation.noRequiredText(this.mail.value, 3, 50);
   }
   validateForm() {
     this.validateName();

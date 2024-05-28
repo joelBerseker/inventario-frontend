@@ -30,7 +30,12 @@ export class ModelSupplier {
     this.validateDocumentType();
   }
   onChangeDocument() {
-    this.validateDocument();
+    var aux = this.document.value;
+    this.document.value = Validation.replaceOnlyNumber(this.document.value);
+    if (aux == this.document.value) {
+      this.validateDocument();
+    }
+    //this.validateDocument();
   }
   onChangePhone() {
     var aux = this.phone.value;
@@ -55,11 +60,11 @@ export class ModelSupplier {
     var aux = this.phone.value;
     this.phone.value = Validation.replaceOnlyNumber(this.phone.value);
     if (aux == this.phone.value) {
-      this.phone.validation = Validation.requiredText(this.phone.value, 9, 9);
+      this.phone.validation = Validation.noRequiredText(this.phone.value, 9, 9);
     }
   }
   validateAddress() {
-    this.address.validation = Validation.requiredText(this.address.value, 3, 50);
+    this.address.validation = Validation.noRequiredText(this.address.value, 3, 50);
   }
   validateForm() {
     this.validateName();
