@@ -41,18 +41,15 @@ export class ModelProduct {
     var aux = this.price.value;
     this.price.value = Validation.replaceOnlyNumber(this.price.value);
     this.price.value = Validation.replaceCurrency(this.price.value);
-    if (aux == this.price.value) {
-      this.validatePrice();
-    }
+
+    this.validatePrice();
   }
   onChangeCost() {
     var aux = this.cost.value;
     this.cost.value = Validation.replaceOnlyNumber(this.cost.value);
     this.cost.value = Validation.replaceCurrency(this.cost.value);
-    if (aux == this.cost.value) {
-      this.validateCost();
-    }
-    
+
+    this.validateCost();
   }
   onChangeStock() {
     this.stock.value = Validation.replaceOnlyNumber(this.stock.value);

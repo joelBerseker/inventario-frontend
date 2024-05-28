@@ -183,10 +183,14 @@ class ModelInputDetail {
     this.validateQuantity();
   }
   onChangePurchasePrice() {
+    this.purchase_price.value = Validation.replaceOnlyNumber(this.purchase_price.value);
+    this.purchase_price.value = Validation.replaceCurrency(this.purchase_price.value);
     this.calculateSubtotal();
     this.validatePurchasePrice();
   }
   onChangeSalePrice() {
+    this.sale_price.value = Validation.replaceOnlyNumber(this.sale_price.value);
+    this.sale_price.value = Validation.replaceCurrency(this.sale_price.value);
     this.validateSalePrice();
   }
   validateProduct() {
