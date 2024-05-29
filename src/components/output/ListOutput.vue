@@ -9,6 +9,13 @@ import ListContent from "@/components/my_other_components/ListContent.vue";
 import ConectionOutput from "@/mixin/conections/ConectionOutput";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
+const isElectron = () => {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.process === "object" &&
+    window.process.type === "renderer"
+  );
+};
 
 export default defineComponent({
   name: "Output",
@@ -101,26 +108,63 @@ export default defineComponent({
   props: ["changeTopbar"],
   methods: {
     openInNewTab(data, invoiceType) {
-      var link = url + "orders/orders/" + invoiceType + "/" + data + "/";
-      //window.open(link, "_blank", "noreferrer");
-      /// prueba
-      axios({
-        url: link,
-        method: "GET",
-        responseType: "blob",
-      }).then((response) => {
-        var fileURL = window.URL.createObjectURL(new Blob([response.data]));
-        var fileLink = document.createElement("a");
+      const link = url + "orders/orders/" + invoiceType + "/" + data + "/";
+      const fileName = "file" + invoiceType + "-" + data + ".pdf";
 
-        fileLink.href = fileURL;
-        fileLink.setAttribute(
-          "download",
-          "file" + invoiceType + "-" + data + ".pdf"
-        );
-        document.body.appendChild(fileLink);
+      if (isElectron()) {
+        // Estamos en Electron
+        const { remote } = require("electron");
+        const fs = require("fs");
+        const path = require("path");
+        const filePath = path.join(remote.app.getPath("downloads"), fileName);
 
-        fileLink.click();
-      });
+        axios({
+          url: link,
+          method: "GET",
+          responseType: "arraybuffer", // Electron maneja mejor arraybuffer
+        })
+          .then((response) => {
+            fs.writeFile(
+              filePath,
+              Buffer.from(new Uint8Array(response.data)),
+              (err) => {
+                if (err) {
+                  console.error("Error al descargar el archivo:", err);
+                } else {
+                  console.log(
+                    `Archivo descargado correctamente en: ${filePath}`
+                  );
+                }
+              }
+            );
+          })
+          .catch((error) => {
+            console.error("Error al descargar el archivo:", error);
+          });
+      } else {
+        // Estamos en un navegador
+        axios({
+          url: link,
+          method: "GET",
+          responseType: "blob",
+        })
+          .then((response) => {
+            const fileURL = window.URL.createObjectURL(
+              new Blob([response.data])
+            );
+            const fileLink = document.createElement("a");
+
+            fileLink.href = fileURL;
+            fileLink.setAttribute("download", fileName);
+            document.body.appendChild(fileLink);
+            fileLink.click();
+            document.body.removeChild(fileLink);
+            window.URL.revokeObjectURL(fileURL);
+          })
+          .catch((error) => {
+            console.error("Error al descargar el archivo:", error);
+          });
+      }
     },
     onAdd() {
       this.getOutputs(1);
