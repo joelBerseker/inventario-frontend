@@ -1,4 +1,5 @@
 import { Validation } from "@/mixin/models/Validation";
+import { store } from "@/store";
 export class ModelOutput {
   header = new ModelOutputHeader();
   detail = [];
@@ -90,7 +91,11 @@ class ModelOutputHeader {
     this.validateDescription();
   }
   validateCode() {
-    this.order_code.validation = Validation.requiredText(this.order_code.value, 3, 50);
+    this.order_code.validation = Validation.requiredText(
+      this.order_code.value,
+      3,
+      50
+    );
   }
   validateClient() {
     this.client.validation = Validation.required(this.client.value);
@@ -99,7 +104,11 @@ class ModelOutputHeader {
     this.payment_type.validation = Validation.required(this.payment_type.value);
   }
   validateDescription() {
-    this.description.validation = Validation.noRequiredText(this.description.value, 3, 250);
+    this.description.validation = Validation.noRequiredText(
+      this.description.value,
+      3,
+      250
+    );
   }
   validateForm() {
     this.validateCode();
@@ -120,7 +129,9 @@ class ModelOutputHeader {
       order_code: this.order_code.value,
       id_client: this.client.value.id,
       payment_type: this.payment_type.value,
-      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value)
+        ? "Ninguna"
+        : this.description.value,
       total_price: this.total_price.value,
     };
   }
@@ -130,7 +141,9 @@ class ModelOutputHeader {
       order_code: this.order_code.value,
       id_client: this.client.value.id,
       payment_type: this.payment_type.value,
-      description: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
+      description: Validation.isEmpty(this.description.value)
+        ? "Ninguna"
+        : this.description.value,
       total_price: this.total_price.value,
     };
   }
@@ -199,11 +212,14 @@ class ModelOutputDetail {
   validateForm() {
     this.validateProduct();
     this.validateQuantity();
-    var result = this.product.validation.isValid && this.quantity.validation.isValid;
+    var result =
+      this.product.validation.isValid && this.quantity.validation.isValid;
     return result;
   }
   calculateSubtotal() {
-    this.subtotal.value = (this.quantity.value * this.new_sale_price.value).toFixed(2);
+    this.subtotal.value = (
+      this.quantity.value * this.new_sale_price.value
+    ).toFixed(2);
   }
   copyFromProduct() {
     this.new_sale_price.value = this.product.value.price;
@@ -214,7 +230,7 @@ class ModelOutputDetail {
       id_product: this.product.value.id,
       new_sale_price: this.new_sale_price.value,
       quantity: this.quantity.value,
-      manage_stock: false,
+      manage_stock: store.getters.isModeFacturate,
     };
   }
   getToAddId(id) {
@@ -223,7 +239,7 @@ class ModelOutputDetail {
       id_product: this.product.value.id,
       new_sale_price: this.new_sale_price.value,
       quantity: this.quantity.value,
-      manage_stock: false,
+      manage_stock: store.getters.isModeFacturate,
     };
   }
   getToEdit() {
@@ -233,7 +249,7 @@ class ModelOutputDetail {
       id_product: this.product.value.id,
       new_sale_price: this.new_sale_price.value,
       quantity: this.quantity.value,
-      manage_stock: false,
+      manage_stock: store.getters.isModeFacturate,
     };
   }
   setFromData(data) {
@@ -247,7 +263,8 @@ class ModelOutputDetail {
     } else {
       this.product.value = undefined;
     }
-    this.new_sale_price.value = data.new_sale_price == undefined ? 0 : data.new_sale_price;
+    this.new_sale_price.value =
+      data.new_sale_price == undefined ? 0 : data.new_sale_price;
     this.quantity.value = data.quantity == undefined ? 1 : data.quantity;
     this.calculateSubtotal();
   }
