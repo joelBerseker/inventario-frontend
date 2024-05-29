@@ -9,13 +9,6 @@ import ListContent from "@/components/my_other_components/ListContent.vue";
 import ConectionOutput from "@/mixin/conections/ConectionOutput";
 import { defineComponent } from "vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
-const isElectron = () => {
-  return (
-    typeof window !== "undefined" &&
-    typeof window.process === "object" &&
-    window.process.type === "renderer"
-  );
-};
 
 export default defineComponent({
   name: "Output",
@@ -107,63 +100,31 @@ export default defineComponent({
   },
   props: ["changeTopbar"],
   methods: {
-    openInNewTab(data, invoiceType) {
-      const link = url + "orders/orders/" + invoiceType + "/" + data + "/";
-      const fileName = "file" + invoiceType + "-" + data + ".pdf";
+    async openInNewTab(data, invoiceType) {
+      const urls = url + "orders/orders/" + invoiceType + "/" + data + "/";
+      try {
+        const response = await axios.get(urls, {
+          responseType: "blob", // Indicamos que esperamos una respuesta de tipo blob (archivo binario)
+        });
 
-      if (isElectron()) {
-        // Estamos en Electron
-        const { remote } = require("electron");
-        const fs = require("fs");
-        const path = require("path");
-        const filePath = path.join(remote.app.getPath("downloads"), fileName);
+        // Crear una URL temporal para el blob recibido
+        const blobUrl = window.URL.createObjectURL(new Blob([response.data]));
 
-        axios({
-          url: link,
-          method: "GET",
-          responseType: "arraybuffer", // Electron maneja mejor arraybuffer
-        })
-          .then((response) => {
-            fs.writeFile(
-              filePath,
-              Buffer.from(new Uint8Array(response.data)),
-              (err) => {
-                if (err) {
-                  console.error("Error al descargar el archivo:", err);
-                } else {
-                  console.log(
-                    `Archivo descargado correctamente en: ${filePath}`
-                  );
-                }
-              }
-            );
-          })
-          .catch((error) => {
-            console.error("Error al descargar el archivo:", error);
-          });
-      } else {
-        // Estamos en un navegador
-        axios({
-          url: link,
-          method: "GET",
-          responseType: "blob",
-        })
-          .then((response) => {
-            const fileURL = window.URL.createObjectURL(
-              new Blob([response.data])
-            );
-            const fileLink = document.createElement("a");
+        // Crear un enlace <a> para descargar el archivo
+        const link = document.createElement("a");
+        link.href = blobUrl;
+        link.setAttribute("download", `file-${invoiceType}-${data}.pdf`);
 
-            fileLink.href = fileURL;
-            fileLink.setAttribute("download", fileName);
-            document.body.appendChild(fileLink);
-            fileLink.click();
-            document.body.removeChild(fileLink);
-            window.URL.revokeObjectURL(fileURL);
-          })
-          .catch((error) => {
-            console.error("Error al descargar el archivo:", error);
-          });
+        // Agregar el enlace al documento y hacer clic en él para iniciar la descarga
+        document.body.appendChild(link);
+        link.click();
+
+        // Limpiar el objeto URL creado para el blob
+        window.URL.revokeObjectURL(blobUrl);
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error al descargar el archivo:", error);
+        // Aquí puedes manejar el error según sea necesario
       }
     },
     onAdd() {
