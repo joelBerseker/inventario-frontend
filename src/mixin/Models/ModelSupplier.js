@@ -54,7 +54,11 @@ export class ModelSupplier {
     this.documentType.validation = Validation.required(this.documentType.value);
   }
   validateDocument() {
-    this.document.validation = Validation.requiredText(this.document.value, 3, 10);
+    this.document.validation = Validation.requiredText(
+      this.document.value,
+      3,
+      12
+    );
   }
   validatePhone() {
     var aux = this.phone.value;
@@ -64,7 +68,11 @@ export class ModelSupplier {
     }
   }
   validateAddress() {
-    this.address.validation = Validation.noRequiredText(this.address.value, 3, 50);
+    this.address.validation = Validation.noRequiredText(
+      this.address.value,
+      3,
+      50
+    );
   }
   validateForm() {
     this.validateName();
