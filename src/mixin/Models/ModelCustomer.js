@@ -61,7 +61,7 @@ export class ModelCustomer {
     var aux = this.document.value;
     this.document.value = Validation.replaceOnlyNumber(this.document.value);
     if (aux == this.document.value) {
-      this.document.validation = Validation.requiredText(this.document.value, 3, 10);
+      this.document.validation = Validation.requiredText(this.document.value, 3, 12);
     }
   }
   validatePhone() {
