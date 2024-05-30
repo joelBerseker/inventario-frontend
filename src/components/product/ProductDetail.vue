@@ -2,17 +2,18 @@
   <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" v-on:mymodal:close="closeModal">
     <div class="modal-body">
       <div class="row mb-3">
-        <div class="col-6">
+        <div class="col-6" v-if="mode !== 1">
           <MyInput
             type="text"
             name="Código"
             :validation="item.code.validation"
             v-model="item.code.value"
-            :disabled="disabled"
+            :disabled="true"
+            :viewMode="disabled"
             v-on:input="inputCode()"
           />
         </div>
-        <div class="col-6">
+        <div class="col">
           <MyInput
             type="text"
             name="Nombre"

@@ -4,12 +4,14 @@
       <div class="row">
         <div class="col-3 head pe-3">
           <MyInput
+            v-if="mode !== 1"
             class="mb-3"
             type="text"
             name="Numero de item"
             :validation="item.header.order_code.validation"
             v-model="item.header.order_code.value"
-            :disabled="disabled"
+            :disabled="true"
+            :viewMode="disabled"
             v-on:input="inputCode()"
           />
           <SelectSearch
