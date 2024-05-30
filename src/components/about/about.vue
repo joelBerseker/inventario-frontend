@@ -30,7 +30,9 @@ export default defineComponent({
   methods: {
     async copyTo() {
       try {
-        await navigator.clipboard.writeText("https://docs.google.com/spreadsheets/d/1shM2f3sb77z6Hm93w9DS7nfRkxQ9cxRTWAmNqDJ0y_c/edit#gid=0");
+        await navigator.clipboard.writeText(
+          "https://docs.google.com/spreadsheets/d/1shM2f3sb77z6Hm93w9DS7nfRkxQ9cxRTWAmNqDJ0y_c/edit#gid=0"
+        );
         console.log("Texto copiado al portapapeles");
       } catch (err) {
         console.error("Error al copiar al portapapeles:", err);
@@ -44,18 +46,18 @@ export default defineComponent({
 </script>
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
-    <a
-      href="https://docs.google.com/spreadsheets/d/1shM2f3sb77z6Hm93w9DS7nfRkxQ9cxRTWAmNqDJ0y_c/edit#gid=0"
-      >Drive</a
-    >
-    <button
-      type="button"
-      class="btn btn-sm btn-secondary profile-action-btn"
-      @click="copyTo"
-    >
-      COPIAR
-    </button>
+    <div>
+      <div class="img-container">
+        <img src="@/assets/logo_gg.png" width="80" />
+      </div>
+      <div class="mt-3 text-center">Desarrollado por Gleaming Grove</div>
+    </div>
   </SystemContent>
 </template>
 
-<style scoped></style>
+<style scoped>
+.img-container {
+  display: flex;
+  justify-content: center;
+}
+</style>
