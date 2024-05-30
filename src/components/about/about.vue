@@ -51,6 +51,7 @@ export default defineComponent({
         <img src="@/assets/logo_gg.png" width="80" />
       </div>
       <div class="mt-3 text-center">Desarrollado por Gleaming Grove</div>
+      <div class="mt-2 text-center">gleaming.grove@gmail.com</div>
     </div>
   </SystemContent>
 </template>
