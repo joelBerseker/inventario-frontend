@@ -21,22 +21,21 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "order_code",
-            width: "5%",
+            width: "1%",
+            columnClasses: ["no-wrap"],
           },
           {
             label: "Proveedor",
             field: "provider_name",
-            width: "10%",
           },
           {
             label: "Descripción",
             field: "detail",
-            width: "20%",
           },
           {
             label: "Actualizado",
             field: "date",
-            width: "10%",
+
             display: (row) => {
               return this.timeAgo(row.date);
             },
@@ -44,7 +43,7 @@ export default defineComponent({
           {
             label: " ",
             field: "quick",
-            width: "7%",
+            width: "1%",
           },
         ],
         rows: [],
@@ -146,11 +145,7 @@ export default defineComponent({
 
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button
-          v-on:click="buttonAdd"
-          type="button"
-          class="btn btn-primary btn-sm mb-3"
-        >
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-lg"></i> Agregar Entrada
         </button>
       </div>
@@ -167,37 +162,16 @@ export default defineComponent({
           </button>
           <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Nombre
-              </label>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
             </div>
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Documento
-              </label>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Documento </label>
             </div>
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Telefono
-              </label>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
             </div>
           </div>
 
@@ -210,21 +184,13 @@ export default defineComponent({
             placeholder="Buscar..."
             required
           />
-          <button
-            class="btn btn-secondary"
-            type="button"
-            v-on:click="filterTable"
-          >
+          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
-    <ListContent
-      ref="tableContent"
-      :loading="this.loadingContentList"
-      :size="table.rows.length"
-    >
+    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
       <table-lite
         class="mb-3 w-100"
         :is-static-mode="false"
@@ -237,18 +203,10 @@ export default defineComponent({
       >
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button
-              v-on:click.stop="buttonView(data.value)"
-              type="button"
-              class="btn btn-secondary btn-sm me-1"
-            >
+            <button v-on:click.stop="buttonView(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
               <i class="bi bi-journal-text"></i>
             </button>
-            <button
-              v-on:click.stop="buttonDelete(data.value)"
-              type="button"
-              class="btn btn-danger btn-sm"
-            >
+            <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>
             </button>
           </div>

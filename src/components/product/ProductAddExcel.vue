@@ -1,10 +1,6 @@
 <script>
 import SystemContent from "@/components/system/SystemContent.vue";
-import {
-  XlsxRead,
-  XlsxJson,
-  XlsxTable,
-} from "vue3-xlsx/dist/vue3-xlsx.cjs.prod.js";
+import { XlsxRead, XlsxJson, XlsxTable } from "vue3-xlsx/dist/vue3-xlsx.cjs.prod.js";
 import { defineComponent } from "vue";
 import axios from "axios";
 import TableLite from "vue3-table-lite";
@@ -52,19 +48,19 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "code",
-            width: "3%",
+            width: "1%",
             sortable: true,
           },
           {
             label: "Nombre",
             field: "name",
-            width: "20%",
+
             sortable: true,
           },
           {
             label: "Descripción",
             field: "description",
-            width: "20%",
+
             sortable: true,
           },
 
@@ -72,14 +68,14 @@ export default defineComponent({
             label: "Compra",
             columnClasses: ["text-end"],
             field: "cost",
-            width: "7%",
+            width: "1%",
             sortable: true,
           },
           {
             label: "Venta",
             columnClasses: ["text-end"],
             field: "price",
-            width: "7%",
+            width: "1%",
             sortable: true,
           },
           {
@@ -137,8 +133,7 @@ export default defineComponent({
           console.log(e);
           this.showToast({
             title: "Ocurrió un error",
-            message:
-              "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+            message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
             type: 2,
           });
         });
@@ -180,11 +175,7 @@ export default defineComponent({
       <div class="col-12">
         <div class="row">
           <div class="col">
-            <input
-              type="file"
-              class="form-control form-control-sm mb-3"
-              @change="onChange"
-            />
+            <input type="file" class="form-control form-control-sm mb-3" @change="onChange" />
           </div>
           <div class="col">
             <button @click="onClick" class="btn btn-sm btn-primary">
@@ -209,18 +200,10 @@ export default defineComponent({
         >
           <template v-slot:quick="data">
             <div class="d-flex">
-              <button
-                v-on:click="viewMode(data.value)"
-                type="button"
-                class="btn btn-secondary btn-sm me-1"
-              >
+              <button v-on:click="viewMode(data.value)" type="button" class="btn btn-secondary btn-sm me-1">
                 <i class="bi bi-journal-text"></i>
               </button>
-              <button
-                v-on:click="deleteItem(data.value)"
-                type="button"
-                class="btn btn-danger btn-sm"
-              >
+              <button v-on:click="deleteItem(data.value)" type="button" class="btn btn-danger btn-sm">
                 <i class="bi bi-trash"></i>
               </button>
             </div>

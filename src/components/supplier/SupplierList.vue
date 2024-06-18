@@ -25,12 +25,11 @@ export default defineComponent({
           {
             label: "Nombre",
             field: "name",
-            width: "42%",
           },
           {
             label: "Tipo",
             field: "documentType",
-            width: "1%",
+
             display: (row) => {
               return this.getDocumentType(row.documentType);
             },
@@ -38,19 +37,19 @@ export default defineComponent({
           {
             label: "Document",
             field: "document",
-            width: "20%",
+            width: "1%",
           },
 
           {
             label: "Telefono",
             field: "phone",
-            width: "20%",
+            width: "1%",
           },
 
           {
             label: "Actualizado",
             field: "updated_at",
-            width: "15%",
+
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },

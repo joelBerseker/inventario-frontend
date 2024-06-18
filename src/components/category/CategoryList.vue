@@ -21,22 +21,19 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "id",
-            width: "4%",
+            width: "1%",
           },
           {
             label: "Nombre",
             field: "name",
-            width: "30%",
           },
           {
             label: "Descripción",
             field: "description",
-            width: "30%",
           },
           {
             label: "Actualizado",
-            field: "updated_at",
-            width: "35%",
+
             display: (row) => {
               return this.timeAgo(row.updated_at);
             },

@@ -139,4 +139,8 @@ th:not(th:last-child) {
   color: var(--my-c6) !important;
   opacity: 1; /* Firefox */
 }
+
+.no-wrap {
+  text-wrap: nowrap;
+}
 /*DARK MODE*/

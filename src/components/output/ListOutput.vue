@@ -22,26 +22,27 @@ export default defineComponent({
             label: "Codigo",
             field: "order_code",
             width: "1%",
+            columnClasses: ["no-wrap"],
           },
           {
             label: "Cliente",
             field: "client_name",
-            width: "63%",
           },
           {
             label: "Tipo Pago",
             field: "payment_type",
-            width: "10%",
+
             display: (row) => {
               return this.getPaymentType(row.payment_type);
             },
           },
           {
             label: "Compra",
-            columnClasses: ["text-end"],
+            columnClasses: ["text-end no-wrap"],
             headerClasses: ["text-end"],
             field: "total_price",
-            width: "10%",
+            width: "1%",
+
             display: (row) => {
               return this.priceCorrect(row.total_price);
             },
@@ -49,7 +50,7 @@ export default defineComponent({
           {
             label: "Fecha",
             field: "date",
-            width: "15%",
+
             display: (row) => {
               return this.timeAgo(row.date);
             },
@@ -192,11 +193,7 @@ export default defineComponent({
     />
     <div class="row justify-content-md-end">
       <div class="col-6">
-        <button
-          v-on:click="buttonAdd"
-          type="button"
-          class="btn btn-primary btn-sm mb-3"
-        >
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-lg"></i> Agregar Salida
         </button>
       </div>
@@ -213,37 +210,16 @@ export default defineComponent({
           </button>
           <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Nombre
-              </label>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
             </div>
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Documento
-              </label>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Documento </label>
             </div>
             <div class="form-check">
-              <input
-                class="form-check-input"
-                type="checkbox"
-                value=""
-                id="flexCheckDefault"
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Telefono
-              </label>
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
             </div>
           </div>
 
@@ -256,21 +232,13 @@ export default defineComponent({
             placeholder="Buscar..."
             required
           />
-          <button
-            class="btn btn-secondary"
-            type="button"
-            v-on:click="filterTable"
-          >
+          <button class="btn btn-secondary" type="button" v-on:click="filterTable">
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
-    <ListContent
-      ref="tableContent"
-      :loading="this.loadingContentList"
-      :size="table.rows.length"
-    >
+    <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
       <table-lite
         class="mb-3 w-100"
         :is-static-mode="false"
@@ -295,27 +263,17 @@ export default defineComponent({
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
-                <div
-                  class="dropdown-item item-select"
-                  v-on:click.stop="buttonView(data.value)"
-                >
+                <div class="dropdown-item item-select" v-on:click.stop="buttonView(data.value)">
                   <i class="bi bi-journal-text"></i> Visualizar
                 </div>
               </li>
               <li v-for="option in invoiceOptions" :key="option.value">
-                <div
-                  class="dropdown-item item-select"
-                  v-on:click.stop="openInNewTab(data.value.id, option.value)"
-                >
+                <div class="dropdown-item item-select" v-on:click.stop="openInNewTab(data.value.id, option.value)">
                   <i class="bi bi-file-pdf"></i> {{ option.label }}
                 </div>
               </li>
             </ul>
-            <button
-              v-on:click.stop="buttonDelete(data.value)"
-              type="button"
-              class="btn btn-danger btn-sm"
-            >
+            <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
               <i class="bi bi-trash"></i>
             </button>
           </div>
