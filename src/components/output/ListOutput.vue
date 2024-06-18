@@ -272,7 +272,7 @@ export default defineComponent({
       :size="table.rows.length"
     >
       <table-lite
-        class="mb-3"
+        class="mb-3 w-100"
         :is-static-mode="false"
         :is-slot-mode="true"
         :is-hide-paging="true"

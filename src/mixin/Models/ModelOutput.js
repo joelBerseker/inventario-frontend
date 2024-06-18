@@ -5,7 +5,9 @@ export class ModelOutput {
   detail = [];
   validateForm() {
     var _validateHeader = this.header.validateForm();
+    console.log("header:" + _validateHeader);
     var _validateDetail = this.validateDetail();
+    console.log("detail:" + _validateDetail);
     var result = _validateHeader && _validateDetail;
     return result;
   }
@@ -75,7 +77,9 @@ class ModelOutputHeader {
     value: undefined,
   };
   onChangeTotalPrice() {
-    this.total_price.value = Validation.replaceOnlyNumber(this.total_price.value);
+    this.total_price.value = Validation.replaceOnlyNumber(
+      this.total_price.value
+    );
     this.total_price.value = Validation.replaceCurrency(this.total_price.value);
   }
   onChangeCode() {
@@ -111,13 +115,11 @@ class ModelOutputHeader {
     );
   }
   validateForm() {
-    this.validateCode();
     this.validateClient();
     this.validatePaymentType();
     this.validateDescription();
 
     var result =
-      this.order_code.validation.isValid &&
       this.client.validation.isValid &&
       this.payment_type.validation.isValid &&
       this.description.validation.isValid;
@@ -126,7 +128,6 @@ class ModelOutputHeader {
   getToAdd() {
     console.log(this.client);
     return {
-      order_code: this.order_code.value,
       id_client: this.client.value.id,
       payment_type: this.payment_type.value,
       description: Validation.isEmpty(this.description.value)
@@ -212,10 +213,21 @@ class ModelOutputDetail {
   validateForm() {
     this.validateProduct();
     this.validateQuantity();
+
+    console.log(
+      "Product validation isValid -> " + this.product.validation.isValid
+    );
+    console.log(
+      "Quantity validation isValid -> " + this.quantity.validation.isValid
+    );
+
     var result =
       this.product.validation.isValid && this.quantity.validation.isValid;
+    console.log("Final validation result -> " + result);
+
     return result;
   }
+
   calculateSubtotal() {
     this.subtotal.value = (
       this.quantity.value * this.new_sale_price.value

@@ -11,12 +11,10 @@
       <div v-else>
         <div v-if="size <= 0">
           <div class="d-flex justify-content-center align-items-center">
-            <div class="secondary-text">
-              No se encontraron registros.
-            </div>
+            <div class="secondary-text">No se encontraron registros.</div>
           </div>
         </div>
-        <div v-else>
+        <div v-else class="w-100">
           <slot></slot>
         </div>
       </div>
@@ -34,7 +32,7 @@ export default defineComponent({
       loadingLocal: true,
     };
   },
-  props: ["loading" , "size"],
+  props: ["loading", "size"],
   components: {
     Icon,
   },

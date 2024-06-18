@@ -1,5 +1,11 @@
 <template>
-  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl" v-on:mymodal:close="closeModal">
+  <MyModal
+    ref="myModal"
+    :id="'productDetailModal'"
+    :title="this.title"
+    size="modal-xl"
+    v-on:mymodal:close="closeModal"
+  >
     <div class="modal-body">
       <div class="row">
         <div class="col-3 head pe-3">
@@ -53,7 +59,9 @@
               <button
                 :disabled="
                   disabledListButtons ||
-                  (mode != 1 && this.listBackup.length > 0 && this.item.detail[0].id.value == undefined)
+                  (mode != 1 &&
+                    this.listBackup.length > 0 &&
+                    this.item.detail[0].id.value == undefined)
                 "
                 type="button"
                 class="btn btn-sm btn-primary"
@@ -77,7 +85,11 @@
             </div>
           </div>
 
-          <ListContent ref="tableContent" :loading="this.loadingContentList" :size="item.detail.length">
+          <ListContent
+            ref="tableContent"
+            :loading="this.loadingContentList"
+            :size="item.detail.length"
+          >
             <table class="my-table w-100">
               <tr>
                 <th style="width: 40%">Nombre</th>
@@ -87,7 +99,11 @@
                 <th v-if="mode != 2"></th>
               </tr>
 
-              <tr v-for="(row, index) in item.detail" :key="index" class="detalle-item">
+              <tr
+                v-for="(row, index) in item.detail"
+                :key="index"
+                class="detalle-item"
+              >
                 <td>
                   <SelectSearch
                     v-model="row.product.value"
@@ -181,19 +197,39 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
+      <button
+        type="button"
+        @click="buttonDelete"
+        class="btn btn-danger btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="buttonEdit" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
+      <button
+        type="button"
+        @click="buttonEdit"
+        class="btn btn-primary btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+      <button
+        type="button"
+        @click="buttonCancel"
+        class="btn btn-secondary btn-sm button-margin"
+        v-if="mode == 3"
+      >
         <i class="bi bi-arrow-left"></i>
         Cancelar
       </button>
-      <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
+      <button
+        type="button"
+        @click="buttonSave"
+        class="btn btn-primary btn-sm button-margin"
+        v-if="mode != 2"
+      >
         <i class="bi bi-check-lg"></i>
         Guardar
       </button>
@@ -228,7 +264,12 @@ import ConectionOutputDetail from "@/mixin/conections/ConectionOutputDetail";
 import ListContent from "@/components/my_other_components/ListContent.vue";
 import { ModelOutput } from "@/mixin/models/ModelOutput";
 export default defineComponent({
-  mixins: [ValidationFunctions, UtilityFunctions, ConectionOutput, ConectionOutputDetail],
+  mixins: [
+    ValidationFunctions,
+    UtilityFunctions,
+    ConectionOutput,
+    ConectionOutputDetail,
+  ],
   inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
@@ -304,17 +345,19 @@ export default defineComponent({
       if (this.item.detail[index].validateForm()) {
         if (this.item.detail[index].id.value == undefined) {
           //agregado recientemente
-          this.addOutputDetailRegister(this.item.detail[index].getToAddId(this.item.header.id.value)).then(
-            (response) => {
-              if (response.success) {
-                this.disabledListButtons = false;
-                this.getOutputDetails(this.item.header.id.value);
-              }
+          this.addOutputDetailRegister(
+            this.item.detail[index].getToAddId(this.item.header.id.value)
+          ).then((response) => {
+            if (response.success) {
+              this.disabledListButtons = false;
+              this.getOutputDetails(this.item.header.id.value);
             }
-          );
+          });
         } else {
           //editado
-          this.editOutputDetailRegister(this.item.detail[index].getToEdit()).then((response) => {
+          this.editOutputDetailRegister(
+            this.item.detail[index].getToEdit()
+          ).then((response) => {
             if (response.success) {
               this.disabledListButtons = false;
               this.getOutputDetails(this.item.header.id.value);
@@ -324,7 +367,8 @@ export default defineComponent({
       } else {
         this.showToast({
           title: "Ocurrió un error",
-          message: "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
+          message:
+            "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }
@@ -343,7 +387,9 @@ export default defineComponent({
       if (this.mode == 1 || this.item.detail[index].id.value == undefined) {
         this.item.detailDelete(index);
       } else {
-        this.confirmDeleteOutputDetailRegister(this.item.detail[index].id.value).then((response) => {
+        this.confirmDeleteOutputDetailRegister(
+          this.item.detail[index].id.value
+        ).then((response) => {
           if (response.success) {
             this.getOutputDetails(this.item.header.id.value);
           }
@@ -351,32 +397,41 @@ export default defineComponent({
       }
     },
     async buttonSave() {
-      if (this.item.validateForm()) {
+      const validate = await this.item.validateForm();
+      console.log("validate is " + validate);
+      if (validate) {
+        console.log("entre");
         if (this.item.detail.length > 0) {
           switch (this.mode) {
             case 1:
-              this.addOutputRegister(this.item.header.getToAdd()).then((response) => {
-                var id_order = 0;
-                if (response.success) {
-                  id_order = response.response.data.id;
-                  this.addOutputDetailRegisters(this.item.getDetailToJSON(id_order)).then((response) => {
-                    if (response.success) {
-                      this.$emit("item:add");
-                      this.closeModal();
-                    }
-                  });
-                } else {
-                  id_order = -1;
+              this.addOutputRegister(this.item.header.getToAdd()).then(
+                (response) => {
+                  var id_order = 0;
+                  if (response.success) {
+                    id_order = response.response.data.id;
+                    this.addOutputDetailRegisters(
+                      this.item.getDetailToJSON(id_order)
+                    ).then((response) => {
+                      if (response.success) {
+                        this.$emit("item:add");
+                        this.closeModal();
+                      }
+                    });
+                  } else {
+                    id_order = -1;
+                  }
                 }
-              });
+              );
               break;
             case 3:
-              this.editOutputRegister(this.item.header.getToEdit()).then((response) => {
-                if (response.success) {
-                  this.$emit("item:edit");
-                  this.closeModal();
+              this.editOutputRegister(this.item.header.getToEdit()).then(
+                (response) => {
+                  if (response.success) {
+                    this.$emit("item:edit");
+                    this.closeModal();
+                  }
                 }
-              });
+              );
               break;
             default:
               break;
@@ -384,14 +439,17 @@ export default defineComponent({
         } else {
           this.showToast({
             title: "Ocurrió un error",
-            message: "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
+            message:
+              "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
             type: 2,
           });
         }
       } else {
+        console.log("->como->" + this.item.validateForm());
         this.showToast({
           title: "Ocurrió un error",
-          message: "Datos no válidos, revise si todos los campos se llenaron correctamente.",
+          message:
+            "Datos no válidos, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
       }
@@ -405,12 +463,14 @@ export default defineComponent({
       this.changeMode(2);
     },
     buttonDelete() {
-      this.confirmDeleteOutputRegister(this.item.header.id.value).then((response) => {
-        if (response.success) {
-          this.$emit("item:delete");
-          this.closeModal();
+      this.confirmDeleteOutputRegister(this.item.header.id.value).then(
+        (response) => {
+          if (response.success) {
+            this.$emit("item:delete");
+            this.closeModal();
+          }
         }
-      });
+      );
     },
     changeMode(mode) {
       this.mode = mode;

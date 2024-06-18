@@ -13,7 +13,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -38,9 +39,11 @@ export default {
             resolve({ success: true, response: response });
           })
           .catch((error) => {
+            console.log(error);
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -67,7 +70,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -111,7 +115,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -129,7 +134,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo obtener el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo obtener el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });

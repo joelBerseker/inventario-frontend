@@ -13,7 +13,7 @@ import { store } from "./store";
 // Detecta si hay un modo de reinicio en la URL
 if (import.meta.env.RESET_STORE) {
   // Llama a una mutación o acción para restablecer los datos en la store
-  store.commit('resetData'); // Asume que tienes una mutación llamada 'resetData'
+  store.commit("resetData"); // Asume que tienes una mutación llamada 'resetData'
 }
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";

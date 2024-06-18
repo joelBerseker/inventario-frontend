@@ -19,13 +19,15 @@
         data-bs-auto-close="true"
         aria-expanded="false"
         v-on:click="focusSearch()"
-        data-bs-display="static"
+        data-bs-popper-config='{"strategy":"fixed"}'
         :disabled="disabled"
       >
-        <p v-if="modelValue == null || modelValue == ''" class="single-line">Seleccione una opción</p>
+        <p v-if="modelValue == null || modelValue == ''" class="single-line">
+          Seleccione una opción
+        </p>
         <p v-else class="single-line">{{ modelValue.name }}</p>
       </button>
-      <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
         <li class="px-2 mb-2">
           <input
             class="form-control form-control-sm"
@@ -53,7 +55,10 @@
           <div>No se encontraron elementos</div>
         </li>
 
-        <li class="text-center secondary-text mt-2" v-if="listFiltered.length >= 10">
+        <li
+          class="text-center secondary-text mt-2"
+          v-if="listFiltered.length >= 10"
+        >
           <div>Existen mas elementos, por favor sea mas especifico</div>
         </li>
       </ul>
@@ -181,7 +186,8 @@ export default defineComponent({
       return resp;
     },
     pressEnter() {
-      if (this.selectedInKeyboard != -1) this.selectItem(this.list[this.selectedInKeyboard]);
+      if (this.selectedInKeyboard != -1)
+        this.selectItem(this.list[this.selectedInKeyboard]);
     },
     hoverItem(index) {
       this.selectedInKeyboard = index;
@@ -246,6 +252,7 @@ export default defineComponent({
 .dropdown-item:hover {
 }
 .dropdown-menu {
+  width: 300px;
   --bs-dropdown-link-hover-bg: transparent !important;
 }
 

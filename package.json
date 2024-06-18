@@ -10,6 +10,7 @@
     "inlined-preview": "vite build --config vite.config.inlined.ts && start ./dist/index.html"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "apexcharts": "^3.41.1",
     "axios": "^1.5.0",
     "bootstrap": "^5.3.0",
