@@ -176,15 +176,15 @@ export default defineComponent({
       this.item.resetValidation();
       switch (this.mode) {
         case 1:
-          this.title = "Agregar Categoria";
+          this.title = "Agregar Proveedor";
           this.disabled = false;
           break;
         case 2:
-          this.title = "Visualizar Categoria";
+          this.title = "Visualizar Proveedor";
           this.disabled = true;
           break;
         case 3:
-          this.title = "Editar Categoria";
+          this.title = "Editar Proveedor";
           this.disabled = false;
           break;
         default:

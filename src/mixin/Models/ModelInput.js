@@ -78,9 +78,6 @@ class ModelInputHeader {
   onChangeDescription() {
     this.validateDescription();
   }
-  validateCode() {
-    this.order_code.validation = Validation.requiredText(this.order_code.value, 3, 50);
-  }
   validateProvider() {
     this.provider.validation = Validation.required(this.provider.value);
   }
@@ -88,23 +85,27 @@ class ModelInputHeader {
     //this.payment_type.validation = Validation.required(this.payment_type.value);
   }
   validateDescription() {
-    this.description.validation = Validation.noRequiredText(this.description.value, 3, 250);
+    this.description.validation = Validation.noRequiredText(
+      this.description.value,
+      3,
+      250
+    );
   }
   validateForm() {
-    this.validateCode();
     this.validateProvider();
     //this.validateEvidence();
     this.validateDescription();
 
     var result =
-      this.order_code.validation.isValid && this.provider.validation.isValid && this.description.validation.isValid;
+      this.provider.validation.isValid && this.description.validation.isValid;
     return result;
   }
   getToAdd() {
     return {
-      order_code: this.order_code.value,
       id_provider: this.provider.value.id,
-      detail: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
+      detail: Validation.isEmpty(this.description.value)
+        ? "Ninguna"
+        : this.description.value,
       total_price: this.total_price.value,
     };
   }
@@ -113,7 +114,9 @@ class ModelInputHeader {
       id: this.id.value,
       order_code: this.order_code.value,
       id_provider: this.provider.value.id,
-      detail: Validation.isEmpty(this.description.value) ? "Ninguna" : this.description.value,
+      detail: Validation.isEmpty(this.description.value)
+        ? "Ninguna"
+        : this.description.value,
       total_price: this.total_price.value,
     };
   }
@@ -183,10 +186,18 @@ class ModelInputDetail {
     this.validateQuantity();
   }
   onChangePurchasePrice() {
+    this.purchase_price.value = Validation.replaceOnlyNumber(
+      this.purchase_price.value
+    );
+    this.purchase_price.value = Validation.replaceCurrency(
+      this.purchase_price.value
+    );
     this.calculateSubtotal();
     this.validatePurchasePrice();
   }
   onChangeSalePrice() {
+    this.sale_price.value = Validation.replaceOnlyNumber(this.sale_price.value);
+    this.sale_price.value = Validation.replaceCurrency(this.sale_price.value);
     this.validateSalePrice();
   }
   validateProduct() {
@@ -196,7 +207,9 @@ class ModelInputDetail {
     this.quantity.validation = Validation.required(this.quantity.value);
   }
   validatePurchasePrice() {
-    this.purchase_price.validation = Validation.required(this.purchase_price.value);
+    this.purchase_price.validation = Validation.required(
+      this.purchase_price.value
+    );
   }
   validateSalePrice() {
     this.sale_price.validation = Validation.required(this.sale_price.value);
@@ -206,11 +219,14 @@ class ModelInputDetail {
     this.validateQuantity();
     this.validatePurchasePrice();
     this.validateSalePrice();
-    var result = this.product.validation.isValid && this.quantity.validation.isValid;
+    var result =
+      this.product.validation.isValid && this.quantity.validation.isValid;
     return result;
   }
   calculateSubtotal() {
-    this.subtotal.value = (this.quantity.value * this.purchase_price.value).toFixed(2);
+    this.subtotal.value = (
+      this.quantity.value * this.purchase_price.value
+    ).toFixed(2);
   }
   copyFromProduct() {
     this.purchase_price.value = this.product.value.cost;
@@ -260,7 +276,8 @@ class ModelInputDetail {
     } else {
       this.product.value = undefined;
     }
-    this.purchase_price.value = data.purchase_price == undefined ? 0 : data.purchase_price;
+    this.purchase_price.value =
+      data.purchase_price == undefined ? 0 : data.purchase_price;
     this.sale_price.value = data.sale_price == undefined ? 0 : data.sale_price;
     this.last_purchase_price.value = undefined;
     this.last_sale_price.value = undefined;

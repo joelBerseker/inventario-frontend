@@ -84,6 +84,7 @@ export default defineComponent({
   align-items: center;
   justify-content: center;
 }
+
 .t-app-enter-active,
 .t-app-enter {
   transition: all 0.25s ease;

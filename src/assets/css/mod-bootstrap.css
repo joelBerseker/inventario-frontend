@@ -104,7 +104,6 @@
 .dark-mode .form-control,
 .dark-mode .form-select {
   background-color: transparent !important;
-  color: var(--my-dc2) !important;
 }
 .dark-mode .form-control:disabled,
 .dark-mode .form-select:disabled,
@@ -132,8 +131,8 @@
 }
 .form-control:focus,
 .form-select:focus {
-  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25) inset !important;
-  border-color: var(--my-c5) !important;
+  box-shadow: 0 0 0 2px 0 0 0 0.25rem rgba(13, 110, 253, 0.25) inset !important;
+  border-color: #86b7fe !important;
 }
 .form-control.is-invalid:focus,
 .was-validated .form-control:invalid:focus,

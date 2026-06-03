@@ -105,7 +105,6 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-
 td,
 th {
   border: 1px solid var(--my-bc) !important;
@@ -139,5 +138,9 @@ th:not(th:last-child) {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: var(--my-c6) !important;
   opacity: 1; /* Firefox */
+}
+
+.no-wrap {
+  text-wrap: nowrap;
 }
 /*DARK MODE*/

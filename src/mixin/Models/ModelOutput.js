@@ -1,5 +1,4 @@
 import { Validation } from "@/mixin/models/Validation";
-
 export class ModelOutput {
   header = new ModelOutputHeader();
   detail = [];
@@ -154,7 +153,6 @@ class ModelOutputHeader {
   }
 
   validateForm() {
-    this.validateCode();
     this.validateClient();
     this.validatePaymentType();
     this.validateDescription();
@@ -322,7 +320,7 @@ class ModelOutputDetail {
       id_product: this.product.value.id,
       new_sale_price: this.new_sale_price.value,
       quantity: this.quantity.value,
-      manage_stock: false,
+      manage_stock: store.getters.isModeFacturate,
     };
   }
 
@@ -332,7 +330,7 @@ class ModelOutputDetail {
       id_product: this.product.value.id,
       new_sale_price: this.new_sale_price.value,
       quantity: this.quantity.value,
-      manage_stock: false,
+      manage_stock: store.getters.isModeFacturate,
     };
   }
 
@@ -343,7 +341,7 @@ class ModelOutputDetail {
       id_product: this.product.value.id,
       new_sale_price: this.new_sale_price.value,
       quantity: this.quantity.value,
-      manage_stock: false,
+      manage_stock: store.getters.isModeFacturate,
     };
   }
 

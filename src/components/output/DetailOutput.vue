@@ -10,6 +10,7 @@
       <div class="row">
         <div class="col-3 head pe-3">
           <MyInput
+            v-if="mode !== 1"
             class="mb-3"
             type="text"
             name="Número de venta"
@@ -134,19 +135,6 @@
                 :viewMode="disabled"
               >
                 <template v-slot:pre>S/.</template>
-              </MyInput>
-            </div>
-
-            <div class="col-2">
-              <MyInput
-                name="Descuento"
-                type="number"
-                viewClass="text-end"
-                inputClass="text-end"
-                labelClass="text-end"
-                v-model="item.header.discount.value"
-                :disabled="disabled"
-                :viewMode="disabled"
                 v-on:input="inputDiscount()"
               >
                 <template v-slot:pre>S/.</template>
@@ -371,7 +359,12 @@ import { ModelOutput } from "@/mixin/models/ModelOutput";
 import AuthService from "@/services/AuthService";
 
 export default defineComponent({
-  mixins: [ValidationFunctions, UtilityFunctions, ConectionOutput, ConectionOutputDetail],
+  mixins: [
+    ValidationFunctions,
+    UtilityFunctions,
+    ConectionOutput,
+    ConectionOutputDetail,
+  ],
   inject: ["confirmDialogue", "showToast"],
   components: {
     MyModal,
@@ -879,16 +872,18 @@ export default defineComponent({
                     }
                   );
                 }
-              });
+              );
               break;
 
             case 3:
-              this.editOutputRegister(this.item.header.getToEdit()).then((response) => {
-                if (response.success) {
-                  this.$emit("item:edit");
-                  this.closeModal();
+              this.editOutputRegister(this.item.header.getToEdit()).then(
+                (response) => {
+                  if (response.success) {
+                    this.$emit("item:edit");
+                    this.closeModal();
+                  }
                 }
-              });
+              );
               break;
           }
         } else {
@@ -899,6 +894,7 @@ export default defineComponent({
           });
         }
       } else {
+        console.log("->como->" + this.item.validateForm());
         this.showToast({
           title: "Ocurrió un error",
           message: "Datos no válidos. Revise los campos.",
@@ -920,12 +916,14 @@ export default defineComponent({
     },
 
     buttonDelete() {
-      this.confirmDeleteOutputRegister(this.item.header.id.value).then((response) => {
-        if (response.success) {
-          this.$emit("item:delete");
-          this.closeModal();
+      this.confirmDeleteOutputRegister(this.item.header.id.value).then(
+        (response) => {
+          if (response.success) {
+            this.$emit("item:delete");
+            this.closeModal();
+          }
         }
-      });
+      );
     },
 
     changeMode(mode) {

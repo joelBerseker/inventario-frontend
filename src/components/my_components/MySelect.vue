@@ -15,13 +15,15 @@
         type="button"
         ref="select"
         :id="id"
-        data-bs-toggle="dropdown"
         data-bs-auto-close="true"
         aria-expanded="false"
-        data-bs-display="static"
+        data-bs-toggle="dropdown"
+        data-bs-popper-config='{"strategy":"fixed"}'
         :disabled="disabled"
       >
-        <p v-if="modelValue == null || modelValue == ''" class="single-line">Seleccione una opción</p>
+        <p v-if="modelValue == null || modelValue == ''" class="single-line">
+          Seleccione una opción
+        </p>
         <p v-else class="single-line">{{ options[modelValue - 1].text }}</p>
       </button>
       <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton1">
@@ -129,7 +131,8 @@ export default defineComponent({
       return resp;
     },
     pressEnter() {
-      if (this.selectedInKeyboard != -1) this.selectItem(this.options[this.selectedInKeyboard]);
+      if (this.selectedInKeyboard != -1)
+        this.selectItem(this.options[this.selectedInKeyboard]);
     },
     hoverItem(index) {
       this.selectedInKeyboard = index;

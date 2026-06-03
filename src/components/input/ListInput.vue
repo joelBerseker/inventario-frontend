@@ -21,22 +21,21 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "order_code",
-            width: "5%",
+            width: "1%",
+            columnClasses: ["no-wrap"],
           },
           {
             label: "Proveedor",
             field: "provider_name",
-            width: "10%",
           },
           {
             label: "Descripción",
             field: "detail",
-            width: "20%",
           },
           {
             label: "Actualizado",
             field: "date",
-            width: "10%",
+
             display: (row) => {
               return this.timeAgo(row.date);
             },
@@ -44,7 +43,7 @@ export default defineComponent({
           {
             label: " ",
             field: "quick",
-            width: "7%",
+            width: "1%",
           },
         ],
         rows: [],
@@ -193,7 +192,7 @@ export default defineComponent({
     </div>
     <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
       <table-lite
-        class="mb-3"
+        class="mb-3 w-100"
         :is-static-mode="false"
         :is-slot-mode="true"
         :is-hide-paging="true"

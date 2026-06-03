@@ -80,7 +80,8 @@ export default defineComponent({
             columnClasses: ["text-end"],
             headerClasses: ["text-end"],
             field: "total_price",
-            width: "10%",
+            width: "1%",
+
             display: (row) => {
               return this.priceCorrect(row?.total_price ?? 0);
             },
