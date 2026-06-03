@@ -58,7 +58,7 @@ export default defineComponent({
           {
             label: "Nombre",
             field: "name",
-            width: "20%",
+            width: "18%",
             sortable: true,
           },
           {
@@ -79,7 +79,7 @@ export default defineComponent({
             label: "Venta",
             columnClasses: ["text-end"],
             field: "price",
-            width: "7%",
+            width: "9%",
             sortable: true,
           },
           {

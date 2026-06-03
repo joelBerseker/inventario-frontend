@@ -13,7 +13,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -38,13 +39,19 @@ export default {
             resolve({ success: true, response: response });
           })
           .catch((error) => {
+            const message = this.getErrorMessage(
+              error,
+              "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+            );
+
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+              message,
               type: 2,
             });
-            resolve({ success: false, response: error });
-          });
+
+            resolve({ success: false, response: error, message });
+          }); /*  */
       });
     },
     async editOutputRegister(data) {
@@ -65,12 +72,18 @@ export default {
             resolve({ success: true, response: response });
           })
           .catch((error) => {
+            const message = this.getErrorMessage(
+              error,
+              "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
+            );
+
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
+              message,
               type: 2,
             });
-            resolve({ success: false, response: error });
+
+            resolve({ success: false, response: error, message });
           });
       });
     },
@@ -111,7 +124,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -129,7 +143,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo obtener el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo obtener el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -139,6 +154,44 @@ export default {
     showMessage(data) {
       this.showToast(data);
     },
+  },
+
+  getErrorMessage(error, defaultMessage) {
+    const data = error?.response?.data;
+
+    if (Array.isArray(data)) {
+      return data.flat().join(" ");
+    }
+
+    if (typeof data === "string") {
+      return data;
+    }
+
+    if (Array.isArray(data?.detail)) {
+      return data.detail.join(" ");
+    }
+
+    if (typeof data?.detail === "string") {
+      return data.detail;
+    }
+
+    if (typeof data?.message === "string") {
+      return data.message;
+    }
+
+    if (typeof data === "object" && data !== null) {
+      const firstValue = Object.values(data)[0];
+
+      if (Array.isArray(firstValue)) {
+        return firstValue.join(" ");
+      }
+
+      if (typeof firstValue === "string") {
+        return firstValue;
+      }
+    }
+
+    return defaultMessage;
   },
   data() {
     return {

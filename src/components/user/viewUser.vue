@@ -1,5 +1,6 @@
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
+    <UserCreateModal ref="userCreateModal" />
     <div class="row">
       <div class="col-6">
         <div class="card">
@@ -151,6 +152,13 @@
       <button v-if="!editing" class="btn btn-sm btn-primary profile-action-btn ms-1" @click="toggleEditing">
         <i class="bi bi-pen"></i> Editar
       </button>
+      <button
+        class="btn btn-sm btn-success profile-action-btn ms-1"
+        v-if="displayUser.is_superuser || displayUser.is_admin"
+        @click="$refs.userCreateModal.openModal()"
+      >
+        <i class="bi bi-person-plus"></i> Añadir Usuario
+      </button>
       <button v-else class="btn btn-sm btn-secondary profile-action-btn" @click="cancelChanges">
         <i class="bi bi-x-circle"></i> Cancelar
       </button>
@@ -166,6 +174,7 @@ import axios from "axios";
 import SystemContent from "@/components/system/SystemContent.vue";
 import MyForm from "@/components/my_components/MyForm.vue";
 import AuthService from "@/services/AuthService";
+import UserCreateModal from "./UserCreateModal.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   name: "Profile",
@@ -211,6 +220,7 @@ export default {
   components: {
     SystemContent,
     MyForm,
+    UserCreateModal,
   },
   methods: {
     buttonLogout() {

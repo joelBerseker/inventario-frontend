@@ -13,7 +13,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo obtener los registros, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -38,12 +39,20 @@ export default {
             resolve({ success: true, response: response });
           })
           .catch((error) => {
+            const message = this.getErrorMessage
+              ? this.getErrorMessage(
+                  error,
+                  "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+                )
+              : "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.";
+
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+              message,
               type: 2,
             });
-            resolve({ success: false, response: error });
+
+            resolve({ success: false, response: error, message });
           });
       });
     },
@@ -68,7 +77,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo agregar el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -76,7 +86,7 @@ export default {
       });
     },
     async editOutputDetailRegister(data) {
-      var path = this.urlConectionOutputDetail  + data.id + "/";
+      var path = this.urlConectionOutputDetail + data.id + "/";
       var form_data = new FormData();
       for (var key in data) {
         form_data.append(key, data[key]);
@@ -95,7 +105,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo editar el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -139,7 +150,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo eliminar el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -157,7 +169,8 @@ export default {
           .catch((error) => {
             this.showMessage({
               title: "Ocurrió un error",
-              message: "No se pudo obtener el registro, si continúa sucediendo contacte con su proveedor.",
+              message:
+                "No se pudo obtener el registro, si continúa sucediendo contacte con su proveedor.",
               type: 2,
             });
             resolve({ success: false, response: error });
@@ -170,7 +183,7 @@ export default {
   },
   data() {
     return {
-      urlConectionOutputDetail: url + "order_details/order_details/"
+      urlConectionOutputDetail: url + "order_details/order_details/",
     };
   },
 };

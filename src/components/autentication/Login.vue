@@ -7,6 +7,7 @@ import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
 import Icon from "@/components/my_other_components/Icon.vue";
 import AppContent from "@/AppContent.vue";
+
 export default defineComponent({
   name: "Login",
   inject: ["showToast"],
@@ -20,6 +21,7 @@ export default defineComponent({
       validated: false,
       mode: 1,
       loadingAppContent: true,
+      showPassword: false,
     };
   },
   mixins: [ValidationFunctions],
@@ -34,25 +36,55 @@ export default defineComponent({
   },
   methods: {
     onSubmit(evt) {
-      evt.preventDefault();
+      if (evt) evt.preventDefault();
       this.login();
     },
+
+    onEnter() {
+      if (!this.loadingButton) {
+        this.login();
+      }
+    },
+
+    togglePassword() {
+      this.showPassword = !this.showPassword;
+    },
+
     async login() {
+      if (this.loadingButton) return;
+
       this.loadingButton = true;
+
       const credentials = {
         email: this.user.username,
         password: this.user.password,
       };
+
       try {
         const obtainToken = await AuthService.obtain_token(credentials);
         const token = obtainToken.access;
+
         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        //await this.loadingApp(true)
-        this.$router.push("/home");
+        const currentUser = await AuthService.getUser();
+
+        if (currentUser?.is_superuser || currentUser?.is_admin) {
+          await this.$router.replace({ name: "home" });
+        } else if (currentUser?.is_staff) {
+          await this.$router.replace({ name: "outputs" });
+        } else {
+          await this.$router.replace({ name: "home" });
+        }
+
+        console.log("TOKEN:", obtainToken.access);
+        console.log("USER CARGADO:", currentUser);
+        console.log("IS ADMIN:", currentUser?.is_admin);
+        console.log("IS SUPERUSER:", currentUser?.is_superuser);
+        console.log("IS STAFF:", currentUser?.is_staff);
       } catch (e) {
+        console.log(e);
         this.showToast({
-          title: "Ocurrió un error ",
+          title: "Ocurrió un error",
           message: "Usuario y contraseña no válidos, verifique si los datos ingresados son correctos.",
           type: 2,
         });
@@ -75,20 +107,52 @@ export default defineComponent({
                 <div class="col-5 image">
                   <div class="image-cover"></div>
                 </div>
+
                 <div class="col-7 content">
                   <div class="card-body">
                     <div class="text-center mb-1">
                       <Icon size="50px" :mode="2" :bg-mode="1"></Icon>
                       <p class="title-text my-c3 mb-2">Gestion de Inventarios</p>
                       <hr class="m-0 mb-2" />
-                      <p class="secondary-text">Ingrese su usuario y contraseña para ingresar al sistema</p>
+                      <p class="secondary-text">
+                        Ingrese su usuario y contraseña para ingresar al sistema
+                      </p>
                     </div>
-                    <MyInput name="Usuario" type="email" v-model="user.username" class="mb-3"
-                      ><template v-slot:pre><i class="bi bi-person"></i></template>
+
+                    <MyInput
+                      name="Usuario/Email"
+                      type="email"
+                      v-model="user.username"
+                      class="mb-3"
+                      @keyup.enter="onEnter"
+                    >
+                      <template v-slot:pre>
+                        <i class="bi bi-person"></i>
+                      </template>
                     </MyInput>
-                    <MyInput name="Contraseña" type="password" v-model="user.password" class="mb-3"
-                      ><template v-slot:pre><i class="bi bi-lock"></i></template>
-                    </MyInput>
+
+                    <div class="password-wrapper mb-3">
+                      <MyInput
+                        name="Contraseña"
+                        :type="showPassword ? 'text' : 'password'"
+                        v-model="user.password"
+                        @keyup.enter="onEnter"
+                      >
+                        <template v-slot:pre>
+                          <i class="bi bi-lock"></i>
+                        </template>
+                      </MyInput>
+
+                      <button
+                        type="button"
+                        class="password-toggle mt-3"
+                        @click="togglePassword"
+                        :disabled="loadingButton"
+                        :title="showPassword ? 'Ocultar contraseña' : 'Ver contraseña'"
+                      >
+                        <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                      </button>
+                    </div>
 
                     <div class="text-end">
                       <button
@@ -107,27 +171,31 @@ export default defineComponent({
               </div>
             </div>
           </div>
-        </div>
+        </div>  
       </div>
     </div>
   </AppContent>
 </template>
+
 <style scoped>
 .login {
   overflow: hidden;
   background-color: var(--my-c1) !important;
   border: none !important;
 }
+
 .image {
   background-image: url("https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=876&q=80");
   background-position: center;
   background-size: cover;
 }
+
 .image-cover {
   height: 100%;
   width: 100%;
   background-color: #41659710;
 }
+
 .center {
   height: 100%;
   height: 100vh;
@@ -137,5 +205,30 @@ export default defineComponent({
   overflow-x: hidden;
   overflow-y: hidden;
   min-height: 100%;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper :deep(input) {
+  padding-right: 2.5rem;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.65rem;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  padding: 0;
+  color: #6c757d;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.password-toggle:hover {
+  color: #212529;
 }
 </style>

@@ -7,23 +7,35 @@ export default {
         { value: "3", text: "Otro" },
       ],
       optionsPaymentType: [
-        { value: 1, text: "Efectivo" },
-        { value: 2, text: "YAPE" },
-        { value: 3, text: "Tarjeta" },
-        { value: 4, text: "Otro" },
+        { value: "1", text: "Efectivo" },
+        { value: "2", text: "Yape" },
+        { value: "3", text: "Plin" },
+        { value: "4", text: "Transferencia" },
+        { value: "5", text: "Tarjeta" },
       ],
     };
   },
+
   methods: {
     priceCorrect(price) {
-      return "S/. " + parseFloat(price).toFixed(2);
+      const value = Number(price || 0);
+      return "S/. " + value.toFixed(2);
     },
-    getDocumentType(number) {
-      return this.optionsDocumentType[number - 1].text;
+
+    getDocumentType(value) {
+      const item = this.optionsDocumentType.find(
+        (x) => String(x.value) === String(value)
+      );
+      return item ? item.text : "-";
     },
-    getPaymentType(number) {
-      return this.optionsPaymentType[number - 1].text;
+
+    getPaymentType(value) {
+      const item = this.optionsPaymentType.find(
+        (x) => String(x.value) === String(value)
+      );
+      return item ? item.text : "-";
     },
+
     timeAgo(time) {
       const date = new Date(time);
       const now = new Date();

@@ -3,13 +3,9 @@ import { defineComponent } from "vue";
 import Icon from "@/components/my_other_components/Icon.vue";
 import ConfirmDialogue from "@/components/my_other_components/ConfirmDialogue.vue";
 import MyToast from "@/components/my_components/MyToast.vue";
+
 export default defineComponent({
   name: "App",
-  data() {
-    return {
-      
-    };
-  },
   components: {
     Icon,
     ConfirmDialogue,
@@ -20,11 +16,13 @@ export default defineComponent({
       this.$store.dispatch("logout");
       this.$router.push("/login");
     },
+
     showToast(opts = {}) {
       this.$refs.toast.show(opts);
     },
+
     async confirmDialogue(opts = {}) {
-      var resp = false;
+      let resp = false;
       await this.$refs.confirmDialogue
         .show({
           title: opts.title,
@@ -45,18 +43,25 @@ export default defineComponent({
   },
   created() {
     console.log("created app");
-    if (!this.$store.getters.isActive || this.$store.getters.isActive == null) {
-      this.logout();
-    } else {
-      var link = window.location.href;
-      var linkSlice = link.substring(link.lastIndexOf("/"), link.length);
-      if (linkSlice == "/login") {
-        this.$router.push("/");
-      }
+
+    const token = this.$store.getters.getToken;
+    const currentPath = this.$route.path;
+
+    // Si no hay token y no está en login -> mandar a login
+    if (!token && currentPath !== "/login") {
+      this.$router.push("/login");
+      return;
+    }
+
+    // Si hay token y está en login -> dejar que router/index.js decida redirección
+    if (token && currentPath === "/login") {
+      // no hacer nada aquí
+      // el beforeEach del router se encarga
     }
   },
 });
 </script>
+
 <template>
   <div id="app">
     <RouterView v-slot="{ Component }">
@@ -68,6 +73,7 @@ export default defineComponent({
     <ConfirmDialogue ref="confirmDialogue"></ConfirmDialogue>
   </div>
 </template>
+
 <style scoped>
 #app {
   overflow-x: hidden;

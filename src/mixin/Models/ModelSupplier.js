@@ -49,7 +49,7 @@ export class ModelSupplier {
     this.documentType.validation = Validation.required(this.documentType.value);
   }
   validateDocument() {
-    this.document.validation = Validation.requiredText(this.document.value, 3, 10);
+    this.document.validation = Validation.requiredText(this.document.value, 3, 11);
   }
   validatePhone() {
     var aux = this.phone.value;

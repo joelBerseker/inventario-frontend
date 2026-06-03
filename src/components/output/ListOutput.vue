@@ -1,6 +1,5 @@
 <script>
 import DetailOutput from "./DetailOutput.vue";
-import axios from "axios";
 import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import UtilityFunctions from "@/mixin/UtilityFunctions.js";
@@ -8,6 +7,9 @@ import SystemContent from "@/components/system/SystemContent.vue";
 import ListContent from "@/components/my_other_components/ListContent.vue";
 import ConectionOutput from "@/mixin/conections/ConectionOutput";
 import { defineComponent } from "vue";
+import AuthService from "@/services/AuthService";
+import axios from "axios";
+
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default defineComponent({
@@ -21,37 +23,74 @@ export default defineComponent({
           {
             label: "Codigo",
             field: "order_code",
-            width: "1%",
+            width: "9%",
           },
           {
             label: "Cliente",
             field: "client_name",
-            width: "63%",
+            width: "13%",
+          },
+          {
+            label: "Vendedor",
+            field: "user_name",
+            width: "13%",
+          },
+          {
+            label: "Estado",
+            field: "canceled",
+            width: "8%",
+            display: (row) => {
+              return row?.canceled ? "Anulada" : "Activa";
+            },
           },
           {
             label: "Tipo Pago",
             field: "payment_type",
-            width: "10%",
+            width: "9%",
             display: (row) => {
-              return this.getPaymentType(row.payment_type);
+              try {
+                return this.getPaymentType(row?.payment_type);
+              } catch (e) {
+                return "-";
+              }
             },
           },
           {
-            label: "Compra",
+            label: "Subtotal",
+            columnClasses: ["text-end"],
+            headerClasses: ["text-end"],
+            field: "subtotal_price",
+            width: "10%",
+            display: (row) => {
+              return this.priceCorrect(row?.subtotal_price ?? row?.total_price ?? 0);
+            },
+          },
+          {
+            label: "Descuento",
+            columnClasses: ["text-end"],
+            headerClasses: ["text-end"],
+            field: "discount",
+            width: "10%",
+            display: (row) => {
+              return this.priceCorrect(row?.discount ?? 0);
+            },
+          },
+          {
+            label: "Total",
             columnClasses: ["text-end"],
             headerClasses: ["text-end"],
             field: "total_price",
             width: "10%",
             display: (row) => {
-              return this.priceCorrect(row.total_price);
+              return this.priceCorrect(row?.total_price ?? 0);
             },
           },
           {
             label: "Fecha",
             field: "date",
-            width: "15%",
+            width: "14%",
             display: (row) => {
-              return this.timeAgo(row.date);
+              return this.timeAgo(row?.date);
             },
           },
           {
@@ -84,7 +123,6 @@ export default defineComponent({
         { value: "boleta", label: "Boleta" },
         { value: "factura", label: "Factura" },
         { value: "boletaA4", label: "Boleta A4" },
-        // Puedes agregar más opciones aquí si es necesario
       ],
       loadingContentSystem: true,
       loadingContentList: false,
@@ -99,182 +137,333 @@ export default defineComponent({
     ListContent,
   },
   props: ["changeTopbar"],
+
+  computed: {
+    currentUser() {
+      return AuthService.getCurrentUser?.();
+    },
+
+    isAdmin() {
+      return !!(this.currentUser?.is_superuser || this.currentUser?.is_admin);
+    },
+
+    isSeller() {
+      return !!(this.currentUser?.is_staff && !this.isAdmin);
+    },
+
+    isCanceled() {
+      return !!this.itemBackup?.canceled;
+    },
+
+    cancelReason() {
+      return this.itemBackup?.cancel_reason || "";
+    },
+
+    canceledAtText() {
+      if (!this.itemBackup?.canceled_at) return "-";
+      return new Date(this.itemBackup.canceled_at).toLocaleString();
+    },
+  },
+
   methods: {
-    openInNewTab(data, invoiceType) {
-      var link = url + "orders/orders/" + invoiceType + "/" + data + "/";
+    openInNewTab(row, invoiceType) {
+      if (row?.canceled) {
+        this.showToast({
+          title: "Orden anulada",
+          message: "No se puede imprimir una orden anulada.",
+          type: 2,
+        });
+        return;
+      }
+
+      const link = url + "orders/orders/" + invoiceType + "/" + row.id + "/";
       window.open(link, "_blank", "noreferrer");
     },
+
     onAdd() {
       this.getOutputs(1);
     },
+
     onEdit() {
       this.getOutputs(this.page);
     },
+
     onDelete() {
       this.getOutputs(1);
     },
+
     getIdUrl() {
-      if (this.$route.query.id != undefined) {
+      if (this.$route.query.id !== undefined) {
         this.$refs.modal.openViewId(this.$route.query.id);
       }
     },
+
     buttonAdd() {
       this.$refs.modal.openAdd();
     },
+
     buttonView(row) {
       this.$refs.modal.openView(row);
     },
+
+    getRowClass(row) {
+      return row?.canceled ? "row-canceled" : "";
+    },
+
     async buttonDelete(row) {
+      if (!this.isAdmin) {
+        this.showToast({
+          title: "Acción no permitida",
+          message: "Solo el administrador puede eliminar órdenes.",
+          type: 2,
+        });
+        return;
+      }
+
+      const confirmed = await this.confirmDialogue({
+        title: "¿Eliminar orden?",
+        message: `Se eliminará la orden ${row.order_code}.`,
+        okButton: "Eliminar",
+      });
+
+      if (!confirmed) return;
+
       this.confirmDeleteOutputRegister(row.id).then((response) => {
         if (response.success) {
+          this.showToast({
+            title: "Orden eliminada",
+            message: "La orden fue eliminada correctamente.",
+            type: 1,
+          });
           this.getOutputs(1);
         }
       });
     },
+
+    async buttonCancelOrder(row) {
+      if (!this.isSeller && !this.isAdmin) {
+        this.showToast({
+          title: "Acción no permitida",
+          message: "No tienes permisos para anular órdenes.",
+          type: 2,
+        });
+        return;
+      }
+
+      if (row?.canceled) {
+        this.showToast({
+          title: "Orden ya anulada",
+          message: "Esta orden ya fue anulada previamente.",
+          type: 2,
+        });
+        return;
+      }
+
+      const reason = prompt("Ingrese la razón de anulación:");
+
+      if (!reason || !reason.trim()) {
+        this.showToast({
+          title: "Razón requerida",
+          message: "Debe ingresar una razón para anular la orden.",
+          type: 2,
+        });
+        return;
+      }
+
+      try {
+        await axios.patch(`${url}orders/orders/${row.id}/cancel/`, {
+          reason: reason.trim(),
+        });
+
+        this.showToast({
+          title: "Orden anulada",
+          message: "La orden fue anulada correctamente.",
+          type: 1,
+        });
+
+        this.getOutputs(this.page);
+      } catch (error) {
+        this.showToast({
+          title: "Ocurrió un error",
+          message: error?.response?.data?.detail || "No se pudo anular la orden.",
+          type: 2,
+        });
+      }
+    },
+
     async getOutputs(page) {
       this.loadingContentList = true;
       this.table.rows = [];
+
       this.getOutputRegisters(page).then((response) => {
         if (response.success) {
           response.response.data.results.forEach((element) => {
             this.table.rows.push(element);
-            this.table.totalRecordCount = this.table.rows.length;
-            this.numPag = Math.ceil(response.response.data.count / 10);
           });
+
+          this.table.totalRecordCount = this.table.rows.length;
+          this.numPag = Math.ceil(response.response.data.count / 10);
           this.page = page;
-          this.loadingContentSystem = false;
-          this.loadingContentList = false;
         }
+
+        this.loadingContentSystem = false;
+        this.loadingContentList = false;
       });
     },
+
     clickCallback(pageNum) {
       this.page = pageNum;
       this.getOutputs(pageNum);
     },
+
+    filterTable() {
+      this.page = 1;
+
+      if (!this.search || this.search.trim() === "") {
+        this.getOutputs(1);
+        return;
+      }
+
+      const filter = `1&search_query=${this.search}`;
+      this.getOutputs(filter);
+    },
   },
+
   async created() {
     this.changeTopbar(this.topbar);
     await this.getOutputs(1);
   },
 });
 </script>
+
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
-    <DetailOutput
-      ref="modal"
-      v-on:item:add="onAdd"
-      v-on:item:edit="onEdit"
-      v-on:item:delete="onDelete"
-      v-on:mounted:mymodal="getIdUrl"
-    />
+    <DetailOutput ref="modal" v-on:item:add="onAdd" v-on:item:edit="onEdit" v-on:item:delete="onDelete"
+      v-on:mounted:mymodal="getIdUrl" />
+
     <div class="row justify-content-md-end">
       <div class="col-6">
         <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-lg"></i> Agregar Salida
         </button>
       </div>
+
       <div class="col">
         <div class="input-group input-group-sm">
-          <button
-            class="btn dropdown-toggle btn-secondary margin-dropdown"
-            type="button"
-            id="dropdownMenuLink"
-            data-bs-toggle="dropdown"
-          >
+          <button class="btn dropdown-toggle btn-secondary margin-dropdown" type="button" id="dropdownMenuLink"
+            data-bs-toggle="dropdown">
             <i class="bi bi-sliders"></i>
             Filtro
           </button>
+
           <div class="dropdown-menu p-4 text-muted" style="max-width: 200px">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Nombre </label>
+              <input class="form-check-input" type="checkbox" value="" id="filterName" />
+              <label class="form-check-label" for="filterName">Nombre</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Documento </label>
+              <input class="form-check-input" type="checkbox" value="" id="filterDocument" />
+              <label class="form-check-label" for="filterDocument">Documento</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-              <label class="form-check-label" for="flexCheckDefault"> Telefono </label>
+              <input class="form-check-input" type="checkbox" value="" id="filterPhone" />
+              <label class="form-check-label" for="filterPhone">Telefono</label>
             </div>
           </div>
 
-          <input
-            type="text"
-            class="form-control"
-            id="name"
-            name="name"
-            v-model="search"
-            placeholder="Buscar..."
-            required
-          />
+          <input type="text" class="form-control" id="name" name="name" v-model="search" placeholder="Buscar..."
+            required @keyup.enter="filterTable" />
+
           <button class="btn btn-secondary" type="button" v-on:click="filterTable">
             <i class="bi bi-search"></i>
           </button>
         </div>
       </div>
     </div>
+
     <ListContent ref="tableContent" :loading="this.loadingContentList" :size="table.rows.length">
-      <table-lite
-        class="mb-3"
-        :is-static-mode="false"
-        :is-slot-mode="true"
-        :is-hide-paging="true"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-        @row-clicked="buttonView"
-      >
+      <table-lite class="mb-3" :is-static-mode="false" :is-slot-mode="true" :is-hide-paging="true"
+        :columns="table.columns" :rows="table.rows" :total="table.totalRecordCount" :row-classes="getRowClass"
+        @row-clicked="buttonView">
         <template v-slot:quick="data">
           <div class="d-flex">
-            <button
-              class="btn btn-secondary btn-sm me-1"
-              type="button"
-              id="dropdownMenuButton"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              v-on:click.stop
-            >
+            <button class="btn btn-secondary btn-sm me-1" type="button" id="dropdownMenuButton"
+              data-bs-toggle="dropdown" aria-expanded="false" v-on:click.stop>
               <i class="bi bi-list-ul"></i>
             </button>
+
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li>
                 <div class="dropdown-item item-select" v-on:click.stop="buttonView(data.value)">
                   <i class="bi bi-journal-text"></i> Visualizar
                 </div>
               </li>
+
               <li v-for="option in invoiceOptions" :key="option.value">
-                <div class="dropdown-item item-select" v-on:click.stop="openInNewTab(data.value.id, option.value)">
+                <div class="dropdown-item item-select" v-on:click.stop="openInNewTab(data.value, option.value)">
                   <i class="bi bi-file-pdf"></i> {{ option.label }}
                 </div>
               </li>
+
+              <li v-if="data.value.canceled">
+                <div class="dropdown-item text-muted">
+                  <i class="bi bi-info-circle"></i>
+                  Anulada
+                </div>
+              </li>
+
+              <li v-if="data.value.canceled && data.value.cancel_reason">
+                <div class="dropdown-item text-muted small">
+                  Motivo: {{ data.value.cancel_reason }}
+                </div>
+              </li>
             </ul>
-            <button v-on:click.stop="buttonDelete(data.value)" type="button" class="btn btn-danger btn-sm">
+
+            <button v-if="isAdmin" v-on:click.stop="buttonDelete(data.value)" type="button"
+              class="btn btn-danger btn-sm" title="Eliminar">
               <i class="bi bi-trash"></i>
+            </button>
+
+            <button v-if="(isSeller || isAdmin) && !data.value.canceled" v-on:click.stop="buttonCancelOrder(data.value)"
+              type="button" class="btn btn-warning btn-sm" title="Anular">
+              <i class="bi bi-x-circle"></i>
+            </button>
+
+            <button v-if="isSeller && data.value.canceled" type="button" class="btn btn-secondary btn-sm" disabled
+              title="Orden anulada">
+              <i class="bi bi-slash-circle"></i>
             </button>
           </div>
         </template>
       </table-lite>
-      <paginate
-        v-if="numPag > 1"
-        v-model="page"
-        :page-count="numPag"
-        :page-range="3"
-        :margin-pages="2"
-        :click-handler="clickCallback"
-        :prev-text="'Anterior'"
-        :next-text="'Siguiente'"
-        :container-class="'pagination pagination-sm'"
-        :page-class="'page-item'"
-      >
-      </paginate>
+
+      <paginate v-if="numPag > 1" v-model="page" :page-count="numPag" :page-range="3" :margin-pages="2"
+        :click-handler="clickCallback" :prev-text="'Anterior'" :next-text="'Siguiente'"
+        :container-class="'pagination pagination-sm'" :page-class="'page-item'" />
     </ListContent>
   </SystemContent>
 </template>
-<script></script>
 
 <style scoped>
 .button-space {
   margin-right: 0.25rem;
+}
+
+.item-select {
+  cursor: pointer;
+}
+
+.small {
+  font-size: 0.75rem;
+  white-space: normal;
+  max-width: 220px;
+}
+
+:deep(.row-canceled td) {
+  background-color: #fff3cd !important;
+}
+
+:deep(.row-canceled) {
+  opacity: 0.92;
 }
 </style>

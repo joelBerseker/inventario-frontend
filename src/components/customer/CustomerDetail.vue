@@ -45,7 +45,7 @@
         </div>
         <div class="col-6">
           <MyInput
-            name="Dirección"
+            name="Dirección *"
             type="text"
             v-model="item.address.value"
             :validation="item.address.validation"
@@ -57,7 +57,7 @@
       <div class="row mb-3">
         <div class="col-6">
           <MyInput
-            name="Correo Electronico"
+            name="Correo Electronico *"
             type="text"
             v-model="item.mail.value"
             :validation="item.mail.validation"

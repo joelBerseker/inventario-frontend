@@ -3,52 +3,35 @@
     <div class="accordion accordion-flush" id="accordionPanelsStayOpenExample">
       <div class="accordion-item border-acordion">
         <div class="accordion-header" id="panelsStayOpen-headingOne">
-          <button
-            class="accordion-button p-3 my-bg1 my-c2 title-text"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseOne"
-            aria-expanded="true"
-            aria-controls="panelsStayOpen-collapseOne"
-          >
+          <button class="accordion-button p-3 my-bg1 my-c2 title-text" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseOne">
             <i class="bi bi-bell"></i>&nbsp;Notificaciones
           </button>
         </div>
-        <div
-          id="panelsStayOpen-collapseOne"
-          class="accordion-collapse collapse show"
-          aria-labelledby="panelsStayOpen-headingOne"
-        >
+        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingOne">
           <div class="accordion-body px-3 pt-0 pb-3">
             Content here
             <div>
               <RouterLink to="/notifications" class="my-c2">
-                Ver mas</RouterLink
-              >
+                Ver mas</RouterLink>
             </div>
           </div>
         </div>
       </div>
       <div class="accordion-item border-acordion">
         <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-          <button
-            class="accordion-button title-text p-3 my-bg1 my-c2"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseTwo"
-            aria-expanded="true"
-            aria-controls="panelsStayOpen-collapseTwo"
-          >
+          <button class="accordion-button title-text p-3 my-bg1 my-c2" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseTwo">
             <i class="bi bi-bar-chart-line"></i>&nbsp;Estadisticas
           </button>
         </h2>
-        <div
-          id="panelsStayOpen-collapseTwo"
-          class="accordion-collapse collapse show"
-          aria-labelledby="panelsStayOpen-headingTwo"
-        >
+        <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingTwo">
           <div class="accordion-body px-3 pt-0 pb-3">
-            Content here
+            <DashboardCharts />
             <div>
               <RouterLink to="/statistics" class="my-c2"> Ver mas</RouterLink>
             </div>
@@ -57,30 +40,17 @@
       </div>
       <div class="accordion-item border-acordion">
         <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-          <button
-            class="accordion-button title-text p-3 my-bg1 my-c2"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#panelsStayOpen-collapseThree"
-            aria-expanded="true"
-            aria-controls="panelsStayOpen-collapseThree"
-          >
+          <button class="accordion-button title-text p-3 my-bg1 my-c2" type="button" data-bs-toggle="collapse"
+            data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
+            aria-controls="panelsStayOpen-collapseThree">
             <i class="bi bi-list-ul"></i>&nbsp;Navegación
           </button>
         </h2>
-        <div
-          id="panelsStayOpen-collapseThree"
-          class="accordion-collapse collapse show"
-          aria-labelledby="panelsStayOpen-headingThree"
-        >
+        <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
+          aria-labelledby="panelsStayOpen-headingThree">
           <div class="accordion-body px-3 pt-0 pb-3">
             <div class="row">
-              <div
-                class="col-4 mb-3"
-                v-for="item in list"
-                :key="item.title"
-                v-on:click="goTo(item.url)"
-              >
+              <div class="col-4 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
                 <div class="card box" :id="item.title">
                   <div class="card-body">
                     <p class="title-text mb-1">
@@ -102,6 +72,7 @@
   box-shadow: none;
   outline: none !important;
 }
+
 .accordion-button {
   border: none !important;
   border-top: 1px solid var(--my-bc) !important;
@@ -110,10 +81,12 @@
   box-shadow: none !important;
   background-color: transparent !important;
 }
+
 .acordion-home {
   border-radius: 0px !important;
   background-color: transparent !important;
 }
+
 .box {
   cursor: pointer;
   transition: 0.3s;
@@ -131,6 +104,8 @@
 <script>
 import { defineComponent } from "vue";
 import SystemContent from "@/components/system/SystemContent.vue";
+import DashboardCharts from "@/components/statistics/DashboardCharts.vue";
+import FinancialDashboard from "@/components/finances/FinancialDashboard.vue";
 export default defineComponent({
   name: "Home",
   props: ["title", "icon", "changeTopbar"],
@@ -180,6 +155,24 @@ export default defineComponent({
           icon: "bi bi-tag",
           url: "/category",
         },
+        {
+          title: "Gastos",
+          desc: "Registro y control de gastos del negocio.",
+          icon: "bi bi-cash-stack",
+          url: "/expenses",
+        },
+        {
+          title: "Categorias de gasto",
+          desc: "Administra las categorías de gastos.",
+          icon: "bi bi-tags",
+          url: "/expense-categories",
+        },
+        {
+          title: "Dashboard financiero",
+          desc: "Resumen de ventas, gastos y utilidad.",
+          icon: "bi bi-graph-up-arrow",
+          url: "/financial-dashboard",
+        },
       ],
       topbar: {
         title: "Inicio",
@@ -196,6 +189,7 @@ export default defineComponent({
   },
   components: {
     SystemContent,
+    DashboardCharts,
   },
   methods: {
     goTo(url) {

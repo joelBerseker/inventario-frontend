@@ -7,14 +7,13 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import { store } from "./store";
-
-//import store from './store'
+import VueApexCharts from "vue3-apexcharts";
 
 // Detecta si hay un modo de reinicio en la URL
 if (import.meta.env.RESET_STORE) {
-  // Llama a una mutación o acción para restablecer los datos en la store
-  store.commit('resetData'); // Asume que tienes una mutación llamada 'resetData'
+  store.commit("resetData");
 }
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -24,12 +23,16 @@ var token = store.state.token;
 if (token) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 } else {
-  axios.defaults.headers.common["Authorization"] = "Hola";
+  delete axios.defaults.headers.common["Authorization"];
 }
 
 const app = createApp(App);
 
-app.use(router);
 app.use(store);
+app.use(router);
+app.use(VueApexCharts);
+
+// registrar componente global
+app.component("apexchart", VueApexCharts);
 
 app.mount("#app");
