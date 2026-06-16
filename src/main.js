@@ -32,7 +32,4 @@ app.use(store);
 app.use(router);
 app.use(VueApexCharts);
 
-// registrar componente global
-app.component("apexchart", VueApexCharts);
-
 app.mount("#app");

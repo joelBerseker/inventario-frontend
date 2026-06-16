@@ -2,7 +2,7 @@
   <MyModal
     ref="myModal"
     :id="'productDetailModal1'"
-    :title="this.title"
+    :title="title"
     size="modal-xl"
     v-on:mymodal:close="closeModal"
   >
@@ -20,8 +20,8 @@
             v-model="item.header.order_code.value"
             :disabled="true"
             :viewMode="disabled"
-            v-on:input="inputCode()"
           />
+
           <SelectSearch
             class="mb-3"
             v-model="item.header.provider.value"
@@ -32,6 +32,7 @@
             :disabled="disabled"
             v-on:update="inputProvider()"
           />
+
           <MyInput
             type="textarea"
             name="Descripción"
@@ -47,14 +48,16 @@
             <div class="col">
               <p class="title-text">Lista de Productos</p>
             </div>
+
             <div v-if="mode != 2" class="col text-end">
               <button type="button" class="btn btn-primary btn-sm me-1" @click="addProduct()">
                 <i class="bi bi-plus-lg"></i> Agregar Producto
               </button>
+
               <button
                 :disabled="
                   disabledListButtons ||
-                  (mode != 1 && this.listBackup.length > 0 && this.item.detail[0].id.value == undefined)
+                  (mode != 1 && listBackup.length > 0 && item.detail[0].id.value == undefined)
                 "
                 type="button"
                 class="btn btn-sm btn-primary"
@@ -63,6 +66,7 @@
                 <i class="bi bi-arrow-90deg-down"></i> Agregar Fila
               </button>
             </div>
+
             <div class="col-2">
               <MyInput
                 name="Total"
@@ -73,20 +77,21 @@
                 v-model="item.header.total_price.value"
                 :disabled="true"
                 :viewMode="disabled"
-                ><template v-slot:pre>S/.</template>
+              >
+                <template v-slot:pre>S/.</template>
               </MyInput>
             </div>
           </div>
 
-          <ListContent ref="tableContent" :loading="this.loadingContentList" :size="item.detail.length">
+          <ListContent ref="tableContent" :loading="loadingContentList" :size="item.detail.length">
             <table class="my-table w-100">
               <tr>
-                <th style="width: 20%">Nombre</th>
-                <th class="text-end" style="width: 20%">Cantidad</th>
-                <th class="text-end" style="width: 20%">Precio de compra</th>
-                <th class="text-end" style="width: 20%">Precio de venta</th>
-                <th class="text-end" style="width: 20%">Subtotal</th>
-                <th v-if="mode != 2"></th>
+                <th style="width: 22%">Nombre</th>
+                <th class="text-end" style="width: 14%">Cantidad</th>
+                <th class="text-end" style="width: 18%">Precio de compra</th>
+                <th class="text-end" style="width: 18%">Precio de venta</th>
+                <th class="text-end" style="width: 18%">Subtotal</th>
+                <th v-if="mode != 2" style="width: 10%"></th>
               </tr>
 
               <tr v-for="(row, index) in item.detail" :key="index" class="detalle-item">
@@ -100,8 +105,7 @@
                     :id="index + 'product'"
                     :disabled="row.disabled && mode != 1"
                     :viewMode="disabled"
-                  >
-                  </SelectSearch>
+                  />
                 </td>
 
                 <td>
@@ -109,45 +113,51 @@
                     type="number"
                     inputClass="text-end"
                     viewClass="text-end"
-                    :validation="row.quantity.validation"
                     v-model="row.quantity.value"
                     v-on:input="inputQuantity(index)"
                     :disabled="row.disabled && mode != 1"
                     :viewMode="disabled"
                   />
                 </td>
+
                 <td>
                   <MyInput
-                    type="number"
+                    type="text"
                     inputClass="text-end"
                     viewClass="text-end"
-                    :validation="row.purchase_price.validation"
                     v-model="row.purchase_price.value"
                     v-on:input="inputPurchasePrice(index)"
                     :disabled="row.disabled && mode != 1"
                     :viewMode="disabled"
-                    ><template v-slot:pre>S/.</template>
+                  >
+                    <template v-slot:pre>S/.</template>
                   </MyInput>
+
                   <label class="secondary-text">
-                    <i class="bi bi-arrow-return-right"></i> Ant. S/.{{ row.last_purchase_price.value }}
+                    <i class="bi bi-arrow-return-right"></i>
+                    Ant. S/.{{ normalizeMoneyLabel(row.last_purchase_price.value) }}
                   </label>
                 </td>
+
                 <td>
                   <MyInput
-                    type="number"
+                    type="text"
                     inputClass="text-end"
                     viewClass="text-end"
-                    :validation="row.sale_price.validation"
                     v-model="row.sale_price.value"
                     v-on:input="inputSalePrice(index)"
                     :disabled="row.disabled && mode != 1"
                     :viewMode="disabled"
-                    ><template v-slot:pre>S/.</template>
+                  >
+                    <template v-slot:pre>S/.</template>
                   </MyInput>
+
                   <label class="secondary-text">
-                    <i class="bi bi-arrow-return-right"></i> Ant. S/.{{ row.last_sale_price.value }}
+                    <i class="bi bi-arrow-return-right"></i>
+                    Ant. S/.{{ normalizeMoneyLabel(row.last_sale_price.value) }}
                   </label>
                 </td>
+
                 <td>
                   <MyInput
                     type="number"
@@ -156,7 +166,8 @@
                     v-model="row.subtotal.value"
                     :disabled="true"
                     :viewMode="disabled"
-                    ><template v-slot:pre>S/.</template>
+                  >
+                    <template v-slot:pre>S/.</template>
                   </MyInput>
                 </td>
 
@@ -171,6 +182,7 @@
                     >
                       <i class="bi bi-pen"></i>
                     </button>
+
                     <button
                       v-if="!row.disabled"
                       type="button"
@@ -179,6 +191,7 @@
                     >
                       <i class="bi bi-arrow-left"></i>
                     </button>
+
                     <button
                       v-if="!row.disabled"
                       type="button"
@@ -187,6 +200,7 @@
                     >
                       <i class="bi bi-check-lg"></i>
                     </button>
+
                     <button
                       v-if="row.disabled"
                       :disabled="disabledListButtons"
@@ -204,26 +218,51 @@
         </div>
       </div>
     </div>
+
     <div class="modal-footer">
-      <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin" v-if="mode == 2">
+      <button
+        type="button"
+        @click="buttonDelete"
+        class="btn btn-danger btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-trash"></i>
         Eliminar
       </button>
-      <button type="button" @click="buttonEdit" class="btn btn-primary btn-sm button-margin" v-if="mode == 2">
+
+      <button
+        type="button"
+        @click="buttonEdit"
+        class="btn btn-primary btn-sm button-margin"
+        v-if="mode == 2"
+      >
         <i class="bi bi-pen"></i>
         Editar
       </button>
-      <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
+
+      <button
+        type="button"
+        @click="buttonCancel"
+        class="btn btn-secondary btn-sm button-margin"
+        v-if="mode == 3"
+      >
         <i class="bi bi-arrow-left"></i>
         Cancelar
       </button>
-      <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
+
+      <button
+        type="button"
+        @click="buttonSave"
+        class="btn btn-primary btn-sm button-margin"
+        v-if="mode != 2"
+      >
         <i class="bi bi-check-lg"></i>
         Guardar
       </button>
     </div>
   </MyModal>
 </template>
+
 <style scoped>
 .button-margin {
   margin-left: 0.25rem;
@@ -231,13 +270,11 @@
   margin-top: 0;
   margin-bottom: 0;
 }
-.transparent {
-  color: transparent !important;
-}
 .head {
   border-right: 1px solid rgba(0, 0, 0, 0.171);
 }
 </style>
+
 <script>
 import { defineComponent } from "vue";
 import MyModal from "@/components/my_components/MyModal.vue";
@@ -251,8 +288,8 @@ import ConectionInput from "@/mixin/conections/ConectionInput";
 import ConectionInputDetail from "@/mixin/conections/ConectionInputDetail";
 import ListContent from "@/components/my_other_components/ListContent.vue";
 import ProductDetail from "@/components/product/ProductDetail.vue";
-
 import { ModelInput } from "@/mixin/models/ModelInput";
+
 export default defineComponent({
   props: ["itemSelected"],
   mixins: [ValidationFunctions, UtilityFunctions, ConectionInput, ConectionInputDetail],
@@ -279,103 +316,162 @@ export default defineComponent({
       loadingContentList: false,
     };
   },
+
   watch: {
     "item.detail": {
-      handler: function () {
-        var total = 0;
+      handler() {
+        let total = 0;
         this.item.detail.forEach((element) => {
-          total += element.subtotal.value * 1;
+          total += Number(element.subtotal.value || 0);
         });
-        if (typeof total == "number") {
-          this.item.header.total_price.value = total.toFixed(2);
-        }
+
+        this.item.header.total_price.value = total.toFixed(2);
       },
       deep: true,
     },
   },
+
   methods: {
+    normalizeNumberInput(value, decimals = 2) {
+      let raw = String(value ?? "");
+
+      raw = raw.replace(/,/g, ".");
+      raw = raw.replace(/[^0-9.]/g, "");
+
+      const parts = raw.split(".");
+      if (parts.length > 2) {
+        raw = `${parts[0]}.${parts.slice(1).join("")}`;
+      }
+
+      if (raw.includes(".")) {
+        const [intPart, decPart] = raw.split(".");
+        raw = `${intPart}.${(decPart || "").slice(0, decimals)}`;
+      }
+
+      return raw;
+    },
+
+    normalizeMoneyLabel(value) {
+      const num = Number(value || 0);
+      return num.toFixed(2);
+    },
+
+    recalculateRow(index) {
+      const row = this.item.detail[index];
+      const qty = Number(row.quantity.value || 0);
+      const purchase = Number(row.purchase_price.value || 0);
+
+      row.subtotal.value = (qty * purchase).toFixed(2);
+    },
+
     onAddProduct() {
-      this.$refs.selectProduct.forEach((element) => {
+      this.$refs.selectProduct?.forEach((element) => {
         element.refresh();
       });
     },
+
     addProduct() {
       this.$refs.modalProduct.openAdd();
     },
+
     getInputDetails(id) {
       this.loadingContentList = true;
       this.getInputDetailRegisters(id).then((response) => {
         if (response.success) {
-          this.listBackup = response.response.data.results;
-          console.log(this.listBackup);
-          this.item.detailFill(response.response.data.results);
-          this.loadingContentList = false;
+          this.listBackup = response.response.data.results || [];
+          this.item.detailFill(this.listBackup);
         }
+        this.loadingContentList = false;
       });
     },
-    inputCode() {
-      this.item.header.onChangeCode();
-    },
+
     inputProvider() {
       this.item.header.onChangeProvider();
     },
+
     inputDescription() {
       this.item.header.onChangeDescription();
     },
+
     inputProduct(index) {
-      this.item.detail[index].onChangeProduct();
+      this.item.detail[index].onChangeProduct?.();
+      this.recalculateRow(index);
     },
+
     inputQuantity(index) {
-      this.item.detail[index].onChangeQuantity();
+      const row = this.item.detail[index];
+      let qty = Number(row.quantity.value || 0);
+
+      if (isNaN(qty) || qty <= 0) qty = 1;
+
+      row.quantity.value = qty;
+      row.onChangeQuantity?.();
+      row.quantity.validation = {};
+      this.recalculateRow(index);
     },
+
     inputPurchasePrice(index) {
-      this.item.detail[index].onChangePurchasePrice();
+      const row = this.item.detail[index];
+      row.purchase_price.value = this.normalizeNumberInput(row.purchase_price.value);
+      row.onChangePurchasePrice?.();
+      row.purchase_price.validation = {};
+      this.recalculateRow(index);
     },
+
     inputSalePrice(index) {
-      this.item.detail[index].onChangeSalePrice();
+      const row = this.item.detail[index];
+      row.sale_price.value = this.normalizeNumberInput(row.sale_price.value);
+      row.onChangeSalePrice?.();
+      row.sale_price.validation = {};
+      this.recalculateRow(index);
     },
+
     buttonAddRow() {
       this.item.detailAdd({});
     },
+
     buttonListSave(index) {
-      if (this.item.detail[index].validateForm()) {
-        if (this.item.detail[index].id.value == undefined) {
-          //agregado recientemente
-          this.addInputDetailRegister(this.item.detail[index].getToAddId(this.item.header.id.value)).then(
-            (response) => {
-              if (response.success) {
-                this.disabledListButtons = false;
-                this.getInputDetails(this.item.header.id.value);
-              }
-            }
-          );
-        } else {
-          //editado
-          this.editInputDetailRegister(this.item.detail[index].getToEdit()).then((response) => {
-            if (response.success) {
-              this.disabledListButtons = false;
-              this.getInputDetails(this.item.header.id.value);
-            }
-          });
-        }
-      } else {
+      if (!this.item.detail[index].validateForm()) {
         this.showToast({
           title: "Ocurrió un error",
-          message: "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
+          message: "No se pudo guardar el producto de la entrada. Revise los datos.",
           type: 2,
+        });
+        return;
+      }
+
+      const row = this.item.detail[index];
+
+      if (row.id.value == undefined) {
+        this.addInputDetailRegister(row.getToAddId(this.item.header.id.value)).then((response) => {
+          if (response.success) {
+            this.disabledListButtons = false;
+            this.getInputDetails(this.item.header.id.value);
+          }
+        });
+      } else {
+        this.editInputDetailRegister(row.getToEdit()).then((response) => {
+          if (response.success) {
+            this.disabledListButtons = false;
+            this.getInputDetails(this.item.header.id.value);
+          }
         });
       }
     },
+
     buttonListEdit(index) {
       this.disabledListButtons = true;
       this.item.detail[index].disabled = false;
     },
+
     buttonListCancel(index) {
       this.disabledListButtons = false;
       this.item.detail[index].disabled = true;
       this.item.detail[index].setFromData(this.listBackup[index]);
       this.item.detail[index].resetValidation();
+      this.recalculateRow(index);
     },
+
     buttonListDelete(index) {
       if (this.mode == 1 || this.item.detail[index].id.value == undefined) {
         this.item.detailDelete(index);
@@ -387,60 +483,63 @@ export default defineComponent({
         });
       }
     },
+
     async buttonSave() {
-      if (this.item.validateForm()) {
-        if (this.item.detail.length > 0) {
-          switch (this.mode) {
-            case 1:
-              this.addInputRegister(this.item.header.getToAdd()).then((response) => {
-                var id_order = 0;
-                if (response.success) {
-                  id_order = response.response.data.id;
-                  this.addInputDetailRegisters(this.item.getDetailToJSON(id_order)).then((response) => {
-                    if (response.success) {
-                      this.$emit("item:add");
-                      this.closeModal();
-                    }
-                  });
-                } else {
-                  id_order = -1;
-                }
-              });
-              break;
-            case 3:
-              this.editInputRegister(this.item.header.getToEdit()).then((response) => {
-                if (response.success) {
-                  this.$emit("item:edit");
-                  this.closeModal();
-                }
-              });
-              break;
-            default:
-              break;
-          }
-        } else {
-          this.showToast({
-            title: "Ocurrió un error",
-            message: "No se agrego ningun producto, revise si todos los campos se llenaron correctamente.",
-            type: 2,
-          });
-        }
-      } else {
+      if (!this.item.validateForm()) {
         this.showToast({
           title: "Ocurrió un error",
           message: "Datos no válidos, revise si todos los campos se llenaron correctamente.",
           type: 2,
         });
+        return;
+      }
+
+      if (this.item.detail.length <= 0) {
+        this.showToast({
+          title: "Ocurrió un error",
+          message: "Debe agregar al menos un producto a la entrada.",
+          type: 2,
+        });
+        return;
+      }
+
+      switch (this.mode) {
+        case 1:
+          this.addInputRegister(this.item.header.getToAdd()).then((response) => {
+            if (!response.success) return;
+
+            const id_purchase = response.response.data.id;
+
+            this.addInputDetailRegisters(this.item.getDetailToJSON(id_purchase)).then((detailResponse) => {
+              if (detailResponse.success) {
+                this.$emit("item:add");
+                this.closeModal();
+              }
+            });
+          });
+          break;
+
+        case 3:
+          this.editInputRegister(this.item.header.getToEdit()).then((response) => {
+            if (response.success) {
+              this.$emit("item:edit");
+              this.closeModal();
+            }
+          });
+          break;
       }
     },
+
     buttonEdit() {
       this.changeMode(3);
     },
+
     buttonCancel() {
       this.item.header.setFromData(this.itemBackup);
       this.item.detailFill(this.listBackup);
       this.changeMode(2);
     },
+
     buttonDelete() {
       this.confirmDeleteInputRegister(this.item.header.id.value).then((response) => {
         if (response.success) {
@@ -449,10 +548,12 @@ export default defineComponent({
         }
       });
     },
+
     changeMode(mode) {
       this.mode = mode;
       this.disabledListButtons = false;
       this.item.resetValidation();
+
       switch (this.mode) {
         case 1:
           this.title = "Agregar Entrada";
@@ -471,6 +572,7 @@ export default defineComponent({
           break;
       }
     },
+
     openAdd() {
       this.changeMode(1);
       this.openModal();
@@ -480,19 +582,24 @@ export default defineComponent({
       this.item.detail = [];
       this.item.detailAdd({});
     },
+
     openView(data) {
-      var lastId = this.itemBackup.id;
-      var newId = data.id;
+      const lastId = this.itemBackup.id;
+      const newId = data.id;
+
       this.changeMode(2);
       this.openModal();
+
       this.itemBackup = JSON.parse(JSON.stringify(data));
       this.item.header.setFromData(data);
+
       if (lastId == newId) {
         this.item.detailFill(this.listBackup);
       } else {
         this.getInputDetails(this.item.header.id.value);
       }
     },
+
     openViewId(id) {
       this.getInputRegister(id).then((response) => {
         if (response.success) {
@@ -500,13 +607,14 @@ export default defineComponent({
         }
       });
     },
+
     closeModal() {
       this.$refs.myModal.closeModal();
     },
+
     openModal() {
       this.$refs.myModal.openModal();
     },
   },
-  async created() {},
 });
 </script>

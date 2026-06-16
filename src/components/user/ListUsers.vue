@@ -3,6 +3,8 @@ import TableLite from "vue3-table-lite";
 import Paginate from "vuejs-paginate-next";
 import SystemContent from "@/components/system/SystemContent.vue";
 import ListContent from "@/components/my_other_components/ListContent.vue";
+import UserCreateModal from "./UserCreateModal.vue";
+import UserEditModal from "./UserEditModal.vue";
 import { defineComponent } from "vue";
 import axios from "axios";
 
@@ -16,6 +18,8 @@ export default defineComponent({
     paginate: Paginate,
     SystemContent,
     ListContent,
+    UserCreateModal,
+    UserEditModal,
   },
   props: ["changeTopbar"],
   data() {
@@ -30,28 +34,37 @@ export default defineComponent({
           {
             label: "Nombre",
             field: "first_name",
-            width: "22%",
+            width: "18%",
             display: (row) => `${row.first_name || ""} ${row.last_name || ""}`.trim(),
+          },
+          {
+            label: "Username",
+            field: "username",
+            width: "12%",
+            display: (row) => row.username || "-",
           },
           {
             label: "Correo",
             field: "email",
-            width: "24%",
+            width: "16%",
+            display: (row) => row.email || "-",
           },
           {
             label: "Teléfono",
             field: "phone",
-            width: "14%",
+            width: "12%",
+            display: (row) => row.phone || "-",
           },
           {
             label: "Dirección",
             field: "address",
-            width: "20%",
+            width: "16%",
+            display: (row) => row.address || "-",
           },
           {
             label: "Rol",
             field: "role",
-            width: "10%",
+            width: "8%",
             display: (row) => {
               if (row.is_superuser || row.is_admin) return "Admin";
               if (row.is_staff) return "Vendedor";
@@ -67,7 +80,7 @@ export default defineComponent({
           {
             label: "",
             field: "quick",
-            width: "2%",
+            width: "10%",
           },
         ],
         rows: [],
@@ -98,14 +111,17 @@ export default defineComponent({
 
           return (
             `${u.first_name || ""} ${u.last_name || ""}`.toLowerCase().includes(q) ||
+            (u.username || "").toLowerCase().includes(q) ||
             (u.email || "").toLowerCase().includes(q) ||
-            (u.phone || "").toLowerCase().includes(q)
+            (u.phone || "").toLowerCase().includes(q) ||
+            (u.address || "").toLowerCase().includes(q)
           );
         });
 
         this.table.rows = filtered;
         this.table.totalRecordCount = filtered.length;
         this.numPag = 1;
+        this.page = page;
       } catch (error) {
         this.showToast({
           title: "Ocurrió un error",
@@ -138,32 +154,71 @@ export default defineComponent({
       }
     },
 
+    async resetPassword(row) {
+      const ok = await this.confirmDialogue({
+        title: "Resetear contraseña",
+        message: `Se reseteará la contraseña de ${row.username} a Temp123.`,
+        okButton: "Resetear",
+      });
+
+      if (!ok) return;
+
+      try {
+        await axios.patch(`${url}user/api/${row.id}/reset-password/`);
+        this.showToast({
+          title: "Contraseña reseteada",
+          message: `La contraseña de ${row.username} ahora es Temp123.`,
+          type: 1,
+        });
+      } catch (error) {
+        this.showToast({
+          title: "Ocurrió un error",
+          message: error?.response?.data?.detail || "No se pudo resetear la contraseña.",
+          type: 2,
+        });
+      }
+    },
+
     async deleteUser(row) {
-      this.confirmDialogue({
+      const ok = await this.confirmDialogue({
         title: "¿Eliminar usuario?",
         message: `Se eliminará el usuario ${row.first_name} ${row.last_name}.`,
-        onConfirm: async () => {
-          try {
-            await axios.delete(`${url}user/api/${row.id}/`);
-            this.showToast({
-              title: "Eliminado",
-              message: "Usuario eliminado correctamente.",
-              type: 1,
-            });
-            this.getUsers(1);
-          } catch (error) {
-            this.showToast({
-              title: "Ocurrió un error",
-              message: "No se pudo eliminar el usuario.",
-              type: 2,
-            });
-          }
-        },
+        okButton: "Eliminar",
       });
+
+      if (!ok) return;
+
+      try {
+        await axios.delete(`${url}user/api/${row.id}/`);
+        this.showToast({
+          title: "Eliminado",
+          message: "Usuario eliminado correctamente.",
+          type: 1,
+        });
+        this.getUsers(1);
+      } catch (error) {
+        this.showToast({
+          title: "Ocurrió un error",
+          message: "No se pudo eliminar el usuario.",
+          type: 2,
+        });
+      }
+    },
+
+    openEdit(row) {
+      this.$refs.userEditModal.openModal(row);
     },
 
     filterTable() {
       this.getUsers(1);
+    },
+
+    onUserCreated() {
+      this.getUsers(1);
+    },
+
+    onUserUpdated() {
+      this.getUsers(this.page);
     },
   },
 
@@ -176,9 +231,18 @@ export default defineComponent({
 
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
-    <div class="row justify-content-md-end">
-      <div class="col">
-        <div class="input-group input-group-sm mb-3">
+    <UserCreateModal ref="userCreateModal" @user:created="onUserCreated" />
+    <UserEditModal ref="userEditModal" @user:updated="onUserUpdated" />
+
+    <div class="row align-items-center mb-2">
+      <div class="col-12 col-md-4 mb-2 mb-md-0">
+        <button class="btn btn-primary btn-sm" @click="$refs.userCreateModal.openModal()">
+          <i class="bi bi-person-plus"></i> Agregar Usuario
+        </button>
+      </div>
+
+      <div class="col-12 col-md-8">
+        <div class="input-group input-group-sm">
           <input
             type="text"
             class="form-control"
@@ -193,35 +257,72 @@ export default defineComponent({
     </div>
 
     <ListContent ref="tableContent" :loading="loadingContentList" :size="table.rows.length">
-      <table-lite
-        class="mb-3"
-        :is-static-mode="false"
-        :is-slot-mode="true"
-        :is-hide-paging="true"
-        :columns="table.columns"
-        :rows="table.rows"
-        :total="table.totalRecordCount"
-      >
-        <template v-slot:quick="data">
-          <div class="d-flex">
-            <button
-              class="btn btn-warning btn-sm me-1"
-              type="button"
-              @click.stop="toggleActive(data.value)"
-            >
-              <i class="bi" :class="data.value.is_active ? 'bi-person-dash' : 'bi-person-check'"></i>
-            </button>
+      <div class="users-table-wrapper">
+        <table-lite
+          class="mb-3 users-table"
+          :is-static-mode="false"
+          :is-slot-mode="true"
+          :is-hide-paging="true"
+          :columns="table.columns"
+          :rows="table.rows"
+          :total="table.totalRecordCount"
+        >
+          <template v-slot:quick="data">
+            <div class="d-flex">
+              <button
+                class="btn btn-primary btn-sm me-1"
+                type="button"
+                @click.stop="openEdit(data.value)"
+                title="Editar"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
 
-            <button
-              class="btn btn-danger btn-sm"
-              type="button"
-              @click.stop="deleteUser(data.value)"
-            >
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </template>
-      </table-lite>
+              <button
+                class="btn btn-warning btn-sm me-1"
+                type="button"
+                @click.stop="toggleActive(data.value)"
+                title="Activar / desactivar"
+              >
+                <i class="bi" :class="data.value.is_active ? 'bi-person-dash' : 'bi-person-check'"></i>
+              </button>
+
+              <button
+                class="btn btn-info btn-sm me-1"
+                type="button"
+                @click.stop="resetPassword(data.value)"
+                title="Resetear contraseña"
+              >
+                <i class="bi bi-key"></i>
+              </button>
+
+              <button
+                class="btn btn-danger btn-sm"
+                type="button"
+                @click.stop="deleteUser(data.value)"
+                title="Eliminar"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </template>
+        </table-lite>
+      </div>
     </ListContent>
   </SystemContent>
 </template>
+
+<style scoped>
+.users-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.users-table {
+  min-width: 1300px;
+}
+
+.users-table-wrapper :deep(table) {
+  width: 100% !important;
+}
+</style>

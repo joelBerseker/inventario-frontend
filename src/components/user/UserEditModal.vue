@@ -1,8 +1,8 @@
 <template>
   <MyModal
     ref="myModal"
-    :id="'userCreateModal'"
-    title="Agregar Usuario"
+    :id="'userEditModal'"
+    title="Editar Usuario"
     v-on:mymodal:close="closeModal"
   >
     <div class="modal-body">
@@ -58,27 +58,42 @@
         <div class="col-6">
           <MyInput
             type="text"
-            name="Dirección (opcional)"
-            v-model="form.address"
-          />
-        </div>
-
-        <div class="col-6">
-          <MyInput
-            type="text"
             name="RUC (opcional)"
             v-model="form.ruc"
           />
         </div>
 
-        <div class="col-6">
+        <div class="col-12">
           <MyInput
-            type="password"
-            name="Contraseña (opcional)"
-            v-model="form.password"
-            :validation="validation.password"
-            v-on:input="validatePassword"
+            type="text"
+            name="Dirección (opcional)"
+            v-model="form.address"
           />
+        </div>
+
+
+        <div class="col-6">
+          <div class="form-check form-switch mt-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              v-model="form.is_staff"
+            />
+            <label class="form-check-label">Es vendedor</label>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="form-check form-switch mt-3">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              role="switch"
+              v-model="form.is_active"
+            />
+            <label class="form-check-label">Activo</label>
+          </div>
         </div>
       </div>
     </div>
@@ -88,7 +103,7 @@
         Cancelar
       </button>
       <button type="button" class="btn btn-primary btn-sm" @click="buttonSave">
-        Guardar
+        Guardar cambios
       </button>
     </div>
   </MyModal>
@@ -102,7 +117,7 @@ import MyInput from "@/components/my_components/MyInput.vue";
 const url = import.meta.env.VITE_APP_RUTA_API;
 
 export default {
-  name: "UserCreateModal",
+  name: "UserEditModal",
   inject: ["showToast"],
   components: {
     MyModal,
@@ -116,13 +131,13 @@ export default {
         last_name: {},
         username: {},
         email: {},
-        password: {},
       },
     };
   },
   methods: {
     getInitialForm() {
       return {
+        id: null,
         first_name: "",
         last_name: "",
         username: "",
@@ -130,22 +145,34 @@ export default {
         phone: "",
         address: "",
         ruc: "",
-        password: "",
+        manage_stock: false,
         is_staff: true,
-        is_admin: false,
-        is_superuser: false,
+        is_active: true,
       };
     },
 
-    openModal() {
-      this.form = this.getInitialForm();
+    openModal(user) {
+      this.form = {
+        id: user.id,
+        first_name: user.first_name || "",
+        last_name: user.last_name || "",
+        username: user.username || "",
+        email: user.email || "",
+        phone: user.phone || "",
+        address: user.address || "",
+        ruc: user.ruc || "",
+        manage_stock: !!user.manage_stock,
+        is_staff: !!user.is_staff,
+        is_active: !!user.is_active,
+      };
+
       this.validation = {
         first_name: {},
         last_name: {},
         username: {},
         email: {},
-        password: {},
       };
+
       this.$refs.myModal.openModal();
     },
 
@@ -186,31 +213,16 @@ export default {
       };
     },
 
-    validatePassword() {
-      if (!this.form.password?.trim()) {
-        this.validation.password = { isValid: true, message: "" };
-        return;
-      }
-
-      const valid = this.form.password.length >= 6;
-      this.validation.password = {
-        isValid: valid,
-        message: valid ? "" : "La contraseña debe tener al menos 6 caracteres.",
-      };
-    },
-
     validateForm() {
       this.validateFirstName();
       this.validateLastName();
       this.validateUsername();
       this.validateEmail();
-      this.validatePassword();
 
       return (
         this.validation.first_name.isValid &&
         this.validation.username.isValid &&
-        this.validation.email.isValid &&
-        this.validation.password.isValid
+        this.validation.email.isValid
       );
     },
 
@@ -226,27 +238,22 @@ export default {
 
       try {
         const payload = { ...this.form };
-
-        if (!payload.password?.trim()) {
-          delete payload.password;
-        }
-
-        const response = await axios.post(`${url}user/api/`, payload);
+        await axios.put(`${url}user/api/${this.form.id}/`, payload);
 
         this.showToast({
           title: "Guardado correctamente",
-          message: "El usuario fue creado correctamente.",
+          message: "El usuario fue actualizado correctamente.",
           type: 1,
         });
 
-        this.$emit("user:created", response.data);
+        this.$emit("user:updated");
         this.closeModal();
       } catch (error) {
         const backendMessage =
           error?.response?.data?.detail ||
           error?.response?.data?.username?.[0] ||
           error?.response?.data?.email?.[0] ||
-          "Hubo un error al guardar el usuario.";
+          "Hubo un error al actualizar el usuario.";
 
         this.showToast({
           title: "Ocurrió un error",

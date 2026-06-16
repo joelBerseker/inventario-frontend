@@ -6,10 +6,12 @@
 :root {
   --my-tw: #ffffff;
   --my-tb: #212529;
-
+  //--my-tb: #f8d7e8;
   --my-c1: #ffffff;
-  --my-c2: #0d1321;
-  --my-c3: #1d2d44;
+  //--my-c2: #0d1321;
+  --my-c2: #f589c1;
+  //--my-c3: #1d2d44;
+  --my-c3: #e612b1;
   --my-c4: #3c678d;
   --my-c5: #748cab;
   --my-c6: #949494;

@@ -55,7 +55,6 @@
         </div>
 
         <div class="col-9 ps-3">
-          <!-- ESCANEO -->
           <div class="scan-box mb-3" v-if="mode != 2">
             <div class="row g-2 align-items-end">
               <div class="col-7">
@@ -87,11 +86,11 @@
             </div>
           </div>
 
-          <!-- AGREGADO MANUAL -->
           <div class="manual-box mb-3" v-if="mode != 2">
             <div class="row g-2 align-items-end">
               <div class="col-9">
                 <SelectSearch
+                  :key="manualProductKey"
                   v-model="manualProduct"
                   link="products/products/"
                   name="Buscar producto por nombre o código"
@@ -104,7 +103,7 @@
                 <button
                   type="button"
                   class="btn btn-primary btn-sm w-100"
-                  :disabled="disabled || !manualProduct"
+                  :disabled="disabled || !manualProduct?.id"
                   @click="addManualProduct"
                 >
                   <i class="bi bi-plus-circle"></i>
@@ -135,7 +134,21 @@
                 :viewMode="disabled"
               >
                 <template v-slot:pre>S/.</template>
+              </MyInput>
+            </div>
+
+            <div class="col-2">
+              <MyInput
+                name="Descuento"
+                type="text"
+                viewClass="text-end"
+                inputClass="text-end"
+                labelClass="text-end"
+                v-model="item.header.discount.value"
+                :disabled="disabled"
+                :viewMode="disabled"
                 v-on:input="inputDiscount()"
+                v-on:blur="formatDiscount()"
               >
                 <template v-slot:pre>S/.</template>
               </MyInput>
@@ -214,7 +227,7 @@
                       type="number"
                       inputClass="text-end"
                       viewClass="text-end"
-                      :validation="row.quantity.validation"
+                      :validation="row.quantity.value"
                       v-model="row.quantity.value"
                       v-on:input="inputQuantity(index)"
                       :disabled="false"
@@ -393,7 +406,11 @@ export default defineComponent({
       clientSelectKey: 0,
       clientReady: false,
 
-      manualProduct: null,
+      manualProduct: {
+        id: null,
+        name: "",
+      },
+      manualProductKey: 0,
 
       optionsPaymentType: [
         { value: "1", text: "Efectivo" },
@@ -444,12 +461,6 @@ export default defineComponent({
       deep: true,
     },
 
-    "item.header.discount.value": {
-      handler() {
-        this.recalculateTotals();
-      },
-    },
-
     scanCode(newVal) {
       if (this.disabled || this.processingScan || this.mode === 2) return;
       if (!newVal || !newVal.trim()) return;
@@ -464,7 +475,10 @@ export default defineComponent({
 
   methods: {
     getApiBaseUrl() {
-      const baseUrl = import.meta.env.VITE_API_URL || import.meta.env.VITE_APP_RUTA_API || "";
+      const baseUrl =
+        import.meta.env.VITE_API_URL ||
+        import.meta.env.VITE_APP_RUTA_API ||
+        "";
       return baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
     },
 
@@ -486,12 +500,37 @@ export default defineComponent({
       }
 
       this.item.header.subtotal_price.value = subtotal.toFixed(2);
-      this.item.header.discount.value = discount.toFixed(2);
       this.item.header.total_price.value = (subtotal - discount).toFixed(2);
     },
 
     inputDiscount() {
+      let raw = String(this.item.header.discount.value ?? "");
+      raw = raw.replace(/,/g, ".");
+      raw = raw.replace(/[^0-9.]/g, "");
+
+      const parts = raw.split(".");
+      if (parts.length > 2) {
+        raw = `${parts[0]}.${parts.slice(1).join("")}`;
+      }
+
+      this.item.header.discount.value = raw;
       this.item.header.onChangeDiscount?.();
+      this.recalculateTotals();
+    },
+
+    formatDiscount() {
+      let discount = Number(this.item.header.discount?.value || 0);
+
+      if (isNaN(discount) || discount < 0) {
+        discount = 0;
+      }
+
+      const subtotal = Number(this.item.header.subtotal_price?.value || 0);
+      if (discount > subtotal) {
+        discount = subtotal;
+      }
+
+      this.item.header.discount.value = discount.toFixed(2);
       this.recalculateTotals();
     },
 
@@ -510,21 +549,20 @@ export default defineComponent({
 
       if (!value) return "";
 
-      value = value.replace(/['‘’`´]/g, "-");
       value = value.replace(/\s+/g, "");
+      value = value.replace(/['‘’`´]/g, "-");
 
       if (value.startsWith("PRODUCT:")) {
         value = value.replace("PRODUCT:", "").trim();
       }
 
-      let match = value.match(/^PRO(\d+)$/);
-      if (match) {
-        value = `PRO-${match[1].padStart(6, "0")}`;
+      if (/^\d+$/.test(value)) {
+        return `P${value.padStart(6, "0")}`;
       }
 
-      match = value.match(/^PRO-(\d+)$/);
+      let match = value.match(/^P(\d+)$/);
       if (match) {
-        value = `PRO-${match[1].padStart(6, "0")}`;
+        return `P${match[1].padStart(6, "0")}`;
       }
 
       return value;
@@ -566,7 +604,9 @@ export default defineComponent({
         row.stock.value = stock;
         row.quantity.value = currentQty + 1;
         row.new_sale_price.value = Number(payload.price).toFixed(2);
-        row.subtotal.value = (Number(row.quantity.value) * Number(payload.price)).toFixed(2);
+        row.subtotal.value = (
+          Number(row.quantity.value) * Number(payload.price)
+        ).toFixed(2);
         row.product_name = payload.name;
         row.product_scanned = true;
         row.disabled = false;
@@ -637,7 +677,7 @@ export default defineComponent({
     },
 
     addManualProduct() {
-      if (!this.manualProduct) {
+      if (!this.manualProduct?.id) {
         this.showToast({
           title: "Producto requerido",
           message: "Seleccione un producto para agregar.",
@@ -649,7 +689,11 @@ export default defineComponent({
       const ok = this.addOrIncrementProduct(this.manualProduct);
 
       if (ok) {
-        this.manualProduct = null;
+        this.manualProduct = {
+          id: null,
+          name: "",
+        };
+        this.manualProductKey += 1;
         this.focusScannerInput();
       }
     },
@@ -658,30 +702,22 @@ export default defineComponent({
       try {
         const baseUrl = this.getApiBaseUrl();
 
-        const response = await axios.get(`${baseUrl}clients/clients/`, {
-          params: { page: 1 },
-        });
-
-        const payload = response.data;
-        const firstClient = Array.isArray(payload)
-          ? payload[0]
-          : payload?.results?.[0];
-
-        if (!firstClient) {
-          this.item.header.client.value = undefined;
-          return;
-        }
+        const response = await axios.get(`${baseUrl}clients/clients/1/`);
+        const client = response.data;
 
         this.item.header.client.value = {
-          id: firstClient.id,
-          name: firstClient.name,
+          id: client.id,
+          name: client.name,
         };
 
         this.item.header.onChangeClient?.();
         this.clientSelectKey += 1;
       } catch (error) {
         console.log("Error cargando cliente por defecto:", error);
-        this.item.header.client.value = undefined;
+        this.item.header.client.value = {
+          id: null,
+          name: "",
+        };
       }
     },
 
@@ -853,37 +889,103 @@ export default defineComponent({
         if (this.item.detail.length > 0) {
           switch (this.mode) {
             case 1:
-              this.addOutputRegister(this.item.header.getToAdd()).then((response) => {
-                if (response.success) {
-                  const id_order = response.response.data.id;
-                  this.item.header.id.value = id_order;
+              try {
+                const response = await this.addOutputRegister(
+                  this.item.header.getToAdd()
+                );
 
-                  this.addOutputDetailRegisters(this.item.getDetailToJSON(id_order)).then(
-                    (detailResponse) => {
-                      if (detailResponse.success) {
-                        this.$emit("item:add");
-
-                        this.getOutputRegister(id_order).then((savedResponse) => {
-                          if (savedResponse.success) {
-                            this.openView(savedResponse.response.data);
-                          }
-                        });
-                      }
-                    }
-                  );
+                if (!response.success) {
+                  return;
                 }
-              );
+
+                const id_order = response.response.data.id;
+                this.item.header.id.value = id_order;
+
+                const detailResponse = await this.addOutputDetailRegisters(
+                  this.item.getDetailToJSON(id_order)
+                );
+
+                if (!detailResponse.success) {
+                  this.showToast({
+                    title: "Ocurrió un error",
+                    message:
+                      "Se creó la salida, pero hubo un problema al guardar el detalle.",
+                    type: 2,
+                  });
+                  return;
+                }
+
+                this.$emit("item:add");
+
+                const savedResponse = await this.getOutputRegister(id_order);
+
+                if (savedResponse.success) {
+                  this.openView(savedResponse.response.data);
+                } else {
+                  this.closeModal();
+                }
+              } catch (error) {
+                console.log("Error guardando salida:", error);
+                this.showToast({
+                  title: "Ocurrió un error",
+                  message: "No se pudo completar el guardado de la salida.",
+                  type: 2,
+                });
+              }
               break;
 
             case 3:
-              this.editOutputRegister(this.item.header.getToEdit()).then(
-                (response) => {
-                  if (response.success) {
-                    this.$emit("item:edit");
-                    this.closeModal();
+              try {
+                const headerResponse = await this.editOutputRegister(
+                  this.item.header.getToEdit()
+                );
+
+                if (!headerResponse.success) {
+                  return;
+                }
+
+                for (const detail of this.item.detail) {
+                  const payload = detail.id.value
+                    ? detail.getToEdit()
+                    : detail.getToAddId(this.item.header.id.value);
+
+                  let detailResponse;
+
+                  if (detail.id.value) {
+                    detailResponse = await this.editOutputDetailRegister(payload);
+                  } else {
+                    detailResponse = await this.addOutputDetailRegister(payload);
+                  }
+
+                  if (!detailResponse.success) {
+                    this.showToast({
+                      title: "Ocurrió un error",
+                      message:
+                        "La cabecera se actualizó, pero falló la actualización del detalle.",
+                      type: 2,
+                    });
+                    return;
                   }
                 }
-              );
+
+                this.$emit("item:edit");
+
+                const savedResponse = await this.getOutputRegister(
+                  this.item.header.id.value
+                );
+                if (savedResponse.success) {
+                  this.openView(savedResponse.response.data);
+                } else {
+                  this.closeModal();
+                }
+              } catch (error) {
+                console.log("Error editando salida:", error);
+                this.showToast({
+                  title: "Ocurrió un error",
+                  message: "No se pudo completar la edición de la salida.",
+                  type: 2,
+                });
+              }
               break;
           }
         } else {
@@ -894,7 +996,6 @@ export default defineComponent({
           });
         }
       } else {
-        console.log("->como->" + this.item.validateForm());
         this.showToast({
           title: "Ocurrió un error",
           message: "Datos no válidos. Revise los campos.",
@@ -950,6 +1051,32 @@ export default defineComponent({
       }
     },
 
+    async openAddWithScan(scannedCode) {
+      if (this.mode !== 1) {
+        await this.openAdd();
+      }
+
+      if (!scannedCode || !String(scannedCode).trim()) return;
+
+      this.scanCode = String(scannedCode).trim();
+
+      await this.$nextTick();
+      await this.handleScan();
+    },
+
+    async receiveExternalScan(scannedCode) {
+      if (!scannedCode || !String(scannedCode).trim()) return;
+
+      if (this.mode !== 1) {
+        await this.openAdd();
+      }
+
+      this.scanCode = String(scannedCode).trim();
+
+      await this.$nextTick();
+      await this.handleScan();
+    },
+
     async openAdd() {
       this.changeMode(1);
 
@@ -958,13 +1085,21 @@ export default defineComponent({
       this.listBackup = [];
       this.item.detail = [];
       this.scanCode = "";
-      this.manualProduct = null;
+      this.manualProduct = {
+        id: null,
+        name: "",
+      };
+      this.manualProductKey += 1;
 
       this.item.header.order_code.value = "";
       this.item.header.subtotal_price.value = 0;
       this.item.header.discount.value = 0;
       this.item.header.total_price.value = 0;
       this.item.header.payment_type.value = "1";
+      this.item.header.client.value = {
+        id: null,
+        name: "",
+      };
 
       this.clientReady = false;
 

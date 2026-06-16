@@ -2,11 +2,10 @@ import axios from "axios";
 const url = import.meta.env.VITE_APP_RUTA_API;
 export default {
   methods: {
-    async getOutputRegisters(page) {
-      var path = this.urlConectionOutput + `?page=` + page;
-      return new Promise((resolve, reject) => {
+    async getOutputRegisters(params = {}) {
+      return new Promise((resolve) => {
         axios
-          .get(path)
+          .get(this.urlConectionOutput, { params })
           .then((response) => {
             resolve({ success: true, response: response });
           })

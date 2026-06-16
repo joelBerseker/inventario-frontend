@@ -1,4 +1,6 @@
 import { Validation } from "@/mixin/models/Validation";
+import { store } from "@/store";
+
 export class ModelOutput {
   header = new ModelOutputHeader();
   detail = [];
@@ -39,7 +41,7 @@ export class ModelOutput {
     this.detail.forEach((element) => {
       resp.unshift(element.getToAddId(id));
     });
-    return JSON.stringify(resp);
+    return resp;
   }
 
   resetValidation() {

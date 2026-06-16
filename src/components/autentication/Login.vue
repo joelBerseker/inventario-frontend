@@ -18,8 +18,6 @@ export default defineComponent({
         password: null,
       },
       loadingButton: false,
-      validated: false,
-      mode: 1,
       loadingAppContent: true,
       showPassword: false,
     };
@@ -56,7 +54,7 @@ export default defineComponent({
       this.loadingButton = true;
 
       const credentials = {
-        email: this.user.username,
+        username: this.user.username,
         password: this.user.password,
       };
 
@@ -68,6 +66,11 @@ export default defineComponent({
 
         const currentUser = await AuthService.getUser();
 
+        if (obtainToken?.must_change_password || currentUser?.must_change_password) {
+          await this.$router.replace({ name: "change-password" });
+          return;
+        }
+
         if (currentUser?.is_superuser || currentUser?.is_admin) {
           await this.$router.replace({ name: "home" });
         } else if (currentUser?.is_staff) {
@@ -75,12 +78,6 @@ export default defineComponent({
         } else {
           await this.$router.replace({ name: "home" });
         }
-
-        console.log("TOKEN:", obtainToken.access);
-        console.log("USER CARGADO:", currentUser);
-        console.log("IS ADMIN:", currentUser?.is_admin);
-        console.log("IS SUPERUSER:", currentUser?.is_superuser);
-        console.log("IS STAFF:", currentUser?.is_staff);
       } catch (e) {
         console.log(e);
         this.showToast({
@@ -115,13 +112,13 @@ export default defineComponent({
                       <p class="title-text my-c3 mb-2">Gestion de Inventarios</p>
                       <hr class="m-0 mb-2" />
                       <p class="secondary-text">
-                        Ingrese su usuario y contraseña para ingresar al sistema
+                        Ingrese su username y contraseña para ingresar al sistema
                       </p>
                     </div>
 
                     <MyInput
-                      name="Usuario/Email"
-                      type="email"
+                      name="Username"
+                      type="text"
                       v-model="user.username"
                       class="mb-3"
                       @keyup.enter="onEnter"

@@ -31,7 +31,7 @@ export default defineComponent({
             },
           },
           {
-            label: "Document",
+            label: "Documento",
             field: "document",
           },
 

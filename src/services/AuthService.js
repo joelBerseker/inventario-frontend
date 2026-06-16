@@ -11,6 +11,16 @@ export default new (class {
     store.commit("SET_REFRESH", response.data.refresh);
     store.commit("SET_ID", response.data.user_id);
 
+    if (response.data.user_id != null) {
+      localStorage.setItem("id", JSON.stringify(response.data.user_id));
+    }
+    if (response.data.access) {
+      localStorage.setItem("token", response.data.access);
+    }
+    if (response.data.refresh) {
+      localStorage.setItem("refresh", response.data.refresh);
+    }
+
     return response.data;
   }
 
@@ -20,12 +30,14 @@ export default new (class {
     store.commit("SET_TOKEN", response.data.access);
     store.commit("SET_REFRESH", response.data.refresh);
 
-    return response.data;
-  }
+    if (response.data.access) {
+      localStorage.setItem("token", response.data.access);
+    }
+    if (response.data.refresh) {
+      localStorage.setItem("refresh", response.data.refresh);
+    }
 
-  async register(credentials) {
-    const response = await axios.post(url + "user/register/", credentials);
-    return response;
+    return response.data;
   }
 
   async getUser() {
@@ -50,17 +62,10 @@ export default new (class {
   }
 
   getCurrentUser() {
-    const fromState =
-      store.state.user ??
-      store.state.User ??
-      null;
-
+    const fromState = store.state.user ?? store.state.User ?? null;
     if (fromState) return fromState;
 
-    const fromGetter =
-      store.getters?.getUser ??
-      null;
-
+    const fromGetter = store.getters?.getUser ?? null;
     if (fromGetter) return fromGetter;
 
     const fromLocalStorage = localStorage.getItem("User");
