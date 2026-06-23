@@ -37,20 +37,6 @@
       <MyInput type="textarea" name="Descripción" :validation="item.description.validation"
         v-model="item.description.value" :disabled="disabled" v-on:input="inputDescription()" />
 
-      <!-- CÓDIGO DE BARRAS SOLO EN MODO VISUALIZAR -->
-      <div class="row mt-4" v-if="mode === 2">
-        <div class="col-12 text-center">
-          <h6 class="barcode-title">Código de Barras</h6>
-
-          <div v-if="barcodeImageUrl" class="barcode-container">
-            <img :src="barcodeImageUrl" alt="Código de barras del producto" class="barcode-image" />
-          </div>
-
-          <div v-else class="barcode-empty">
-            Este producto aún no tiene código de barras generado.
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="modal-footer">
@@ -123,6 +109,10 @@ export default defineComponent({
   },
 
   methods: {
+    openLabelUrl(url) {
+      window.open(url, "_blank");
+    },
+
     inputCode() {
       // el código ya no se edita manualmente
       // se deja por compatibilidad si tu modelo aún llama esta función
@@ -153,7 +143,7 @@ export default defineComponent({
       this.item.onChangeCategory();
     },
 
-    buttonPrintBarcode() {
+    async buttonPrintBarcode() {
       const productId = this.item?.id?.value;
 
       if (!productId) {
@@ -184,7 +174,16 @@ export default defineComponent({
 
       const url = `${normalizedBaseUrl}/products/products/label30x20/${productId}/`;
 
-      window.open(url, "_blank");
+      try {
+        await this.openLabelUrl(url);
+      } catch (error) {
+        console.log("Error abriendo etiqueta:", error);
+        this.showToast({
+          title: "Ocurrió un error",
+          message: "No se pudo abrir la etiqueta para imprimir.",
+          type: 2,
+        });
+      }
     },
 
     buttonSave() {

@@ -97,6 +97,10 @@ export default defineComponent({
     };
   },
   methods: {
+    isAdminUser(row) {
+      return !!(row?.is_superuser || row?.is_admin);
+    },
+
     async getUsers(page = 1) {
       this.loadingContentList = true;
       this.table.rows = [];
@@ -135,6 +139,15 @@ export default defineComponent({
     },
 
     async toggleActive(row) {
+      if (this.isAdminUser(row)) {
+        this.showToast({
+          title: "Acción bloqueada",
+          message: "No se puede activar o desactivar un usuario administrador.",
+          type: 2,
+        });
+        return;
+      }
+
       try {
         await axios.patch(`${url}user/api/${row.id}/toggle-active/`);
         this.showToast({
@@ -180,6 +193,15 @@ export default defineComponent({
     },
 
     async deleteUser(row) {
+      if (this.isAdminUser(row)) {
+        this.showToast({
+          title: "Acción bloqueada",
+          message: "No se puede eliminar un usuario administrador.",
+          type: 2,
+        });
+        return;
+      }
+
       const ok = await this.confirmDialogue({
         title: "¿Eliminar usuario?",
         message: `Se eliminará el usuario ${row.first_name} ${row.last_name}.`,
@@ -279,6 +301,7 @@ export default defineComponent({
               </button>
 
               <button
+                v-if="!isAdminUser(data.value)"
                 class="btn btn-warning btn-sm me-1"
                 type="button"
                 @click.stop="toggleActive(data.value)"
@@ -297,6 +320,7 @@ export default defineComponent({
               </button>
 
               <button
+                v-if="!isAdminUser(data.value)"
                 class="btn btn-danger btn-sm"
                 type="button"
                 @click.stop="deleteUser(data.value)"

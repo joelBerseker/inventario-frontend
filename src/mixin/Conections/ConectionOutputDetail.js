@@ -23,13 +23,14 @@ export default {
     },
     async addOutputDetailRegister(data) {
       var path = this.urlConectionOutputDetail;
-      var form_data = new FormData();
-      for (var key in data) {
-        form_data.append(key, data[key]);
-      }
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
       return new Promise((resolve, reject) => {
         axios
-          .post(path, form_data)
+          .post(path, data, config)
           .then((response) => {
             this.showMessage({
               title: "Operación exitosa",

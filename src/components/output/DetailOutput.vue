@@ -1,80 +1,36 @@
 <template>
-  <MyModal
-    ref="myModal"
-    :id="'productDetailModal'"
-    :title="this.title"
-    size="modal-xl"
-    v-on:mymodal:close="closeModal"
-  >
+  <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl" v-on:mymodal:close="closeModal">
     <div class="modal-body">
       <div class="row">
         <div class="col-3 head pe-3">
-          <MyInput
-            v-if="mode !== 1"
-            class="mb-3"
-            type="text"
-            name="Número de venta"
-            :validation="item.header.order_code.validation"
-            v-model="item.header.order_code.value"
-            :disabled="true"
-          />
+          <MyInput v-if="mode !== 1" class="mb-3" type="text" name="Número de venta"
+            :validation="item.header.order_code.validation" v-model="item.header.order_code.value" :disabled="true" />
 
           <div class="mb-3">
-            <SelectSearch
-              v-if="clientReady || mode !== 1"
-              :key="clientSelectKey"
-              v-model="item.header.client.value"
-              link="clients/clients/"
-              name="Cliente"
-              :validation="item.header.client.validation"
-              id="cliente"
-              :disabled="disabled"
-              v-on:update="inputClient()"
-            />
+            <SelectSearch v-if="clientReady || mode !== 1" :key="clientSelectKey" v-model="item.header.client.value"
+              link="clients/clients/" name="Cliente" :validation="item.header.client.validation" id="cliente"
+              :disabled="disabled" v-on:update="inputClient()" />
           </div>
 
-          <MySelect
-            class="mb-3"
-            name="Tipo de pago"
-            id="Tipo de pago"
-            :options="optionsPaymentType"
-            :validation="item.header.payment_type.validation"
-            v-model="item.header.payment_type.value"
-            :disabled="disabled"
-            v-on:update="inputPaymentType()"
-          />
+          <MySelect class="mb-3" name="Tipo de pago" id="Tipo de pago" :options="optionsPaymentType"
+            :validation="item.header.payment_type.validation" v-model="item.header.payment_type.value"
+            :disabled="disabled" v-on:update="inputPaymentType()" />
 
-          <MyInput
-            type="textarea"
-            name="Descripción"
-            :validation="item.header.description.validation"
-            v-model="item.header.description.value"
-            :disabled="disabled"
-            v-on:input="inputDescription()"
-          />
+          <MyInput type="textarea" name="Descripción" :validation="item.header.description.validation"
+            v-model="item.header.description.value" :disabled="disabled" v-on:input="inputDescription()" />
         </div>
 
         <div class="col-9 ps-3">
           <div class="scan-box mb-3" v-if="mode != 2">
             <div class="row g-2 align-items-end">
               <div class="col-7">
-                <MyInput
-                  ref="scannerInput"
-                  type="text"
-                  name="Escanear código de barras"
-                  v-model="scanCode"
-                  :disabled="disabled || processingScan"
-                  v-on:keyup.enter="handleScan"
-                />
+                <MyInput ref="scannerInput" type="text" name="Escanear código de barras" v-model="scanCode"
+                  :disabled="disabled || processingScan" v-on:keyup.enter="handleScan" />
               </div>
 
               <div class="col-5 d-flex align-items-end">
-                <button
-                  type="button"
-                  class="btn btn-outline-primary btn-sm w-100"
-                  :disabled="disabled || processingScan || !scanCode.trim()"
-                  @click="handleScan"
-                >
+                <button type="button" class="btn btn-outline-primary btn-sm w-100"
+                  :disabled="disabled || processingScan || !scanCode.trim()" @click="handleScan">
                   <i class="bi bi-upc-scan"></i>
                   Agregar por código
                 </button>
@@ -89,23 +45,14 @@
           <div class="manual-box mb-3" v-if="mode != 2">
             <div class="row g-2 align-items-end">
               <div class="col-9">
-                <SelectSearch
-                  :key="manualProductKey"
-                  v-model="manualProduct"
-                  link="products/products/"
-                  name="Buscar producto por nombre o código"
-                  id="manual-product-search"
-                  :disabled="disabled || processingScan"
-                />
+                <SelectSearch :key="manualProductKey" v-model="manualProduct" link="products/products/"
+                  name="Buscar producto por nombre o código" id="manual-product-search"
+                  :disabled="disabled || processingScan" />
               </div>
 
               <div class="col-3 d-flex align-items-end">
-                <button
-                  type="button"
-                  class="btn btn-primary btn-sm w-100"
-                  :disabled="disabled || !manualProduct?.id"
-                  @click="addManualProduct"
-                >
+                <button type="button" class="btn btn-primary btn-sm w-100" :disabled="disabled || !manualProduct?.id"
+                  @click="addManualProduct">
                   <i class="bi bi-plus-circle"></i>
                   Agregar producto
                 </button>
@@ -123,58 +70,29 @@
             </div>
 
             <div class="col-2">
-              <MyInput
-                name="Subtotal"
-                type="number"
-                viewClass="text-end"
-                inputClass="text-end"
-                labelClass="text-end"
-                v-model="item.header.subtotal_price.value"
-                :disabled="true"
-                :viewMode="disabled"
-              >
+              <MyInput name="Subtotal" type="number" viewClass="text-end" inputClass="text-end" labelClass="text-end"
+                v-model="item.header.subtotal_price.value" :disabled="true" :viewMode="disabled">
                 <template v-slot:pre>S/.</template>
               </MyInput>
             </div>
 
             <div class="col-2">
-              <MyInput
-                name="Descuento"
-                type="text"
-                viewClass="text-end"
-                inputClass="text-end"
-                labelClass="text-end"
-                v-model="item.header.discount.value"
-                :disabled="disabled"
-                :viewMode="disabled"
-                v-on:input="inputDiscount()"
-                v-on:blur="formatDiscount()"
-              >
+              <MyInput name="Descuento" type="text" viewClass="text-end" inputClass="text-end" labelClass="text-end"
+                v-model="item.header.discount.value" :disabled="disabled" :viewMode="disabled"
+                v-on:input="inputDiscount()" v-on:blur="formatDiscount()">
                 <template v-slot:pre>S/.</template>
               </MyInput>
             </div>
 
             <div class="col-2">
-              <MyInput
-                name="Total"
-                type="number"
-                viewClass="text-end"
-                inputClass="text-end"
-                labelClass="text-end"
-                v-model="item.header.total_price.value"
-                :disabled="true"
-                :viewMode="disabled"
-              >
+              <MyInput name="Total" type="number" viewClass="text-end" inputClass="text-end" labelClass="text-end"
+                v-model="item.header.total_price.value" :disabled="true" :viewMode="disabled">
                 <template v-slot:pre>S/.</template>
               </MyInput>
             </div>
           </div>
 
-          <ListContent
-            ref="tableContent"
-            :loading="this.loadingContentList"
-            :size="item.detail.length"
-          >
+          <ListContent ref="tableContent" :loading="this.loadingContentList" :size="item.detail.length">
             <table class="my-table w-100">
               <tr>
                 <th style="width: 34%">Nombre</th>
@@ -185,11 +103,7 @@
                 <th v-if="mode != 2"></th>
               </tr>
 
-              <tr
-                v-for="(row, index) in item.detail"
-                :key="row._renderKey || index"
-                class="detalle-item"
-              >
+              <tr v-for="(row, index) in item.detail" :key="row._renderKey || index" class="detalle-item">
                 <td>
                   <div class="product-scanned-box">
                     <div class="product-scanned-name">
@@ -202,82 +116,45 @@
                 </td>
 
                 <td>
-                  <MyInput
-                    type="number"
-                    inputClass="text-end"
-                    viewClass="text-end"
-                    v-model="row.stock.value"
-                    :disabled="true"
-                    :viewMode="disabled"
-                  />
+                  <MyInput type="number" inputClass="text-end" viewClass="text-end" v-model="row.stock.value"
+                    :disabled="true" :viewMode="disabled" />
                 </td>
 
                 <td>
                   <div class="qty-box">
-                    <button
-                      v-if="mode != 2 && !disabled"
-                      type="button"
-                      class="btn btn-sm btn-light qty-btn"
-                      @click="decreaseQuantity(index)"
-                    >
+                    <button v-if="mode != 2 && !disabled" type="button" class="btn btn-sm btn-light qty-btn"
+                      @click="decreaseQuantity(index)">
                       <i class="bi bi-dash"></i>
                     </button>
 
-                    <MyInput
-                      type="number"
-                      inputClass="text-end"
-                      viewClass="text-end"
-                      :validation="row.quantity.value"
-                      v-model="row.quantity.value"
-                      v-on:input="inputQuantity(index)"
-                      :disabled="false"
-                      :viewMode="disabled"
-                    />
+                    <MyInput type="number" inputClass="text-end" viewClass="text-end" :validation="row.quantity.validation"
+                      v-model="row.quantity.value" v-on:input="inputQuantity(index)" :disabled="false"
+                      :viewMode="disabled" />
 
-                    <button
-                      v-if="mode != 2 && !disabled"
-                      type="button"
-                      class="btn btn-sm btn-light qty-btn"
-                      @click="increaseQuantity(index)"
-                    >
+                    <button v-if="mode != 2 && !disabled" type="button" class="btn btn-sm btn-light qty-btn"
+                      @click="increaseQuantity(index)">
                       <i class="bi bi-plus"></i>
                     </button>
                   </div>
                 </td>
 
                 <td>
-                  <MyInput
-                    type="number"
-                    inputClass="text-end"
-                    viewClass="text-end"
-                    v-model="row.new_sale_price.value"
-                    :disabled="true"
-                    :viewMode="disabled"
-                  >
+                  <MyInput type="number" inputClass="text-end" viewClass="text-end" v-model="row.new_sale_price.value"
+                    :disabled="true" :viewMode="disabled">
                     <template v-slot:pre>S/.</template>
                   </MyInput>
                 </td>
 
                 <td>
-                  <MyInput
-                    type="number"
-                    inputClass="text-end"
-                    viewClass="text-end"
-                    v-model="row.subtotal.value"
-                    :disabled="true"
-                    :viewMode="disabled"
-                  >
+                  <MyInput type="number" inputClass="text-end" viewClass="text-end" v-model="row.subtotal.value"
+                    :disabled="true" :viewMode="disabled">
                     <template v-slot:pre>S/.</template>
                   </MyInput>
                 </td>
 
                 <td v-if="!disabled">
                   <div class="d-flex">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-danger"
-                      @click="buttonListDelete(index)"
-                    >
+                    <button type="button" class="btn btn-sm btn-danger" @click="buttonListDelete(index)">
                       <i class="bi bi-trash"></i>
                     </button>
                   </div>
@@ -300,53 +177,30 @@
       </div>
 
       <div class="footer-actions">
-        <button
-          type="button"
-          @click="buttonPrintTicket"
-          class="btn btn-success btn-sm button-margin"
-          v-if="mode == 2 && !isCanceled"
-          :disabled="!item.header.id.value"
-        >
+        <button type="button" @click="buttonPrintTicket" class="btn btn-success btn-sm button-margin"
+          v-if="mode == 2 && !isCanceled" :disabled="!item.header.id.value">
           <i class="bi bi-printer"></i>
           Imprimir Ticket
         </button>
 
-        <button
-          type="button"
-          @click="buttonDelete"
-          class="btn btn-danger btn-sm button-margin"
-          v-if="mode == 2 && isAdmin"
-        >
+        <button type="button" @click="buttonDelete" class="btn btn-danger btn-sm button-margin"
+          v-if="mode == 2 && isAdmin">
           <i class="bi bi-trash"></i>
           Eliminar
         </button>
 
-        <button
-          type="button"
-          @click="buttonEdit"
-          class="btn btn-primary btn-sm button-margin"
-          v-if="mode == 2 && isAdmin && !isCanceled"
-        >
+        <button type="button" @click="buttonEdit" class="btn btn-primary btn-sm button-margin"
+          v-if="mode == 2 && isAdmin && !isCanceled">
           <i class="bi bi-pen"></i>
           Editar
         </button>
 
-        <button
-          type="button"
-          @click="buttonCancel"
-          class="btn btn-secondary btn-sm button-margin"
-          v-if="mode == 3"
-        >
+        <button type="button" @click="buttonCancel" class="btn btn-secondary btn-sm button-margin" v-if="mode == 3">
           <i class="bi bi-arrow-left"></i>
           Cancelar
         </button>
 
-        <button
-          type="button"
-          @click="buttonSave"
-          class="btn btn-primary btn-sm button-margin"
-          v-if="mode != 2"
-        >
+        <button type="button" @click="buttonSave" class="btn btn-primary btn-sm button-margin" v-if="mode != 2">
           <i class="bi bi-check-lg"></i>
           Guardar
         </button>
@@ -482,6 +336,80 @@ export default defineComponent({
       return baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
     },
 
+    isTauriRuntime() {
+      return typeof window !== "undefined" && !!window.__TAURI_INTERNALS__;
+    },
+
+    async openExternalUrl(url) {
+      if (this.isTauriRuntime()) {
+        const { openUrl } = await import("@tauri-apps/plugin-opener");
+        await openUrl(url);
+        return;
+      }
+
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+
+      if (!opened) {
+        window.location.href = url;
+      }
+    },
+
+    async printPdfFromBrowser(url) {
+      const response = await axios.get(url, { responseType: "blob" });
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const objectUrl = URL.createObjectURL(blob);
+      const frame = document.createElement("iframe");
+
+      frame.style.position = "fixed";
+      frame.style.right = "0";
+      frame.style.bottom = "0";
+      frame.style.width = "1px";
+      frame.style.height = "1px";
+      frame.style.border = "0";
+      frame.src = objectUrl;
+
+      return new Promise((resolve, reject) => {
+        const cleanup = () => {
+          setTimeout(() => {
+            URL.revokeObjectURL(objectUrl);
+            frame.remove();
+          }, 1000);
+        };
+
+        frame.onload = () => {
+          try {
+            frame.contentWindow?.focus();
+            frame.contentWindow?.print();
+            resolve();
+          } catch (error) {
+            reject(error);
+          } finally {
+            cleanup();
+          }
+        };
+
+        frame.onerror = () => {
+          cleanup();
+          reject(new Error("No se pudo cargar el PDF para imprimir."));
+        };
+
+        document.body.appendChild(frame);
+      });
+    },
+
+    async openPrintDialog(url) {
+      await this.printPdfFromBrowser(url);
+    },
+
+    async printTicketUrl(url) {
+      if (this.isTauriRuntime()) {
+        await this.openExternalUrl(url);
+        return;
+      }
+
+      await this.openPrintDialog(url);
+    },
+
     recalculateTotals() {
       let subtotal = 0;
 
@@ -581,6 +509,15 @@ export default defineComponent({
     addOrIncrementProduct(product) {
       const payload = this.buildProductPayload(product);
       const productId = String(payload.id);
+
+      if (payload.stock <= 0) {
+        this.showToast({
+          title: "Sin stock",
+          message: `${payload.name} no tiene stock disponible. No se puede agregar a la salida.`,
+          type: 2,
+        });
+        return false;
+      }
 
       const existingIndex = this.item.detail.findIndex((row) => {
         return String(row.product?.value?.id || "") === productId;
@@ -771,7 +708,7 @@ export default defineComponent({
       this.recalculateTotals();
     },
 
-    buttonPrintTicket() {
+    async buttonPrintTicket() {
       if (this.isCanceled) {
         this.showToast({
           title: "Orden anulada",
@@ -794,10 +731,24 @@ export default defineComponent({
 
       const baseUrl = this.getApiBaseUrl().replace(/\/$/, "");
       const url = `${baseUrl}/orders/orders/boleta/${outputId}/`;
-      const win = window.open(url, "_blank");
 
-      if (win) {
-        win.focus();
+      try {
+        await this.printTicketUrl(url);
+      } catch (error) {
+        console.log("Error imprimiendo ticket:", error);
+
+        try {
+          await this.openExternalUrl(url);
+        } catch (openError) {
+          console.log("Error abriendo ticket:", openError);
+        }
+
+        this.showToast({
+          title: "Impresión no completada",
+          message:
+            "No se pudo imprimir directamente. Se abrió la boleta para imprimirla manualmente.",
+          type: 2,
+        });
       }
     },
 
@@ -835,6 +786,60 @@ export default defineComponent({
 
     inputDescription() {
       this.item.header.onChangeDescription();
+    },
+
+    validateStockBeforeSave() {
+      const invalidRows = [];
+
+      this.item.detail.forEach((row) => {
+        const productName =
+          row.product_name || row.product?.value?.name || "Producto";
+        const stock = Number(row.stock?.value || 0);
+        const quantity = Number(row.quantity?.value || 0);
+
+        if (stock <= 0) {
+          invalidRows.push(`${productName} no tiene stock disponible`);
+          row.quantity.validation = {
+            isValid: false,
+            message: "Este producto no tiene stock disponible.",
+          };
+          return;
+        }
+
+        if (quantity <= 0) {
+          invalidRows.push(`${productName} debe tener una cantidad mayor a 0`);
+          row.quantity.validation = {
+            isValid: false,
+            message: "La cantidad debe ser mayor a 0.",
+          };
+          return;
+        }
+
+        if (quantity > stock) {
+          invalidRows.push(
+            `${productName} supera el stock disponible (${stock})`
+          );
+          row.quantity.validation = {
+            isValid: false,
+            message: "La cantidad solicitada es mayor que el stock disponible.",
+          };
+        }
+      });
+
+      if (invalidRows.length <= 0) {
+        return true;
+      }
+
+      this.showToast({
+        title: "Revise el stock",
+        message:
+          invalidRows.length === 1
+            ? invalidRows[0]
+            : "Hay productos sin stock o con cantidad mayor al stock. Corrija o quite esos productos de la lista.",
+        type: 2,
+      });
+
+      return false;
     },
 
     inputQuantity(index) {
@@ -884,6 +889,10 @@ export default defineComponent({
 
     async buttonSave() {
       this.recalculateTotals();
+
+      if (!this.validateStockBeforeSave()) {
+        return;
+      }
 
       if (this.item.validateForm()) {
         if (this.item.detail.length > 0) {
@@ -961,6 +970,7 @@ export default defineComponent({
                     this.showToast({
                       title: "Ocurrió un error",
                       message:
+                        detailResponse.message ||
                         "La cabecera se actualizó, pero falló la actualización del detalle.",
                       type: 2,
                     });

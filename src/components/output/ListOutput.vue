@@ -445,7 +445,7 @@ export default defineComponent({
                 Buscar
               </button>
               <button class="btn btn-secondary btn-sm w-100" @click="resetFiltersToToday">
-                Hoy
+                Limpiar
               </button>
             </div>
           </div>
