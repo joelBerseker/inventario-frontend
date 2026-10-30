@@ -47,6 +47,10 @@ export default defineComponent({
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
     <div>
+      <div class="brand-panel">
+        <img src="/elegant-lady-wordmark.png" alt="Elegant Lady" class="brand-wordmark" />
+        <p>Inventario y ventas para una tienda de moda</p>
+      </div>
       <div class="img-container">
         <img src="@/assets/logo_gg.png" width="80" />
       </div>
@@ -57,6 +61,9 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.brand-panel { max-width: 520px; margin: 1rem auto 2rem; padding: 1.25rem; text-align: center; background: #9f0022; border-radius: 1rem; color: #fff; }
+.brand-wordmark { display: block; width: min(100%, 340px); margin: auto; }
+.brand-panel p { color: #f7e4e9; }
 .img-container {
   display: flex;
   justify-content: center;

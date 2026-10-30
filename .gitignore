@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+.local-logs/
 .DS_Store
 dist
 dist-ssr
@@ -29,4 +30,7 @@ coverage
 *.sw?
 .env
 *.env
-src-tauri
+src-tauri/target/
+src-tauri/gen/
+src-tauri/binaries/
+src-tauri/.DS_Store

@@ -1,4 +1,14 @@
 # inventario-frontend
+
+Para compilar Elegant Lady en un Mac, consulta [MACOS.md](MACOS.md) y ejecuta `bash build-macos.sh`.
+
+En Windows, para iniciar Django y la interfaz local sin depender del Python de Miniconda, ejecuta desde esta carpeta:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File .\start-local.ps1
+```
+
+La interfaz queda en `http://127.0.0.1:5173/` y Django en `http://127.0.0.1:8002/`. El script usa `inventario-backend/venv/Scripts/python.exe`, compila Vue en modo de desarrollo y sirve el resultado; los errores se guardan en `.local-logs/`. El puerto 8001 se reserva para la instalación de inventario que ya está en ejecución en este equipo.
 Frontend Inventory Project by Gleaming Glow Team
  
 ## Getting Started

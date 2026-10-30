@@ -161,9 +161,17 @@ export default defineComponent({
     search(newSearch, oldSearch) {
       this.selectedInKeyboard = -1;
 
-      if (newSearch.length >= 2) {
+      const search = String(newSearch || "").trim();
+
+      if (!search) {
+        this.update = true;
+        this.getData();
+        return;
+      }
+
+      if (search.length >= 2) {
         if (newSearch.length > oldSearch.length && this.update) {
-          this.getDataFilter(newSearch);
+          this.getDataFilter(search);
         } else {
           this.update = true;
         }

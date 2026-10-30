@@ -5,7 +5,6 @@ import axios from "axios";
 import MyForm from "@/components/my_components/MyForm.vue";
 import MyInput from "@/components/my_components/MyInput.vue";
 import ValidationFunctions from "@/mixin/ValidationFunctions.js";
-import Icon from "@/components/my_other_components/Icon.vue";
 import AppContent from "@/AppContent.vue";
 
 export default defineComponent({
@@ -25,7 +24,6 @@ export default defineComponent({
   mixins: [ValidationFunctions],
   components: {
     MyForm,
-    Icon,
     AppContent,
     MyInput,
   },
@@ -98,18 +96,19 @@ export default defineComponent({
     <div class="mx-auto center justify-content-center my-bg2">
       <div class="container">
         <div class="row justify-content-md-center" align-h="center">
-          <div class="col-6 mb-3">
+          <div class="col-12 col-lg-9 col-xl-8 mb-3">
             <div class="card login">
               <div class="row g-0">
-                <div class="col-5 image">
-                  <div class="image-cover"></div>
+                <div class="col-md-5 image">
+                  <img src="/elegant-lady-logo.png" alt="Logotipo Elegant Lady" class="login-logo" />
+                  <p class="image-caption">Moda, inventario y ventas en un solo lugar</p>
                 </div>
 
-                <div class="col-7 content">
+                <div class="col-md-7 content">
                   <div class="card-body">
                     <div class="text-center mb-1">
-                      <Icon size="50px" :mode="2" :bg-mode="1"></Icon>
-                      <p class="title-text my-c3 mb-2">Gestion de Inventarios</p>
+                      <p class="login-heading">Bienvenida a Elegant Lady</p>
+                      <p class="title-text my-c3 mb-2">Inventario y ventas</p>
                       <hr class="m-0 mb-2" />
                       <p class="secondary-text">
                         Ingrese su username y contraseña para ingresar al sistema
@@ -117,7 +116,7 @@ export default defineComponent({
                     </div>
 
                     <MyInput
-                      name="Username"
+                      name="Usuario"
                       type="text"
                       v-model="user.username"
                       class="mb-3"
@@ -179,19 +178,25 @@ export default defineComponent({
   overflow: hidden;
   background-color: var(--my-c1) !important;
   border: none !important;
+  border-radius: 1.25rem !important;
+  box-shadow: 0 24px 70px rgba(46, 0, 14, .28);
 }
 
 .image {
-  background-image: url("https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=876&q=80");
-  background-position: center;
-  background-size: cover;
+  background: #9f0022;
+  min-height: 390px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
 }
 
-.image-cover {
-  height: 100%;
-  width: 100%;
-  background-color: #41659710;
-}
+.login-logo { width: 100%; max-width: 330px; border-radius: .5rem; }
+.image-caption { color: #f7e4e9; text-align: center; font-size: .85rem; letter-spacing: .02em; }
+.login-heading { color: #34272c; font-family: Georgia, serif; font-size: 1.65rem; font-weight: 600; }
+.content { display: flex; align-items: center; padding: 1.25rem; }
+.content .card-body { width: 100%; }
 
 .center {
   height: 100%;
@@ -200,7 +205,7 @@ export default defineComponent({
   align-items: center;
   margin: 0;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
   min-height: 100%;
 }
 
@@ -226,6 +231,7 @@ export default defineComponent({
 }
 
 .password-toggle:hover {
-  color: #212529;
+  color: var(--my-c3);
 }
+@media (max-width: 767px) { .image { min-height: 180px; } .login-logo { max-width: 230px; } }
 </style>

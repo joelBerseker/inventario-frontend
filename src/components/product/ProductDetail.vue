@@ -109,8 +109,33 @@ export default defineComponent({
   },
 
   methods: {
-    openLabelUrl(url) {
-      window.open(url, "_blank");
+    isTauriRuntime() {
+      return typeof window !== "undefined" && !!window.__TAURI_INTERNALS__;
+    },
+
+    async printPdfFromTauri(url) {
+      const { invoke } = await import("@tauri-apps/api/core");
+      await invoke("print_pdf_url", { url });
+    },
+
+    async openLabelUrl(url) {
+      if (this.isTauriRuntime()) {
+        try {
+          const { openUrl } = await import("@tauri-apps/plugin-opener");
+          await openUrl(url);
+          return;
+        } catch (openError) {
+          console.log("Error abriendo etiqueta con Tauri:", openError);
+          await this.printPdfFromTauri(url);
+          return;
+        }
+      }
+
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+
+      if (!opened) {
+        window.location.href = url;
+      }
     },
 
     inputCode() {

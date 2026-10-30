@@ -6,21 +6,18 @@
 :root {
   --my-tw: #ffffff;
   --my-tb: #212529;
-  //--my-tb: #f8d7e8;
   --my-c1: #ffffff;
-  //--my-c2: #0d1321;
-  --my-c2: #f589c1;
-  //--my-c3: #1d2d44;
-  --my-c3: #e612b1;
-  --my-c4: #3c678d;
-  --my-c5: #748cab;
-  --my-c6: #949494;
+  --my-c2: #650019;
+  --my-c3: #9f0022;
+  --my-c4: #b75c70;
+  --my-c5: #f2dce1;
+  --my-c6: #74666a;
 
   --my-dc1: #252525;
   --my-dc2: #e6e6e6;
 
-  --my-bc: #81818179;
-  --my-br: 0rem;
+  --my-bc: #d8c8cc;
+  --my-br: 0.65rem;
 }
 .my-c1 {
   color: var(--my-c1) !important;

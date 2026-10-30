@@ -234,6 +234,15 @@ export default defineComponent({
         return;
       }
 
+      if (!row?.id) {
+        this.showToast({
+          title: "OcurriÃ³ un error",
+          message: "No se encontrÃ³ el ID de la orden para eliminar.",
+          type: 2,
+        });
+        return;
+      }
+
       const confirmed = await this.confirmDialogue({
         title: "¿Eliminar orden?",
         message: `Se eliminará la orden ${row.order_code}.`,
@@ -242,14 +251,9 @@ export default defineComponent({
 
       if (!confirmed) return;
 
-      this.confirmDeleteOutputRegister(row.id).then((response) => {
+      this.deleteOutputRegister(row.id).then((response) => {
         if (response.success) {
-          this.showToast({
-            title: "Orden eliminada",
-            message: "La orden fue eliminada correctamente.",
-            type: 1,
-          });
-          this.getOutputs(1);
+          this.getOutputs(this.page);
         }
       });
     },

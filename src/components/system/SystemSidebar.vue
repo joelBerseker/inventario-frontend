@@ -1,12 +1,10 @@
 <script>
-import Icon from "@/components/my_other_components/Icon.vue";
 import { defineComponent } from "vue";
 import AuthService from "@/services/AuthService";
 
 export default defineComponent({
   name: "Sidebar",
   components: {
-    Icon,
   },
 
   data() {
@@ -237,14 +235,15 @@ export default defineComponent({
     <transition name="t-sidebar-item" mode="out-in">
       <div class="mt-3 mb-2 px-3 main-text" v-if="showSidebar">
         <div class="d-flex flex-column align-items-center">
-          <Icon size="55px"></Icon>
+          <img src="/elegant-lady-icon.png" alt="Elegant Lady" class="brand-mark" />
         </div>
 
-        <p class="title-text text-center">Gestion de inventarios</p>
+        <p class="brand-name text-center">Elegant Lady</p>
+        <p class="brand-subtitle text-center">Inventario y ventas</p>
       </div>
       <div v-else class="mt-3 mb-2 px-3 main-text">
         <div class="d-flex flex-column align-items-center">
-          <Icon size="40px" class="mt-5"></Icon>
+          <img src="/elegant-lady-icon.png" alt="Elegant Lady" class="brand-mark brand-mark-small mt-4" />
         </div>
       </div>
     </transition>
@@ -320,13 +319,17 @@ export default defineComponent({
 
     <transition name="t-sidebar-item" mode="out-in">
       <div v-show="showSidebar" class="my-c1 footer-text">
-        Desarrollado por Gleaming Glow Team
+        Elegant Lady · Inventario y ventas
       </div>
     </transition>
   </div>
 </template>
 
 <style scoped>
+.brand-mark { display: block; width: 64px; height: 64px; object-fit: cover; border-radius: 50%; }
+.brand-mark-small { width: 42px; height: 42px; }
+.brand-name { color: #fff; font-family: Georgia, serif; font-size: 1.25rem; font-weight: 600; line-height: 1.1; }
+.brand-subtitle { color: #f4dce1; font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; }
 .footer-text {
   font-size: 0.6rem;
   position: absolute;

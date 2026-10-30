@@ -1,0 +1,25 @@
+:root {
+  --brand-wine: #9f0022;
+  --brand-wine-dark: #650019;
+  --brand-ivory: #fcf8f6;
+  --brand-ink: #34272c;
+  --bs-primary: #9f0022;
+  --bs-primary-rgb: 159, 0, 34;
+  --bs-link-color: #9f0022;
+  --bs-link-hover-color: #650019;
+}
+
+body { color: var(--brand-ink); background: var(--brand-ivory); }
+#main-content { background: var(--brand-ivory); }
+.my-bg2 .my-c6 { color: #f2dce1 !important; }
+.title-text { letter-spacing: .01em; }
+.btn-primary:hover, .btn-primary:focus-visible { background-color: var(--brand-wine-dark) !important; }
+.btn:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid #d98a9b !important; outline-offset: 2px; }
+.form-control, .form-select { min-height: 2.5rem; }
+.card, .modal-content, .dropdown-menu { box-shadow: 0 8px 30px rgba(80, 18, 34, .07); }
+.my-table tbody tr:hover, .vtl-tbody-tr:hover { background: #fff3f5 !important; }
+.dark-mode .my-table tbody tr:hover, .dark-mode .vtl-tbody-tr:hover { background: #4a3038 !important; }
+.dark-mode { --my-bc: #65545a; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
