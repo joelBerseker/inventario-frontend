@@ -99,7 +99,7 @@ mkdir -p src-tauri/binaries
 rm -rf src-tauri/binaries/inventory_backend
 cp -R "$BACKEND_DIR/dist/inventory_backend" src-tauri/binaries/inventory_backend
 npm run tauri -- icon public/elegant-lady-icon.png --output src-tauri/icons
-npm run tauri -- build --config src-tauri/tauri.macos.conf.json
+npm run tauri -- build --config src-tauri/tauri.macos.conf.json --bundles app
 
 cd "$BACKEND_DIR"
 ADMIN_EXISTS="$("$BACKEND_DIR/.venv-macos/bin/python" manage.py shell --settings=inventory.settings_desktop -c 'from django.contrib.auth import get_user_model; print(get_user_model().objects.filter(is_superuser=True, is_active=True).exists())')"
@@ -110,5 +110,17 @@ else
   echo "Ya existe un administrador activo en la base de datos local."
 fi
 
+cd "$FRONTEND_DIR"
+DMG_CREATED=false
+if CI=true npm run tauri -- bundle --config src-tauri/tauri.macos.conf.json --bundles dmg; then
+  DMG_CREATED=true
+else
+  echo "Aviso: la aplicación .app está lista, pero macOS no permitió crear el instalador DMG." >&2
+  echo "Puedes usar la .app directamente o reintentar el DMG con el comando indicado en MACOS.md." >&2
+fi
+
 echo "Aplicación: $FRONTEND_DIR/src-tauri/target/release/bundle/macos"
-echo "Instalador DMG: $FRONTEND_DIR/src-tauri/target/release/bundle/dmg"
+if [[ "$DMG_CREATED" == "true" ]]; then
+  echo "Instalador DMG: $FRONTEND_DIR/src-tauri/target/release/bundle/dmg"
+fi
+echo "Datos locales: $HOME/Library/Application Support/Elegant Lady"
