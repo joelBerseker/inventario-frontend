@@ -8,18 +8,23 @@ Inventario Final/
 └── inventario-backend/
 ```
 
+Antes de empezar, actualiza **ambos** repositorios con los cambios de macOS. Comprueba que existen `inventario-frontend/build-macos.sh` e `inventario-backend/requirements-macos.txt`.
+
 Instala una vez las herramientas de línea de comandos de Xcode (`xcode-select --install`), Node.js, Rust/Cargo y Python 3.11. Después, desde `inventario-frontend`, ejecuta **un solo comando**:
 
 ```bash
 bash build-macos.sh
 ```
 
-El script instala dependencias, empaqueta Django con PyInstaller, genera iconos y compila Tauri. Produce `Elegant Lady Inventario.app` en `src-tauri/target/release/bundle/macos/` y un instalador `.dmg` en `src-tauri/target/release/bundle/dmg/`. Debes ejecutar el comando en el propio Mac.
+El script instala dependencias, prepara la base de datos local, empaqueta Django con PyInstaller, genera iconos y compila Tauri. Produce `Elegant Lady Inventario.app` en `src-tauri/target/release/bundle/macos/` y un instalador `.dmg` en `src-tauri/target/release/bundle/dmg/`. Debes ejecutar el comando en el propio Mac.
 
-La base de datos y las imágenes de productos se guardan en `~/Library/Application Support/Elegant Lady/`. El paquete no incorpora datos ni usuarios. Si ya tienes una base de datos, copia `db.sqlite3` a esa carpeta antes de abrir la aplicación. Si empiezas desde cero, tras compilar crea el primer administrador con:
+La base de datos y las imágenes de productos se guardan en `~/Library/Application Support/Elegant Lady/`. El paquete no incorpora datos ni contraseñas. Si ya tienes una base de datos, copia `db.sqlite3` a esa carpeta antes de compilar. En una instalación nueva, al terminar la compilación el script pide el nombre, usuario y contraseña del primer administrador. Anota esas credenciales; luego podrás crear usuarios desde el módulo Usuarios.
+
+Si necesitas crear otro administrador manualmente, primero aplica las migraciones y luego ejecuta:
 
 ```bash
 cd ../inventario-backend
+.venv-macos/bin/python manage.py migrate --noinput --settings=inventory.settings_desktop
 .venv-macos/bin/python manage.py createsuperuser --settings=inventory.settings_desktop
 ```
 

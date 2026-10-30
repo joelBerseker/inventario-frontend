@@ -23,6 +23,7 @@ cd "$BACKEND_DIR"
 python3.11 -m venv .venv-macos
 "$BACKEND_DIR/.venv-macos/bin/python" -m pip install --upgrade pip
 "$BACKEND_DIR/.venv-macos/bin/python" -m pip install -r requirements-macos.txt
+"$BACKEND_DIR/.venv-macos/bin/python" manage.py migrate --noinput --settings=inventory.settings_desktop
 "$BACKEND_DIR/.venv-macos/bin/python" manage.py collectstatic --noinput --settings=inventory.settings_desktop
 "$BACKEND_DIR/.venv-macos/bin/python" -m PyInstaller --noconfirm --clean inventory.spec
 
@@ -33,6 +34,15 @@ rm -rf src-tauri/binaries/inventory_backend
 cp -R "$BACKEND_DIR/dist/inventory_backend" src-tauri/binaries/inventory_backend
 npm run tauri -- icon public/elegant-lady-icon.png --output src-tauri/icons
 npm run tauri -- build --config src-tauri/tauri.macos.conf.json
+
+cd "$BACKEND_DIR"
+ADMIN_EXISTS="$("$BACKEND_DIR/.venv-macos/bin/python" manage.py shell --settings=inventory.settings_desktop -c 'from django.contrib.auth import get_user_model; print(get_user_model().objects.filter(is_superuser=True, is_active=True).exists())')"
+if [[ "$ADMIN_EXISTS" == "False" ]]; then
+  echo "Crea ahora el primer administrador de Elegant Lady. La contraseña no se mostrará."
+  "$BACKEND_DIR/.venv-macos/bin/python" manage.py createsuperuser --settings=inventory.settings_desktop
+else
+  echo "Ya existe un administrador activo en la base de datos local."
+fi
 
 echo "Aplicación: $FRONTEND_DIR/src-tauri/target/release/bundle/macos"
 echo "Instalador DMG: $FRONTEND_DIR/src-tauri/target/release/bundle/dmg"
