@@ -56,5 +56,6 @@ El `.dmg` generado localmente no está firmado ni notarizado. Para distribuirlo 
 - Si una herramienta recién instalada no aparece, cierra Terminal, abre una nueva ventana, vuelve a `inventario-frontend` y ejecuta el script otra vez.
 - Si Homebrew solicita una contraseña, usa la contraseña de un usuario administrador del Mac. Mientras escribes no se muestran caracteres; es el comportamiento normal de Terminal.
 - No ejecutes el script con `sudo`. El propio instalador pedirá autorización únicamente cuando sea necesaria.
+- Si una compilación anterior terminó con `No module named 'pkg_resources'`, actualiza ambos repositorios y vuelve a ejecutar `bash build-macos.sh`. El script instalará la versión compatible de `setuptools` dentro de `.venv-macos`.
 
 Los recursos de marca en `public/elegant-lady-icon.png`, `public/elegant-lady-logo.png` y `public/elegant-lady-wordmark.png` se recrearon con la herramienta de imágenes integrada a partir de los tres logotipos adjuntos. Las indicaciones fueron conservar fielmente la silueta, la tipografía, las proporciones, el blanco y el fondo borgoña de cada referencia. La paleta principal usa `#9f0022`, `#650019` y `#fcf8f6`.

@@ -85,6 +85,10 @@ cd "$BACKEND_DIR"
 python3.11 -m venv .venv-macos
 "$BACKEND_DIR/.venv-macos/bin/python" -m pip install --upgrade pip
 "$BACKEND_DIR/.venv-macos/bin/python" -m pip install -r requirements-macos.txt
+"$BACKEND_DIR/.venv-macos/bin/python" -c "import pkg_resources" 2>/dev/null || {
+  echo "No se pudo cargar pkg_resources. Comprueba la versión fijada de setuptools en requirements-macos.txt." >&2
+  exit 1
+}
 "$BACKEND_DIR/.venv-macos/bin/python" manage.py migrate --noinput --settings=inventory.settings_desktop
 "$BACKEND_DIR/.venv-macos/bin/python" manage.py collectstatic --noinput --settings=inventory.settings_desktop
 "$BACKEND_DIR/.venv-macos/bin/python" -m PyInstaller --noconfirm --clean inventory.spec
