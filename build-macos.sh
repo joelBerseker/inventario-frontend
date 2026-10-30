@@ -2,22 +2,84 @@
 set -euo pipefail
 
 FRONTEND_DIR="$(cd "$(dirname "$0")" && pwd)"
-BACKEND_DIR="$(cd "$FRONTEND_DIR/../inventario-backend" && pwd)"
+BACKEND_CANDIDATE="$FRONTEND_DIR/../inventario-backend"
+
+if [[ ! -f "$BACKEND_CANDIDATE/manage.py" || ! -f "$BACKEND_CANDIDATE/requirements-macos.txt" ]]; then
+  echo "No se encontró el backend preparado para macOS junto al frontend." >&2
+  echo "Comprueba que inventario-frontend e inventario-backend sean carpetas hermanas y que exista requirements-macos.txt." >&2
+  exit 1
+fi
+
+BACKEND_DIR="$(cd "$BACKEND_CANDIDATE" && pwd)"
 
 if [[ "$(uname -s)" != "Darwin" ]]; then
   echo "Este comando debe ejecutarse en macOS." >&2
   exit 1
 fi
+
+if ! xcode-select -p >/dev/null 2>&1; then
+  echo "Se abrirá el instalador de Xcode Command Line Tools."
+  xcode-select --install 2>/dev/null || true
+  echo "Termina la instalación y vuelve a ejecutar: bash build-macos.sh" >&2
+  exit 2
+fi
+
+load_homebrew() {
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+  fi
+}
+
+# Homebrew puede estar instalado aunque una terminal nueva aún no lo tenga en PATH.
+load_homebrew
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Instalando Homebrew..."
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  load_homebrew
+fi
+
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew se instaló, pero no quedó disponible en PATH. Cierra Terminal, ábrela y ejecuta nuevamente el script." >&2
+  exit 2
+fi
+
+if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
+  echo "Instalando Node.js 22 LTS y npm..."
+  brew install node@22
+  export PATH="$(brew --prefix node@22)/bin:$PATH"
+fi
+
+if ! command -v python3.11 >/dev/null 2>&1; then
+  echo "Instalando Python 3.11..."
+  brew install python@3.11
+fi
+
+if [[ -f "$HOME/.cargo/env" ]]; then
+  # shellcheck disable=SC1091
+  source "$HOME/.cargo/env"
+fi
+
+if ! command -v cargo >/dev/null 2>&1 || ! command -v rustc >/dev/null 2>&1; then
+  echo "Instalando Rust estable con rustup..."
+  curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh -s -- -y
+  # shellcheck disable=SC1091
+  source "$HOME/.cargo/env"
+fi
+
 for command in node npm cargo rustc python3.11; do
   if ! command -v "$command" >/dev/null 2>&1; then
-    echo "Falta $command. Instala Node.js, Rust y Python 3.11 antes de compilar." >&2
-    exit 1
+    echo "No se pudo preparar $command. Cierra Terminal, vuelve a abrirla y ejecuta otra vez el script." >&2
+    exit 2
   fi
 done
-if ! xcode-select -p >/dev/null 2>&1; then
-  echo "Instala las herramientas de Xcode con: xcode-select --install" >&2
-  exit 1
-fi
+
+echo "Herramientas listas:"
+echo "  Node.js: $(node --version)"
+echo "  npm: $(npm --version)"
+echo "  Rust: $(rustc --version)"
+echo "  Python: $(python3.11 --version)"
 
 cd "$BACKEND_DIR"
 python3.11 -m venv .venv-macos
