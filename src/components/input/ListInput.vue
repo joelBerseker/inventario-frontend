@@ -199,31 +199,31 @@ export default defineComponent({
       v-on:mounted:mymodal="getIdUrl"
     />
 
-    <div class="row justify-content-md-end mb-3">
-      <div class="col-12 col-md-4">
+    <div class="row g-2 mb-3">
+      <div class="col-12 col-xl-4">
         <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-lg"></i> Agregar Entrada
         </button>
       </div>
 
-      <div class="col-12 col-md-8">
+      <div class="col-12 col-xl-8">
         <div class="row g-2 mb-2">
-          <div class="col-md-3">
+          <div class="col-6 col-md-4 col-xl-3">
             <label class="form-label small mb-1">Fecha exacta</label>
             <input type="date" class="form-control form-control-sm" v-model="filters.specific_date" />
           </div>
 
-          <div class="col-md-3">
+          <div class="col-6 col-md-4 col-xl-3">
             <label class="form-label small mb-1">Desde</label>
             <input type="date" class="form-control form-control-sm" v-model="filters.start_date" />
           </div>
 
-          <div class="col-md-3">
+          <div class="col-6 col-md-4 col-xl-3">
             <label class="form-label small mb-1">Hasta</label>
             <input type="date" class="form-control form-control-sm" v-model="filters.end_date" />
           </div>
 
-          <div class="col-md-3 d-flex align-items-end gap-2">
+          <div class="col-12 col-xl-3 d-flex align-items-end gap-2">
             <button class="btn btn-primary btn-sm w-100" @click="filterTable">
               Buscar
             </button>

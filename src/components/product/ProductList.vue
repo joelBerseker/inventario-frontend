@@ -202,7 +202,7 @@ export default defineComponent({
       v-on:mounted:mymodal="getIdUrl"
     />
     <div class="row justify-content-md-end">
-      <div class="col-6">
+      <div class="col-12 col-md-6">
         <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <p><i class="bi bi-plus-lg"></i> Agregar Producto</p>
         </button>
@@ -215,7 +215,7 @@ export default defineComponent({
           Agregar por Excel
         </button>
       </div>
-      <div class="col">
+      <div class="col-12 col-md">
         <div class="input-group input-group-sm">
           <input
             type="text"

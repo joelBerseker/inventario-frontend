@@ -1,8 +1,8 @@
 <template>
   <MyModal ref="myModal" :id="'productDetailModal'" :title="this.title" size="modal-xl" v-on:mymodal:close="closeModal">
     <div class="modal-body">
-      <div class="row">
-        <div class="col-3 head pe-3">
+      <div class="row g-3">
+        <div class="col-12 col-xl-3 head">
           <MyInput v-if="mode !== 1" class="mb-3" type="text" name="Número de venta"
             :validation="item.header.order_code.validation" v-model="item.header.order_code.value" :disabled="true" />
 
@@ -20,15 +20,15 @@
             v-model="item.header.description.value" :disabled="disabled" v-on:input="inputDescription()" />
         </div>
 
-        <div class="col-9 ps-3">
+        <div class="col-12 col-xl-9 sale-content">
           <div class="scan-box mb-3" v-if="mode != 2">
             <div class="row g-2 align-items-end">
-              <div class="col-7">
+              <div class="col-12 col-sm-7">
                 <MyInput ref="scannerInput" type="text" name="Escanear código de barras" v-model="scanCode"
                   :disabled="disabled || processingScan" v-on:keyup.enter="handleScan" />
               </div>
 
-              <div class="col-5 d-flex align-items-end">
+              <div class="col-12 col-sm-5 d-flex align-items-end">
                 <button type="button" class="btn btn-outline-primary btn-sm w-100"
                   :disabled="disabled || processingScan || !scanCode.trim()" @click="handleScan">
                   <i class="bi bi-upc-scan"></i>
@@ -44,13 +44,13 @@
 
           <div class="manual-box mb-3" v-if="mode != 2">
             <div class="row g-2 align-items-end">
-              <div class="col-9">
+              <div class="col-12 col-sm-8">
                 <SelectSearch :key="manualProductKey" v-model="manualProduct" link="products/products/"
                   name="Buscar producto por nombre o código" id="manual-product-search"
                   :disabled="disabled || processingScan" />
               </div>
 
-              <div class="col-3 d-flex align-items-end">
+              <div class="col-12 col-sm-4 d-flex align-items-end">
                 <button type="button" class="btn btn-primary btn-sm w-100" :disabled="disabled || !manualProduct?.id"
                   @click="addManualProduct">
                   <i class="bi bi-plus-circle"></i>
@@ -64,19 +64,19 @@
             </div>
           </div>
 
-          <div class="row mb-3 d-flex align-items-end">
-            <div class="col">
+          <div class="row g-2 mb-3 align-items-end">
+            <div class="col-12 col-sm">
               <p class="title-text">Lista de Productos</p>
             </div>
 
-            <div class="col-2">
+            <div class="col-6 col-sm-4 col-lg-2">
               <MyInput name="Subtotal" type="number" viewClass="text-end" inputClass="text-end" labelClass="text-end"
                 v-model="item.header.subtotal_price.value" :disabled="true" :viewMode="disabled">
                 <template v-slot:pre>S/.</template>
               </MyInput>
             </div>
 
-            <div class="col-2">
+            <div class="col-6 col-sm-4 col-lg-2">
               <MyInput name="Descuento" type="text" viewClass="text-end" inputClass="text-end" labelClass="text-end"
                 v-model="item.header.discount.value" :disabled="disabled" :viewMode="disabled"
                 v-on:input="inputDiscount()" v-on:blur="formatDiscount()">
@@ -84,7 +84,7 @@
               </MyInput>
             </div>
 
-            <div class="col-2">
+            <div class="col-6 col-sm-4 col-lg-2">
               <MyInput name="Total" type="number" viewClass="text-end" inputClass="text-end" labelClass="text-end"
                 v-model="item.header.total_price.value" :disabled="true" :viewMode="disabled">
                 <template v-slot:pre>S/.</template>
@@ -93,18 +93,21 @@
           </div>
 
           <ListContent ref="tableContent" :loading="this.loadingContentList" :size="item.detail.length">
-            <table class="my-table w-100">
+            <table class="my-table w-100 sale-items-table">
+              <thead>
               <tr>
-                <th style="width: 34%">Nombre</th>
-                <th class="text-end" style="width: 12%">Stock</th>
-                <th class="text-end" style="width: 16%">Cantidad</th>
-                <th class="text-end" style="width: 18%">Precio venta</th>
-                <th class="text-end" style="width: 18%">Subtotal</th>
+                <th>Nombre</th>
+                <th class="text-end">Stock</th>
+                <th class="text-end">Cantidad</th>
+                <th class="text-end">Precio venta</th>
+                <th class="text-end">Subtotal</th>
                 <th v-if="mode != 2"></th>
               </tr>
+              </thead>
+              <tbody>
 
               <tr v-for="(row, index) in item.detail" :key="row._renderKey || index" class="detalle-item">
-                <td>
+                <td data-label="Producto">
                   <div class="product-scanned-box">
                     <div class="product-scanned-name">
                       {{ row.product_name || row.product?.value?.name || "Producto" }}
@@ -115,12 +118,12 @@
                   </div>
                 </td>
 
-                <td>
+                <td data-label="Stock">
                   <MyInput type="number" inputClass="text-end" viewClass="text-end" v-model="row.stock.value"
                     :disabled="true" :viewMode="disabled" />
                 </td>
 
-                <td>
+                <td data-label="Cantidad">
                   <div class="qty-box">
                     <button v-if="mode != 2 && !disabled" type="button" class="btn btn-sm btn-light qty-btn"
                       @click="decreaseQuantity(index)">
@@ -128,7 +131,7 @@
                     </button>
 
                     <MyInput type="number" inputClass="text-end" viewClass="text-end" :validation="row.quantity.validation"
-                      v-model="row.quantity.value" v-on:input="inputQuantity(index)" :disabled="false"
+                      v-model="row.quantity.value" v-on:input="inputQuantity(index)" :disabled="disabled"
                       :viewMode="disabled" />
 
                     <button v-if="mode != 2 && !disabled" type="button" class="btn btn-sm btn-light qty-btn"
@@ -138,21 +141,21 @@
                   </div>
                 </td>
 
-                <td>
+                <td data-label="Precio venta">
                   <MyInput type="number" inputClass="text-end" viewClass="text-end" v-model="row.new_sale_price.value"
                     :disabled="true" :viewMode="disabled">
                     <template v-slot:pre>S/.</template>
                   </MyInput>
                 </td>
 
-                <td>
+                <td data-label="Subtotal">
                   <MyInput type="number" inputClass="text-end" viewClass="text-end" v-model="row.subtotal.value"
                     :disabled="true" :viewMode="disabled">
                     <template v-slot:pre>S/.</template>
                   </MyInput>
                 </td>
 
-                <td v-if="!disabled">
+                <td v-if="!disabled" data-label="Acciones">
                   <div class="d-flex">
                     <button type="button" class="btn btn-sm btn-danger" @click="buttonListDelete(index)">
                       <i class="bi bi-trash"></i>
@@ -160,6 +163,7 @@
                   </div>
                 </td>
               </tr>
+              </tbody>
             </table>
           </ListContent>
         </div>
@@ -1174,6 +1178,56 @@ export default defineComponent({
   border-right: 1px solid rgba(0, 0, 0, 0.171);
 }
 
+.sale-content { min-width: 0; }
+.sale-items-table { table-layout: fixed; }
+.sale-items-table th:first-child { width: 25%; }
+.sale-items-table th:nth-child(2) { width: 12%; }
+.sale-items-table th:nth-child(3) { width: 24%; }
+.sale-items-table th:nth-child(4),
+.sale-items-table th:nth-child(5) { width: 17%; }
+.sale-items-table th:last-child:not(:nth-child(5)) { width: 5%; }
+.sale-items-table td { overflow-wrap: anywhere; }
+.sale-items-table :deep(.form-control) { min-width: 0; }
+.sale-items-table .qty-box :deep(.dropdown) { min-width: 0; flex: 1; }
+.sale-items-table .qty-box :deep(.form-control) { min-width: 2.4rem; padding-inline: .25rem; }
+
+@media (max-width: 1199.98px) {
+  .head { border-right: 0; border-bottom: 1px solid var(--my-bc); padding-bottom: .75rem; }
+}
+
+@media (max-width: 767.98px) {
+  .sale-items-table, .sale-items-table tbody { display: block; }
+  .sale-items-table thead { display: none; }
+  .sale-items-table tr.detalle-item {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem .75rem;
+    padding: .75rem;
+    margin-bottom: .75rem;
+    border: 1px solid var(--my-bc);
+    border-radius: .75rem;
+    background: #fff;
+  }
+  .sale-items-table td {
+    display: block;
+    width: 100%;
+    padding: 0 !important;
+    border: 0 !important;
+    min-width: 0;
+  }
+  .sale-items-table td:first-child { grid-column: 1 / -1; }
+  .sale-items-table td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: .25rem;
+    color: var(--my-c6);
+    font-size: .75rem;
+    font-weight: 600;
+  }
+  .sale-items-table td[data-label="Cantidad"] { grid-column: 1 / -1; }
+  .sale-items-table .qty-box { max-width: 15rem; }
+}
+
 .title-text {
   margin-bottom: 0;
   font-weight: 600;
@@ -1218,12 +1272,14 @@ export default defineComponent({
   display: flex;
   align-items: center;
   gap: 0.35rem;
+  min-width: 0;
 }
 
 .qty-btn {
   min-width: 30px;
   height: 30px;
   padding: 0;
+  flex: 0 0 30px;
 }
 
 .footer-output {
@@ -1238,6 +1294,15 @@ export default defineComponent({
   display: flex;
   align-items: center;
   gap: 0.25rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+@media (max-width: 575.98px) {
+  .footer-output { align-items: stretch; flex-direction: column; }
+  .footer-actions { margin-left: 0; justify-content: stretch; }
+  .footer-actions .btn { flex: 1 1 auto; }
+  .cancel-info { max-width: 100%; }
 }
 
 .cancel-info {

@@ -50,7 +50,7 @@
     </div>
 
     <div class="row mb-3">
-      <div class="col-12 col-md-3" v-for="card in cards" :key="card.title">
+      <div class="col-12 col-sm-6 col-xl-3" v-for="card in cards" :key="card.title">
         <div class="card stat-card mb-3">
           <div class="card-body">
             <div class="secondary-text">{{ card.title }}</div>
@@ -424,5 +424,6 @@ export default defineComponent({
 .stat-value {
   font-size: 1.4rem;
   font-weight: 700;
+  overflow-wrap: anywhere;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="mx-auto center justify-content-center my-bg2">
       <div class="container">
         <div class="row justify-content-md-center">
-          <div class="col-5 mb-3">
+          <div class="col-12 col-sm-9 col-md-7 col-lg-5 mb-3">
             <div class="card login">
               <div class="card-body">
                 <div class="text-center mb-3">

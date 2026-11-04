@@ -19,6 +19,7 @@ export default defineComponent({
   data() {
     return {
       loadingAppContent: true,
+      mobileSidebarOpen: false,
       topbar: {
         title: "",
         icon: "",
@@ -36,6 +37,10 @@ export default defineComponent({
       this.topbar.title = topbar.title;
       this.topbar.icon = topbar.icon;
       this.topbar.breadcrumb = topbar.breadcrumb;
+    },
+    toggleMobileSidebar() {
+      this.mobileSidebarOpen = !this.mobileSidebarOpen;
+      if (this.mobileSidebarOpen) this.$refs.sidebarComponent?.openSidebar();
     },
 
     logout() {
@@ -169,6 +174,11 @@ export default defineComponent({
       return resp;
     },
   },
+  watch: {
+    '$route.path'() {
+      this.mobileSidebarOpen = false;
+    },
+  },
 
   provide() {
     return {
@@ -236,11 +246,12 @@ export default defineComponent({
 
 <template>
   <AppContent :loading="loadingAppContent">
-    <div id="sidebar">
-      <SystemSideBar></SystemSideBar>
+    <button v-if="mobileSidebarOpen" class="sidebar-backdrop" type="button" aria-label="Cerrar menú" @click="mobileSidebarOpen = false"></button>
+    <div id="sidebar" :class="{ 'sidebar-mobile-open': mobileSidebarOpen }">
+      <SystemSideBar ref="sidebarComponent"></SystemSideBar>
     </div>
     <div id="main-content" :class="darkMode">
-      <SystemTopBar :topbar="topbar"></SystemTopBar>
+      <SystemTopBar :topbar="topbar" :mobile-sidebar-open="mobileSidebarOpen" @toggle-sidebar="toggleMobileSidebar"></SystemTopBar>
       <RouterView v-slot="{ Component }">
         <transition name="t-main-content" mode="out-in">
           <component :is="Component" :changeTopbar="changeTopbar" />
@@ -270,7 +281,8 @@ export default defineComponent({
 }
 
 #sidebar {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   height: 100%;
   width: 250px;
   position: fixed;
@@ -288,5 +300,27 @@ export default defineComponent({
   min-height: 100vh;
   background-size: cover;
   overflow-x: hidden;
+}
+
+.sidebar-backdrop { display: none; }
+@media (max-width: 991.98px) {
+  #sidebar {
+    width: 250px !important;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    z-index: 1050;
+    overflow-y: auto;
+  }
+  #sidebar.sidebar-mobile-open { transform: translateX(0); }
+  #main-content { margin-left: 0 !important; }
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: 0;
+    padding: 0;
+    background: rgba(30, 15, 20, .5);
+    z-index: 1040;
+  }
 }
 </style>

@@ -14,7 +14,7 @@
             <div class="secondary-text">No se encontraron registros.</div>
           </div>
         </div>
-        <div v-else class="w-100">
+        <div v-else class="w-100 list-content-scroll">
           <slot></slot>
         </div>
       </div>

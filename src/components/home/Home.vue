@@ -50,7 +50,7 @@
           aria-labelledby="panelsStayOpen-headingThree">
           <div class="accordion-body px-3 pt-0 pb-3">
             <div class="row">
-              <div class="col-4 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
+              <div class="col-12 col-sm-6 col-xl-4 mb-3" v-for="item in list" :key="item.title" v-on:click="goTo(item.url)">
                 <div class="card box" :id="item.title">
                   <div class="card-body">
                     <p class="title-text mb-1">

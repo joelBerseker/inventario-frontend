@@ -332,11 +332,9 @@ export default defineComponent({
 .brand-subtitle { color: #f4dce1; font-size: .72rem; letter-spacing: .09em; text-transform: uppercase; }
 .footer-text {
   font-size: 0.6rem;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  margin-bottom: 1rem;
-  margin-right: 1rem;
+  margin: auto 1rem 1rem;
+  padding-top: 1rem;
+  align-self: flex-end;
 }
 
 .t-sidebar-item-enter-active,

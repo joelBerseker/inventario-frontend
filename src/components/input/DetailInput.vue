@@ -9,8 +9,8 @@
     <ProductDetail ref="modalProduct" v-on:item:add="onAddProduct" />
 
     <div class="modal-body">
-      <div class="row">
-        <div class="col-3 head pe-3">
+      <div class="row g-3">
+        <div class="col-12 col-xl-3 head">
           <MyInput
             v-if="mode !== 1"
             class="mb-3"
@@ -43,13 +43,13 @@
           />
         </div>
 
-        <div class="col-9 ps-3">
-          <div class="row mb-3 d-flex align-items-end">
-            <div class="col">
+        <div class="col-12 col-xl-9 input-content-column">
+          <div class="row g-2 mb-3 align-items-end">
+            <div class="col-12 col-sm">
               <p class="title-text">Lista de Productos</p>
             </div>
 
-            <div v-if="mode != 2" class="col text-end">
+            <div v-if="mode != 2" class="col-12 col-sm-auto d-flex flex-wrap gap-1 justify-content-sm-end">
               <button type="button" class="btn btn-primary btn-sm me-1" @click="addProduct()">
                 <i class="bi bi-plus-lg"></i> Agregar Producto
               </button>
@@ -67,7 +67,7 @@
               </button>
             </div>
 
-            <div class="col-2">
+            <div class="col-6 col-sm-3 col-lg-2">
               <MyInput
                 name="Total"
                 type="number"

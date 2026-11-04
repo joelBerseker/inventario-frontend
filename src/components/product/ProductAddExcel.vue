@@ -147,7 +147,7 @@ export default defineComponent({
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
     <div class="row">
-      <div class="col-4">
+      <div class="col-12 col-lg-4">
         <p class="title-text mb-3">Indicaciones</p>
         <p>El archivo debe contener las siguientes filas:</p>
         <ul>
@@ -160,7 +160,7 @@ export default defineComponent({
           <li>stock (Cantidad en almacen del producto)</li>
         </ul>
       </div>
-      <div class="col-8">
+      <div class="col-12 col-lg-8">
         <p class="title-text mb-3">Ejemplo</p>
         <div class="w-100">
           <img src="../../assets/excel_example.png" class="w-100" alt="" />
@@ -184,7 +184,7 @@ export default defineComponent({
           </div>
         </div>
       </div>
-      <div class="col-12">
+      <div class="col-12 list-content-scroll">
         <table-lite
           :is-static-mode="false"
           :is-slot-mode="true"

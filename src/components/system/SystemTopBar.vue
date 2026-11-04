@@ -3,7 +3,7 @@ import { defineComponent, renderSlot } from "vue";
 
 export default defineComponent({
   name: "TopBar",
-  props: ["topbar"],
+  props: ["topbar", "mobileSidebarOpen"],
   inject: ["confirmLogout"],
   methods: {
     buttonLogout() {
@@ -36,15 +36,22 @@ export default defineComponent({
 </script>
 <template>
   <div class="my-bg2 py-3 px-3 my-c1 content">
-    <div class="row">
-      <div class="col">
+    <div class="row g-2 align-items-center">
+      <div class="col-auto d-lg-none">
+        <button type="button" class="btn btn-primary-outline btn-sm" aria-controls="sidebar"
+          :aria-expanded="!!mobileSidebarOpen" :aria-label="mobileSidebarOpen ? 'Cerrar menú' : 'Abrir menú'"
+          @click="$emit('toggle-sidebar')">
+          <i class="bi bi-list"></i>
+        </button>
+      </div>
+      <div class="col min-width-0">
         <transition name="slide-fade" mode="out-in">
           <p :key="topbar.title" class="title-text"><i :class="topbar.icon"></i> {{ topbar.title }}</p>
         </transition>
       </div>
-      <div class="col d-flex justify-content-end">
+      <div class="col-auto d-flex justify-content-end align-items-center">
         <RouterLink to="/user" class="item-menu">
-          <div class="content-item-menu"><i class="bi bi-person-vcard"></i> {{ userName }}</div>
+          <div class="content-item-menu"><i class="bi bi-person-vcard"></i> <span class="topbar-user-name">{{ userName }}</span></div>
         </RouterLink>
         <RouterLink to="/notifications" class="item-menu ms-1">
           <div class="content-item-menu"><i class="bi bi-bell"></i></div>
@@ -128,6 +135,13 @@ export default defineComponent({
 
 .content {
   transition: 0.5s;
+}
+.min-width-0 { min-width: 0; }
+.title-text { overflow-wrap: anywhere; }
+@media (max-width: 767.98px) {
+  .topbar-user-name { display: none; }
+  .breadcrumb-content { overflow-x: auto; }
+  .breadcrumb-ol { flex-wrap: nowrap; white-space: nowrap; }
 }
 
 .breadcrumb a {

@@ -406,45 +406,44 @@ export default defineComponent({
 
     <DailyCashReportModal ref="dailyCashReportModal" />
 
-    <div class="row justify-content-md-end">
-      <div class="col-4">
-        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
+    <div class="row g-2 mb-2 align-items-start">
+      <div class="col-12 col-xl-4 d-flex flex-wrap gap-2">
+        <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm">
           <i class="bi bi-plus-lg"></i> Agregar Salida
         </button>
-        <button class="btn btn-success btn-sm mb-3 ms-2" @click="openDailyReport">
+        <button class="btn btn-success btn-sm" @click="openDailyReport">
           <i class="bi bi-cash-stack"></i> Reporte del día
         </button>
       </div>
 
-      <div class="col-8">
-        <div class="input-group input-group-sm">
-          <div class="row g-2 mb-1">
-            <div class="col-md-2">
+      <div class="col-12 col-xl-8">
+        <div class="row g-2 mb-1">
+            <div class="col-6 col-md-4 col-xxl-2">
               <label class="form-label small mb-1">Fecha exacta</label>
               <input type="date" class="form-control form-control-sm" v-model="filters.specific_date" />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-6 col-md-4 col-xxl-2">
               <label class="form-label small mb-1">Desde</label>
               <input type="date" class="form-control form-control-sm" v-model="filters.start_date" />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-6 col-md-4 col-xxl-2">
               <label class="form-label small mb-1">Hasta</label>
               <input type="date" class="form-control form-control-sm" v-model="filters.end_date" />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-6 col-md-4 col-xxl-2">
               <label class="form-label small mb-1">Últimos días</label>
               <input type="number" class="form-control form-control-sm" v-model="filters.last_days" min="1" />
             </div>
 
-            <div class="col-md-2">
+            <div class="col-6 col-md-4 col-xxl-2">
               <label class="form-label small mb-1">Últimos meses</label>
               <input type="number" class="form-control form-control-sm" v-model="filters.last_months" min="1" />
             </div>
 
-            <div class="col-md-2 d-flex align-items-end gap-2">
+            <div class="col-12 col-md-4 col-xxl-2 d-flex align-items-end gap-2">
               <button class="btn btn-primary btn-sm w-100" @click="filterTable">
                 Buscar
               </button>
@@ -452,7 +451,6 @@ export default defineComponent({
                 Limpiar
               </button>
             </div>
-          </div>
         </div>
       </div>
     </div>

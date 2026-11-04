@@ -197,7 +197,7 @@ export default defineComponent({
     />
 
     <div class="row justify-content-md-end">
-      <div class="col-6">
+      <div class="col-12 col-md-6">
         <button v-on:click="buttonAdd" type="button" class="btn btn-primary btn-sm mb-3">
           <i class="bi bi-plus-lg"></i> Agregar Proveedor
         </button>
@@ -205,7 +205,7 @@ export default defineComponent({
           <i :class="iconButtonCard"></i> {{ this.textButtonCard }}
         </button>
       </div>
-      <div class="col">
+      <div class="col-12 col-md">
         <div class="input-group input-group-sm">
           <input
             type="text"
@@ -249,7 +249,7 @@ export default defineComponent({
         </div>
         <div v-else>
           <div class="row">
-            <div class="col-4 mb-3" v-for="item in table.rows" :key="item.id">
+            <div class="col-12 col-sm-6 col-xl-4 mb-3" v-for="item in table.rows" :key="item.id">
               <div class="card box" :id="item.title">
                 <div class="card-body">
                   <div class="row">

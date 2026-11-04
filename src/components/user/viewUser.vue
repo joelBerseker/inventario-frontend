@@ -1,7 +1,7 @@
 <template>
   <SystemContent ref="content" :loading="loadingContentSystem">
     <div class="row">
-      <div class="col-6">
+      <div class="col-12 col-lg-6 mb-3 mb-lg-0">
         <div class="card">
           <div class="card-body">
             <p class="title-text mb-3">Mi Perfil</p>
@@ -20,7 +20,7 @@
                         />
                         <span v-else>
                           <img
-                            v-if="user.photo == null"
+                            v-if="!displayUser.photo"
                             src="../../assets/person-circle.svg"
                             alt="Foto de perfil"
                             class="profile-photo"
@@ -153,7 +153,7 @@
         </div>
       </div><!-- col-6 -->
 
-      <div class="col-6">
+      <div class="col-12 col-lg-6">
         <div class="card">
           <div class="card-body">
             <p class="title-text mb-3">Otras configuraciones</p>
@@ -295,6 +295,7 @@ export default {
     },
     uploadImage(e) {
       const image = e.target.files[0];
+      if (!image) return;
       this.editUser.photo = image;
       const reader = new FileReader();
       reader.readAsDataURL(image);
